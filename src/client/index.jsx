@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
 import React from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import { renderRoutes } from 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
@@ -16,7 +16,7 @@ import { Provider } from 'react-redux';
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
 const renderDOM = (r) => {
-  render(
+  hydrate(
     <AppContainer>
       <Provider store={store}>
         <BrowserRouter>
