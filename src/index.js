@@ -15,7 +15,7 @@ import path from 'path';
 import ssr from './middleware/ssr';
 
 const isDev = config.env === `development`;
-const viewsDir = path.join(config.cwd, `views`);
+const viewsDir = path.join(__dirname, `views`);
 const publicDir = path.join(config.cwd, `public`);
 const log = debug(`app`);
 

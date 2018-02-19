@@ -2,10 +2,10 @@
   "name": "react-express-starter-kit",
   "version": "0.0.0",
   "scripts": {
-    "start": "node build/app",
+    "start": "node build",
     "clean": "rimraf build",
     "build": "npm run clean && NODE_ENV=production babel src --minified --source-maps --out-dir=build --copy-files && NODE_ENV=production webpack --colors --profile --config config/build.conf.js --display-error-details",
-    "dev": "NODE_ENV=development DEBUG=app* nodemon --exec babel-node --verbose --watch src --ignore src/client --ext js,jsx,json --inspect=5858 src/app",
+    "dev": "NODE_ENV=development DEBUG=app* nodemon --exec babel-node --verbose --watch src --ext js,json --inspect=5858 src",
     "lint": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore --ext .jsx --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },

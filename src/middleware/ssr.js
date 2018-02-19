@@ -2,7 +2,7 @@
  * @file Server-side rendering middleware.
  */
 
-import * as reducers from '../client/reducers';
+import * as reducers from '../reducers';
 import debug from 'debug';
 import routes from '../routes';
 import thunk from 'redux-thunk';

@@ -1,9 +1,10 @@
+/* eslint-env browser */
 /**
  * @file Client entry file.
  */
 
 import * as reducers from './reducers';
-import routes from '../routes';
+import routes from './routes';
 import thunk from 'redux-thunk';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
 import React from 'react';
@@ -24,15 +25,15 @@ const renderDOM = (r) => {
         </BrowserRouter>
       </Provider>
     </AppContainer>,
-    document.getElementById(`app`)
+    document.getElementById(`root`)
   );
 };
 
 renderDOM(routes);
 
 if (module.hot) {
-  module.hot.accept(`../routes`, () => {
-    const newRoutes = require(`../routes`).default;
+  module.hot.accept(`./routes`, () => {
+    const newRoutes = require(`./routes`).default;
     renderDOM(newRoutes);
   });
 }

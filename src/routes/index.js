@@ -2,14 +2,14 @@
  * @file Route definitions for React router.
  */
 
-import App from '../client/App';
-import Home from '../client/pages/Home';
-import List from '../client/pages/List';
-import NotFound from '../client/pages/NotFound';
-import ListToUsers from '../client/pages/ListToUsers';
+import Root from '../containers/Root';
+import Home from '../containers/Home';
+import List from '../containers/List';
+import NotFound from '../containers/NotFound';
+import ListToUsers from '../containers/ListToUsers';
 
 export default [{
-  component: App,
+  component: Root,
   routes: [{
     path: `/`,
     exact: true,

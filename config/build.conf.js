@@ -11,7 +11,7 @@ const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
 const IS_DEV = config.env === `development`;
-const INPUT_DIR = path.join(config.cwd, `src/client`);
+const INPUT_DIR = path.join(config.cwd, `src`);
 const OUTPUT_DIR = path.join(config.cwd, `build/public`);
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
     errorDetails: true
   },
   entry: {
-    main: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./index.jsx`] : `./index.jsx`
+    app: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./app.jsx`] : `./app.jsx`
   },
   output: {
     path: OUTPUT_DIR,

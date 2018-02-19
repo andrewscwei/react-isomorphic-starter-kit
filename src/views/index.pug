@@ -3,4 +3,4 @@ extends layout
 block content
   script(type='text/javascript').
     window.__INITIAL_STATE__ = !{JSON.stringify(data)}
-  div.container#app!= content
+  div.container#root!= content
