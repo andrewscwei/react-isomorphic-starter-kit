@@ -8,14 +8,14 @@ import ListToUsers from './pages/ListToUsers';
 const routes = [
   { component: AppRoot,
     routes: [
-      { path: '/',
+      { path: `/`,
         exact: true,
         component: Home
       },
-      { path: '/home',
+      { path: `/home`,
         component: Home
       },
-      { path: '/list',
+      { path: `/list`,
         component: ListToUsers
       }, {
         path: `/users`,

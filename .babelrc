@@ -1,4 +1,13 @@
 {
-  "presets": ["env", "react"],
-  "plugins": ["transform-decorators-legacy"]
+  "sourceMaps": true,
+  "retainLines": true,
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    "transform-es2015-modules-commonjs",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy"
+  ]
 }

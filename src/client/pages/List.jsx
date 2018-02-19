@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { fetchUsers } from './modules/users';
+import { fetchUsers } from '../reducers/users';
 
 class List extends Component {
   static fetchData(store) {

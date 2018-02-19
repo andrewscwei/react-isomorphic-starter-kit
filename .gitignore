@@ -52,6 +52,7 @@ dump.rdb
 
 # Generated static files
 public
+dist
 uploads
 docs
 lib

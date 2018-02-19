@@ -7,18 +7,18 @@ import {renderToString} from 'react-dom/server';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import routes from '../client/routes';
-import reducers from '../client/modules';
+import * as reducers from '../client/reducers';
 
 /*eslint-disable*/
 const router = express.Router();
 /*eslint-enable*/
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 router.get('*', (req, res) => {
   const branch = matchRoutes(routes, req.url);
