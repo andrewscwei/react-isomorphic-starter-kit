@@ -2,12 +2,13 @@
   "sourceMaps": true,
   "retainLines": true,
   "presets": [
-    "env",
+    ["env", { "modules": false }],
     "react"
   ],
   "plugins": [
     "transform-es2015-modules-commonjs",
     "transform-object-rest-spread",
-    "transform-decorators-legacy"
+    "transform-decorators-legacy",
+    "react-hot-loader/babel"
   ]
 }

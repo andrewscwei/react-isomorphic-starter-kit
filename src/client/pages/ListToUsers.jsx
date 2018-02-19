@@ -7,7 +7,7 @@ const ListToUsers = () => {
       if (staticContext) {
         staticContext.status = 302;
       }
-      return <Redirect from="/list" to="/users" />
+      return <Redirect from="/list" to="/users" />;
     }}/>
   );
 };

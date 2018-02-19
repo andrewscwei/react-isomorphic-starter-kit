@@ -4,10 +4,9 @@
   "scripts": {
     "start": "node build/app",
     "clean": "rimraf build",
-    "build:client": "webpack --colors --profile --config config/build.conf.js --display-error-details",
-    "build:server": "babel src --minified --source-maps --out-dir=dist --copy-files",
-    "dev": "NODE_ENV=development nodemon --exec babel-node --verbose --watch src --ext js,json --inspect=5858 src/app",
-    "lint": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore",
+    "build": "npm run clean && babel src --minified --source-maps --out-dir=build --copy-files && webpack --colors --profile --config config/build.conf.js --display-error-details",
+    "dev": "NODE_ENV=development nodemon --exec babel-node --verbose --watch src --ignore src/client --ext js,jsx,json --inspect=5858 src/app",
+    "lint": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore --ext .jsx --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
@@ -17,9 +16,11 @@
     "isomorphic-fetch": "^2.2.1",
     "method-override": "^2.3.10",
     "morgan": "~1.9.0",
+    "prop-types": "^15.6.0",
     "pug": "2.0.0-beta11",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-hot-loader": "^4.0.0-rc.0",
     "react-redux": "^5.0.7",
     "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
@@ -40,10 +41,13 @@
     "eslint": "^4.18.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-plugin-react": "^7.6.1",
+    "extract-text-webpack-plugin": "^3.0.2",
     "helmet": "^3.11.0",
     "nodemon": "^1.15.0",
+    "optimize-css-assets-webpack-plugin": "^3.2.0",
     "rimraf": "^2.6.2",
     "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^2.10.0",
     "webpack-dev-middleware": "^2.0.5",
     "webpack-hot-middleware": "^2.21.0"
   }

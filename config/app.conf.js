@@ -29,9 +29,6 @@ module.exports = {
 
   // Config options specific to the `dev` task.
   dev: {
-    // Public path of all loaded assets.
-    publicPath: `/`,
-
     // Specifies whether the linter should run.
     linter: false
   }

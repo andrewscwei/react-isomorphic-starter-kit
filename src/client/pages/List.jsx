@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import { fetchUsers } from '../reducers/users';
 
 class List extends Component {
@@ -24,7 +23,7 @@ class List extends Component {
               <div key={item.id} >
                 <span>{item.name}</span>
               </div>
-            )
+            );
           })
         }
       </div>

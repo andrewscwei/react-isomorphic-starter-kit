@@ -6,6 +6,9 @@
 const config = require(`./app.conf`);
 const path = require(`path`);
 const webpack = require(`webpack`);
+const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
+const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
+const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
 const IS_DEV = config.env === `development`;
 const INPUT_DIR = path.join(config.cwd, `src/client`);
@@ -13,17 +16,17 @@ const OUTPUT_DIR = path.join(config.cwd, `build/public`);
 
 module.exports = {
   devtool: IS_DEV ? `cheap-eval-source-map` : false,
-  // context: path.join(config.cwd, `src/client`),
+  context: path.join(config.cwd, `src/client`),
   stats: {
     colors: true,
     modules: true,
     reasons: true,
     errorDetails: true
   },
-  entry: path.join(INPUT_DIR, `index.jsx`),
+  entry: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?quiet=true`, `./index.jsx`] : `./index.jsx`,
   output: {
     path: OUTPUT_DIR,
-    publicPath: IS_DEV ? config.dev.publicPath : config.build.publicPath,
+    publicPath: IS_DEV ? `/` : config.build.publicPath,
     filename: IS_DEV ? `[name].js` : path.posix.join(`javascripts`, `[name].[chunkhash].js`),
     chunkFilename: IS_DEV ? `[chunkhash].js` : path.posix.join(`javascripts`, `[id].[chunkhash].js`),
     sourceMapFilename: IS_DEV ? `[name].map` : path.posix.join(`javascripts`, `[name].[hash].map`)
@@ -60,4 +63,25 @@ module.exports = {
       chunks: [`common`]
     })
   ]
+    .concat(IS_DEV ? [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin()
+    ] : [
+      new ExtractTextPlugin({
+        filename: path.join(OUTPUT_DIR, `stylesheets`, `[name].[contenthash].css`)
+      }),
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: {
+          safe: true
+        }
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
+    ])
+    .concat((!IS_DEV && config.build.analyzer) ? [
+      new BundleAnalyzerPlugin()
+    ] : [])
 };

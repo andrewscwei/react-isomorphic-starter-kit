@@ -2,10 +2,10 @@
  * @file Webpack dev server middleware.
 */
 
-const config = require(`../../config/build.conf`);
-const webpack = require(`webpack`);
-const webpackDevMiddleware = require(`webpack-dev-middleware`);
-const webpackHotMiddleware = require(`webpack-hot-middleware`);
+import config from '../../config/build.conf';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const compiler = webpack(config);
 
@@ -21,7 +21,7 @@ export function dev() {
 
 export function hot() {
   return webpackHotMiddleware(compiler, {
-    log: false,
+    log: console.log,
     heartbeat: 2000,
     multistep: false
   });

@@ -11,8 +11,7 @@ import http from 'http';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import path from 'path';
-import index from './routes/index';
-import users from './routes/users';
+import routes from './routes';
 
 const IS_DEV = config.env === `development`;
 const VIEWS_DIR = path.join(config.cwd, `views`);
@@ -31,10 +30,9 @@ app.use(helmet());
 // @see {@link https://www.npmjs.com/package/cors}
 app.use(cors());
 
-// Server redirect setup. Delegate to Webpack dev server in development,
+// Server redirect setup. Delegate to Webpack dev server in development for HMR,
 // redirect to HTTPS in production if the request is not secure.
 if (IS_DEV) {
-  // Use Webpack dev server in development.
   const webpack = require(`./middlewares/webpack`);
   app.use(webpack.dev());
   app.use(webpack.hot());
@@ -71,8 +69,7 @@ app.use(express.static(PUBLIC_DIR, {
 }));
 
 // Router setup.
-app.use(`/`, index);
-app.use(`/users`, users);
+app.use(`/`, routes);
 
 /**
  * Server 404 error, when the requested URI is not found.

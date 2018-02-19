@@ -1,31 +1,28 @@
-import express from 'express';
-import request from 'request';
+/**
+ * @file Routes for the Express server.
+ */
 
-import React, {Component} from 'react';
-import {renderToString} from 'react-dom/server';
-
-import StaticRouter from 'react-router-dom/StaticRouter';
-import { matchRoutes, renderRoutes } from 'react-router-config';
-
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-
-import routes from '../client/routes';
 import * as reducers from '../client/reducers';
+import express from 'express';
+import routes from '../client/routes';
+import thunk from 'redux-thunk';
+import React from 'react';
+import StaticRouter from 'react-router-dom/StaticRouter';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
 
-/*eslint-disable*/
 const router = express.Router();
-/*eslint-enable*/
-
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
-router.get('*', (req, res) => {
+router.get(`*`, (req, res) => {
   const branch = matchRoutes(routes, req.url);
-  const promises = branch.map(({route}) => {
-    let fetchData = route.component.fetchData;
-    return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null)
+  const promises = branch.map(({ route }) => {
+    const fetchData = route.component.fetchData;
+    return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null);
   });
+
   return Promise.all(promises).then((data) => {
     let context = {};
     const content = renderToString(
@@ -36,15 +33,15 @@ router.get('*', (req, res) => {
       </Provider>
     );
 
-    if (context.status === 302) {
+    switch (context.status) {
+    case 302:
       return res.redirect(302, context.url);
-    }
-
-    if (context.status === 404) {
+    case 404:
       res.status(404);
+      break;
     }
 
-    res.render('index', {title: 'Express', data: store.getState(), content });
+    res.render(`index`, { title: `Express`, data: store.getState(), content });
   });
 });
 

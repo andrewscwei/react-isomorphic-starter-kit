@@ -10,18 +10,29 @@ import React from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { render } from 'react-dom';
 import { renderRoutes } from 'react-router-config';
+import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
-const AppRouter = () => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        {renderRoutes(routes)}
-      </BrowserRouter>
-    </Provider>
+const renderDOM = (r) => {
+  render(
+    <AppContainer>
+      <Provider store={store}>
+        <BrowserRouter>
+          {renderRoutes(r)}
+        </BrowserRouter>
+      </Provider>
+    </AppContainer>,
+    document.getElementById(`app`)
   );
 };
 
-render(<AppRouter />, document.querySelector(`#app`));
+renderDOM(routes);
+
+if (module.hot) {
+  module.hot.accept(`./routes`, () => {
+    const newRoutes = require(`./routes`).default;
+    renderDOM(newRoutes);
+  });
+}
