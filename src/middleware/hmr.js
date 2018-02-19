@@ -1,6 +1,6 @@
 /**
  * @file Webpack dev server middleware.
-*/
+ */
 
 import config from '../../config/build.conf';
 import webpack from 'webpack';

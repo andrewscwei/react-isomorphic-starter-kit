@@ -12,7 +12,7 @@ import http from 'http';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import path from 'path';
-import ssr from './middlewares/ssr';
+import ssr from './middleware/ssr';
 
 const isDev = config.env === `development`;
 const viewsDir = path.join(config.cwd, `views`);
@@ -35,7 +35,7 @@ app.use(cors());
 // Server redirect setup. Delegate to Webpack dev server in development for HMR,
 // redirect to HTTPS in production if the request is not secure.
 if (isDev) {
-  const hmr = require(`./middlewares/hmr`);
+  const hmr = require(`./middleware/hmr`);
   app.use(hmr.dev());
   app.use(hmr.hot());
 }
@@ -86,7 +86,7 @@ app.use(function(req, res, next) {
 
 /**
  * Final point of error handling. Any error that was previously thrown will
- * skip all intermediate middlewares and go straight to here, where the server
+ * skip all intermediate middleware and go straight to here, where the server
  * will first render an error view if the request accepts html, or respond with
  * the error info in a JSON payload. If the error that ends up here does not
  * have a status code, it will default to 500.
