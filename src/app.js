@@ -1,25 +1,27 @@
 /**
- * @file Entry file for server.
+ * @file Server entry file.
  */
 
 import bodyParser from 'body-parser';
 import config from '../config/app.conf';
 import cors from 'cors';
+import debug from 'debug';
 import express from 'express';
 import helmet from 'helmet';
 import http from 'http';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import path from 'path';
-import routes from './routes';
+import ssr from './middlewares/ssr';
 
-const IS_DEV = config.env === `development`;
-const VIEWS_DIR = path.join(config.cwd, `views`);
-const PUBLIC_DIR = path.join(config.cwd, `public`);
+const isDev = config.env === `development`;
+const viewsDir = path.join(config.cwd, `views`);
+const publicDir = path.join(config.cwd, `public`);
+const log = debug(`app`);
 
 // Create app and define global/local members.
 const app = express();
-app.set(`views`, VIEWS_DIR);
+app.set(`views`, viewsDir);
 app.set(`view engine`, `pug`);
 
 // Helmet setup.
@@ -32,12 +34,12 @@ app.use(cors());
 
 // Server redirect setup. Delegate to Webpack dev server in development for HMR,
 // redirect to HTTPS in production if the request is not secure.
-if (IS_DEV) {
-  const webpack = require(`./middlewares/webpack`);
-  app.use(webpack.dev());
-  app.use(webpack.hot());
+if (isDev) {
+  const hmr = require(`./middlewares/hmr`);
+  app.use(hmr.dev());
+  app.use(hmr.hot());
 }
-else {
+else if (config.forceSSL) {
   // Redirect to HTTPS in production.
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
@@ -60,7 +62,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride());
 
 // Serve static files and add expire headers.
-app.use(express.static(PUBLIC_DIR, {
+app.use(express.static(publicDir, {
   setHeaders: function(res, path) {
     const duration = 1000 * 60 * 60 * 24 * 365 * 10;
     res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
@@ -69,7 +71,7 @@ app.use(express.static(PUBLIC_DIR, {
 }));
 
 // Router setup.
-app.use(`/`, routes);
+app.get(`*`, ssr);
 
 /**
  * Server 404 error, when the requested URI is not found.
@@ -94,7 +96,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // Set locals, only providing error in development.
   res.locals.message = err.message;
-  res.locals.error = IS_DEV ? err : {};
+  res.locals.error = isDev ? err : {};
 
   // Render the error page.
   res.status(err.status || 500).render(`error`);
@@ -109,11 +111,11 @@ http
     // Handle specific errors with friendly messages.
     switch (error.code) {
     case `EACCES`:
-      console.log(`Port ${this.address().port} requires elevated privileges`);
+      log(`Port ${this.address().port} requires elevated privileges`);
       process.exit(1);
       break;
     case `EADDRINUSE`:
-      console.log(`Port ${this.address().port} is already in use`);
+      log(`Port ${this.address().port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -121,7 +123,7 @@ http
     }
   })
   .on(`listening`, function() {
-    console.log(`App is listening on ${this.address().address}:${this.address().port}`);
+    log(`App is listening on ${this.address().address}:${this.address().port}`);
   });
 
 export default app;

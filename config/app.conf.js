@@ -6,13 +6,16 @@ const path = require(`path`);
 
 module.exports = {
   // Current Node environment, defaults to `development` if none specified.
-  env: process.env.NODE_ENV || `development`,
+  env: process.env.NODE_ENV || `production`,
 
   // Current working directory.
   cwd: path.join(__dirname, `../`),
 
   // Port.
   port: process.env.PORT || 8080,
+
+  // Force redirects to HTTPS.
+  forceSSL: process.env.FORCE_SSL || false,
 
   // Config options specific to the `build` tas.
   build: {

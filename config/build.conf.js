@@ -16,25 +16,28 @@ const OUTPUT_DIR = path.join(config.cwd, `build/public`);
 
 module.exports = {
   devtool: IS_DEV ? `cheap-eval-source-map` : false,
-  context: path.join(config.cwd, `src/client`),
+  context: INPUT_DIR,
   stats: {
     colors: true,
     modules: true,
     reasons: true,
     errorDetails: true
   },
-  entry: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?quiet=true`, `./index.jsx`] : `./index.jsx`,
+  entry: {
+    main: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./index.jsx`] : `./index.jsx`
+  },
   output: {
     path: OUTPUT_DIR,
     publicPath: IS_DEV ? `/` : config.build.publicPath,
-    filename: IS_DEV ? `[name].js` : path.posix.join(`javascripts`, `[name].[chunkhash].js`),
-    chunkFilename: IS_DEV ? `[chunkhash].js` : path.posix.join(`javascripts`, `[id].[chunkhash].js`),
-    sourceMapFilename: IS_DEV ? `[name].map` : path.posix.join(`javascripts`, `[name].[hash].map`)
+    filename: IS_DEV ? `[name].js` : `[name].[chunkhash].js`,
+    chunkFilename: IS_DEV ? `[chunkhash].js` : `[id].[chunkhash].js`,
+    sourceMapFilename: IS_DEV ? `[name].map` : `[name].[hash].map`
   },
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      loader: `babel-loader`
+      loader: `babel-loader`,
+      exclude: /node_modules/
     }]
   },
   resolve: {

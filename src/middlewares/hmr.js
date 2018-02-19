@@ -21,7 +21,7 @@ export function dev() {
 
 export function hot() {
   return webpackHotMiddleware(compiler, {
-    log: console.log,
+    log: false,
     heartbeat: 2000,
     multistep: false
   });

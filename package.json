@@ -4,14 +4,15 @@
   "scripts": {
     "start": "node build/app",
     "clean": "rimraf build",
-    "build": "npm run clean && babel src --minified --source-maps --out-dir=build --copy-files && webpack --colors --profile --config config/build.conf.js --display-error-details",
-    "dev": "NODE_ENV=development nodemon --exec babel-node --verbose --watch src --ignore src/client --ext js,jsx,json --inspect=5858 src/app",
+    "build": "npm run clean && NODE_ENV=production babel src --minified --source-maps --out-dir=build --copy-files && NODE_ENV=production webpack --colors --profile --config config/build.conf.js --display-error-details",
+    "dev": "NODE_ENV=development DEBUG=app* nodemon --exec babel-node --verbose --watch src --ignore src/client --ext js,jsx,json --inspect=5858 src/app",
     "lint": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore --ext .jsx --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
     "cors": "^2.8.4",
+    "debug": "^3.1.0",
     "express": "~4.15.5",
     "isomorphic-fetch": "^2.2.1",
     "method-override": "^2.3.10",
