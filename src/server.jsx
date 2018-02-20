@@ -49,12 +49,9 @@ app.use(cors());
  */
 if (config.env === `development`) {
   const buildConfig = require(path.join(config.cwd, `config/build.client.conf`));
-  const webpack = require(`webpack`);
-  const devMiddleware = require(`webpack-dev-middleware`);
-  const hotMiddleware = require(`webpack-hot-middleware`);
-  const compiler = webpack(buildConfig);
+  const compiler = require(`webpack`)(buildConfig);
 
-  app.use(devMiddleware(compiler, {
+  app.use(require(`webpack-dev-middleware`)(compiler, {
     quiet: false,
     noInfo: true,
     inline: false,
@@ -62,7 +59,7 @@ if (config.env === `development`) {
     stats: { colors: true }
   }));
 
-  app.use(hotMiddleware(compiler, {
+  app.use(require(`webpack-hot-middleware`)(compiler, {
     log: false,
     heartbeat: 2000,
     multistep: false

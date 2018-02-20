@@ -16,7 +16,7 @@ import { Provider } from 'react-redux';
 
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
-const renderDOM = (r) => {
+function renderDOM(r) {
   hydrate(
     <AppContainer>
       <Provider store={store}>
@@ -27,7 +27,7 @@ const renderDOM = (r) => {
     </AppContainer>,
     document.getElementById(`app`)
   );
-};
+}
 
 renderDOM(routes);
 

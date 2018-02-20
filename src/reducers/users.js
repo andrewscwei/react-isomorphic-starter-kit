@@ -28,5 +28,5 @@ export function fetchUsers() {
           items: users
         });
       });
-  }
+  };
 }
