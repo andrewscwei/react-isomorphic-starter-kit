@@ -1,6 +1,6 @@
 extends layout
 
 block content
-  script(type='text/javascript').
+  script(type='application/javascript').
     window.__INITIAL_STATE__ = !{JSON.stringify(data)}
-  div.container#root!= content
+  div.container#app!= content

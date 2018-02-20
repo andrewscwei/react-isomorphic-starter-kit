@@ -24,7 +24,7 @@ module.exports = {
     errorDetails: true
   },
   entry: {
-    app: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./app.jsx`] : `./app.jsx`
+    bundle: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./client.jsx`] : `./client.jsx`
   },
   output: {
     path: OUTPUT_DIR,

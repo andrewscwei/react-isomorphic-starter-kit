@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 
-export const USERS_LOADED = `@ssr/users/loaded`;
+export const USERS_LOADED = `@users/loaded`;
 
 const initialState = {
   items: []
@@ -16,15 +16,17 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const fetchUsers = () => (dispatch) => {
-  return fetch(`//jsonplaceholder.typicode.com/users`)
-    .then(res => {
-      return res.json();
-    })
-    .then(users => {
-      dispatch({
-        type: USERS_LOADED,
-        items: users
+export function fetchUsers() {
+  return function(dispatch) {
+    return fetch(`//jsonplaceholder.typicode.com/users`)
+      .then(res => {
+        return res.json();
+      })
+      .then(users => {
+        dispatch({
+          type: USERS_LOADED,
+          items: users
+        });
       });
-    });
-};
+  }
+}
