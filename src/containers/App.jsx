@@ -3,6 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
 export default class App extends PureComponent {
@@ -12,3 +13,7 @@ export default class App extends PureComponent {
     );
   }
 }
+
+App.propTypes = {
+  route: PropTypes.object.isRequired
+};

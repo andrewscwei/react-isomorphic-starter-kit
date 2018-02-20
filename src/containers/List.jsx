@@ -1,11 +1,22 @@
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../reducers/users';
 
-class List extends Component {
+function mapStateToProps(state) {
+  return {
+    users: state.users.items
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchUsers }, dispatch);
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class List extends Component {
   static fetchData(store) {
     return store.dispatch(fetchUsers());
   }
@@ -16,12 +27,12 @@ class List extends Component {
 
   render() {
     return (
-      <div >
+      <div>
         {
-          this.props.items.map(item => {
+          this.props.users.map(user => {
             return (
-              <div key={item.id} >
-                <span>{item.name}</span>
+              <div key={user.id} >
+                <span>{user.name}</span>
               </div>
             );
           })
@@ -31,8 +42,7 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({items: state.users.items});
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchUsers }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+List.propTypes = {
+  users: PropTypes.array,
+  fetchUsers: PropTypes.func
+};

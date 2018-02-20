@@ -16,7 +16,7 @@ import routes from './routes';
 import thunk from 'redux-thunk';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
