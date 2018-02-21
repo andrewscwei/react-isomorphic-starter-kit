@@ -5,11 +5,12 @@
 import * as reducers from './reducers';
 import config from '../config/app.conf';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import debug from 'debug';
 import express from 'express';
 import helmet from 'helmet';
 import http from 'http';
+import i18n from './plugins/i18n-server';
+import i18nMiddleware from 'i18next-express-middleware';
 import morgan from 'morgan';
 import path from 'path';
 import routes from './routes';
@@ -19,6 +20,7 @@ import StaticRouter from 'react-router-dom/StaticRouter';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
+import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 const log = debug(`app`);
@@ -85,11 +87,7 @@ if (config.forceSSL) {
  */
 app.use(morgan(`dev`));
 
-/**
- * Cookie parsing setup.
- * @see {@link https://www.npmjs.com/package/cookie-parser}
- */
-app.use(cookieParser());
+app.use(i18nMiddleware.handle(i18n));
 
 /**
  * Serve static files and add expire headers.
@@ -110,6 +108,10 @@ app.use(express.static(path.join(config.cwd, `public`), {
 app.use(async function(req, res) {
   // Find and store all matching client routes based on the request URL.
   const matches = matchRoutes(routes, req.url);
+  const locale = req.language;
+  const resources = i18n.getResourceBundle(locale, `common`);
+
+  i18n.changeLanguage(locale);
 
   // For each matching route, fetch async data if required.
   for (let i = 0; i < matches.length; i++) {
@@ -122,11 +124,13 @@ app.use(async function(req, res) {
   let context = {};
 
   const content = renderToString(
-    <Provider store={store}>
-      <StaticRouter location={req.url} context={context}>
-        {renderRoutes(routes)}
-      </StaticRouter>
-    </Provider>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          {renderRoutes(routes)}
+        </StaticRouter>
+      </Provider>
+    </I18nextProvider>
   );
 
   switch (context.status) {
@@ -137,7 +141,7 @@ app.use(async function(req, res) {
     break;
   }
 
-  res.render(`index`, { title: `Express`, data: store.getState(), content });
+  res.render(`index`, { title: `Express`, data: store.getState(), i18n: { locale, resources }, content });
 });
 
 /**
