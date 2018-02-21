@@ -17,6 +17,11 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class List extends Component {
+  static propTypes = {
+    users: PropTypes.array,
+    fetchUsers: PropTypes.func
+  }
+
   static fetchData(store) {
     return store.dispatch(fetchUsers());
   }
@@ -41,8 +46,3 @@ export default class List extends Component {
     );
   }
 }
-
-List.propTypes = {
-  users: PropTypes.array,
-  fetchUsers: PropTypes.func
-};
