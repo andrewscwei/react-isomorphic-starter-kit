@@ -6,6 +6,7 @@
 const config = require(`./app.conf`);
 const path = require(`path`);
 const webpack = require(`webpack`);
+const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
 const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
@@ -52,6 +53,11 @@ module.exports = {
         NODE_ENV: JSON.stringify(config.env)
       }
     }),
+    new CopyPlugin([{
+      from: path.join(inputDir, `static`),
+      to: outputDir,
+      ignore: [`.*`]
+    }]),
     new webpack.optimize.CommonsChunkPlugin({
       name: `common`,
       minChunks: (module) => {
