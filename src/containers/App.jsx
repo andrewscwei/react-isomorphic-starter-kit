@@ -15,5 +15,5 @@ export default class App extends PureComponent {
 }
 
 App.propTypes = {
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
 };
