@@ -32,13 +32,11 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 // Set up i18n.
 const i18n = i18next.use(Backend).use(LanguageDetector).init({
   ...config.i18next,
-  debug: true,
   backend: {
     loadPath: path.join(config.cwd, `config/locales/{{lng}}.json`),
     jsonIndent: 2
   }
 });
-
 
 // Create app and define global/local members.
 const app = express();

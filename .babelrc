@@ -2,7 +2,7 @@
   "sourceMaps": true,
   "retainLines": true,
   "presets": [
-    ["env", { "modules": false }],
+    "env",
     "react"
   ],
   "plugins": [
