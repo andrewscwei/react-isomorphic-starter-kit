@@ -2,6 +2,7 @@ extends layout
 
 block content
   script(type='application/javascript').
+    window.__CONFIG__ = !{JSON.stringify(config)}
     window.__INITIAL_STATE__ = !{JSON.stringify(data)}
     window.__I18N__ = !{JSON.stringify(i18n)}
   div.container#app!= content

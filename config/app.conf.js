@@ -3,6 +3,7 @@
 */
 
 const path = require(`path`);
+const fs = require(`fs`);
 
 module.exports = {
   // Current Node environment, defaults to `development` if none specified.
@@ -16,6 +17,18 @@ module.exports = {
 
   // Force redirects to HTTPS.
   forceSSL: process.env.FORCE_SSL || false,
+
+  // i18next config.
+  i18next: {
+    whitelist: fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+    fallbackLng: `en`,
+    ns: [`common`],
+    defaultNS: `common`,
+    interpolation: {
+      // Not needed for React.
+      escapeValue: false
+    }
+  },
 
   // Config options specific to the `build` tas.
   build: {

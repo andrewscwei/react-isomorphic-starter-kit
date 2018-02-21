@@ -4,7 +4,7 @@
  */
 
 import * as reducers from './reducers';
-import i18n from './plugins/i18n-client';
+import i18next from 'i18next';
 import routes from './routes';
 import thunk from 'redux-thunk';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
@@ -16,7 +16,13 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 
+// Set up the store.
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
+
+// Set up i18n.
+const i18n = i18next.init({
+  ...window.__CONFIG__.i18next
+});
 
 i18n.changeLanguage(window.__I18N__.locale);
 i18n.addResourceBundle(window.__I18N__.locale, `common`, window.__I18N__.resources, true);

@@ -10,13 +10,13 @@ const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
 const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
-const IS_DEV = config.env === `development`;
-const INPUT_DIR = path.join(config.cwd, `src`);
-const OUTPUT_DIR = path.join(config.cwd, `build/public`);
+const isDev = config.env === `development`;
+const inputDir = path.join(config.cwd, `src`);
+const outputDir = path.join(config.cwd, `build/public`);
 
 module.exports = {
-  devtool: IS_DEV ? `cheap-eval-source-map` : false,
-  context: INPUT_DIR,
+  devtool: isDev ? `cheap-eval-source-map` : false,
+  context: inputDir,
   stats: {
     colors: true,
     modules: true,
@@ -24,14 +24,14 @@ module.exports = {
     errorDetails: true
   },
   entry: {
-    bundle: IS_DEV ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./client.jsx`] : `./client.jsx`
+    bundle: isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./client.jsx`] : `./client.jsx`
   },
   output: {
-    path: OUTPUT_DIR,
-    publicPath: IS_DEV ? `/` : config.build.publicPath,
-    filename: IS_DEV ? `[name].js` : `[name].[chunkhash].js`,
-    chunkFilename: IS_DEV ? `[chunkhash].js` : `[id].[chunkhash].js`,
-    sourceMapFilename: IS_DEV ? `[name].map` : `[name].[hash].map`
+    path: outputDir,
+    publicPath: isDev ? `/` : config.build.publicPath,
+    filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
+    chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
+    sourceMapFilename: isDev ? `[name].map` : `[name].[hash].map`
   },
   module: {
     loaders: [{
@@ -50,8 +50,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(config.env)
-      },
-      $config: JSON.stringify(config)
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: `common`,
@@ -66,12 +65,12 @@ module.exports = {
       chunks: [`common`]
     })
   ]
-    .concat(IS_DEV ? [
+    .concat(isDev ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin()
     ] : [
       new ExtractTextPlugin({
-        filename: path.join(OUTPUT_DIR, `stylesheets`, `[name].[contenthash].css`)
+        filename: path.join(outputDir, `stylesheets`, `[name].[contenthash].css`)
       }),
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
@@ -84,7 +83,7 @@ module.exports = {
         }
       })
     ])
-    .concat((!IS_DEV && config.build.analyzer) ? [
+    .concat((!isDev && config.build.analyzer) ? [
       new BundleAnalyzerPlugin()
     ] : [])
 };

@@ -9,12 +9,13 @@ import debug from 'debug';
 import express from 'express';
 import helmet from 'helmet';
 import http from 'http';
-import i18n from './plugins/i18n-server';
-import i18nMiddleware from 'i18next-express-middleware';
+import i18next from 'i18next';
+import i18nMiddleware, { LanguageDetector } from 'i18next-express-middleware';
 import morgan from 'morgan';
 import path from 'path';
 import routes from './routes';
 import thunk from 'redux-thunk';
+import Backend from 'i18next-node-fs-backend';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
@@ -24,7 +25,20 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 const log = debug(`app`);
+
+// Set up the store.
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
+
+// Set up i18n.
+const i18n = i18next.use(Backend).use(LanguageDetector).init({
+  ...config.i18next,
+  debug: true,
+  backend: {
+    loadPath: path.join(config.cwd, `config/locales/{{lng}}.json`),
+    jsonIndent: 2
+  }
+});
+
 
 // Create app and define global/local members.
 const app = express();
@@ -87,6 +101,10 @@ if (config.forceSSL) {
  */
 app.use(morgan(`dev`));
 
+/**
+ * i18next setup.
+ * @see {@link https://www.npmjs.com/package/i18next}
+ */
 app.use(i18nMiddleware.handle(i18n));
 
 /**
@@ -141,7 +159,13 @@ app.use(async function(req, res) {
     break;
   }
 
-  res.render(`index`, { title: `Express`, data: store.getState(), i18n: { locale, resources }, content });
+  res.render(`index`, {
+    title: `Express`,
+    config: config,
+    data: store.getState(),
+    i18n: { locale, resources },
+    content
+  });
 });
 
 /**
