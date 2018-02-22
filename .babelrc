@@ -6,11 +6,24 @@
     "react"
   ],
   "plugins": [
-    "transform-runtime",
-    "transform-es2015-modules-commonjs",
     "transform-object-rest-spread",
     "transform-decorators-legacy",
     "transform-class-properties",
     "react-hot-loader/babel"
-  ]
+  ],
+  "env": {
+    "server": {
+      "plugins": [
+        "transform-runtime",
+        ["css-modules-transform", {
+          "generateScopedName": "[name]__[local]___[hash:base64:5]"
+        }]
+      ]
+    },
+    "client": {
+      "plugins": [
+
+      ]
+    }
+  }
 }

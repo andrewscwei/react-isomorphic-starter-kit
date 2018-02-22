@@ -15,6 +15,8 @@ const isDev = config.env === `development`;
 const inputDir = path.join(config.cwd, `src`);
 const outputDir = path.join(config.cwd, `build/public`);
 
+process.env.BABEL_ENV = `client`;
+
 module.exports = {
   devtool: isDev ? `cheap-eval-source-map` : false,
   context: inputDir,
@@ -37,8 +39,28 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      loader: `babel-loader`,
+      use: `babel-loader`,
       exclude: /node_modules/
+    }, {
+      test: /\.css$/,
+      use: [`css-hot-loader`].concat(ExtractTextPlugin.extract({
+        fallback: `style-loader`,
+        use: [{
+          loader: `css-loader`,
+          options: {
+            modules: true,
+            localIdentName: `[name]__[local]___[hash:base64:5]`
+            // sourceMap: isDev
+          }
+        }, {
+          loader: `postcss-loader`,
+          options: {
+            plugins: (loader) => [
+              require(`autoprefixer`)()
+            ]
+          }
+        }]
+      }))
     }]
   },
   resolve: {
@@ -48,16 +70,8 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(config.env)
-      }
-    }),
-    new CopyPlugin([{
-      from: path.join(inputDir, `static`),
-      to: outputDir,
-      ignore: [`.*`]
-    }]),
+    new CopyPlugin([{ from: path.join(inputDir, `static`), to: outputDir, ignore: [`.*`] }]),
+    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(config.env) } }),
     new webpack.optimize.CommonsChunkPlugin({
       name: `common`,
       minChunks: (module) => {
@@ -69,15 +83,15 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: `manifest`,
       chunks: [`common`]
+    }),
+    new ExtractTextPlugin({
+      filename: isDev ? `styles.css` : `styles.[contenthash].css`
     })
   ]
     .concat(isDev ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin()
     ] : [
-      new ExtractTextPlugin({
-        filename: path.join(outputDir, `stylesheets`, `[name].[contenthash].css`)
-      }),
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
           safe: true

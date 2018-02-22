@@ -1,3 +1,4 @@
+import styles from './Home.css';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
@@ -12,7 +13,7 @@ export default class Home extends PureComponent {
     const { t } = this.props;
 
     return (
-      <div>
+      <div className={styles.container}>
         <h1>{t(`hello`)}</h1>
       </div>
     );

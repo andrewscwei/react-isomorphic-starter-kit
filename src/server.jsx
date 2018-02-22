@@ -109,7 +109,7 @@ app.use(i18nMiddleware.handle(i18n));
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-app.use(express.static(path.join(config.cwd, `public`), {
+app.use(express.static(path.join(config.cwd, `build/public`), {
   setHeaders: function(res, path) {
     const duration = 1000 * 60 * 60 * 24 * 365 * 10;
     res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());

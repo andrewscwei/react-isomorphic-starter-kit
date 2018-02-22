@@ -3,7 +3,7 @@
  */
 
 import App from '../containers/App';
-import Home from '../containers/Home';
+import Home from '../containers/home/Home';
 import List from '../containers/List';
 import NotFound from '../containers/NotFound';
 import ListToUsers from '../containers/ListToUsers';
@@ -13,9 +13,6 @@ export default [{
   routes: [{
     path: `/`,
     exact: true,
-    component: Home
-  }, {
-    path: `/home`,
     component: Home
   }, {
     path: `/list`,
