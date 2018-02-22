@@ -13,11 +13,11 @@
   ],
   "env": {
     "server": {
-      "plugins": [
-        "transform-runtime",
-        ["css-modules-transform", {
-          "generateScopedName": "[name]__[local]___[hash:base64:5]"
-        }]
+      "plugins": [[
+        "css-modules-transform", {
+          "generateScopedName": "[name]__[local]--[hash:base64:5]"
+        }],
+        "transform-runtime"
       ]
     },
     "client": {

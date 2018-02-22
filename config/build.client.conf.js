@@ -19,7 +19,6 @@ process.env.BABEL_ENV = `client`;
 
 module.exports = {
   devtool: isDev ? `cheap-eval-source-map` : false,
-  context: inputDir,
   stats: {
     colors: true,
     modules: true,
@@ -27,7 +26,10 @@ module.exports = {
     errorDetails: true
   },
   entry: {
-    bundle: isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, `./client.jsx`] : `./client.jsx`
+    bundle: (function() {
+      const p = path.join(inputDir, `client.jsx`);
+      return isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, p] : p;
+    })()
   },
   output: {
     path: outputDir,
@@ -43,24 +45,25 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.css$/,
-      use: [`css-hot-loader`].concat(ExtractTextPlugin.extract({
-        fallback: `style-loader`,
-        use: [{
-          loader: `css-loader`,
-          options: {
-            modules: true,
-            localIdentName: `[name]__[local]___[hash:base64:5]`
-            // sourceMap: isDev
-          }
-        }, {
-          loader: `postcss-loader`,
-          options: {
-            plugins: (loader) => [
-              require(`autoprefixer`)()
-            ]
-          }
-        }]
-      }))
+      loader: `style-loader!css-loader?modules&localIdentName=[name]__[local]--[hash:base64:5]`
+      // use: [`css-hot-loader`].concat(ExtractTextPlugin.extract({
+      //   fallback: `style-loader`,
+      //   use: [{
+      //     loader: `css-loader`,
+      //     options: {
+      //       modules: true,
+      //       localIdentName: `[name]__[local]___[hash:base64:5]`,
+      //       sourceMap: isDev
+      //     }
+      //   }, {
+      //     loader: `postcss-loader`,
+      //     options: {
+      //       plugins: (loader) => [
+      //         require(`autoprefixer`)()
+      //       ]
+      //     }
+      //   }]
+      // }))
     }]
   },
   resolve: {
@@ -84,9 +87,9 @@ module.exports = {
       name: `manifest`,
       chunks: [`common`]
     }),
-    new ExtractTextPlugin({
-      filename: isDev ? `styles.css` : `styles.[contenthash].css`
-    })
+    // new ExtractTextPlugin({
+    //   filename: isDev ? `styles.css` : `styles.[contenthash].css`
+    // })
   ]
     .concat(isDev ? [
       new webpack.HotModuleReplacementPlugin(),
