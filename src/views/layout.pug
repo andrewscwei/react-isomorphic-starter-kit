@@ -45,7 +45,8 @@ html
     meta(name=`msapplication-config`, content=`/browserconfig.xml`)
     meta(name=`msapplication-navbutton-color`, content=`#ff3300`)
 
-    link(rel=`stylesheet` href=`styles.css`)
+    if (config.env === `production`)
+      link(rel=`stylesheet` href=`styles.css`)
   body
     block content
     script(type=`application/javascript` src=`/manifest.js`)

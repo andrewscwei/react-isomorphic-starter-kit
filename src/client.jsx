@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* global $config: true */
 /**
  * @file Client entry file.
  */
@@ -21,11 +22,11 @@ const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, a
 
 // Set up i18n.
 const i18n = i18next.init({
-  ...window.__CONFIG__.i18next
+  ...($config && $config.i18next || {})
 });
 
-i18n.changeLanguage(window.__I18N__.locale);
-i18n.addResourceBundle(window.__I18N__.locale, `common`, window.__I18N__.resources, true);
+i18n.changeLanguage(window.__INITIAL_LOCALE__.locale);
+i18n.addResourceBundle(window.__INITIAL_LOCALE__.locale, `common`, window.__INITIAL_LOCALE__.resources, true);
 
 function renderDOM(r) {
   hydrate(

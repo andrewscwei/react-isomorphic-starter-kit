@@ -45,25 +45,28 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.css$/,
-      loader: `style-loader!css-loader?modules&localIdentName=[name]__[local]--[hash:base64:5]`
-      // use: [`css-hot-loader`].concat(ExtractTextPlugin.extract({
-      //   fallback: `style-loader`,
-      //   use: [{
-      //     loader: `css-loader`,
-      //     options: {
-      //       modules: true,
-      //       localIdentName: `[name]__[local]___[hash:base64:5]`,
-      //       sourceMap: isDev
-      //     }
-      //   }, {
-      //     loader: `postcss-loader`,
-      //     options: {
-      //       plugins: (loader) => [
-      //         require(`autoprefixer`)()
-      //       ]
-      //     }
-      //   }]
-      // }))
+      use: (function() {
+        const t = [{
+          loader: `css-loader`,
+          options: {
+            modules: true,
+            localIdentName: `[hash:base64:8]`,
+            sourceMap: isDev
+          }
+        }, {
+          loader: `postcss-loader`,
+          options: {
+            plugins: (loader) => [
+              require(`autoprefixer`)()
+            ]
+          }
+        }];
+
+        return isDev ? [`style-loader`].concat(t) : ExtractTextPlugin.extract({
+          fallback: `style-loader`,
+          use: t
+        });
+      })()
     }]
   },
   resolve: {
@@ -74,7 +77,10 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin([{ from: path.join(inputDir, `static`), to: outputDir, ignore: [`.*`] }]),
-    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(config.env) } }),
+    new webpack.DefinePlugin({
+      'process.env': { NODE_ENV: JSON.stringify(config.env) },
+      $config: JSON.stringify(config)
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: `common`,
       minChunks: (module) => {
@@ -86,15 +92,15 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: `manifest`,
       chunks: [`common`]
-    }),
-    // new ExtractTextPlugin({
-    //   filename: isDev ? `styles.css` : `styles.[contenthash].css`
-    // })
+    })
   ]
     .concat(isDev ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin()
     ] : [
+      new ExtractTextPlugin({
+        filename: isDev ? `styles.css` : `styles.[contenthash].css`
+      }),
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
           safe: true

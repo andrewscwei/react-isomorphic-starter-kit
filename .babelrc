@@ -15,7 +15,7 @@
     "server": {
       "plugins": [[
         "css-modules-transform", {
-          "generateScopedName": "[name]__[local]--[hash:base64:5]"
+          "generateScopedName": "[hash:base64:8]"
         }],
         "transform-runtime"
       ]
