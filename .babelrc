@@ -15,11 +15,18 @@
     "server": {
       "plugins": [[
         "css-modules-transform", {
-          "generateScopedName": "[hash:base64:8]"
-        }],
-        "transform-runtime"
-      ]
-    },
+          "generateScopedName": "[hash:6]"
+        }
+      ], [
+        "module-resolver", {
+          "root": "./src",
+          "alias": {
+            "@": "./src"
+          }
+        }
+      ],
+      "transform-runtime"
+    ]},
     "client": {
       "plugins": [
 

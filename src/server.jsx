@@ -129,6 +129,15 @@ app.use(async function(req, res) {
 
   i18n.changeLanguage(locale);
 
+  // Disable rendering of React components in development.
+  if (!config.ssrEnabled) {
+    return res.render(`index`, {
+      config: config,
+      initialState: store.getState(),
+      initialLocale: { locale, resources }
+    });
+  }
+
   // For each matching route, fetch async data if required.
   for (let i = 0; i < matches.length; i++) {
     const { route, match } = matches[i];
@@ -158,10 +167,9 @@ app.use(async function(req, res) {
   }
 
   res.render(`index`, {
-    title: `Express`,
     config: config,
-    data: store.getState(),
-    i18n: { locale, resources },
+    initialState: store.getState(),
+    initialLocale: { locale, resources },
     content
   });
 });

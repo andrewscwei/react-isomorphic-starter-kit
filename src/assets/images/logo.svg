@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 236 136">
+  <g>
+    <circle cx="18" cy="18" r="18" fill="#fff"></circle>
+    <circle cx="18" cy="68" r="18" fill="#fff"></circle>
+    <circle cx="18" cy="118" r="18" fill="#fff"></circle>
+    <circle cx="118" cy="18" r="18" fill="#fff"></circle>
+    <circle cx="118" cy="68" r="18" fill="#fff"></circle>
+    <circle cx="118" cy="118" r="18" fill="#fff"></circle>
+    <circle cx="218" cy="18" r="18" fill="#fff"></circle>
+    <circle cx="218" cy="68" r="18" fill="#fff"></circle>
+    <circle cx="218" cy="118" r="18" fill="#fff"></circle>
+    <circle cx="68" cy="18" r="18" fill="#fff"></circle>
+    <circle cx="168" cy="118" r="18" fill="#fff"></circle>
+  </g>
+</svg>

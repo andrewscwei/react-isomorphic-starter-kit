@@ -18,6 +18,9 @@ module.exports = {
   // Force redirects to HTTPS.
   forceSSL: process.env.FORCE_SSL || false,
 
+  // Determines whether SSR is enabled.
+  ssrEnabled: process.env.NODE_ENV !== `development`,
+
   // i18next config.
   // @see {@link https://www.npmjs.com/package/i18next}
   i18next: {

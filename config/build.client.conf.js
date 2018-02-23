@@ -36,7 +36,7 @@ module.exports = {
     publicPath: isDev ? `/` : config.build.publicPath,
     filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
     chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
-    sourceMapFilename: isDev ? `[name].map` : `[name].[hash].map`
+    sourceMapFilename: isDev ? `[name].map` : `[name].[hash:6].map`
   },
   module: {
     loaders: [{
@@ -50,7 +50,7 @@ module.exports = {
           loader: `css-loader`,
           options: {
             modules: true,
-            localIdentName: `[hash:base64:8]`,
+            localIdentName: `[hash:6]`,
             sourceMap: isDev
           }
         }, {
@@ -67,10 +67,40 @@ module.exports = {
           use: t
         });
       })()
+    }, {
+      test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
+      use: {
+        loader: `url-loader`,
+        options: {
+          limit: 10000,
+          name: path.join(outputDir, `assets/images`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
+        }
+      }
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      use: {
+        loader: `url-loader`,
+        options: {
+          limit: 10000,
+          name: path.join(outputDir, `assets/media`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
+        }
+      }
+    }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      use: {
+        loader: `url-loader`,
+        options: {
+          limit: 10000,
+          name: path.join(outputDir, `assets/fonts`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
+        }
+      }
     }]
   },
   resolve: {
     extensions: [`.js`, `.jsx`],
+    alias: {
+      '@': inputDir
+    },
     modules: [
       path.join(config.cwd, `node_modules`)
     ]

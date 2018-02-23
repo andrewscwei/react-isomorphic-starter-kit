@@ -1,48 +1,13 @@
+import React, { PureComponent } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { fetchUsers } from '../reducers/users';
-
-function mapStateToProps(state) {
-  return {
-    users: state.users.items
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchUsers }, dispatch);
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
-export default class List extends Component {
-  static propTypes = {
-    users: PropTypes.array,
-    fetchUsers: PropTypes.func
-  }
-
-  static fetchData(store) {
-    return store.dispatch(fetchUsers());
-  }
-
-  componentDidMount() {
-    this.props.fetchUsers();
-  }
-
+export default class List extends PureComponent {
   render() {
     return (
-      <div>
-        {
-          this.props.users.map(user => {
-            return (
-              <div key={user.id} >
-                <span>{user.name}</span>
-              </div>
-            );
-          })
-        }
-      </div>
+      <Route render={({ staticContext }) => {
+        if (staticContext) staticContext.status = 302;
+        return <Redirect from="/list" to="/users" />;
+      }}/>
     );
   }
 }

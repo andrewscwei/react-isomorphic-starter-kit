@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
 import React from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { hydrate } from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import { renderRoutes } from 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
@@ -28,8 +28,8 @@ const i18n = i18next.init({
 i18n.changeLanguage(window.__INITIAL_LOCALE__.locale);
 i18n.addResourceBundle(window.__INITIAL_LOCALE__.locale, `common`, window.__INITIAL_LOCALE__.resources, true);
 
-function renderDOM(r) {
-  hydrate(
+function renderDOM(r, shouldHydrate = false) {
+  const markup = (
     <AppContainer>
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
@@ -38,16 +38,22 @@ function renderDOM(r) {
           </BrowserRouter>
         </Provider>
       </I18nextProvider>
-    </AppContainer>,
-    document.getElementById(`app`)
+    </AppContainer>
   );
+
+  if (shouldHydrate) {
+    hydrate(markup, document.getElementById(`app`));
+  }
+  else {
+    render(markup, document.getElementById(`app`));
+  }
 }
 
-renderDOM(routes);
+renderDOM(routes, $config.ssrEnabled);
 
 if (module.hot) {
   module.hot.accept(`./routes`, () => {
     const newRoutes = require(`./routes`).default;
-    renderDOM(newRoutes);
+    renderDOM(newRoutes, true);
   });
 }
