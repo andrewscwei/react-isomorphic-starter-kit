@@ -2,8 +2,8 @@
  * @file Server entry file.
  */
 
-import * as reducers from './reducers';
-import config from '../config/app.conf';
+import * as reducers from '@/reducers';
+import config from '@/../config/app.conf';
 import cors from 'cors';
 import debug from 'debug';
 import express from 'express';
@@ -13,11 +13,12 @@ import i18next from 'i18next';
 import i18nMiddleware, { LanguageDetector } from 'i18next-express-middleware';
 import morgan from 'morgan';
 import path from 'path';
-import routes from './routes';
+import routes from '@/routes';
 import thunk from 'redux-thunk';
 import Backend from 'i18next-node-fs-backend';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
+import Template from '@/views/Template';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
@@ -40,8 +41,6 @@ const i18n = i18next.use(Backend).use(LanguageDetector).init({
 
 // Create app and define global/local members.
 const app = express();
-app.set(`views`, path.join(__dirname, `views`));
-app.set(`view engine`, `pug`);
 
 /**
  * Helmet setup.
@@ -109,13 +108,15 @@ app.use(i18nMiddleware.handle(i18n));
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-app.use(express.static(path.join(config.cwd, `build/public`), {
-  setHeaders: function(res, path) {
-    const duration = 1000 * 60 * 60 * 24 * 365 * 10;
-    res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
-    res.setHeader(`Cache-Control`, `max-age=${duration / 1000}`);
-  }
-}));
+if (config.env === `production`) {
+  app.use(express.static(path.join(config.cwd, `build/public`), {
+    setHeaders: function(res, path) {
+      const duration = 1000 * 60 * 60 * 24 * 365 * 10;
+      res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
+      res.setHeader(`Cache-Control`, `max-age=${duration / 1000}`);
+    }
+  }));
+}
 
 /**
  * Server-side rendering setup.
@@ -131,11 +132,7 @@ app.use(async function(req, res) {
 
   // Disable rendering of React components in development.
   if (!config.ssrEnabled) {
-    return res.render(`index`, {
-      config: config,
-      initialState: store.getState(),
-      initialLocale: { locale, resources }
-    });
+    return res.send(`<!doctype html>${renderToString(<Template config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
   }
 
   // For each matching route, fetch async data if required.
@@ -148,7 +145,7 @@ app.use(async function(req, res) {
 
   let context = {};
 
-  const content = renderToString(
+  const body = renderToString(
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
@@ -166,12 +163,7 @@ app.use(async function(req, res) {
     break;
   }
 
-  res.render(`index`, {
-    config: config,
-    initialState: store.getState(),
-    initialLocale: { locale, resources },
-    content
-  });
+  return res.send(`<!doctype html>${renderToString(<Template body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
 });
 
 /**
@@ -193,12 +185,7 @@ app.use(function(req, res, next) {
  * @code 500 - Server error.
  */
 app.use(function(err, req, res) {
-  // Set locals, only providing error in development.
-  res.locals.message = err.message;
-  res.locals.error = config.env === `development` ? err : {};
-
-  // Render the error page.
-  res.status(err.status || 500).render(`error`);
+  res.status(err.status || 500).send(err);
 });
 
 http

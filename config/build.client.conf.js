@@ -8,6 +8,7 @@ const path = require(`path`);
 const webpack = require(`webpack`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
+const ManifestPlugin = require(`webpack-manifest-plugin`);
 const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
@@ -129,7 +130,7 @@ module.exports = {
       new webpack.NoEmitOnErrorsPlugin()
     ] : [
       new ExtractTextPlugin({
-        filename: isDev ? `styles.css` : `styles.[contenthash].css`
+        filename: isDev ? `bundle.css` : `bundle.[contenthash].css`
       }),
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
@@ -140,6 +141,9 @@ module.exports = {
         compress: {
           warnings: false
         }
+      }),
+      new ManifestPlugin({
+        fileName: `asset-manifest.json`
       })
     ])
     .concat((!isDev && config.build.analyzer) ? [
