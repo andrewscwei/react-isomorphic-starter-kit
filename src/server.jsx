@@ -16,9 +16,9 @@ import path from 'path';
 import routes from '@/routes';
 import thunk from 'redux-thunk';
 import Backend from 'i18next-node-fs-backend';
+import Layout from '@/templates/Layout';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
-import Template from '@/views/Template';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
@@ -132,7 +132,7 @@ app.use(async function(req, res) {
 
   // Disable rendering of React components in development.
   if (!config.ssrEnabled) {
-    return res.send(`<!doctype html>${renderToString(<Template config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
+    return res.send(`<!doctype html>${renderToString(<Layout config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
   }
 
   // For each matching route, fetch async data if required.
@@ -163,7 +163,7 @@ app.use(async function(req, res) {
     break;
   }
 
-  return res.send(`<!doctype html>${renderToString(<Template body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
+  return res.send(`<!doctype html>${renderToString(<Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
 });
 
 /**

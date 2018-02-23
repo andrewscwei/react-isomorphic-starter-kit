@@ -7,7 +7,7 @@ import serialize from 'serialize-javascript';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
-export default class Template extends PureComponent {
+export default class Layout extends PureComponent {
   static propTypes = {
     body: PropTypes.string,
     title: PropTypes.string,

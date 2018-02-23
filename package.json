@@ -7,7 +7,7 @@
     "build": "npm run clean && npm run build:server && npm run build:client",
     "build:server": "NODE_ENV=production BABEL_ENV=server babel src --minified --source-maps --out-dir=build --ignore src/static --copy-files",
     "build:client": "NODE_ENV=production webpack --colors --profile --config config/build.client.conf.js --display-error-details",
-    "dev": "NODE_ENV=development DEBUG=app* BABEL_ENV=server nodemon --exec babel-node --verbose --watch src --ignore src/containers --ext js,jsx,json --inspect=5858 src/server",
+    "dev": "npm run clean && NODE_ENV=development DEBUG=app* BABEL_ENV=server nodemon --exec babel-node --verbose --watch src --ignore src/containers --ext js,jsx,json --inspect=5858 src/server",
     "lint": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore --ext .jsx --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
