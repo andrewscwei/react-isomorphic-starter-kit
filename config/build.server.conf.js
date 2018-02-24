@@ -6,7 +6,7 @@
 const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
-const { DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
+const { BannerPlugin, DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
 
 process.env.BABEL_ENV = `server`;
 
@@ -22,6 +22,7 @@ catch (err) {
 
 module.exports = {
   target: `node`,
+  devtool: `source-map`,
   externals: [nodeExternals()],
   stats: {
     colors: true,
@@ -29,13 +30,18 @@ module.exports = {
     reasons: true,
     errorDetails: true
   },
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   entry: {
     server: path.join(config.paths.input, `server.jsx`)
   },
   output: {
     path: path.join(config.paths.output),
     filename: `[name].js`,
-    sourceMapFilename: `[name].map`
+    sourceMapFilename: `[name].js.map`,
+    libraryTarget: `commonjs2`
   },
   module: {
     loaders: [{
@@ -58,13 +64,19 @@ module.exports = {
   },
   plugins: [
     new DefinePlugin({
+      $config: JSON.stringify(config),
       $manifest: JSON.stringify(manifest)
     }),
-    new UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
+    // new UglifyJsPlugin({
+    //   sourceMap: true,
+    //   compress: {
+    //     warnings: false
+    //   }
+    // }),
+    new BannerPlugin({
+      banner: `require('source-map-support').install()`,
+      raw: true,
+      entryOnly: false
     })
   ]
 };

@@ -38,8 +38,7 @@ module.exports = {
   // i18next config.
   // @see {@link https://www.npmjs.com/package/i18next}
   i18next: {
-    // whitelist: fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
-    whitelist: [`en`, `jp`],
+    whitelist: fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
     fallbackLng: `en`,
     ns: [`common`],
     defaultNS: `common`,

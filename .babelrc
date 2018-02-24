@@ -2,7 +2,7 @@
   "sourceMaps": true,
   "retainLines": true,
   "presets": [
-    "env",
+    ["env"],
     "react"
   ],
   "plugins": [
@@ -13,6 +13,13 @@
   ],
   "env": {
     "server": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ],
       "plugins": [[
         "css-modules-transform", {
           "generateScopedName": "[hash:6]"

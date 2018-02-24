@@ -1,9 +1,9 @@
+/* globals $manifest:true, $config:true */
 /**
  * @file Server entry file.
  */
 
 import * as reducers from '@/reducers';
-import config from '@/../config/app.conf';
 import cors from 'cors';
 import debug from 'debug';
 import express from 'express';
@@ -26,6 +26,8 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 const log = debug(`app`);
+
+const config = $config || require(`@/../config/app.conf`);
 
 // Set up the store.
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
@@ -109,7 +111,7 @@ app.use(i18nMiddleware.handle(i18n));
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
 if (config.env === `production`) {
-  app.use(express.static(path.join(config.paths.cwd, `build/public`), {
+  app.use(express.static(path.join(__dirname, `public`), {
     setHeaders: function(res, path) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
@@ -164,7 +166,7 @@ app.use(async function(req, res) {
   }
 
   return res.send(`<!doctype html>${renderToString(
-    <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>
+    <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }} manifest={$manifest}/>
   )}`);
 });
 

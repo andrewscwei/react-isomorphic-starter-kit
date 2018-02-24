@@ -35,7 +35,7 @@ module.exports = {
     publicPath: isDev ? `/` : config.build.publicPath,
     filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
     chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
-    sourceMapFilename: isDev ? `[name].map` : `[name].[hash:6].map`
+    sourceMapFilename: isDev ? `[name].js.map` : `[name].[hash:6].js.map`
   },
   module: {
     loaders: [{
@@ -71,13 +71,13 @@ module.exports = {
       })()
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
-      use: `url-loader?limit=1&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
+      use: `url-loader?limit=10000&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: `url-loader?limit=1&name=assets/media/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
+      use: `url-loader?limit=10000&name=assets/media/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: `url-loader?limit=1&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
+      use: `url-loader?limit=10000&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }]
   },
   resolve: {
