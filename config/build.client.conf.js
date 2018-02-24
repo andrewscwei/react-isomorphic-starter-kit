@@ -5,20 +5,18 @@
 
 const config = require(`./app.conf`);
 const path = require(`path`);
-const webpack = require(`webpack`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
 const ManifestPlugin = require(`webpack-manifest-plugin`);
-const OptimizeCSSPlugin = require(`optimize-css-assets-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
+const { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
 
 const isDev = config.env === `development`;
-const inputDir = path.join(config.cwd, `src`);
-const outputDir = path.join(config.cwd, `build/public`);
 
 process.env.BABEL_ENV = `client`;
 
 module.exports = {
+  target: `web`,
   devtool: isDev ? `cheap-eval-source-map` : false,
   stats: {
     colors: true,
@@ -28,12 +26,12 @@ module.exports = {
   },
   entry: {
     bundle: (function() {
-      const p = path.join(inputDir, `client.jsx`);
+      const p = path.join(config.paths.input, `client.jsx`);
       return isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, p] : p;
     })()
   },
   output: {
-    path: outputDir,
+    path: path.join(config.paths.output, `public`),
     publicPath: isDev ? `/` : config.build.publicPath,
     filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
     chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
@@ -51,14 +49,17 @@ module.exports = {
           loader: `css-loader`,
           options: {
             modules: true,
-            localIdentName: `[hash:6]`,
-            sourceMap: isDev
+            sourceMap: true,
+            localIdentName: `[hash:6]`
           }
         }, {
           loader: `postcss-loader`,
           options: {
+            ident: `postcss`,
+            sourceMap: true,
             plugins: (loader) => [
-              require(`autoprefixer`)()
+              require(`autoprefixer`)(),
+              require(`cssnano`)()
             ]
           }
         }];
@@ -70,80 +71,62 @@ module.exports = {
       })()
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
-      use: {
-        loader: `url-loader`,
-        options: {
-          limit: 10000,
-          name: path.join(outputDir, `assets/images`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
-        }
-      }
+      use: `url-loader?limit=1&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: {
-        loader: `url-loader`,
-        options: {
-          limit: 10000,
-          name: path.join(outputDir, `assets/media`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
-        }
-      }
+      use: `url-loader?limit=1&name=assets/media/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: {
-        loader: `url-loader`,
-        options: {
-          limit: 10000,
-          name: path.join(outputDir, `assets/fonts`, isDev ? `[name].[ext]` : `[name].[hash:6].[ext]`)
-        }
-      }
+      use: `url-loader?limit=1&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }]
   },
   resolve: {
     extensions: [`.js`, `.jsx`],
     alias: {
-      '@': inputDir
-    },
-    modules: [
-      path.join(config.cwd, `node_modules`)
-    ]
+      '@': config.paths.input
+    }
   },
   plugins: [
-    new CopyPlugin([{ from: path.join(inputDir, `static`), to: outputDir, ignore: [`.*`] }]),
-    new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify(config.env) },
+    // Directly copy static files to output directory.
+    new CopyPlugin([{
+      from: path.join(config.paths.input, `static`),
+      ignore: [`.*`]
+    }]),
+    // Set runtime environment variables.
+    new EnvironmentPlugin({
+      NODE_ENV: config.env
+    }),
+    // Define runtime global variables in JavaScript.
+    new DefinePlugin({
       $config: JSON.stringify(config)
     }),
-    new webpack.optimize.CommonsChunkPlugin({
+    // Extract common modules into separate bundle.
+    new CommonsChunkPlugin({
       name: `common`,
-      minChunks: (module) => {
-        return (module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.resolve(config.cwd, `node_modules`)) === 0);
-      }
+      minChunks: (module) => ((module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.resolve(config.paths.cwd, `node_modules`)) === 0))
     }),
     // Extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated.
-    new webpack.optimize.CommonsChunkPlugin({
+    new CommonsChunkPlugin({
       name: `manifest`,
       chunks: [`common`]
     })
   ]
     .concat(isDev ? [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin()
+      new HotModuleReplacementPlugin(),
+      new NoEmitOnErrorsPlugin()
     ] : [
       new ExtractTextPlugin({
-        filename: isDev ? `bundle.css` : `bundle.[contenthash].css`
+        filename: `bundle.[contenthash].css`,
+        allChunks: true
       }),
-      new OptimizeCSSPlugin({
-        cssProcessorOptions: {
-          safe: true
-        }
-      }),
-      new webpack.optimize.UglifyJsPlugin({
+      new UglifyJsPlugin({
         compress: {
           warnings: false
         }
       }),
       new ManifestPlugin({
-        fileName: `asset-manifest.json`
+        fileName: config.assetManifestFileName
       })
     ])
     .concat((!isDev && config.build.analyzer) ? [

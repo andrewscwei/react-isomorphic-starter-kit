@@ -9,9 +9,6 @@ module.exports = {
   // Current Node environment, defaults to `development` if none specified.
   env: process.env.NODE_ENV || `production`,
 
-  // Current working directory.
-  cwd: path.join(__dirname, `../`),
-
   // Port.
   port: process.env.PORT || 8080,
 
@@ -21,10 +18,28 @@ module.exports = {
   // Determines whether SSR is enabled.
   ssrEnabled: process.env.NODE_ENV !== `development`,
 
+  assetManifestFileName: `asset-manifest.json`,
+
+  // File paths.
+  paths: {
+    // Current working directory.
+    cwd: path.join(__dirname, `../`),
+
+    // Directory of source code.
+    input: path.join(__dirname, `../`, `src`),
+
+    // Directory of compiled code.
+    output: path.join(__dirname, `../`, `build`),
+
+    // Directory of config files.
+    config: path.join(__dirname, `../`, `config`)
+  },
+
   // i18next config.
   // @see {@link https://www.npmjs.com/package/i18next}
   i18next: {
-    whitelist: fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+    // whitelist: fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+    whitelist: [`en`, `jp`],
     fallbackLng: `en`,
     ns: [`common`],
     defaultNS: `common`,

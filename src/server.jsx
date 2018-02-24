@@ -34,7 +34,7 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 const i18n = i18next.use(Backend).use(LanguageDetector).init({
   ...config.i18next,
   backend: {
-    loadPath: path.join(config.cwd, `config/locales/{{lng}}.json`),
+    loadPath: path.join(config.paths.config, `locales/{{lng}}.json`),
     jsonIndent: 2
   }
 });
@@ -61,7 +61,7 @@ app.use(cors());
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
 if (config.env === `development`) {
-  const buildConfig = require(path.join(config.cwd, `config/build.client.conf`));
+  const buildConfig = require(`../config/build.client.conf`);
   const compiler = require(`webpack`)(buildConfig);
 
   app.use(require(`webpack-dev-middleware`)(compiler, {
@@ -109,7 +109,7 @@ app.use(i18nMiddleware.handle(i18n));
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
 if (config.env === `production`) {
-  app.use(express.static(path.join(config.cwd, `build/public`), {
+  app.use(express.static(path.join(config.paths.cwd, `build/public`), {
     setHeaders: function(res, path) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
@@ -163,7 +163,9 @@ app.use(async function(req, res) {
     break;
   }
 
-  return res.send(`<!doctype html>${renderToString(<Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
+  return res.send(`<!doctype html>${renderToString(
+    <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>
+  )}`);
 });
 
 /**
@@ -211,5 +213,11 @@ http
   .on(`listening`, function() {
     log(`App is listening on ${this.address().address}:${this.address().port}`);
   });
+
+// Handle unhandled rejections.
+process.on(`unhandledRejection`, function(reason, p) {
+  console.error(`Unhandled Promise rejection:`, reason); // eslint-disable-line no-console
+  process.exit(1);
+});
 
 export default app;
