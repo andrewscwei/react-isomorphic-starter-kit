@@ -44,14 +44,14 @@ function markup(r) {
 
 if (process.env.NODE_ENV === `development`) {
   render(markup(routes), document.getElementById(`app`));
+
+  if (module.hot) {
+    module.hot.accept(`./routes`, () => {
+      const newRoutes = require(`./routes`).default;
+      hydrate(markup(newRoutes));
+    });
+  }
 }
 else {
   hydrate(markup(routes), document.getElementById(`app`));
-}
-
-if (module.hot) {
-  module.hot.accept(`./routes`, () => {
-    const newRoutes = require(`./routes`).default;
-    hydrate(markup(newRoutes));
-  });
 }

@@ -2,6 +2,7 @@
  * @file Client app container.
  */
 
+import '@/containers/App.css';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';

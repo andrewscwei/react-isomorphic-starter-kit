@@ -94,6 +94,7 @@ module.exports = {
     // Directly copy static files to output directory.
     new CopyPlugin([{
       from: path.join(inputDir, `static`),
+      to: outputDir,
       ignore: [`.*`]
     }]),
     // Set runtime environment variables.

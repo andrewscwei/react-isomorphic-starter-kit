@@ -3,11 +3,11 @@
  *       `development` and `production` environments.
 */
 
-const config = require(`./app.conf`);
 const fs = require(`fs`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
-const { BannerPlugin, DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
+const CopyPlugin = require(`copy-webpack-plugin`);
+const { BannerPlugin, EnvironmentPlugin, DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `server`;
@@ -52,8 +52,7 @@ module.exports = {
   output: {
     path: outputDir,
     filename: `[name].js`,
-    sourceMapFilename: `[name].js.map`,
-    libraryTarget: `commonjs2`
+    sourceMapFilename: `[name].js.map`
   },
   module: {
     loaders: [{
@@ -75,6 +74,14 @@ module.exports = {
     }
   },
   plugins: [
+    new CopyPlugin([{
+      from: path.join(cwd, `config`),
+      to: path.join(outputDir, `config`),
+      ignore: [`.*`, `*.conf.js`, `*.conf.json`]
+    }]),
+    new EnvironmentPlugin({
+      NODE_ENV: `production`
+    }),
     new DefinePlugin({
       $manifest: JSON.stringify(manifest)
     }),

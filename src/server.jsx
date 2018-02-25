@@ -1,10 +1,10 @@
+/* globals $manifest: true */
 /**
  * @file Server entry file.
  */
 
 import config from '@/../config/app.conf';
 import * as reducers from '@/reducers';
-import cors from 'cors';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -39,12 +39,6 @@ const app = express();
  * @see {@link https://www.npmjs.com/package/helmet}
  */
 app.use(helmet());
-
-/**
- * CORS setup.
- * @see {@link https://www.npmjs.com/package/cors}
- */
-app.use(cors());
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
@@ -96,9 +90,9 @@ app.use(morgan(`dev`));
  */
 const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
   ...config.i18next,
-  whitelist: fs.readdirSync(path.join(process.env.CONFIG_DIR || `config`, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+  whitelist: fs.readdirSync(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
   backend: {
-    loadPath: path.join(process.env.CONFIG_DIR || `config`, `locales/{{lng}}.json`),
+    loadPath: path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales/{{lng}}.json`),
     jsonIndent: 2
   }
 });
