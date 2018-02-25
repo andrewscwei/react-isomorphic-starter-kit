@@ -1,3 +1,4 @@
+/* globals $manifest: true */
 /**
  * @file Server entry file.
  */
@@ -9,13 +10,11 @@ import express from 'express';
 import fs from 'fs';
 import helmet from 'helmet';
 import http from 'http';
-import i18next from 'i18next';
-import i18nMiddleware, { LanguageDetector } from 'i18next-express-middleware';
-import i18nNodeBackend from 'i18next-node-fs-backend';
 import morgan from 'morgan';
 import path from 'path';
 import thunk from 'redux-thunk';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { i18next, i18nextMiddleware } from '@/middleware/i18next';
 import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 
 const log = debug(`app`);
@@ -80,21 +79,7 @@ app.use(morgan(`dev`));
  * i18next setup.
  * @see {@link https://www.npmjs.com/package/i18next}
  */
-const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
-  whitelist: config.locales,
-  fallbackLng: config.defaultLocale,
-  ns: [`common`],
-  defaultNS: `common`,
-  interpolation: {
-    escapeValue: false // Not needed for React
-  },
-  backend: {
-    loadPath: path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales/{{lng}}.json`),
-    jsonIndent: 2
-  }
-});
-
-app.use(i18nMiddleware.handle(i18n));
+app.use(i18nextMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`, `locales`))));
 
 /**
  * Serve static files and add expire headers.
@@ -124,10 +109,10 @@ app.use(`/:locale`, function(req, res, next) {
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 if (process.env.NODE_ENV === `development`) {
-  app.use(renderWithoutContext({ i18n, store }));
+  app.use(renderWithoutContext({ i18n: i18next, store }));
 }
 else {
-  app.use(renderWithContext({ i18n, store }));
+  app.use(renderWithContext({ i18n: i18next, store, manifest: $manifest }));
 }
 
 /**

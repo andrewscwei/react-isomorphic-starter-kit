@@ -5,7 +5,7 @@
  */
 
 import * as reducers from './reducers';
-import i18next from 'i18next';
+import i18n from 'i18next';
 import routes from './routes';
 import thunk from 'redux-thunk';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
@@ -21,7 +21,7 @@ import { I18nextProvider } from 'react-i18next';
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
 // Set up i18n.
-const i18n = i18next.init({
+i18n.init({
   ns: [`common`],
   defaultNS: `common`,
   lng: window.__INITIAL_LOCALE__,

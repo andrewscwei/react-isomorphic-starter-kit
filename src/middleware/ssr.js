@@ -1,4 +1,3 @@
-/* globals $manifest: true */
 /**
  * @file Express middleware for server-side rendering of React views.
  */
@@ -16,7 +15,7 @@ import { Provider } from 'react-redux';
 
 const log = debug(`app:ssr`);
 
-function render({ i18n, store, excludeContext = false }) {
+function render({ i18n, store, manifest, excludeContext = false }) {
   return async function(req, res) {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
@@ -61,7 +60,7 @@ function render({ i18n, store, excludeContext = false }) {
     }
 
     return res.send(`<!doctype html>${renderToString(
-      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} manifest={$manifest}/>
+      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} manifest={manifest}/>
     )}`);
   };
 }
