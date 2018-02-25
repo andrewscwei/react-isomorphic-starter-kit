@@ -65,10 +65,10 @@ function render({ i18n, store, manifest, excludeContext = false }) {
   };
 }
 
-export function renderWithContext({ i18n, store }) {
-  return render({ i18n, store, excludeContext: false });
+export function renderWithContext({ i18n, store, manifest }) {
+  return render({ i18n, store, manifest, excludeContext: false });
 }
 
-export function renderWithoutContext({ i18n, store }) {
-  return render({ i18n, store, excludeContext: true });
+export function renderWithoutContext({ i18n, store, manifest }) {
+  return render({ i18n, store, manifest, excludeContext: true });
 }
