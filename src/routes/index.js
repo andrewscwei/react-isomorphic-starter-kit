@@ -21,15 +21,6 @@ export default [{
     path: `/list`,
     component: List
   }, {
-    path: `/jp`,
-    component: Home
-  }, {
-    path: `/jp/users`,
-    component: Home
-  }, {
-    path: `/jp/list`,
-    component: Home
-  }, {
     path: `*`,
     component: NotFound
   }]

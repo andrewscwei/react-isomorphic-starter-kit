@@ -9,7 +9,7 @@ import Layout from '@/templates/Layout';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { matchRoutes, renderRoutes } from 'react-router-config';
-import { renderToString } from 'react-dom/server';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
@@ -28,7 +28,7 @@ function render({ i18n, store, manifest, excludeContext = false }) {
     // If `excludeBody` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
-      return res.send(`<!doctype html>${renderToString(<Layout config={config} initialState={store.getState()} initialLocale={locale}/>)}`);
+      return res.send(`<!doctype html>${renderToStaticMarkup(<Layout config={config} initialState={store.getState()} initialLocale={locale}/>)}`);
     }
 
     // For each matching route, fetch async data if required.
@@ -59,7 +59,7 @@ function render({ i18n, store, manifest, excludeContext = false }) {
       break;
     }
 
-    return res.send(`<!doctype html>${renderToString(
+    return res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} manifest={manifest}/>
     )}`);
   };
