@@ -7,7 +7,7 @@ import config from '@/../config/app.conf';
 import path from 'path';
 
 export default function resolveAssetPath(pathToResolve, manifest) {
-  const publicPath = config.env === `production` ? config.build.publicPath : `/`;
+  const publicPath = process.env.NODE_ENV === `production` ? config.build.publicPath : `/`;
   const normalizedPath = path.join.apply(null, pathToResolve.split(`/`));
 
   let output = `${publicPath}${normalizedPath}`;

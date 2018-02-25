@@ -4,21 +4,33 @@
 */
 
 const config = require(`./app.conf`);
+const fs = require(`fs`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
 const { BannerPlugin, DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
 
+// Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `server`;
 
-// Fetch the asset manifest file if it exists.
-let manifest = undefined;
+const cwd = path.join(__dirname, `../`);
+const inputDir = path.join(cwd, `src`);
+const outputDir = path.join(cwd, `build`);
 
+// Process asset manifest file if it exists.
+let manifest = undefined;
 try {
-  manifest = require(path.join(config.paths.output, `public`, config.assetManifestFileName));
+  manifest = require(path.join(outputDir, `public`, `asset-manifest.json`));
 }
 catch (err) {
   console.warn(`No asset manifest file found: ${err.message}`); // eslint-disable-line no-console
 }
+
+// Process locales.
+const locales = fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`));
+const translations = locales.reduce((obj, val) => {
+  obj[val] = { translations: { common: require(path.join(__dirname, `locales`, val)) } };
+  return obj;
+}, {});
 
 module.exports = {
   target: `node`,
@@ -35,10 +47,10 @@ module.exports = {
     __filename: false
   },
   entry: {
-    server: path.join(config.paths.input, `server.jsx`)
+    server: path.join(inputDir, `server.jsx`)
   },
   output: {
-    path: path.join(config.paths.output),
+    path: outputDir,
     filename: `[name].js`,
     sourceMapFilename: `[name].js.map`,
     libraryTarget: `commonjs2`
@@ -59,20 +71,18 @@ module.exports = {
   resolve: {
     extensions: [`.js`, `.jsx`],
     alias: {
-      '@': config.paths.input
+      '@': inputDir
     }
   },
   plugins: [
     new DefinePlugin({
-      $config: JSON.stringify(config),
       $manifest: JSON.stringify(manifest)
     }),
-    // new UglifyJsPlugin({
-    //   sourceMap: true,
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
+    new UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
     new BannerPlugin({
       banner: `require('source-map-support').install()`,
       raw: true,

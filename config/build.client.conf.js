@@ -11,9 +11,13 @@ const ManifestPlugin = require(`webpack-manifest-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 const { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
 
-const isDev = config.env === `development`;
-
+// Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `client`;
+
+const isDev = process.env.NODE_ENV === `development`;
+const cwd = path.join(__dirname, `../`);
+const inputDir = path.join(cwd, `src`);
+const outputDir = path.join(cwd, `build/public`);
 
 module.exports = {
   target: `web`,
@@ -26,12 +30,12 @@ module.exports = {
   },
   entry: {
     bundle: (function() {
-      const p = path.join(config.paths.input, `client.jsx`);
+      const p = path.join(inputDir, `client.jsx`);
       return isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, p] : p;
     })()
   },
   output: {
-    path: path.join(config.paths.output, `public`),
+    path: outputDir,
     publicPath: isDev ? `/` : config.build.publicPath,
     filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
     chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
@@ -83,18 +87,18 @@ module.exports = {
   resolve: {
     extensions: [`.js`, `.jsx`],
     alias: {
-      '@': config.paths.input
+      '@': inputDir
     }
   },
   plugins: [
     // Directly copy static files to output directory.
     new CopyPlugin([{
-      from: path.join(config.paths.input, `static`),
+      from: path.join(inputDir, `static`),
       ignore: [`.*`]
     }]),
     // Set runtime environment variables.
     new EnvironmentPlugin({
-      NODE_ENV: config.env
+      NODE_ENV: `production`
     }),
     // Define runtime global variables in JavaScript.
     new DefinePlugin({
@@ -103,7 +107,7 @@ module.exports = {
     // Extract common modules into separate bundle.
     new CommonsChunkPlugin({
       name: `common`,
-      minChunks: (module) => ((module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.resolve(config.paths.cwd, `node_modules`)) === 0))
+      minChunks: (module) => ((module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.resolve(cwd, `node_modules`)) === 0))
     }),
     // Extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated.
@@ -126,7 +130,7 @@ module.exports = {
         }
       }),
       new ManifestPlugin({
-        fileName: config.assetManifestFileName
+        fileName: `asset-manifest.json`
       })
     ])
     .concat((!isDev && config.build.analyzer) ? [
