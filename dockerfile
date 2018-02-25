@@ -1,5 +1,3 @@
-# © Sybl
-
 FROM node:8.9.4-alpine
 
 # Set environment variables
