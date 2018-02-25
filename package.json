@@ -22,6 +22,7 @@
     "i18next": "^10.4.1",
     "i18next-express-middleware": "^1.0.10",
     "i18next-node-fs-backend": "^1.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "morgan": "~1.9.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
@@ -34,8 +35,7 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "serialize-javascript": "^1.4.0",
-    "source-map-support": "^0.5.3",
-    "superagent": "^3.8.2"
+    "source-map-support": "^0.5.3"
   },
   "devDependencies": {
     "autoprefixer": "^8.0.0",

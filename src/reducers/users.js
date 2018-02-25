@@ -1,4 +1,5 @@
-import request from 'superagent';
+/* globals fetch:true */
+import 'isomorphic-fetch';
 
 export const USERS_LOADED = `@users/loaded`;
 
@@ -17,8 +18,8 @@ export default function reducer(state = initialState, action) {
 
 export function fetchUsers() {
   return async function(dispatch) {
-    const res = await request.get(`//jsonplaceholder.typicode.com/users`);
-    const users = res.body;
+    const res = await fetch(`//jsonplaceholder.typicode.com/users`);
+    const users = await res.json();
 
     dispatch({
       type: USERS_LOADED,
