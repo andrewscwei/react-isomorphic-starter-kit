@@ -1,3 +1,5 @@
 {
-  "hello": "Hello, world!"
+  "hello": "Hello, world!",
+  "en": "EN",
+  "jp": "日本語"
 }

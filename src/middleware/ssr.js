@@ -20,11 +20,23 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 const log = debug(`app:ssr`);
-
-// Create store.
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
-function render({ manifest, excludeContext = false }) {
+/**
+ * Express middleware for rendering React views to string based on the request
+ * path and sending the string as a response.
+ *
+ * @param {Object} options
+ * @param {Object} [options.manifest] - Optional asset manifest object for
+ *                                      mapping raw asset paths to fingerprinted
+ *                                      asset paths.
+ * @param {Object} [options.excludeContext=false] - Specifies whether the view
+ *                                                  body should be excluded from
+ *                                                  the rendering process.
+ *
+ * @return {Function} - Express middleware.
+ */
+function render({ manifest, excludeContext = false } = {}) {
   return async function(req, res) {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
@@ -74,10 +86,26 @@ function render({ manifest, excludeContext = false }) {
   };
 }
 
+/**
+ * Express middleware to render React views with context.
+ *
+ * @param {Object} optinos
+ * @param {Object} [options.manifest] - @see #render
+ *
+ * @return {Function} - Express middleware.
+ */
 export function renderWithContext({ manifest } = {}) {
   return render({ manifest, excludeContext: false });
 }
 
+/**
+ * Express middleware to render React views without context.
+ *
+ * @param {Object} optinos
+ * @param {Object} [options.manifest] - @see #render
+ *
+ * @return {Function} - Express middleware.
+ */
 export function renderWithoutContext({ manifest } = {}) {
   return render({ manifest, excludeContext: true });
 }

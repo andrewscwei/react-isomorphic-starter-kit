@@ -15,6 +15,11 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 const log = debug(`app:hmr`);
 const compiler = webpack(buildConfig);
 
+/**
+ * Export configured dev middleware.
+ *
+ * @return {Function} - Express middleware.
+ */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
     quiet: false,
@@ -25,6 +30,11 @@ export function devMiddleware() {
   });
 }
 
+/**
+ * Export configured hot middleware.
+ *
+ * @return {Function} - Express middleware.
+ */
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
     log: log,

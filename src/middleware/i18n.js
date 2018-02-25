@@ -1,6 +1,5 @@
 /**
- * @file Express middleware for setting up i18next and injecting custom
- *       translations.
+ * @file Express middleware for i18next setup.
  *
  * @see {@link https://www.npmjs.com/package/i18next}
  */
@@ -13,9 +12,22 @@ import path from 'path';
 
 const i18n = i18next.use(i18nextNodeFSBackend).use(LanguageDetector);
 
+/**
+ * Exported i18next instance (not really needed since there is only one shared
+ * global instance).
+ *
+ * @type {Object}
+ */
 export { i18n };
 
-export function i18nMiddleware(loadPath) {
+/**
+ * Express middleware for setting up i18next and injecting custom translations.
+ *
+ * @param {string} translationsDir - Path to locale translations.
+ *
+ * @return {Function} - Express middleware.
+ */
+export function i18nMiddleware(translationsDir) {
   if (!i18n.isInitialized) {
     i18n.init({
       whitelist: config.locales,
@@ -26,7 +38,8 @@ export function i18nMiddleware(loadPath) {
         escapeValue: false // Not needed for React
       },
       backend: {
-        loadPath: path.join(loadPath, `{{lng}}.json`),
+        // Include {{ns}} if you use multiple namespaces.
+        loadPath: path.join(translationsDir, `{{lng}}.json`),
         jsonIndent: 2
       }
     });
