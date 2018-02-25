@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 @translate([`common`])
 export default class Home extends PureComponent {
   static propTypes = {
-    t: PropTypes.func
+    t: PropTypes.func.isRequired
   }
 
   render() {

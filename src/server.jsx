@@ -1,4 +1,3 @@
-/* globals $manifest: true */
 /**
  * @file Server entry file.
  */
@@ -6,6 +5,7 @@
 import config from '@/../config/app.conf';
 import * as reducers from '@/reducers';
 import debug from 'debug';
+import detectLocales from '@/utils//detectLocales';
 import express from 'express';
 import fs from 'fs';
 import helmet from 'helmet';
@@ -15,16 +15,9 @@ import i18nMiddleware, { LanguageDetector } from 'i18next-express-middleware';
 import i18nNodeBackend from 'i18next-node-fs-backend';
 import morgan from 'morgan';
 import path from 'path';
-import routes from '@/routes';
 import thunk from 'redux-thunk';
-import Layout from '@/templates/Layout';
-import React from 'react';
-import StaticRouter from 'react-router-dom/StaticRouter';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { matchRoutes, renderRoutes } from 'react-router-config';
-import { renderToString } from 'react-dom/server';
-import { I18nextProvider } from 'react-i18next';
-import { Provider } from 'react-redux';
+import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 
 const log = debug(`app`);
 
@@ -33,6 +26,9 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 // Create app and define global/local members.
 const app = express();
+
+// Detect locales.
+const locales = detectLocales(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales`));
 
 /**
  * Helmet setup.
@@ -90,7 +86,7 @@ app.use(morgan(`dev`));
  */
 const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
   ...config.i18next,
-  whitelist: fs.readdirSync(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+  whitelist: locales,
   backend: {
     loadPath: path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales/{{lng}}.json`),
     jsonIndent: 2
@@ -113,55 +109,25 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
   }));
 }
 
+app.use(`/:locale`, function(req, res, next) {
+  if (~locales.indexOf(req.params.locale)) {
+    req.locale = req.params.locale;
+    req.normalizedPath = req.path;
+  }
+
+  next();
+});
+
 /**
  * Server-side rendering setup.
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-app.use(async function(req, res) {
-  // Find and store all matching client routes based on the request URL.
-  const matches = matchRoutes(routes, req.url);
-  const locale = req.language;
-  const resources = i18n.getResourceBundle(locale, `common`);
-
-  i18n.changeLanguage(locale);
-
-  // Disable rendering of React components in development.
-  if (process.env.NODE_ENV === `development`) {
-    return res.send(`<!doctype html>${renderToString(<Layout config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
-  }
-
-  // For each matching route, fetch async data if required.
-  for (let i = 0; i < matches.length; i++) {
-    const { route, match } = matches[i];
-    if (!(route.component.fetchData instanceof Function)) continue;
-    log(`Fetching data for route: ${match.url}`);
-    await route.component.fetchData(store);
-  }
-
-  let context = {};
-
-  const body = renderToString(
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          {renderRoutes(routes)}
-        </StaticRouter>
-      </Provider>
-    </I18nextProvider>
-  );
-
-  switch (context.status) {
-  case 302:
-    return res.redirect(302, context.url);
-  case 404:
-    res.status(404);
-    break;
-  }
-
-  return res.send(`<!doctype html>${renderToString(
-    <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }} manifest={$manifest}/>
-  )}`);
-});
+if (process.env.NODE_ENV === `development`) {
+  app.use(renderWithoutContext({ i18n, store }));
+}
+else {
+  app.use(renderWithContext({ i18n, store }));
+}
 
 /**
  * Server 404 error, when the requested URI is not found.
