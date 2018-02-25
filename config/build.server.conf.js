@@ -3,7 +3,7 @@
  *       `development` and `production` environments.
 */
 
-const fs = require(`fs`);
+const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
@@ -59,6 +59,17 @@ module.exports = {
       test: /\.(jpe?g|png|gif|svg|ico|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
       use: `url-loader?emitFile=false`
     }]
+      .concat((process.env.NODE_ENV === `development` ? config.dev.linter : config.build.linter) ? [{
+        test: /\.jsx?$/,
+        include: [inputDir],
+        enforce: `pre`,
+        use: {
+          loader: `eslint-loader`,
+          options: {
+            formatter: require(`eslint-friendly-formatter`)
+          }
+        }
+      }] : [])
   },
   resolve: {
     extensions: [`.js`, `.jsx`],

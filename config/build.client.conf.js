@@ -83,6 +83,17 @@ module.exports = {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       use: `url-loader?limit=10000&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }]
+      .concat((isDev ? config.dev.linter : config.build.linter) ? [{
+        test: /\.jsx?$/,
+        include: [inputDir],
+        enforce: `pre`,
+        use: {
+          loader: `eslint-loader`,
+          options: {
+            formatter: require(`eslint-friendly-formatter`)
+          }
+        }
+      }] : [])
   },
   resolve: {
     extensions: [`.js`, `.jsx`],
