@@ -1,6 +1,6 @@
 {
   "name": "react-express-starter-kit",
-  "description": "React universal/isomorphic app starter kit",
+  "description": "Experimental React universal/isomorphic app starter kit",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
