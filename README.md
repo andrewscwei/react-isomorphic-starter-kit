@@ -1,6 +1,6 @@
 # react-express-starter-kit
 
-This is a starter kit for a React universal/isomorphic app.
+This is an **experimental** starter kit for a React universal/isomorphic app.
 
 ## Key Features
 
