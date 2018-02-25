@@ -34,26 +34,11 @@ app.use(helmet());
 /**
  * Serve assets from Webpack dev server in development to enable hot module
  * reloading.
- * @see {@link https://www.npmjs.com/package/webpack-dev-middleware}
- * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
 if (process.env.NODE_ENV === `development`) {
-  const buildConfig = require(`../config/build.client.conf`);
-  const compiler = require(`webpack`)(buildConfig);
-
-  app.use(require(`webpack-dev-middleware`)(compiler, {
-    quiet: false,
-    noInfo: true,
-    inline: false,
-    publicPath: buildConfig.output.publicPath,
-    stats: { colors: true }
-  }));
-
-  app.use(require(`webpack-hot-middleware`)(compiler, {
-    log: false,
-    heartbeat: 2000,
-    multistep: false
-  }));
+  const { devMiddleware, hotMiddleware } = require(`./middleware/dev`);
+  app.use(devMiddleware());
+  app.use(hotMiddleware());
 }
 
 /**
@@ -77,7 +62,6 @@ app.use(morgan(`dev`));
 
 /**
  * i18next setup.
- * @see {@link https://www.npmjs.com/package/i18next}
  */
 app.use(i18nextMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`, `locales`))));
 

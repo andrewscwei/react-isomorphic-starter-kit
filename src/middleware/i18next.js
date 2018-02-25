@@ -1,5 +1,7 @@
 /**
- * @file i18next middleware.
+ * @file Express middleware for setting up i18next and injecting custom
+ *       translations.
+ *
  * @see {@link https://www.npmjs.com/package/i18next}
  */
 
