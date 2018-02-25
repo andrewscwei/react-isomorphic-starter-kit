@@ -23,14 +23,13 @@ function render({ i18n, store, excludeContext = false }) {
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.normalizedPath || req.path);
     const locale = req.language;
-    const resources = i18n.getResourceBundle(locale, `common`);
 
     i18n.changeLanguage(locale);
 
     // If `excludeBody` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
-      return res.send(`<!doctype html>${renderToString(<Layout config={config} initialState={store.getState()} initialLocale={{ locale, resources }}/>)}`);
+      return res.send(`<!doctype html>${renderToString(<Layout config={config} initialState={store.getState()} initialLocale={locale}/>)}`);
     }
 
     // For each matching route, fetch async data if required.
@@ -62,7 +61,7 @@ function render({ i18n, store, excludeContext = false }) {
     }
 
     return res.send(`<!doctype html>${renderToString(
-      <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, resources }} manifest={$manifest}/>
+      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} manifest={$manifest}/>
     )}`);
   };
 }

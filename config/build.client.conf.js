@@ -4,6 +4,7 @@
 */
 
 const config = require(`./app.conf`);
+const fs = require(`fs`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
@@ -21,7 +22,7 @@ const outputDir = path.join(cwd, `build/public`);
 
 module.exports = {
   target: `web`,
-  devtool: isDev ? `cheap-eval-source-map` : false,
+  devtool: isDev ? `cheap-eval-source-map` : `source-map`,
   stats: {
     colors: true,
     modules: true,
@@ -103,7 +104,8 @@ module.exports = {
     }),
     // Define runtime global variables in JavaScript.
     new DefinePlugin({
-      $config: JSON.stringify(config)
+      $config: JSON.stringify(config),
+      $locales: JSON.stringify(fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)))
     }),
     // Extract common modules into separate bundle.
     new CommonsChunkPlugin({
@@ -126,6 +128,7 @@ module.exports = {
         allChunks: true
       }),
       new UglifyJsPlugin({
+        sourceMap: true,
         compress: {
           warnings: false
         }

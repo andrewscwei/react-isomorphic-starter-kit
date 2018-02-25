@@ -13,7 +13,7 @@ export default class Header extends PureComponent {
     const { t, i18n } = this.props;
 
     const changeLanguage = (locale) => {
-      i18n.changeLanguage(`jp`);
+      i18n.changeLanguage(locale);
     };
 
     return (

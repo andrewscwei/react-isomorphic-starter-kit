@@ -25,13 +25,6 @@ catch (err) {
   console.warn(`No asset manifest file found: ${err.message}`); // eslint-disable-line no-console
 }
 
-// Process locales.
-const locales = fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`));
-const translations = locales.reduce((obj, val) => {
-  obj[val] = { translations: { common: require(path.join(__dirname, `locales`, val)) } };
-  return obj;
-}, {});
-
 module.exports = {
   target: `node`,
   devtool: `source-map`,
@@ -86,6 +79,7 @@ module.exports = {
       $manifest: JSON.stringify(manifest)
     }),
     new UglifyJsPlugin({
+      sourceMap: true,
       compress: {
         warnings: false
       }
