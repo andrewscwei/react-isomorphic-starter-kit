@@ -4,7 +4,6 @@
  */
 
 import config from '@/../config/app.conf';
-import * as reducers from '@/reducers';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -12,17 +11,10 @@ import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
 import path from 'path';
-import thunk from 'redux-thunk';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { i18next, i18nextMiddleware } from '@/middleware/i18next';
+import { i18nMiddleware } from '@/middleware/i18n';
 import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 
 const log = debug(`app`);
-
-// Set up the store.
-const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
-
-// Create app and define global/local members.
 const app = express();
 
 /**
@@ -36,9 +28,8 @@ app.use(helmet());
  * reloading.
  */
 if (process.env.NODE_ENV === `development`) {
-  const { devMiddleware, hotMiddleware } = require(`./middleware/dev`);
-  app.use(devMiddleware());
-  app.use(hotMiddleware());
+  app.use(require(`./middleware/hmr`).devMiddleware());
+  app.use(require(`./middleware/hmr`).hotMiddleware());
 }
 
 /**
@@ -46,7 +37,6 @@ if (process.env.NODE_ENV === `development`) {
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
 if (process.env.NODE_ENV !== `development` && config.forceSSL) {
-  // Redirect to HTTPS in production.
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
     if (req.secure) return next();
@@ -61,9 +51,9 @@ if (process.env.NODE_ENV !== `development` && config.forceSSL) {
 app.use(morgan(`dev`));
 
 /**
- * i18next setup.
+ * i18n setup.
  */
-app.use(i18nextMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`, `locales`))));
+app.use(i18nMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`, `locales`))));
 
 /**
  * Serve static files and add expire headers.
@@ -90,13 +80,12 @@ app.use(`/:locale`, function(req, res, next) {
 
 /**
  * Server-side rendering setup.
- * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 if (process.env.NODE_ENV === `development`) {
-  app.use(renderWithoutContext({ i18n: i18next, store }));
+  app.use(renderWithoutContext());
 }
 else {
-  app.use(renderWithContext({ i18n: i18next, store, manifest: $manifest }));
+  app.use(renderWithContext({ manifest: $manifest }));
 }
 
 /**

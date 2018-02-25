@@ -1,13 +1,19 @@
 /**
  * @file Express middleware for server-side rendering of React views.
+ *
+ * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
+import * as reducers from '@/reducers';
 import config from '@/../config/app.conf';
 import debug from 'debug';
 import routes from '@/routes';
+import thunk from 'redux-thunk';
 import Layout from '@/templates/Layout';
 import React from 'react';
 import StaticRouter from 'react-router-dom/StaticRouter';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { i18n } from '@/middleware/i18n';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
@@ -15,7 +21,10 @@ import { Provider } from 'react-redux';
 
 const log = debug(`app:ssr`);
 
-function render({ i18n, store, manifest, excludeContext = false }) {
+// Create store.
+const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
+
+function render({ manifest, excludeContext = false }) {
   return async function(req, res) {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
@@ -65,10 +74,10 @@ function render({ i18n, store, manifest, excludeContext = false }) {
   };
 }
 
-export function renderWithContext({ i18n, store, manifest }) {
-  return render({ i18n, store, manifest, excludeContext: false });
+export function renderWithContext({ manifest } = {}) {
+  return render({ manifest, excludeContext: false });
 }
 
-export function renderWithoutContext({ i18n, store, manifest }) {
-  return render({ i18n, store, manifest, excludeContext: true });
+export function renderWithoutContext({ manifest } = {}) {
+  return render({ manifest, excludeContext: true });
 }

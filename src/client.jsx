@@ -25,16 +25,11 @@ i18n.init({
   ns: [`common`],
   defaultNS: `common`,
   lng: window.__INITIAL_LOCALE__,
-  react: {
-    wait: true
-  },
-  interpolation: {
-    escapeValue: false // Not needed for React
-  },
+  react: { wait: true },
+  interpolation: { escapeValue: false },
 });
 
 // Require context for all locale translation files and apply them to i18next.
-
 const localeReq = require.context(`../config/locales`, true, /^.*\.json$/);
 localeReq.keys().forEach((path) => {
   const locale = path.replace(`./`, ``).replace(`.json`, ``);
@@ -42,20 +37,20 @@ localeReq.keys().forEach((path) => {
   i18n.addResourceBundle(locale, `common`, localeReq(path), true);
 });
 
-function markup(r) {
-  return (
-    <AppContainer>
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          <BrowserRouter>
-            {renderRoutes(r)}
-          </BrowserRouter>
-        </Provider>
-      </I18nextProvider>
-    </AppContainer>
-  );
-}
+// Generator for base markup.
+const markup = (r) => (
+  <AppContainer>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <BrowserRouter>
+          {renderRoutes(r)}
+        </BrowserRouter>
+      </Provider>
+    </I18nextProvider>
+  </AppContainer>
+);
 
+// Render the app.
 if (process.env.NODE_ENV === `development`) {
   render(markup(routes), document.getElementById(`app`));
 }
@@ -63,6 +58,7 @@ else {
   hydrate(markup(routes), document.getElementById(`app`));
 }
 
+// Handle hot module replacement.
 if (module.hot) {
   module.hot.accept(`./routes`, () => {
     const newRoutes = require(`./routes`).default;

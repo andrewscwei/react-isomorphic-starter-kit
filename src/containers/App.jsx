@@ -1,5 +1,5 @@
 /**
- * @file Client app container.
+ * @file Client app root.
  */
 
 import '@/containers/App.css';

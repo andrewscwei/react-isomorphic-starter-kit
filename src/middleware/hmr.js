@@ -12,7 +12,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const log = debug(`app:dev`);
+const log = debug(`app:hmr`);
 const compiler = webpack(buildConfig);
 
 export function devMiddleware() {
@@ -27,7 +27,7 @@ export function devMiddleware() {
 
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
-    log: false,
+    log: log,
     heartbeat: 2000,
     multistep: false
   });

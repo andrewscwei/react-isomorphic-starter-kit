@@ -1,4 +1,3 @@
-/* globals fetch:true */
 import 'isomorphic-fetch';
 
 export const USERS_LOADED = `@users/loaded`;
