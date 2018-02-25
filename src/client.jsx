@@ -28,8 +28,8 @@ const i18n = i18next.init({
 i18n.changeLanguage(window.__INITIAL_LOCALE__.locale);
 i18n.addResourceBundle(window.__INITIAL_LOCALE__.locale, `common`, window.__INITIAL_LOCALE__.resources, true);
 
-function renderDOM(r, shouldHydrate = false) {
-  const markup = (
+function markup(r) {
+  return (
     <AppContainer>
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
@@ -40,20 +40,18 @@ function renderDOM(r, shouldHydrate = false) {
       </I18nextProvider>
     </AppContainer>
   );
-
-  if (shouldHydrate) {
-    hydrate(markup, document.getElementById(`app`));
-  }
-  else {
-    render(markup, document.getElementById(`app`));
-  }
 }
 
-renderDOM(routes, $config.ssrEnabled);
+if (process.env.NODE_ENV === `development`) {
+  render(markup(routes), document.getElementById(`app`));
+}
+else {
+  hydrate(markup(routes), document.getElementById(`app`));
+}
 
 if (module.hot) {
   module.hot.accept(`./routes`, () => {
     const newRoutes = require(`./routes`).default;
-    renderDOM(newRoutes, true);
+    hydrate(markup(newRoutes));
   });
 }

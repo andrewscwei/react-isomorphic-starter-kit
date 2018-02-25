@@ -31,16 +31,6 @@ const log = debug(`app`);
 // Set up the store.
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
-// Set up i18n.
-const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
-  whitelist: fs.readdirSync(path.join(__dirname, `../`, `config/locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
-  ...config.i18next,
-  backend: {
-    loadPath: path.join(__dirname, `../`, `config/locales/{{lng}}.json`),
-    jsonIndent: 2
-  }
-});
-
 // Create app and define global/local members.
 const app = express();
 
@@ -85,7 +75,7 @@ if (process.env.NODE_ENV === `development`) {
  * Redirect to HTTPS for insecure requests.
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
-if (config.forceSSL) {
+if (process.env.NODE_ENV !== `development` && config.forceSSL) {
   // Redirect to HTTPS in production.
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
@@ -104,15 +94,24 @@ app.use(morgan(`dev`));
  * i18next setup.
  * @see {@link https://www.npmjs.com/package/i18next}
  */
+const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
+  ...config.i18next,
+  whitelist: fs.readdirSync(path.join(process.env.CONFIG_DIR || `config`, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)),
+  backend: {
+    loadPath: path.join(process.env.CONFIG_DIR || `config`, `locales/{{lng}}.json`),
+    jsonIndent: 2
+  }
+});
+
 app.use(i18nMiddleware.handle(i18n));
 
 /**
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-if (process.env.NODE_ENV !== `development`) {
+if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname, `public`))) {
   app.use(express.static(path.join(__dirname, `public`), {
-    setHeaders: function(res, path) {
+    setHeaders: function(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
       res.setHeader(`Cache-Control`, `max-age=${duration / 1000}`);
