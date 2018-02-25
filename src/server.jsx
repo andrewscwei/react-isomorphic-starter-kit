@@ -5,7 +5,6 @@
 import config from '@/../config/app.conf';
 import * as reducers from '@/reducers';
 import debug from 'debug';
-import detectLocales from '@/utils//detectLocales';
 import express from 'express';
 import fs from 'fs';
 import helmet from 'helmet';
@@ -26,9 +25,6 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 // Create app and define global/local members.
 const app = express();
-
-// Detect locales.
-const locales = detectLocales(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales`));
 
 /**
  * Helmet setup.
@@ -85,8 +81,13 @@ app.use(morgan(`dev`));
  * @see {@link https://www.npmjs.com/package/i18next}
  */
 const i18n = i18next.use(i18nNodeBackend).use(LanguageDetector).init({
-  ...config.i18next,
-  whitelist: locales,
+  whitelist: config.locales,
+  fallbackLng: config.defaultLocale,
+  ns: [`common`],
+  defaultNS: `common`,
+  interpolation: {
+    escapeValue: false // Not needed for React
+  },
   backend: {
     loadPath: path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales/{{lng}}.json`),
     jsonIndent: 2
@@ -110,7 +111,7 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
 }
 
 app.use(`/:locale`, function(req, res, next) {
-  if (~locales.indexOf(req.params.locale)) {
+  if (~config.locales.indexOf(req.params.locale)) {
     req.locale = req.params.locale;
     req.normalizedPath = req.path;
   }

@@ -4,7 +4,6 @@
 */
 
 const config = require(`./app.conf`);
-const fs = require(`fs`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
@@ -104,8 +103,7 @@ module.exports = {
     }),
     // Define runtime global variables in JavaScript.
     new DefinePlugin({
-      $config: JSON.stringify(config),
-      $locales: JSON.stringify(fs.readdirSync(path.join(__dirname, `locales`)).filter(v => !(/(^|\/)\.[^/.]/g).test(v)).map(val => path.basename(val, `.json`)))
+      $config: JSON.stringify(config)
     }),
     // Extract common modules into separate bundle.
     new CommonsChunkPlugin({

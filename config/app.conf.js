@@ -12,16 +12,11 @@ module.exports = {
   // Determines whether SSR is enabled.
   ssrEnabled: process.env.SSR_ENABLED || false,
 
-  // i18next config.
-  // @see {@link https://www.npmjs.com/package/i18next}
-  i18next: {
-    fallbackLng: `en`,
-    ns: [`common`],
-    defaultNS: `common`,
-    interpolation: {
-      escapeValue: false // Not needed for React
-    }
-  },
+  // Default locale.
+  defaultLocale: `en`,
+
+  // Supported locales.
+  locales: [`en`, `jp`],
 
   // Config options specific to the `build` tas.
   build: {

@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global $config: true, $locales: true */
+/* global $config: true */
 /**
  * @file Client entry file.
  */
@@ -22,9 +22,15 @@ const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, a
 
 // Set up i18n.
 const i18n = i18next.init({
-  ...($config && $config.i18next || {}),
+  ns: [`common`],
+  defaultNS: `common`,
   lng: window.__INITIAL_LOCALE__,
-  react: { wait: true }
+  react: {
+    wait: true
+  },
+  interpolation: {
+    escapeValue: false // Not needed for React
+  },
 });
 
 // Require context for all locale translation files and apply them to i18next.
@@ -32,7 +38,7 @@ const i18n = i18next.init({
 const localeReq = require.context(`../config/locales`, true, /^.*\.json$/);
 localeReq.keys().forEach((path) => {
   const locale = path.replace(`./`, ``).replace(`.json`, ``);
-  if (!~$locales.indexOf(locale)) return;
+  if (!~$config.locales.indexOf(locale)) return;
   i18n.addResourceBundle(locale, `common`, localeReq(path), true);
 });
 
