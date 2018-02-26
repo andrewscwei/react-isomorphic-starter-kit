@@ -62,8 +62,9 @@ module.exports = {
             ident: `postcss`,
             sourceMap: true,
             plugins: (loader) => [
-              require(`autoprefixer`)(),
-              require(`cssnano`)()
+              require(`postcss-import`)(),
+              require(`postcss-preset-env`)(),
+              require(`cssnano`)({ autoprefixer: false })
             ]
           }
         }];

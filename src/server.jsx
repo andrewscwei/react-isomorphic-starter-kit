@@ -135,7 +135,7 @@ http
   });
 
 // Handle unhandled rejections.
-process.on(`unhandledRejection`, function(reason, p) {
+process.on(`unhandledRejection`, function(reason) {
   console.error(`Unhandled Promise rejection:`, reason); // eslint-disable-line no-console
   process.exit(1);
 });
