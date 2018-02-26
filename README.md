@@ -1,4 +1,4 @@
-# react-universal-starter-kit [![Circle CI](https://circleci.com/gh/andrewscwei/react-universal-starter-kit/tree/master.svg?style=svg)]
+# react-universal-starter-kit [![Circle CI](https://circleci.com/gh/andrewscwei/react-universal-starter-kit/tree/master.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-universal-starter-kit/tree/master)
 
 This is an **experimental** starter kit for a React universal/isomorphic app. In production, the source code for both server and client sides are compiled by Webpack to resolve asset imports. In development, [nodemon](https://github.com/remy/nodemon) is used along with [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node) to watch and reload server code while the client is hot reloaded by Webpack.
 
