@@ -13,7 +13,6 @@ import React from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { hydrate, render } from 'react-dom';
 import { renderRoutes } from 'react-router-config';
-import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 
@@ -39,15 +38,13 @@ localeReq.keys().forEach((path) => {
 
 // Generator for base markup.
 const markup = (r) => (
-  <AppContainer>
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <BrowserRouter>
-          {renderRoutes(r)}
-        </BrowserRouter>
-      </Provider>
-    </I18nextProvider>
-  </AppContainer>
+  <I18nextProvider i18n={i18n}>
+    <Provider store={store}>
+      <BrowserRouter>
+        {renderRoutes(r)}
+      </BrowserRouter>
+    </Provider>
+  </I18nextProvider>
 );
 
 // Render the app.
@@ -59,9 +56,9 @@ else {
 }
 
 // Handle hot module replacement.
-if (module.hot) {
-  module.hot.accept(`./routes`, () => {
-    const newRoutes = require(`./routes`).default;
-    hydrate(markup(newRoutes));
-  });
-}
+// if (module.hot) {
+//   module.hot.accept(`./routes`, () => {
+//     const newRoutes = require(`./routes`).default;
+//     render(markup(newRoutes));
+//   });
+// }

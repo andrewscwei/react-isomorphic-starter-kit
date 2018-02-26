@@ -35,7 +35,7 @@ module.exports = {
   entry: {
     bundle: (function() {
       const p = path.join(inputDir, `client.jsx`);
-      return isDev ? [`react-hot-loader/patch`, `webpack-hot-middleware/client?reload=true`, p] : p;
+      return isDev ? [`webpack-hot-middleware/client?reload=true`, p] : p;
     })()
   },
   output: {

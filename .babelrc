@@ -31,9 +31,6 @@
       ]
     ]},
     "client": {
-      "plugins": [
-        "react-hot-loader/babel"
-      ]
     }
   }
 }
