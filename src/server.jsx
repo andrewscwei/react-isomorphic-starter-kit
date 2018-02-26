@@ -81,11 +81,11 @@ app.use(`/:locale`, function(req, res, next) {
 /**
  * Server-side rendering setup.
  */
-if (process.env.NODE_ENV === `development`) {
-  app.use(renderWithoutContext());
+if (config.ssrEnabled) {
+  app.use(renderWithContext({ manifest: $manifest }));
 }
 else {
-  app.use(renderWithContext({ manifest: $manifest }));
+  app.use(renderWithoutContext());
 }
 
 /**

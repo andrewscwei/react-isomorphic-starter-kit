@@ -10,7 +10,7 @@ module.exports = {
   forceSSL: process.env.FORCE_SSL || false,
 
   // Determines whether SSR is enabled.
-  ssrEnabled: process.env.SSR_ENABLED || false,
+  ssrEnabled: process.env.NODE_ENV !== `development`,
 
   // Default locale.
   defaultLocale: `en`,
