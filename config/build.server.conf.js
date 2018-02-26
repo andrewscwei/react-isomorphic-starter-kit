@@ -53,7 +53,7 @@ module.exports = {
       use: `babel-loader`,
       exclude: /node_modules/
     }, {
-      test: /\.css$/,
+      test: /\.p?c?s?ss$/,
       use: `css-loader/locals`
     }, {
       test: /\.(jpe?g|png|gif|svg|ico|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -90,15 +90,17 @@ module.exports = {
       $manifest: JSON.stringify(manifest)
     }),
     new UglifyJsPlugin({
-      sourceMap: true,
+      sourceMap: config.build.sourceMap,
       compress: {
         warnings: false
       }
-    }),
-    new BannerPlugin({
-      banner: `require('source-map-support').install()`,
-      raw: true,
-      entryOnly: false
     })
   ]
+    .concat(config.build.sourceMap ? [
+      new BannerPlugin({
+        banner: `require('source-map-support').install()`,
+        raw: true,
+        entryOnly: false
+      })
+    ] : [])
 };

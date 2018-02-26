@@ -1,3 +1,4 @@
+import styles from '@/components/Header.css';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
@@ -12,14 +13,10 @@ export default class Header extends PureComponent {
   render() {
     const { t, i18n } = this.props;
 
-    const changeLanguage = (locale) => {
-      i18n.changeLanguage(locale);
-    };
-
     return (
-      <header>
-        <button onClick={() => changeLanguage(`en`)}>{t(`en`)}</button>
-        <button onClick={() => changeLanguage(`jp`)}>{t(`jp`)}</button>
+      <header className={styles.container}>
+        <button onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
+        <button onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
       </header>
     );
   }

@@ -5,9 +5,13 @@
 
 const config = require(`./app.conf`);
 const path = require(`path`);
+const CachedInputFileSystem = require(`enhanced-resolve/lib/CachedInputFileSystem`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`);
 const ManifestPlugin = require(`webpack-manifest-plugin`);
+const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSystem`);
+const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
+const StyleLintPlugin = require(`stylelint-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 const { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
 
@@ -21,7 +25,7 @@ const outputDir = path.join(cwd, `build/public`);
 
 module.exports = {
   target: `web`,
-  devtool: isDev ? `cheap-eval-source-map` : `source-map`,
+  devtool: isDev ? `cheap-eval-source-map` : (config.build.sourceMap ? `source-map` : false),
   stats: {
     colors: true,
     modules: true,
@@ -47,24 +51,37 @@ module.exports = {
       use: `babel-loader`,
       exclude: /node_modules/
     }, {
-      test: /\.css$/,
+      test: /\.p?c?s?ss$/,
       use: (function() {
         const t = [{
           loader: `css-loader`,
           options: {
             modules: true,
-            sourceMap: true,
+            sourceMap: isDev ? true : config.build.sourceMap,
+            importLoaders: 1,
             localIdentName: `[hash:6]`
           }
         }, {
           loader: `postcss-loader`,
           options: {
             ident: `postcss`,
-            sourceMap: true,
+            sourceMap: isDev ? true : config.build.sourceMap,
             plugins: (loader) => [
-              require(`postcss-import`)(),
+              require(`postcss-import`)({
+                resolve(id, basedir) {
+                  return ResolverFactory.createResolver({
+                    alias: {
+                      '@': inputDir
+                    },
+                    extensions: [`.css`, `.pcss`],
+                    useSyncFileSystemCalls: true,
+                    fileSystem: new CachedInputFileSystem(new NodeJsInputFileSystem(), 60000)
+                  }).resolveSync({}, basedir, id);
+                }
+              }),
               require(`postcss-preset-env`)(),
-              require(`cssnano`)({ autoprefixer: false })
+              require(`autoprefixer`)(),
+              require(`cssnano`)()
             ]
           }
         }];
@@ -138,7 +155,7 @@ module.exports = {
         allChunks: true
       }),
       new UglifyJsPlugin({
-        sourceMap: true,
+        sourceMap: config.build.sourceMap,
         compress: {
           warnings: false
         }
@@ -147,6 +164,13 @@ module.exports = {
         fileName: `asset-manifest.json`
       })
     ])
+    .concat((isDev && config.dev.linter) || (!isDev && config.build.linter) ? [
+      new StyleLintPlugin({
+        files: [`**/*.css`, `**/*.pcss`, `**/*.sss`],
+        failOnError: false,
+        quiet: false
+      })
+    ] : [])
     .concat((!isDev && config.build.analyzer) ? [
       new BundleAnalyzerPlugin()
     ] : [])

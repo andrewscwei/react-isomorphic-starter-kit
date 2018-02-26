@@ -26,6 +26,9 @@ module.exports = {
     // Specifies whether the linter should run.
     linter: true,
 
+    // Specifies whether JavaScript and CSS source maps should be generated.
+    sourceMap: true,
+
     // Specifies whether a bundle analyzer report should be generated at the end
     // of the build process.
     analyzer: false
