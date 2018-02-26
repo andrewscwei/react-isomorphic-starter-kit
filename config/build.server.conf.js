@@ -53,7 +53,7 @@ module.exports = {
       use: `babel-loader`,
       exclude: /node_modules/
     }, {
-      test: /\.p?c?s?ss$/,
+      test: /\.p?css$/,
       use: `css-loader/locals`
     }, {
       test: /\.(jpe?g|png|gif|svg|ico|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,

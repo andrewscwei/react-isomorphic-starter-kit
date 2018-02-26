@@ -51,7 +51,7 @@ module.exports = {
       use: `babel-loader`,
       exclude: /node_modules/
     }, {
-      test: /\.p?c?s?ss$/,
+      test: /\.p?css$/,
       use: (function() {
         const t = [{
           loader: `css-loader`,
@@ -166,7 +166,7 @@ module.exports = {
     ])
     .concat((isDev && config.dev.linter) || (!isDev && config.build.linter) ? [
       new StyleLintPlugin({
-        files: [`**/*.css`, `**/*.pcss`, `**/*.sss`],
+        files: [`**/*.css`, `**/*.pcss`],
         failOnError: false,
         quiet: false
       })
