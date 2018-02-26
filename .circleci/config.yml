@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build -f dockerfile --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t andrewscwei/react-express-starter-kit:$CIRCLE_SHA1 .
+            docker build -f dockerfile --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t andrewscwei/react-universal-starter-kit:$CIRCLE_SHA1 .
       - run:
           name: Push to Docker Hub
           command: |
@@ -27,7 +27,7 @@ jobs:
   test:
     working_directory: ~/app
     docker:
-      - image: andrewscwei/react-express-starter-kit:$CIRCLE_SHA1
+      - image: andrewscwei/react-universal-starter-kit:$CIRCLE_SHA1
     environment:
       - NODE_ENV: test
     steps:

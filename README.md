@@ -1,4 +1,4 @@
-# react-express-starter-kit
+# react-universal-starter-kit
 
 This is an **experimental** starter kit for a React universal/isomorphic app. In production, the source code for both server and client sides are compiled by Webpack to resolve asset imports. In development, [nodemon](https://github.com/remy/nodemon) is used along with [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node) to watch and reload server code while the client is hot reloaded by Webpack.
 

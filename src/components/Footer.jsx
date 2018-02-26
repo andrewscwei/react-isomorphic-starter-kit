@@ -16,7 +16,7 @@ export default class Footer extends PureComponent {
     return (
       <footer className={styles[`root`]}>
         <nav className={styles[`nav`]}>
-          <a className={styles[`github-button`]} href='https://github.com/andrewscwei/react-express-starter-kit'/>
+          <a className={styles[`github-button`]} href='https://github.com/andrewscwei/react-universal-starter-kit'/>
         </nav>
         <button className={styles[`locale-button`]} onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
         <button className={styles[`locale-button`]} onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
