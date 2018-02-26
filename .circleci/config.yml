@@ -24,6 +24,9 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
+      - run:
+          name: Build
+          command: npm run build
       - setup_remote_docker
       - run:
           name: Build application Docker image
