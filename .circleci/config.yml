@@ -27,6 +27,8 @@ jobs:
       - run:
           name: Build
           command: npm run build
+      - store_artifacts:
+          path: ~/app/build
       - setup_remote_docker
       - run:
           name: Build application Docker image
