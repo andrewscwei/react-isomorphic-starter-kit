@@ -1,7 +1,7 @@
 {
   "name": "react-express-starter-kit",
   "description": "Experimental React universal/isomorphic app starter kit",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "start": "node build/server",
@@ -65,9 +65,10 @@
     "file-loader": "^1.1.9",
     "nodemon": "^1.15.1",
     "normalize.css": "^8.0.0",
+    "postcss-hexrgba": "^1.0.0",
     "postcss-import": "^11.1.0",
     "postcss-loader": "^2.1.0",
-    "postcss-preset-env": "^3.2.1",
+    "precss": "^3.1.1",
     "rimraf": "^2.6.2",
     "style-loader": "^0.20.2",
     "stylelint": "^9.1.1",

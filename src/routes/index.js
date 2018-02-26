@@ -3,10 +3,10 @@
  */
 
 import App from '@/containers/App';
+import About from '@/containers/About';
 import Home from '@/containers/Home';
 import List from '@/containers/List';
 import NotFound from '@/containers/NotFound';
-import Users from '@/containers/Users';
 
 export default [{
   component: App,
@@ -15,8 +15,8 @@ export default [{
     exact: true,
     component: Home
   }, {
-    path: `/users`,
-    component: Users
+    path: `/about`,
+    component: About
   }, {
     path: `/list`,
     component: List

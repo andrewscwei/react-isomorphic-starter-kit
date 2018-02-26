@@ -79,9 +79,10 @@ module.exports = {
                   }).resolveSync({}, basedir, id);
                 }
               }),
-              require(`postcss-preset-env`)({
+              require(`precss`)({
                 stage: 0
               }),
+              require(`postcss-hexrgba`)(),
               require(`autoprefixer`)(),
               require(`cssnano`)()
             ]

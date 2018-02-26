@@ -3,6 +3,7 @@
  */
 
 import styles from '@/containers/App.css';
+import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -18,6 +19,7 @@ export default class App extends PureComponent {
       <div className={styles.root}>
         <Header/>
         {renderRoutes(this.props.route.routes)}
+        <Footer/>
       </div>
     );
   }

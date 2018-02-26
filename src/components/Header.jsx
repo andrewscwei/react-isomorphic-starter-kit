@@ -2,8 +2,9 @@ import styles from '@/components/Header.css';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-@translate([`common`])
+@translate()
 export default class Header extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired,
@@ -11,12 +12,12 @@ export default class Header extends PureComponent {
   }
 
   render() {
-    const { t, i18n } = this.props;
+    const { t } = this.props;
 
     return (
-      <header className={styles.root}>
-        <button className={styles.button} onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
-        <button className={styles.button} onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
+      <header className={styles[`root`]}>
+        <Link className={styles[`link`]} to='/'>{t(`home`)}</Link>
+        <Link className={styles[`link`]} to='/about'>{t(`about`)}</Link>
       </header>
     );
   }

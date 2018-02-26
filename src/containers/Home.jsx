@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-@translate([`common`])
+@translate()
 export default class Home extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired
@@ -13,8 +13,11 @@ export default class Home extends PureComponent {
     const { t } = this.props;
 
     return (
-      <div className={styles.root}>
-        <h1 className={styles.h1}>{t(`title`)}</h1>
+      <div className={styles[`root`]}>
+        <summary>
+          <h1 className={styles[`h1`]}>{t(`hello`)}</h1>
+          <p className={styles[`description`]}>{t(`description`)}</p>
+        </summary>
       </div>
     );
   }

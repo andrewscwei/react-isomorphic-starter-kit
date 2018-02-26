@@ -1,4 +1,15 @@
+@import '@/assets/styles/defs';
+
 :root {
   --white: #fff;
   --black: #111;
+  --grey: #666;
+}
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  height: 100%;
+  background: $black;
 }

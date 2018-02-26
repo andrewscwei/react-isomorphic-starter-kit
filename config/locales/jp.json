@@ -1,6 +1,10 @@
 {
-  "title": "react-express-starter-kit",
   "hello": "こんにちは、世界！",
+  "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
+  "home": "ホーム",
+  "about": "アバウト",
+  "not-found": "ページが表示できません",
+  "about-title": "ただインターネットから取り出されたランダムな名前",
   "en": "EN",
-  "jp": "日本語"
+  "jp": "日"
 }
