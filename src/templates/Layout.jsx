@@ -64,6 +64,7 @@ export default class Layout extends PureComponent {
           <meta name='msapplication-config' content={resolve(`/browserconfig.xml`, manifest)}/>
           <meta name='msapplication-navbutton-color' content='#ff3300'/>
 
+          <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i'/>
           { process.env.NODE_ENV !== `development` &&
             <link rel='stylesheet' type='text/css' href={resolve(`/bundle.css`, manifest)}/>
           }

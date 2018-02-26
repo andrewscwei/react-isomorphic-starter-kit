@@ -1,6 +1,6 @@
 /**
  * @file Configuration for both client and server environments.
-*/
+ */
 
 module.exports = {
   // Port.

@@ -2,7 +2,7 @@
  * @file Client app root.
  */
 
-import '@/containers/App.css';
+import styles from '@/containers/App.css';
 import Header from '@/components/Header';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ export default class App extends PureComponent {
 
   render() {
     return (
-      <div>
+      <div className={styles.root}>
         <Header/>
         {renderRoutes(this.props.route.routes)}
       </div>

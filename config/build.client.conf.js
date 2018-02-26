@@ -1,7 +1,7 @@
 /**
  * @file This is the Webpack config for compiling client assets in both
  *       `development` and `production` environments.
-*/
+ */
 
 const config = require(`./app.conf`);
 const path = require(`path`);
@@ -51,7 +51,7 @@ module.exports = {
       use: `babel-loader`,
       exclude: /node_modules/
     }, {
-      test: /\.p?css$/,
+      test: /\.css$/,
       use: (function() {
         const t = [{
           loader: `css-loader`,
@@ -66,7 +66,7 @@ module.exports = {
           options: {
             ident: `postcss`,
             sourceMap: isDev ? true : config.build.sourceMap,
-            plugins: (loader) => [
+            plugins: () => [
               require(`postcss-import`)({
                 resolve(id, basedir) {
                   return ResolverFactory.createResolver({
@@ -79,14 +79,16 @@ module.exports = {
                   }).resolveSync({}, basedir, id);
                 }
               }),
-              require(`postcss-preset-env`)(),
+              require(`postcss-preset-env`)({
+                stage: 0
+              }),
               require(`autoprefixer`)(),
               require(`cssnano`)()
             ]
           }
         }];
 
-        return isDev ? [`style-loader`].concat(t) : ExtractTextPlugin.extract({
+        return isDev ? [`style-loader?sourceMap`].concat(t) : ExtractTextPlugin.extract({
           fallback: `style-loader`,
           use: t
         });
@@ -166,7 +168,7 @@ module.exports = {
     ])
     .concat((isDev && config.dev.linter) || (!isDev && config.build.linter) ? [
       new StyleLintPlugin({
-        files: [`**/*.css`, `**/*.pcss`],
+        files: [`**/*.css`],
         failOnError: false,
         quiet: false
       })

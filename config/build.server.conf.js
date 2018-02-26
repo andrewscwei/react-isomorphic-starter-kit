@@ -1,7 +1,7 @@
 /**
  * @file This is the Webpack config for compiling client assets in both
  *       `development` and `production` environments.
-*/
+ */
 
 const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);

@@ -14,9 +14,9 @@ export default class Header extends PureComponent {
     const { t, i18n } = this.props;
 
     return (
-      <header className={styles.container}>
-        <button onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
-        <button onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
+      <header className={styles.root}>
+        <button className={styles.button} onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
+        <button className={styles.button} onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
       </header>
     );
   }

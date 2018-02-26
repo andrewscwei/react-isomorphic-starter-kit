@@ -13,9 +13,8 @@ export default class Home extends PureComponent {
     const { t } = this.props;
 
     return (
-      <div className={styles.container}>
-        <img src={require(`@/assets/images/logo.svg`)}/>
-        <h1>{t(`hello`)}</h1>
+      <div className={styles.root}>
+        <h1 className={styles.h1}>{t(`title`)}</h1>
       </div>
     );
   }
