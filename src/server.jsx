@@ -24,6 +24,12 @@ const app = express();
 app.use(helmet());
 
 /**
+ * HTTP request logger setup.
+ * @see {@link https://www.npmjs.com/package/morgan}
+ */
+app.use(morgan(`dev`));
+
+/**
  * Serve assets from Webpack dev server in development to enable hot module
  * reloading.
  */
@@ -45,12 +51,6 @@ if (process.env.NODE_ENV !== `development` && config.forceSSL) {
 }
 
 /**
- * HTTP request logger setup.
- * @see {@link https://www.npmjs.com/package/morgan}
- */
-app.use(morgan(`dev`));
-
-/**
  * i18n setup.
  */
 app.use(i18nMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`, `locales`))));
@@ -68,15 +68,6 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
     }
   }));
 }
-
-app.use(`/:locale`, function(req, res, next) {
-  if (~config.locales.indexOf(req.params.locale)) {
-    req.locale = req.params.locale;
-    req.normalizedPath = req.path;
-  }
-
-  next();
-});
 
 /**
  * Server-side rendering setup.
