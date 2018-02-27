@@ -56,9 +56,9 @@ else {
 }
 
 // Handle hot module replacement.
-// if (module.hot) {
-//   module.hot.accept(`./routes`, () => {
-//     const newRoutes = require(`./routes`).default;
-//     render(markup(newRoutes));
-//   });
-// }
+if (module.hot) {
+  module.hot.accept(`./routes`, () => {
+    const newRoutes = require(`./routes`).default;
+    hydrate(markup(newRoutes));
+  });
+}
