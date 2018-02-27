@@ -3,6 +3,9 @@
  */
 
 module.exports = {
+  // Name of the app.
+  appName: `React Universal Starter Kit`,
+
   // Port.
   port: process.env.PORT || 8080,
 

@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom';
 @translate()
 export default class Header extends PureComponent {
   static propTypes = {
-    t: PropTypes.func.isRequired,
-    i18n: PropTypes.object.isRequired
+    t: PropTypes.func.isRequired
   }
 
   render() {
