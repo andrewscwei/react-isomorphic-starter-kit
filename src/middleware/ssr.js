@@ -51,8 +51,6 @@ function render({ excludeContext = false } = {}) {
       return obj;
     }, {});
 
-    console.log(i18n.hasResourceBundle(`en`, `common`));
-    console.log(i18n.hasResourceBundle(`jp`, `common`));
     i18n.changeLanguage(locale);
 
     // Check for asset manifest object.
