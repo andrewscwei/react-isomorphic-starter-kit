@@ -24,7 +24,7 @@ export { i18n };
  *
  * @return {Function} - Express middleware.
  */
-export function i18nMiddleware(translationsDir) {
+export function i18nMiddleware() {
   if (!i18n.isInitialized) {
     i18n.init({
       whitelist: $APP_CONFIG.locales,

@@ -51,7 +51,7 @@ if (process.env.NODE_ENV !== `development` && $APP_CONFIG.forceSSL) {
 /**
  * i18n setup.
  */
-app.use(i18nMiddleware(path.join(process.env.CONFIG_DIR || path.join(__dirname, `config`), `locales`)));
+app.use(i18nMiddleware());
 
 /**
  * Serve static files and add expire headers.
