@@ -13,7 +13,7 @@ const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSyste
 const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
 const StyleLintPlugin = require(`stylelint-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
-const { DefinePlugin, EnvironmentPlugin, IgnorePlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
+const { EnvironmentPlugin, IgnorePlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `client`;
@@ -132,10 +132,6 @@ module.exports = {
     // Set runtime environment variables.
     new EnvironmentPlugin({
       NODE_ENV: `production`
-    }),
-    // Define runtime global variables in JavaScript.
-    new DefinePlugin({
-      $config: JSON.stringify(config)
     }),
     // Extract common modules into separate bundle.
     new CommonsChunkPlugin({

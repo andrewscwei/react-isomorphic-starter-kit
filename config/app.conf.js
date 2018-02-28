@@ -2,15 +2,20 @@
  * @file Configuration for both client and server environments.
  */
 
-const { description, keywords, homepage } = require(`../package.json`);
-
 module.exports = {
   // HTML metadata.
   meta: {
+    // Title of the app.
     title: `React Universal Starter Kit`,
-    description,
-    keywords,
-    url: homepage
+
+    // Short description of the app.
+    description: require(`../package.json`).description,
+
+    // Search keywords.
+    keywords: require(`../package.json`).keywords,
+
+    // App URL.
+    url: require(`../package.json`).homepage
   },
 
   // Port.

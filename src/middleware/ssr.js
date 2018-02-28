@@ -1,4 +1,3 @@
-/* globals $manifest: true */
 /**
  * @file Express middleware for server-side rendering of React views.
  *
@@ -6,7 +5,6 @@
  */
 
 import * as reducers from '@/reducers';
-import config from '@/../config/app.conf';
 import debug from 'debug';
 import routes from '@/routes';
 import thunk from 'redux-thunk';
@@ -22,7 +20,7 @@ import { Provider } from 'react-redux';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
-const publicPath = process.env.NODE_ENV === `development` ? `/` : config.build.publicPath;
+const publicPath = process.env.NODE_ENV === `development` ? `/` : $APP_CONFIG.build.publicPath;
 
 /**
  * Express middleware for rendering React views to string based on the request
@@ -40,35 +38,31 @@ const publicPath = process.env.NODE_ENV === `development` ? `/` : config.build.p
  * @return {Function} - Express middleware.
  */
 function render({ excludeContext = false } = {}) {
-  let manifest = undefined;
-
-  // See if `$manifest` variable is defined. This is defined by Webpack.
-  try {
-    manifest = $manifest;
-    log(`Using defined manifest object`);
-  }
-  catch (err) {
-    log(`No manifest object defined`);
-  }
-
   return async function(req, res) {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.normalizedPath || req.path);
+
+    // Prepare i18n data.
     const locale = req.language;
-    const translations = config.locales.reduce((obj, val) => {
-      obj[val] = i18n.getResourceBundle(val);
+    const translations = $APP_CONFIG.locales.reduce((obj, val) => {
+      obj[val] = i18n.getResourceBundle(val, `common`);
       return obj;
     }, {});
 
+    console.log(i18n.hasResourceBundle(`en`, `common`));
+    console.log(i18n.hasResourceBundle(`jp`, `common`));
     i18n.changeLanguage(locale);
+
+    // Check for asset manifest object.
+    const manifest = process.env.NODE_ENV === `development` ? undefined : $ASSET_MANIFEST;
 
     // If `excludeContext` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
       return res.send(`<!doctype html>${renderToStaticMarkup(
-        <Layout config={config} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+        <Layout initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
       )}`);
     }
 
@@ -101,7 +95,7 @@ function render({ excludeContext = false } = {}) {
     }
 
     return res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+      <Layout body={body} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
     )}`);
   };
 }

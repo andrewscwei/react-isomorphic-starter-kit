@@ -4,6 +4,7 @@
     "react"
   ],
   "plugins": [
+    ["transform-define", "config/define.conf.js"],
     "transform-runtime",
     "transform-object-rest-spread",
     "transform-decorators-legacy",

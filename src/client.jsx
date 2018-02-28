@@ -1,5 +1,4 @@
 /* eslint-env browser */
-/* global $config: true */
 /**
  * @file Client entry file.
  */
@@ -34,7 +33,7 @@ if (process.env.NODE_ENV === `development`) {
   const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
   localeReq.keys().forEach((path) => {
     const locale = path.replace(`./`, ``).replace(`.json`, ``);
-    if (!~$config.locales.indexOf(locale)) return;
+    if (!~$APP_CONFIG.locales.indexOf(locale)) return;
     i18n.addResourceBundle(locale, `common`, localeReq(path), true);
   });
 }

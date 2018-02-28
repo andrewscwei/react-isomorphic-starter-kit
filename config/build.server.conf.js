@@ -7,7 +7,7 @@ const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
-const { BannerPlugin, EnvironmentPlugin, DefinePlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
+const { BannerPlugin, EnvironmentPlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `server`;
@@ -15,15 +15,6 @@ process.env.BABEL_ENV = `server`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
-
-// Process asset manifest file if it exists.
-let manifest = undefined;
-try {
-  manifest = require(path.join(outputDir, `public`, `asset-manifest.json`));
-}
-catch (err) {
-  console.warn(`No asset manifest file found: ${err.message}`); // eslint-disable-line no-console
-}
 
 module.exports = {
   target: `node`,
@@ -85,9 +76,6 @@ module.exports = {
     }]),
     new EnvironmentPlugin({
       NODE_ENV: `production`
-    }),
-    new DefinePlugin({
-      $manifest: JSON.stringify(manifest)
     }),
     new UglifyJsPlugin({
       sourceMap: config.build.sourceMap,

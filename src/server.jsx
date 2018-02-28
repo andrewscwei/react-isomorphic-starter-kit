@@ -2,7 +2,6 @@
  * @file Server entry file.
  */
 
-import config from '@/../config/app.conf';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -41,7 +40,7 @@ if (process.env.NODE_ENV === `development`) {
  * Redirect to HTTPS for insecure requests.
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
-if (process.env.NODE_ENV !== `development` && config.forceSSL) {
+if (process.env.NODE_ENV !== `development` && $APP_CONFIG.forceSSL) {
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
     if (req.secure) return next();
@@ -71,7 +70,7 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
 /**
  * Server-side rendering setup.
  */
-if (config.ssrEnabled) {
+if ($APP_CONFIG.ssrEnabled) {
   app.use(renderWithContext());
 }
 else {
@@ -102,7 +101,7 @@ app.use(function(err, req, res) {
 
 http
   .createServer(app)
-  .listen(config.port)
+  .listen($APP_CONFIG.port)
   .on(`error`, function(error) {
     if (error.syscall !== `listen`) throw error;
 
