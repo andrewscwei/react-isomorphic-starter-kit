@@ -1,6 +1,14 @@
 {
   "name": "react-universal-starter-kit",
   "description": "Experimental React universal/isomorphic app starter kit",
+  "keywords": [
+    "react",
+    "universal",
+    "isomorphic",
+    "ssr",
+    "css",
+    "modules"
+  ],
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {

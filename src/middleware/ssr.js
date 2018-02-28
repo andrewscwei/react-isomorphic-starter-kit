@@ -1,3 +1,4 @@
+/* globals $manifest: true */
 /**
  * @file Express middleware for server-side rendering of React views.
  *
@@ -21,12 +22,14 @@ import { Provider } from 'react-redux';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
+const publicPath = process.env.NODE_ENV === `development` ? `/` : config.build.publicPath;
 
 /**
  * Express middleware for rendering React views to string based on the request
  * path and sending the string as a response.
  *
- * @param {Object} options
+ * @param {Object} [options] - Options.
+ * @param {string} [options.publicPath] - Public path of loaded assets.
  * @param {Object} [options.manifest] - Optional asset manifest object for
  *                                      mapping raw asset paths to fingerprinted
  *                                      asset paths.
@@ -36,7 +39,18 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
  *
  * @return {Function} - Express middleware.
  */
-function render({ manifest, excludeContext = false } = {}) {
+function render({ excludeContext = false } = {}) {
+  let manifest = undefined;
+
+  // See if `$manifest` variable is defined. This is defined by Webpack.
+  try {
+    manifest = $manifest;
+    log(`Using defined manifest object`);
+  }
+  catch (err) {
+    log(`No manifest object defined`);
+  }
+
   return async function(req, res) {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
@@ -49,7 +63,9 @@ function render({ manifest, excludeContext = false } = {}) {
     // If `excludeBody` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
-      return res.send(`<!doctype html>${renderToStaticMarkup(<Layout config={config} initialState={store.getState()} initialLocale={locale}/>)}`);
+      return res.send(`<!doctype html>${renderToStaticMarkup(
+        <Layout config={config} initialState={store.getState()} initialLocale={locale} publicPath={publicPath} manifest={manifest}/>
+      )}`);
     }
 
     // For each matching route, fetch async data if required.
@@ -81,7 +97,7 @@ function render({ manifest, excludeContext = false } = {}) {
     }
 
     return res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} manifest={manifest}/>
+      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} publicPath={publicPath} manifest={manifest}/>
     )}`);
   };
 }
@@ -89,23 +105,17 @@ function render({ manifest, excludeContext = false } = {}) {
 /**
  * Express middleware to render React views with context.
  *
- * @param {Object} optinos
- * @param {Object} [options.manifest] - @see #render
- *
  * @return {Function} - Express middleware.
  */
-export function renderWithContext({ manifest } = {}) {
-  return render({ manifest, excludeContext: false });
+export function renderWithContext() {
+  return render({ excludeContext: false });
 }
 
 /**
  * Express middleware to render React views without context.
  *
- * @param {Object} optinos
- * @param {Object} [options.manifest] - @see #render
- *
  * @return {Function} - Express middleware.
  */
-export function renderWithoutContext({ manifest } = {}) {
-  return render({ manifest, excludeContext: true });
+export function renderWithoutContext() {
+  return render({ excludeContext: true });
 }

@@ -3,7 +3,6 @@
  *       file.
  */
 
-import config from '@/../config/app.conf';
 import path from 'path';
 
 /**
@@ -12,12 +11,15 @@ import path from 'path';
  * returned.
  *
  * @param {string} pathToResolve - The asset path to resolve.
- * @param {Object} [manifest] - The manifest object.
+ * @param {Object} [options] - Options.
+ * @param {string} [options.publicPath=`/`] - The public path to prefix the
+ *                                            resolved paths.
+ * @param {Object} [options.manifest] - The manifest object with asset path
+ *                                      mapping.
  *
  * @return {string} The resolved path.
  */
-export default function resolveAssetPath(pathToResolve, manifest = undefined) {
-  const publicPath = process.env.NODE_ENV === `production` ? config.build.publicPath : `/`;
+export default function resolveAssetPath(pathToResolve, { publicPath = `/`, manifest = undefined } = {}) {
   const normalizedPath = path.join.apply(null, pathToResolve.split(`/`));
 
   let output = `${publicPath}${normalizedPath}`;

@@ -2,9 +2,16 @@
  * @file Configuration for both client and server environments.
  */
 
+const { description, keywords, homepage } = require(`../package.json`);
+
 module.exports = {
-  // Name of the app.
-  appName: `React Universal Starter Kit`,
+  // HTML metadata.
+  meta: {
+    title: `React Universal Starter Kit`,
+    description,
+    keywords,
+    url: homepage
+  },
 
   // Port.
   port: process.env.PORT || 8080,

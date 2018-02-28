@@ -17,11 +17,12 @@ export default class Layout extends PureComponent {
     config: PropTypes.object.isRequired,
     initialState: PropTypes.object.isRequired,
     initialLocale: PropTypes.string.isRequired,
+    publicPath: PropTypes.string,
     manifest: PropTypes.object
   }
 
   render() {
-    const { body, title, url, keywords, description, config, initialState, initialLocale, manifest } = this.props;
+    const { body, title, url, keywords, description, config, initialState, initialLocale, publicPath, manifest } = this.props;
 
     return (
       <html>
@@ -31,51 +32,51 @@ export default class Layout extends PureComponent {
           <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'/>
           <link rel='icon' href={`/favicon.png`}/>
 
-          <title>{title || config.appName}</title>
-          <meta name='description' content={description || config.description}/>
-          <meta name='keywords' content={keywords || config.keywords}/>
+          <title>{title || config.meta.title}</title>
+          <meta name='description' content={description || config.meta.description}/>
+          <meta name='keywords' content={keywords || config.meta.keywords}/>
 
-          <meta property='og:url' content={url || config.url}/>
-          <meta property='og:image' content={resolve(`/og-image.png`, manifest)}/>
-          <meta property='og:title' content={config.appName}/>
-          <meta property='og:description' content={description || config.description}/>
+          <meta property='og:url' content={url || config.meta.url}/>
+          <meta property='og:image' content={resolve(`/og-image.png`, { publicPath, manifest })}/>
+          <meta property='og:title' content={config.meta.title}/>
+          <meta property='og:description' content={description || config.meta.description}/>
 
-          <link rel='' href={resolve(`/manifest.json`, manifest)}/>
+          <link rel='' href={resolve(`/manifest.json`, { publicPath, manifest })}/>
           <meta name='theme-color' content='#3f51b5'/>
           <meta name='mobile-web-app-capable' content='yes'/>
-          <meta name='application-name' content={config.appName}/>
+          <meta name='application-name' content={config.meta.title}/>
 
           <meta name='apple-mobile-web-app-capable' content='yes'/>
           <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
-          <meta name='apple-mobile-web-app-title' content={config.appName}/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-180x180-precomposed.png`, manifest)} sizes='180x180'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-152x152-precomposed.png`, manifest)} sizes='152x152'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-144x144-precomposed.png`, manifest)} sizes='144x144'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-120x120-precomposed.png`, manifest)} sizes='120x120'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-114x114-precomposed.png`, manifest)} sizes='114x114'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-76x76-precomposed.png`, manifest)} sizes='76x76'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-72x72-precomposed.png`, manifest)} sizes='72x72'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-60x60-precomposed.png`, manifest)} sizes='60x60'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-57x57-precomposed.png`, manifest)} sizes='57x57'/>
-          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-precomposed.png`, manifest)}/>
+          <meta name='apple-mobile-web-app-title' content={config.meta.title}/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-180x180-precomposed.png`, { publicPath, manifest })} sizes='180x180'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-152x152-precomposed.png`, { publicPath, manifest })} sizes='152x152'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-144x144-precomposed.png`, { publicPath, manifest })} sizes='144x144'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-120x120-precomposed.png`, { publicPath, manifest })} sizes='120x120'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-114x114-precomposed.png`, { publicPath, manifest })} sizes='114x114'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-76x76-precomposed.png`, { publicPath, manifest })} sizes='76x76'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-72x72-precomposed.png`, { publicPath, manifest })} sizes='72x72'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-60x60-precomposed.png`, { publicPath, manifest })} sizes='60x60'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-57x57-precomposed.png`, { publicPath, manifest })} sizes='57x57'/>
+          <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-precomposed.png`, { publicPath, manifest })}/>
 
-          <meta name='msapplication-TileImage' content={resolve(`/apple-touch-icon-144x144-precomposed.png`, manifest)}/>
+          <meta name='msapplication-TileImage' content={resolve(`/apple-touch-icon-144x144-precomposed.png`, { publicPath, manifest })}/>
           <meta name='msapplication-TileColor' content='#3f51b5'/>
-          <meta name='msapplication-config' content={resolve(`/browserconfig.xml`, manifest)}/>
+          <meta name='msapplication-config' content={resolve(`/browserconfig.xml`, { publicPath, manifest })}/>
           <meta name='msapplication-navbutton-color' content='#ff3300'/>
 
           <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i'/>
           { process.env.NODE_ENV !== `development` &&
-            <link rel='stylesheet' type='text/css' href={resolve(`/bundle.css`, manifest)}/>
+            <link rel='stylesheet' type='text/css' href={resolve(`/bundle.css`, { publicPath, manifest })}/>
           }
         </head>
         <body>
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_LOCALE__=${serialize(initialLocale)};` }}/>
           <div id='app' dangerouslySetInnerHTML={{__html: body}}/>
-          <script type='application/javascript' src={resolve(`/manifest.js`, manifest)}></script>
-          <script type='application/javascript' src={resolve(`/common.js`, manifest)}></script>
-          <script type='application/javascript' src={resolve(`/bundle.js`, manifest)}></script>
+          <script type='application/javascript' src={resolve(`/manifest.js`, { publicPath, manifest })}></script>
+          <script type='application/javascript' src={resolve(`/common.js`, { publicPath, manifest })}></script>
+          <script type='application/javascript' src={resolve(`/bundle.js`, { publicPath, manifest })}></script>
         </body>
       </html>
     );

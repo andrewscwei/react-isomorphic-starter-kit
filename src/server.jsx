@@ -1,4 +1,3 @@
-/* globals $manifest: true */
 /**
  * @file Server entry file.
  */
@@ -73,7 +72,7 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
  * Server-side rendering setup.
  */
 if (config.ssrEnabled) {
-  app.use(renderWithContext({ manifest: $manifest }));
+  app.use(renderWithContext());
 }
 else {
   app.use(renderWithoutContext());
