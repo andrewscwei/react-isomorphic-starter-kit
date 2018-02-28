@@ -23,18 +23,27 @@ const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, a
 i18n.init({
   ns: [`common`],
   defaultNS: `common`,
-  lng: window.__INITIAL_LOCALE__,
+  lng: window.__INITIAL_LOCALE__.locale,
   react: { wait: true },
   interpolation: { escapeValue: false },
 });
 
-// Require context for all locale translation files and apply them to i18next.
-const localeReq = require.context(`../config/locales`, true, /^.*\.json$/);
-localeReq.keys().forEach((path) => {
-  const locale = path.replace(`./`, ``).replace(`.json`, ``);
-  if (!~$config.locales.indexOf(locale)) return;
-  i18n.addResourceBundle(locale, `common`, localeReq(path), true);
-});
+if (process.env.NODE_ENV === `development`) {
+  // Require context for all locale translation files and apply them to i18next
+  // so that they can be watched by Webpack.
+  const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
+  localeReq.keys().forEach((path) => {
+    const locale = path.replace(`./`, ``).replace(`.json`, ``);
+    if (!~$config.locales.indexOf(locale)) return;
+    i18n.addResourceBundle(locale, `common`, localeReq(path), true);
+  });
+}
+else {
+  const translations = window.__INITIAL_LOCALE__.translations;
+  for (let locale in translations) {
+    i18n.addResourceBundle(locale, `common`, translations[locale], true);
+  }
+}
 
 // Generator for base markup.
 const markup = (r) => (
@@ -53,12 +62,4 @@ if (process.env.NODE_ENV === `development`) {
 }
 else {
   hydrate(markup(routes), document.getElementById(`app`));
-}
-
-// Handle hot module replacement.
-if (module.hot) {
-  module.hot.accept(`./routes`, () => {
-    const newRoutes = require(`./routes`).default;
-    hydrate(markup(newRoutes));
-  });
 }

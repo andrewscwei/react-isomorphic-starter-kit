@@ -13,7 +13,7 @@ const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSyste
 const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
 const StyleLintPlugin = require(`stylelint-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
-const { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
+const { DefinePlugin, EnvironmentPlugin, IgnorePlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `client`;
@@ -153,6 +153,7 @@ module.exports = {
       new HotModuleReplacementPlugin(),
       new NoEmitOnErrorsPlugin()
     ] : [
+      new IgnorePlugin(/^.*\/config\/.*$/),
       new ExtractTextPlugin({
         filename: `bundle.[contenthash].css`,
         allChunks: true

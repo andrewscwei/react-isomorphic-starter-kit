@@ -16,7 +16,7 @@ export default class Layout extends PureComponent {
     description: PropTypes.string,
     config: PropTypes.object.isRequired,
     initialState: PropTypes.object.isRequired,
-    initialLocale: PropTypes.string.isRequired,
+    initialLocale: PropTypes.object.isRequired,
     publicPath: PropTypes.string,
     manifest: PropTypes.object
   }

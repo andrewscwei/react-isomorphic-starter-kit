@@ -57,14 +57,18 @@ function render({ excludeContext = false } = {}) {
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.normalizedPath || req.path);
     const locale = req.language;
+    const translations = config.locales.reduce((obj, val) => {
+      obj[val] = i18n.getResourceBundle(val);
+      return obj;
+    }, {});
 
     i18n.changeLanguage(locale);
 
-    // If `excludeBody` is specified, just render the layout without the app
+    // If `excludeContext` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
       return res.send(`<!doctype html>${renderToStaticMarkup(
-        <Layout config={config} initialState={store.getState()} initialLocale={locale} publicPath={publicPath} manifest={manifest}/>
+        <Layout config={config} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
       )}`);
     }
 
@@ -97,7 +101,7 @@ function render({ excludeContext = false } = {}) {
     }
 
     return res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} config={config} initialState={store.getState()} initialLocale={locale} publicPath={publicPath} manifest={manifest}/>
+      <Layout body={body} config={config} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
     )}`);
   };
 }
