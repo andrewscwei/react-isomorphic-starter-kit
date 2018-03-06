@@ -33,7 +33,7 @@ module.exports = {
   // Supported locales.
   locales: [`en`, `jp`],
 
-  // Config options specific to the `build` tas.
+  // Config options specific to the `build` task.
   build: {
     // Public path of all loaded assets.
     publicPath: process.env.PUBLIC_PATH || `/`,

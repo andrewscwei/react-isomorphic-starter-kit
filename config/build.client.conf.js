@@ -42,8 +42,7 @@ module.exports = {
     path: outputDir,
     publicPath: isDev ? `/` : config.build.publicPath,
     filename: isDev ? `[name].js` : `[name].[chunkhash].js`,
-    chunkFilename: isDev ? `[chunkhash].js` : `[id].[chunkhash].js`,
-    sourceMapFilename: isDev ? `[name].js.map` : `[name].[hash:6].js.map`
+    sourceMapFilename: `[file].map`
   },
   module: {
     loaders: [{
