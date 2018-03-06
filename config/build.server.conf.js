@@ -7,7 +7,7 @@ const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
-const { BannerPlugin, EnvironmentPlugin, optimize: { UglifyJsPlugin } } = require(`webpack`);
+const { BannerPlugin, EnvironmentPlugin } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `server`;
@@ -17,6 +17,7 @@ const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
 
 module.exports = {
+  mode: process.env.NODE_ENV === `development` ? `development` : `production`,
   target: `node`,
   devtool: `source-map`,
   externals: [nodeExternals()],
@@ -39,7 +40,7 @@ module.exports = {
     sourceMapFilename: `[name].js.map`
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       use: `babel-loader`,
       exclude: /node_modules/
@@ -77,16 +78,10 @@ module.exports = {
     new EnvironmentPlugin({
       NODE_ENV: `production`
     }),
-    new UglifyJsPlugin({
-      sourceMap: config.build.sourceMap,
-      compress: {
-        warnings: false
-      }
-    })
   ]
     .concat(config.build.sourceMap ? [
       new BannerPlugin({
-        banner: `require('source-map-support').install()`,
+        banner: `require('source-map-support').install();`,
         raw: true,
         entryOnly: false
       })

@@ -13,7 +13,7 @@ const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSyste
 const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
 const StyleLintPlugin = require(`stylelint-webpack-plugin`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
-const { EnvironmentPlugin, IgnorePlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin, optimize: { CommonsChunkPlugin, UglifyJsPlugin } } = require(`webpack`);
+const { EnvironmentPlugin, IgnorePlugin, HotModuleReplacementPlugin, NoEmitOnErrorsPlugin } = require(`webpack`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `client`;
@@ -24,6 +24,7 @@ const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build/public`);
 
 module.exports = {
+  mode: isDev ? `development` : `production`,
   target: `web`,
   devtool: isDev ? `cheap-eval-source-map` : (config.build.sourceMap ? `source-map` : false),
   stats: {
@@ -33,10 +34,7 @@ module.exports = {
     errorDetails: true
   },
   entry: {
-    bundle: (function() {
-      const p = path.join(inputDir, `client.jsx`);
-      return isDev ? [`webpack-hot-middleware/client?reload=true`, p] : p;
-    })()
+    bundle: (isDev ? [`webpack-hot-middleware/client?reload=true`] : []).concat([path.join(inputDir, `client.jsx`)])
   },
   output: {
     path: outputDir,
@@ -45,7 +43,7 @@ module.exports = {
     sourceMapFilename: `[file].map`
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       use: `babel-loader`,
       exclude: /node_modules/
@@ -82,6 +80,7 @@ module.exports = {
                 stage: 0
               }),
               require(`postcss-hexrgba`)(),
+              require(`postcss-calc`)(),
               require(`autoprefixer`)(),
               require(`cssnano`)()
             ]
@@ -131,17 +130,6 @@ module.exports = {
     // Set runtime environment variables.
     new EnvironmentPlugin({
       NODE_ENV: `production`
-    }),
-    // Extract common modules into separate bundle.
-    new CommonsChunkPlugin({
-      name: `common`,
-      minChunks: (module) => ((module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.resolve(cwd, `node_modules`)) === 0))
-    }),
-    // Extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated.
-    new CommonsChunkPlugin({
-      name: `manifest`,
-      chunks: [`common`]
     })
   ]
     .concat(isDev ? [
@@ -152,12 +140,6 @@ module.exports = {
       new ExtractTextPlugin({
         filename: `bundle.[contenthash].css`,
         allChunks: true
-      }),
-      new UglifyJsPlugin({
-        sourceMap: config.build.sourceMap,
-        compress: {
-          warnings: false
-        }
       }),
       new ManifestPlugin({
         fileName: `asset-manifest.json`

@@ -22,14 +22,16 @@ import path from 'path';
 export default function resolveAssetPath(pathToResolve, { publicPath = `/`, manifest = undefined } = {}) {
   const normalizedPath = path.join.apply(null, pathToResolve.split(`/`));
 
-  let output = `${publicPath}${normalizedPath}`;
+  let output = normalizedPath;
 
   if (manifest && manifest.hasOwnProperty(normalizedPath)) {
-    output = `${publicPath}${manifest[normalizedPath]}`;
+    output = manifest[normalizedPath];
   }
   else if (manifest && manifest.hasOwnProperty(`${publicPath}${normalizedPath}`)) {
-    output = `${publicPath}${manifest[`${publicPath}${normalizedPath}`]}`;
+    output = manifest[`${publicPath}${normalizedPath}`];
   }
+
+  if (!output.startsWith(publicPath)) output = `${publicPath}${output}`;
 
   return output;
 }
