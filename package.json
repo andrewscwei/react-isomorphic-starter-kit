@@ -21,7 +21,7 @@
     "dev": "NODE_ENV=development DEBUG=app* BABEL_ENV=server nodemon --exec babel-node --verbose --watch src --watch config --ignore config/locales --ignore src/containers --ignore src/components --ext js,jsx,json --inspect=5858 src/server",
     "lint:js": "eslint . -f node_modules/eslint-friendly-formatter --ignore-path .gitignore --ext .jsx --ext .js",
     "lint:js:fix": "npm run lint:js -- --fix",
-    "lint:css": "stylelint src/**/*.css",
+    "lint:css": "stylelint src/**/*.css src/**/*.pcss",
     "lint:css:fix": "npm run lint:css -- --fix"
   },
   "dependencies": {

@@ -2,7 +2,7 @@
  * @file Client app root.
  */
 
-import styles from '@/containers/App.css';
+import styles from '@/containers/App.pcss';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import React, { PureComponent } from 'react';

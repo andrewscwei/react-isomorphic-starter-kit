@@ -1,4 +1,4 @@
-import styles from '@/containers/About.css';
+import styles from '@/containers/About.pcss';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';

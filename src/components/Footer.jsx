@@ -1,4 +1,4 @@
-import styles from '@/components/Footer.css';
+import styles from '@/components/Footer.pcss';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';

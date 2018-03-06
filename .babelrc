@@ -23,7 +23,8 @@
       ],
       "plugins": [[
         "css-modules-transform", {
-          "generateScopedName": "[hash:6]"
+          "generateScopedName": "[hash:6]",
+          "extensions": [".css", ".pcss"]
         }
       ], [
         "module-resolver", {

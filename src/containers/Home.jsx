@@ -1,4 +1,4 @@
-import styles from '@/containers/Home.css';
+import styles from '@/containers/Home.pcss';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
