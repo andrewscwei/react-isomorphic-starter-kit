@@ -50,8 +50,14 @@ module.exports = {
       test: /\.p?css$/,
       use: `css-loader/locals`
     }, {
-      test: /\.(jpe?g|png|gif|svg|ico|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: `url-loader?emitFile=false`
+      test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/media/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
+    }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }]
       .concat((isDev ? config.dev.linter : config.build.linter) ? [{
         test: /\.jsx?$/,
