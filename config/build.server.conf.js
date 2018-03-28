@@ -38,6 +38,7 @@ module.exports = {
   },
   output: {
     path: outputDir,
+    publicPath: isDev ? `/` : config.build.publicPath,
     filename: `[name].js`,
     sourceMapFilename: `[name].js.map`
   },
