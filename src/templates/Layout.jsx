@@ -29,7 +29,7 @@ export default class Layout extends PureComponent {
           <meta charSet='utf-8'/>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
           <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'/>
-          <link rel='icon' href={`/favicon.png`}/>
+          <link rel='icon' href={resolve(`/favicon.png`)}/>
 
           <title>{title || $APP_CONFIG.meta.title}</title>
           <meta name='description' content={description || $APP_CONFIG.meta.description}/>
