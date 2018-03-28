@@ -41,7 +41,7 @@ export default class Layout extends PureComponent {
           <meta property='og:description' content={description || $APP_CONFIG.meta.description}/>
 
           <link rel='' href={resolve(`/manifest.json`, { publicPath, manifest })}/>
-          <meta name='theme-color' content='#3f51b5'/>
+          <meta name='theme-color' content='#000000'/>
           <meta name='mobile-web-app-capable' content='yes'/>
           <meta name='application-name' content={$APP_CONFIG.meta.title}/>
 
@@ -60,9 +60,9 @@ export default class Layout extends PureComponent {
           <link rel='apple-touch-icon' href={resolve(`/apple-touch-icon-precomposed.png`, { publicPath, manifest })}/>
 
           <meta name='msapplication-TileImage' content={resolve(`/apple-touch-icon-144x144-precomposed.png`, { publicPath, manifest })}/>
-          <meta name='msapplication-TileColor' content='#3f51b5'/>
-          <meta name='msapplication-$APP_CONFIG' content={resolve(`/browserconfig.xml`, { publicPath, manifest })}/>
-          <meta name='msapplication-navbutton-color' content='#ff3300'/>
+          <meta name='msapplication-TileColor' content='#000000'/>
+          <meta name='msapplication-config' content={resolve(`/browserconfig.xml`, { publicPath, manifest })}/>
+          <meta name='msapplication-navbutton-color' content='#000000'/>
 
           <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i'/>
           { process.env.NODE_ENV !== `development` &&

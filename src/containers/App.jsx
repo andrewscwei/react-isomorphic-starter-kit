@@ -16,7 +16,7 @@ export default class App extends PureComponent {
 
   render() {
     return (
-      <div className={styles.root}>
+      <div className={styles[`root`]}>
         <Header/>
         {renderRoutes(this.props.route.routes)}
         <Footer/>
