@@ -129,7 +129,8 @@ module.exports = {
     }]),
     // Set runtime environment variables.
     new EnvironmentPlugin({
-      NODE_ENV: `production`
+      NODE_ENV: `production`,
+      BABEL_ENV: `client`
     })
   ]
     .concat(isDev ? [

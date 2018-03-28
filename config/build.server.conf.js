@@ -8,16 +8,18 @@ const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
 const CopyPlugin = require(`copy-webpack-plugin`);
 const { BannerPlugin, EnvironmentPlugin } = require(`webpack`);
+const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
 // Set Babel environment to use the correct Babel config.
 process.env.BABEL_ENV = `server`;
 
+const isDev = process.env.NODE_ENV === `development`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
 
 module.exports = {
-  mode: process.env.NODE_ENV === `development` ? `development` : `production`,
+  mode: isDev ? `development` : `production`,
   target: `node`,
   devtool: `source-map`,
   externals: [nodeExternals()],
@@ -51,7 +53,7 @@ module.exports = {
       test: /\.(jpe?g|png|gif|svg|ico|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
       use: `url-loader?emitFile=false`
     }]
-      .concat((process.env.NODE_ENV === `development` ? config.dev.linter : config.build.linter) ? [{
+      .concat((isDev ? config.dev.linter : config.build.linter) ? [{
         test: /\.jsx?$/,
         include: [inputDir],
         enforce: `pre`,
@@ -76,7 +78,8 @@ module.exports = {
       ignore: [`.*`, `*.conf.js`, `*.conf.json`]
     }]),
     new EnvironmentPlugin({
-      NODE_ENV: `production`
+      NODE_ENV: `production`,
+      BABEL_ENV: `server`
     }),
   ]
     .concat(config.build.sourceMap ? [
@@ -85,5 +88,8 @@ module.exports = {
         raw: true,
         entryOnly: false
       })
+    ] : [])
+    .concat((!isDev && config.build.analyzer) ? [
+      new BundleAnalyzerPlugin()
     ] : [])
 };

@@ -46,7 +46,7 @@ module.exports = {
 
     // Specifies whether a bundle analyzer report should be generated at the end
     // of the build process.
-    analyzer: false
+    analyzer: process.env.ANALYZE_BUNDLE === `true` ? true : false
   },
 
   // Config options specific to the `dev` task.
