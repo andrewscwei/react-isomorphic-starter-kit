@@ -3,7 +3,7 @@
  * @file Client entry file.
  */
 
-import * as reducers from './reducers';
+import * as reducers from '@/reducers';
 import i18n from 'i18next';
 import routes from './routes';
 import thunk from 'redux-thunk';
