@@ -3,3 +3,21 @@ extends:
   - stylelint-config-css-modules
 rules:
   max-nesting-depth: 2
+  number-leading-zero: never
+  string-quotes: single
+  selector-nested-pattern: ^&
+  property-no-unknown:
+    - true
+    - ignoreProperties: /^#.*$/
+  at-rule-empty-line-before:
+    - always
+    - ignoreAtRules:
+        - extend
+        - import
+  at-rule-no-unknown:
+    - true
+    - ignoreAtRules:
+      - extend
+      - post
+  declaration-empty-line-before: never
+  no-descending-specificity: null

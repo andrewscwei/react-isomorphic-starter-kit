@@ -18,7 +18,9 @@ rules:
   linebreak-style:
     - error
     - unix
-  no-unused-vars: 1
+  no-unused-vars:
+    - warn
+    - args: none
   no-console: 1
   no-empty: 1
   quotes:
