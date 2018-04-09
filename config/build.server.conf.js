@@ -6,7 +6,10 @@
 const config = require(`./app.conf`);
 const nodeExternals = require(`webpack-node-externals`);
 const path = require(`path`);
+const CachedInputFileSystem = require(`enhanced-resolve/lib/CachedInputFileSystem`);
 const CopyPlugin = require(`copy-webpack-plugin`);
+const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSystem`);
+const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
 const { BannerPlugin, EnvironmentPlugin } = require(`webpack`);
 const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
 
@@ -17,6 +20,9 @@ const isDev = process.env.NODE_ENV === `development`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
+const useSourceMap = isDev || (!isDev && config.build.sourceMap);
+const useBundleAnalyzer = !isDev && config.build.analyzer;
+const useLinter = isDev ? config.dev.linter : config.build.linter;
 
 module.exports = {
   mode: isDev ? `development` : `production`,
@@ -49,7 +55,34 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.p?css$/,
-      use: `css-loader/locals`
+      use: [{
+        loader: `css-loader/locals?modules&importLoaders=1&localIdentName=[hash:6]${useSourceMap ? `&sourceMap` : ``}`
+      }, {
+        loader: `postcss-loader`,
+        options: {
+          ident: `postcss`,
+          sourceMap: useSourceMap,
+          plugins: () => [
+            require(`postcss-import`)({
+              resolve(id, basedir) {
+                return ResolverFactory.createResolver({
+                  alias: {
+                    '@': inputDir
+                  },
+                  extensions: [`.css`, `.pcss`],
+                  useSyncFileSystemCalls: true,
+                  fileSystem: new CachedInputFileSystem(new NodeJsInputFileSystem(), 60000)
+                }).resolveSync({}, basedir, id);
+              }
+            }),
+            require(`precss`)(),
+            require(`postcss-hexrgba`)(),
+            require(`postcss-calc`)(),
+            require(`autoprefixer`)(),
+            require(`cssnano`)()
+          ]
+        }
+      }]
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
       use: `url-loader?limit=10000&emitFile=false&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
@@ -60,7 +93,7 @@ module.exports = {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       use: `url-loader?limit=10000&emitFile=false&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
     }]
-      .concat((isDev ? config.dev.linter : config.build.linter) ? [{
+      .concat(useLinter ? [{
         test: /\.jsx?$/,
         include: [inputDir],
         enforce: `pre`,
@@ -84,19 +117,16 @@ module.exports = {
       to: path.join(outputDir, `config`),
       ignore: [`.*`, `*.conf.js`, `*.conf.json`]
     }]),
-    new EnvironmentPlugin({
-      NODE_ENV: `production`,
-      BABEL_ENV: `server`
-    }),
+    new EnvironmentPlugin([`NODE_ENV`, `BABEL_ENV`, `DEBUG`]),
   ]
-    .concat(config.build.sourceMap ? [
+    .concat(useSourceMap ? [
       new BannerPlugin({
         banner: `require('source-map-support').install();`,
         raw: true,
         entryOnly: false
       })
     ] : [])
-    .concat((!isDev && config.build.analyzer) ? [
+    .concat(useBundleAnalyzer ? [
       new BundleAnalyzerPlugin()
     ] : [])
 };

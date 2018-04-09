@@ -128,10 +128,7 @@ module.exports = {
       ignore: [`.*`]
     }]),
     // Set runtime environment variables.
-    new EnvironmentPlugin({
-      NODE_ENV: `production`,
-      BABEL_ENV: `client`
-    })
+    new EnvironmentPlugin([`NODE_ENV`, `BABEL_ENV`]),
   ]
     .concat(isDev ? [
       new HotModuleReplacementPlugin(),

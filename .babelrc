@@ -10,24 +10,21 @@
     "transform-runtime",
     "transform-object-rest-spread",
     "transform-decorators-legacy",
-    "transform-class-properties"
+    "transform-class-properties",
+    ["module-resolver", {
+      "alias": {
+        "@": "./src"
+      }
+    }]
   ],
   "env": {
-    "server": {
+    "dev": {
       "plugins": [[
         "css-modules-transform", {
           "generateScopedName": "[hash:6]",
           "extensions": [".css", ".pcss"]
         }
-      ], [
-        "module-resolver", {
-          "alias": {
-            "@": "./src"
-          }
-        }
-      ]
-    ]},
-    "client": {
+      ]]
     }
   }
 }
