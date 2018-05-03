@@ -1,0 +1,118 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2017,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    "block-spacing": "error",
+    "brace-style": [
+      "error",
+      "stroustrup",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "func-call-spacing": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true,
+        "mode": "strict"
+      }
+    ],
+    "keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "no-cond-assign": "warn",
+    "no-console": "warn",
+    "no-duplicate-imports": "error",
+    "no-empty": "warn",
+    "no-lonely-if": "error",
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multiple-empty-lines": "error",
+    "no-nested-ternary": "off",
+    "max-depth": [
+      "warn",
+      6
+    ],
+    "new-parens": "error",
+    "no-unneeded-ternary": "off",
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "none"
+      }
+    ],
+    "no-useless-escape": "warn",
+    "no-whitespace-before-property": "error",
+    "nonblock-statement-body-position": [
+      "error",
+      "beside"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "space-before-blocks": [
+      "error",
+      "always"
+    ],
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ],
+    "spaced-comment": [
+      "error",
+      "always"
+    ],
+    "space-unary-ops": "error",
+    "quote-props": [
+      "error",
+      "consistent-as-needed"
+    ],
+    "quotes": [
+      "error",
+      "backtick"
+    ]
+  }
+}

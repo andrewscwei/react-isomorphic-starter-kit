@@ -1,3 +1,0 @@
-globals:
-  $APP_CONFIG: true
-  $ASSET_MANIFEST: true
