@@ -1,4 +1,4 @@
-import { fetchUsers } from '@/reducers/users';
+import { fetchUsers } from '@/store/users';
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';

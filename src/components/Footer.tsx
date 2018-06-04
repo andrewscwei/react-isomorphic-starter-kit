@@ -50,7 +50,7 @@ const StyledRoot = styled.footer`
     width: 20px;
     height: 20px;
     transition: all .2s ease-out;
-    background: url('@/assets/images/github-icon.svg') center / 100% no-repeat;
+    background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
     display: block;
 
     &:hover {

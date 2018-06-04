@@ -50,9 +50,6 @@ const config: Configuration = {
   plugins: [
     new CopyPlugin([{ from: path.join(inputDir, `static`), ignore: [`.*`], to: outputDir }]),
     new EnvironmentPlugin([`NODE_ENV`]),
-    new DefinePlugin({
-      $APP_CONFIG: JSON.stringify(appConfig),
-    }),
     ...isProduction ? [
       new IgnorePlugin(/^.*\/config\/.*$/),
       new ManifestPlugin({ fileName: `asset-manifest.json` }),

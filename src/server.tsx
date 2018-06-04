@@ -2,6 +2,7 @@
  * @file Server entry file.
  */
 
+import appConfig from '@/../config/app.conf';
 import { i18nMiddleware } from '@/middleware/i18n';
 import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 import debug from 'debug';
@@ -40,7 +41,7 @@ if (process.env.NODE_ENV === `development`) {
  * Redirect to HTTPS for insecure requests.
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
-if (process.env.NODE_ENV !== `development` && $APP_CONFIG.forceSSL) {
+if (process.env.NODE_ENV !== `development` && appConfig.forceSSL) {
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
     if (req.secure) return next();
@@ -70,7 +71,7 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
 /**
  * Server-side rendering setup.
  */
-if ($APP_CONFIG.ssrEnabled) {
+if (appConfig.ssrEnabled) {
   app.use(renderWithContext());
 }
 else {
@@ -101,7 +102,7 @@ app.use((err, req, res, next) => {
 
 http
   .createServer(app)
-  .listen($APP_CONFIG.port)
+  .listen(appConfig.port)
   .on(`error`, (error: NodeJS.ErrnoException) => {
     if (error.syscall !== `listen`) throw error;
 

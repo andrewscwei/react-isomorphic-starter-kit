@@ -4,6 +4,7 @@
  * @see {@link https://www.npmjs.com/package/i18next}
  */
 
+import appConfig from '@/../config/app.conf';
 import i18next from 'i18next';
 import i18nextExpressMiddleware, { LanguageDetector } from 'i18next-express-middleware';
 
@@ -27,8 +28,8 @@ export { i18n };
 export function i18nMiddleware() {
   if (!i18n.isInitialized) {
     i18n.init({
-      whitelist: $APP_CONFIG.locales,
-      fallbackLng: $APP_CONFIG.defaultLocale,
+      whitelist: appConfig.locales,
+      fallbackLng: appConfig.defaultLocale,
       ns: [`common`],
       defaultNS: `common`,
       interpolation: {
@@ -40,7 +41,7 @@ export function i18nMiddleware() {
       const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
       localeReq.keys().forEach(path => {
         const locale = path.replace(`./`, ``).replace(`.json`, ``);
-        if (!~$APP_CONFIG.locales.indexOf(locale)) return;
+        if (!~appConfig.locales.indexOf(locale)) return;
         i18n.addResourceBundle(locale, `common`, localeReq(path), true);
       });
     }

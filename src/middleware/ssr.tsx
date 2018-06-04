@@ -4,9 +4,10 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
+import appConfig from '@/../config/app.conf';
 import { i18n } from '@/middleware/i18n';
-import * as reducers from '@/reducers';
 import routes from '@/routes';
+import * as reducers from '@/store';
 import Layout from '@/templates/Layout';
 import debug from 'debug';
 import React from 'react';
@@ -20,17 +21,12 @@ import thunk from 'redux-thunk';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
-const publicPath = process.env.NODE_ENV === `development` ? `/` : $APP_CONFIG.build.publicPath;
 
 /**
  * Express middleware for rendering React views to string based on the request
  * path and sending the string as a response.
  *
  * @param {Object} [options] - Options.
- * @param {string} [options.publicPath] - Public path of loaded assets.
- * @param {Object} [options.manifest] - Optional asset manifest object for
- *                                      mapping raw asset paths to fingerprinted
- *                                      asset paths.
  * @param {Object} [options.excludeContext=false] - Specifies whether the view
  *                                                  body should be excluded from
  *                                                  the rendering process.
@@ -46,15 +42,12 @@ function render({ excludeContext = false } = {}) {
 
     // Prepare i18n data.
     const locale = req.language;
-    const translations = $APP_CONFIG.locales.reduce((obj, val) => {
+    const translations = appConfig.locales.reduce((obj, val) => {
       obj[val] = i18n.getResourceBundle(val, `common`);
       return obj;
     }, {});
 
     i18n.changeLanguage(locale);
-
-    // Check for asset manifest object.
-    const manifest = process.env.NODE_ENV === `development` ? undefined : $ASSET_MANIFEST;
 
     // If `excludeContext` is specified, just render the layout without the app
     // markup.
@@ -63,8 +56,6 @@ function render({ excludeContext = false } = {}) {
         <Layout
           initialState={store.getState()}
           initialLocale={{ locale, translations }}
-          publicPath={publicPath}
-          manifest={manifest}
         />,
       )}`);
     }
@@ -102,8 +93,6 @@ function render({ excludeContext = false } = {}) {
         body={body}
         initialState={store.getState()}
         initialLocale={{ locale, translations }}
-        publicPath={publicPath}
-        manifest={manifest}
       />,
     )}`);
   };

@@ -5,11 +5,11 @@
 
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
+import { BannerPlugin, Configuration, EnvironmentPlugin, DefinePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
 
-const { dependencies } = require(`../package.json`);
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
@@ -19,17 +19,17 @@ const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
 let manifest;
 
-try {
-  manifest = require(`../build/public/asset-manifest.json`);
+if (isProduction) {
+  try { manifest = require(`../build/public/asset-manifest.json`); }
+  catch (err) { /* Do nothing */ }
 }
-catch (err) { /* Do nothing */ }
 
 const config: Configuration = {
   devtool: `source-map`,
   entry: {
     server: path.join(inputDir, `server.tsx`),
   },
-  externals: Object.keys(dependencies),
+  externals: [nodeExternals()],
   mode: isProduction ? `production` : `development`,
   module: {
     rules: [{
@@ -63,11 +63,12 @@ const config: Configuration = {
       ignore: [`.*`, `*.conf.js`, `*.conf.json`],
       to: path.join(outputDir, `config`),
     }]),
-    new EnvironmentPlugin([`NODE_ENV`]),
     new DefinePlugin({
-      $APP_CONFIG: JSON.stringify(appConfig),
-      $ASSET_MANIFEST: JSON.stringify(manifest),
+      'process.env': {
+        ASSET_MANIFEST: JSON.stringify(manifest),
+      },
     }),
+    new EnvironmentPlugin([`NODE_ENV`]),
     ...!useSourceMap ? [] : [
       new BannerPlugin({
         banner: `require('source-map-support').install();`,

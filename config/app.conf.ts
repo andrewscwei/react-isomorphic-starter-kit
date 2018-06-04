@@ -38,6 +38,9 @@ export default {
     // Public path of all loaded assets.
     publicPath: process.env.PUBLIC_PATH || `/`,
 
+    // Manifest path.
+    manifestPath: process.env.MANIFEST_PATH || `public/asset-manifest.json`,
+
     // Specifies whether JavaScript and CSS source maps should be generated.
     sourceMap: true,
 

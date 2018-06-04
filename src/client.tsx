@@ -3,8 +3,8 @@
  * @file Client entry file.
  */
 
-import * as reducers from '@/reducers';
 import routes from '@/routes';
+import * as reducers from '@/store';
 import i18n from 'i18next';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
@@ -27,13 +27,14 @@ i18n.init({
   interpolation: { escapeValue: false },
 });
 
+// Require context for all locale translation files and apply them to i18next so
+// that they can be watched by Webpack.
 if (process.env.NODE_ENV === `development`) {
-  // Require context for all locale translation files and apply them to i18next
-  // so that they can be watched by Webpack.
+  const appConfig = require(`@/../config/app.conf`).default;
   const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
   localeReq.keys().forEach(path => {
     const locale = path.replace(`./`, ``).replace(`.json`, ``);
-    if (!~$APP_CONFIG.locales.indexOf(locale)) return;
+    if (!~appConfig.locales.indexOf(locale)) return;
     i18n.addResourceBundle(locale, `common`, localeReq(path), true);
   });
 }
