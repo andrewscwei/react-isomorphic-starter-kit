@@ -51,9 +51,9 @@ const config: Configuration = {
     __filename: false,
   },
   output: {
+    filename: `[name].js`,
     path: outputDir,
     publicPath: isProduction ? appConfig.build.publicPath : `/`,
-    filename: `[name].js`,
     sourceMapFilename: `[name].js.map`,
   },
   plugins: [
