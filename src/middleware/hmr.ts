@@ -22,9 +22,6 @@ const compiler = webpack(buildConfig);
  */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
-    quiet: false,
-    noInfo: true,
-    inline: false,
     publicPath: buildConfig.output.publicPath,
     stats: { colors: true },
   });
@@ -39,6 +36,5 @@ export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
     log,
     heartbeat: 2000,
-    multistep: false,
   });
 }

@@ -76,7 +76,7 @@ const config: Configuration = {
       $ASSET_MANIFEST: JSON.stringify(manifest),
     }),
     // Set runtime environment variables.
-    new EnvironmentPlugin([`NODE_ENV`, `BABEL_ENV`]),
+    new EnvironmentPlugin([`NODE_ENV`]),
     ...isDev ? [
       new HotModuleReplacementPlugin(),
       new NoEmitOnErrorsPlugin(),

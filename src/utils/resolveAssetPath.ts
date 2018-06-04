@@ -19,7 +19,7 @@ import path from 'path';
  *
  * @return {string} The resolved path.
  */
-export default function resolveAssetPath(pathToResolve, { publicPath = `/`, manifest } = {}) {
+export default function resolveAssetPath(pathToResolve, { publicPath = `/`, manifest }: any = {}) {
   const normalizedPath = path.join.apply(null, pathToResolve.split(`/`));
 
   let output = normalizedPath;

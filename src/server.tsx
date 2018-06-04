@@ -81,9 +81,9 @@ else {
  * Server 404 error, when the requested URI is not found.
  * @code 404 - URL not found.
  */
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.path} is not handled.`);
-  err.status = 404;
+  err[`status`] = 404;
   next(err);
 });
 
@@ -95,14 +95,14 @@ app.use(function(req, res, next) {
  * have a status code, it will default to 500.
  * @code 500 - Server error.
  */
-app.use(function(err, req, res) {
-  res.status(err.status || 500).send(err);
+app.use((err, req, res, next) => {
+  res.status(err[`status`] || 500).send(err);
 });
 
 http
   .createServer(app)
   .listen($APP_CONFIG.port)
-  .on(`error`, function(error) {
+  .on(`error`, (error: NodeJS.ErrnoException) => {
     if (error.syscall !== `listen`) throw error;
 
     // Handle specific errors with friendly messages.
@@ -124,8 +124,8 @@ http
   });
 
 // Handle unhandled rejections.
-process.on(`unhandledRejection`, function(reason) {
-  console.error(`Unhandled Promise rejection:`, reason); // eslint-disable-line no-console
+process.on(`unhandledRejection`, reason => {
+  console.error(`Unhandled Promise rejection:`, reason); // tslint:disable-line no-console
   process.exit(1);
 });
 

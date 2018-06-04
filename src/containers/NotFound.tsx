@@ -38,7 +38,11 @@ class NotFound extends PureComponent<Props> {
     const { t } = this.props;
 
     return (
-      <Route render={() => {
+      <Route render={({ staticContext }) => {
+        if (staticContext) {
+          staticContext[`status`] = 404;
+        }
+
         return (
           <StyledRoot>
             <summary>

@@ -14,7 +14,7 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
-import StaticRouter from 'react-router-dom/StaticRouter';
+import { StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -38,7 +38,7 @@ const publicPath = process.env.NODE_ENV === `development` ? `/` : $APP_CONFIG.bu
  * @return {Function} - Express middleware.
  */
 function render({ excludeContext = false } = {}) {
-  return async function(req, res) {
+  return async (req, res) => {
     log(`Processing path: ${req.normalizedPath || req.path}`);
 
     // Find and store all matching client routes based on the request URL.
@@ -60,40 +60,51 @@ function render({ excludeContext = false } = {}) {
     // markup.
     if (excludeContext) {
       return res.send(`<!doctype html>${renderToStaticMarkup(
-        initialState as Layout= {store.getState()} initialLocale = {{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+        <Layout
+          initialState={store.getState()}
+          initialLocale={{ locale, translations }}
+          publicPath={publicPath}
+          manifest={manifest}
+        />,
       )}`);
     }
 
     // For each matching route, fetch async data if required.
-    for (let i = 0; i < matches.length; i++) {
-      const { route, match } = matches[i];
-      if (!(route.component.fetchData instanceof Function)) continue;
+    for (const t of matches) {
+      const { route, match } = t;
+      if (!(route.component[`fetchData`] instanceof Function)) continue;
       log(`Fetching data for route: ${match.url}`);
-      await route.component.fetchData(store);
+      await route.component[`fetchData`](store);
     }
 
-    let context = {};
+    const context: object = {};
 
     const body = renderToString(
-      i18n as I18nextProvider= {i18n} >
-        store as Provider= {store} >
-          location as StaticRouter= {req.url} context = {context} >
-            {renderRoutes(routes); }
-          < /StaticRouter>
-        < /Provider>
-      < /I18nextProvider>,
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            {renderRoutes(routes)}
+          </StaticRouter>
+        </Provider>
+      </I18nextProvider>,
     );
 
-    switch (context.status) {
+    switch (context[`status`]) {
     case 302:
-      return res.redirect(302, context.url);
+      return res.redirect(302, context[`url`]);
     case 404:
       res.status(404);
       break;
     }
 
     return res.send(`<!doctype html>${renderToStaticMarkup(
-      body as Layout= {body} initialState = {store.getState()} initialLocale = {{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+      <Layout
+        body={body}
+        initialState={store.getState()}
+        initialLocale={{ locale, translations }}
+        publicPath={publicPath}
+        manifest={manifest}
+      />,
     )}`);
   };
 }

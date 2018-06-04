@@ -11,7 +11,7 @@ import { hydrate, render } from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -49,9 +49,9 @@ else {
 const markup = r => (
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
-      <BrowserRouter>
+      <Router>
         {renderRoutes(r)}
-      </BrowserRouter>
+      </Router>
     </Provider>
   </I18nextProvider>
 );

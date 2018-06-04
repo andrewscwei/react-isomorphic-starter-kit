@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 /**
  * @file Base HTML template for all containers.
  */
@@ -8,14 +9,14 @@ import serialize from 'serialize-javascript';
 
 interface Props {
   body: string;
-  title: string;
-  url: string;
-  keywords: string;
-  description: string;
+  title?: string;
+  url?: string;
+  keywords?: string;
+  description?: string;
   initialState: any;
   initialLocale: any;
-  publicPath: string;
-  manifest: object;
+  publicPath?: string;
+  manifest?: object;
 }
 
 export default class Layout extends PureComponent<Props> {
