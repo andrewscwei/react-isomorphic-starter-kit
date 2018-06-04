@@ -26,7 +26,7 @@ export function devMiddleware() {
     noInfo: true,
     inline: false,
     publicPath: buildConfig.output.publicPath,
-    stats: { colors: true }
+    stats: { colors: true },
   });
 }
 
@@ -37,8 +37,8 @@ export function devMiddleware() {
  */
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
-    log: log,
+    log,
     heartbeat: 2000,
-    multistep: false
+    multistep: false,
   });
 }

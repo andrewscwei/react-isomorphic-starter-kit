@@ -2,7 +2,7 @@
  * @file Configuration for both client and server environments.
  */
 
-module.exports = {
+export default {
   // HTML metadata.
   meta: {
     // Title of the app.
@@ -15,7 +15,7 @@ module.exports = {
     keywords: require(`../package.json`).keywords,
 
     // App URL.
-    url: require(`../package.json`).homepage
+    url: require(`../package.json`).homepage,
   },
 
   // Port.
@@ -46,12 +46,12 @@ module.exports = {
 
     // Specifies whether a bundle analyzer report should be generated at the end
     // of the build process.
-    analyzer: process.env.ANALYZE_BUNDLE === `true` ? true : false
+    analyzer: process.env.ANALYZE_BUNDLE === `true` ? true : false,
   },
 
   // Config options specific to the `dev` task.
   dev: {
     // Specifies whether the linter should run.
-    linter: false
-  }
+    linter: false,
+  },
 };

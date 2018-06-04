@@ -32,13 +32,13 @@ export function i18nMiddleware() {
       ns: [`common`],
       defaultNS: `common`,
       interpolation: {
-        escapeValue: false // Not needed for React
-      }
+        escapeValue: false, // Not needed for React
+      },
     });
 
     if (process.env.NODE_ENV !== `development`) {
       const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
-      localeReq.keys().forEach((path) => {
+      localeReq.keys().forEach(path => {
         const locale = path.replace(`./`, ``).replace(`.json`, ``);
         if (!~$APP_CONFIG.locales.indexOf(locale)) return;
         i18n.addResourceBundle(locale, `common`, localeReq(path), true);

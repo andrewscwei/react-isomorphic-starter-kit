@@ -2,6 +2,8 @@
  * @file Server entry file.
  */
 
+import { i18nMiddleware } from '@/middleware/i18n';
+import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -9,8 +11,6 @@ import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
 import path from 'path';
-import { i18nMiddleware } from '@/middleware/i18n';
-import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 
 const log = debug(`app`);
 const app = express();
@@ -59,11 +59,11 @@ app.use(i18nMiddleware());
  */
 if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname, `public`))) {
   app.use(express.static(path.join(__dirname, `public`), {
-    setHeaders: function(res) {
+    setHeaders(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
       res.setHeader(`Cache-Control`, `max-age=${duration / 1000}`);
-    }
+    },
   }));
 }
 

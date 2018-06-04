@@ -4,19 +4,19 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import * as reducers from '@/reducers';
-import debug from 'debug';
-import routes from '@/routes';
-import thunk from 'redux-thunk';
-import Layout from '@/templates/Layout';
-import React from 'react';
-import StaticRouter from 'react-router-dom/StaticRouter';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { i18n } from '@/middleware/i18n';
-import { matchRoutes, renderRoutes } from 'react-router-config';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import * as reducers from '@/reducers';
+import routes from '@/routes';
+import Layout from '@/templates/Layout';
+import debug from 'debug';
+import React from 'react';
+import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import StaticRouter from 'react-router-dom/StaticRouter';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
@@ -60,7 +60,7 @@ function render({ excludeContext = false } = {}) {
     // markup.
     if (excludeContext) {
       return res.send(`<!doctype html>${renderToStaticMarkup(
-        <Layout initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+        initialState as Layout= {store.getState()} initialLocale = {{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
       )}`);
     }
 
@@ -75,13 +75,13 @@ function render({ excludeContext = false } = {}) {
     let context = {};
 
     const body = renderToString(
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          <StaticRouter location={req.url} context={context}>
-            {renderRoutes(routes)}
-          </StaticRouter>
-        </Provider>
-      </I18nextProvider>
+      i18n as I18nextProvider= {i18n} >
+        store as Provider= {store} >
+          location as StaticRouter= {req.url} context = {context} >
+            {renderRoutes(routes); }
+          < /StaticRouter>
+        < /Provider>
+      < /I18nextProvider>,
     );
 
     switch (context.status) {
@@ -93,7 +93,7 @@ function render({ excludeContext = false } = {}) {
     }
 
     return res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} initialState={store.getState()} initialLocale={{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
+      body as Layout= {body} initialState = {store.getState()} initialLocale = {{ locale, translations }} publicPath={publicPath} manifest={manifest}/>
     )}`);
   };
 }

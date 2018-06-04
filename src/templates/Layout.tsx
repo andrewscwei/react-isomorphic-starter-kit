@@ -3,23 +3,22 @@
  */
 
 import resolve from '@/utils/resolveAssetPath';
-import serialize from 'serialize-javascript';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import serialize from 'serialize-javascript';
 
-export default class Layout extends PureComponent {
-  static propTypes = {
-    body: PropTypes.string,
-    title: PropTypes.string,
-    url: PropTypes.string,
-    keywords: PropTypes.string,
-    description: PropTypes.string,
-    initialState: PropTypes.object.isRequired,
-    initialLocale: PropTypes.object.isRequired,
-    publicPath: PropTypes.string,
-    manifest: PropTypes.object
-  }
+interface Props {
+  body: string;
+  title: string;
+  url: string;
+  keywords: string;
+  description: string;
+  initialState: any;
+  initialLocale: any;
+  publicPath: string;
+  manifest: object;
+}
 
+export default class Layout extends PureComponent<Props> {
   render() {
     const { body, title, url, keywords, description, initialState, initialLocale, publicPath, manifest } = this.props;
 
@@ -79,4 +78,3 @@ export default class Layout extends PureComponent {
     );
   }
 }
-
