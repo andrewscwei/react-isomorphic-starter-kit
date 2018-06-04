@@ -5,7 +5,7 @@
 
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import { BannerPlugin, Configuration, EnvironmentPlugin, DefinePlugin } from 'webpack';
+import { Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
@@ -14,7 +14,6 @@ const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
-const useSourceMap = !isProduction || (isProduction && appConfig.build.sourceMap);
 const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
 let manifest;
@@ -25,7 +24,7 @@ if (isProduction) {
 }
 
 const config: Configuration = {
-  devtool: `source-map`,
+  devtool: isProduction ? (appConfig.build.sourceMap ? `source-map` : false) : `cheap-eval-source-map`,
   entry: {
     server: path.join(inputDir, `server.tsx`),
   },
@@ -60,7 +59,7 @@ const config: Configuration = {
   plugins: [
     new CopyPlugin([{
       from: path.join(cwd, `config`),
-      ignore: [`.*`, `*.conf.js`, `*.conf.json`],
+      ignore: [`.*`, `*.conf.*`, `*.ts`],
       to: path.join(outputDir, `config`),
     }]),
     new DefinePlugin({
@@ -69,13 +68,6 @@ const config: Configuration = {
       },
     }),
     new EnvironmentPlugin([`NODE_ENV`]),
-    ...!useSourceMap ? [] : [
-      new BannerPlugin({
-        banner: `require('source-map-support').install();`,
-        entryOnly: false,
-        raw: true,
-      }),
-    ],
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
