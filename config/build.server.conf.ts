@@ -3,130 +3,95 @@
  *       `development` and `production` environments.
  */
 
-const config = require(`./app.conf`);
-const nodeExternals = require(`webpack-node-externals`);
-const path = require(`path`);
-const CachedInputFileSystem = require(`enhanced-resolve/lib/CachedInputFileSystem`);
-const CopyPlugin = require(`copy-webpack-plugin`);
-const NodeJsInputFileSystem = require(`enhanced-resolve/lib/NodeJsInputFileSystem`);
-const ResolverFactory = require(`enhanced-resolve/lib/ResolverFactory`);
-const { BannerPlugin, EnvironmentPlugin } = require(`webpack`);
-const { BundleAnalyzerPlugin } = require(`webpack-bundle-analyzer`);
+import CopyPlugin from 'copy-webpack-plugin';
+import path from 'path';
+import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import appConfig from './app.conf';
 
-// Set Babel environment to use the correct Babel config.
-process.env.BABEL_ENV = `server`;
-
-const isDev = process.env.NODE_ENV === `development`;
+const { dependencies } = require(`../package.json`);
+const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
 const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
-const useSourceMap = isDev || (!isDev && config.build.sourceMap);
-const useBundleAnalyzer = !isDev && config.build.analyzer;
-const useLinter = isDev ? config.dev.linter : config.build.linter;
+const useSourceMap = !isProduction || (isProduction && appConfig.build.sourceMap);
+const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
-module.exports = {
-  mode: isDev ? `development` : `production`,
-  target: `node`,
+let manifest;
+
+try {
+  manifest = require(`../build/public/asset-manifest.json`);
+}
+catch (err) { /* Do nothing */ }
+
+const config: Configuration = {
   devtool: `source-map`,
-  externals: [nodeExternals()],
-  stats: {
-    colors: true,
-    modules: true,
-    reasons: true,
-    errorDetails: true
+  entry: {
+    server: path.join(inputDir, `server.tsx`),
+  },
+  externals: Object.keys(dependencies),
+  mode: isProduction ? `production` : `development`,
+  module: {
+    rules: [{
+      exclude: /node_modules/,
+      test: /\.tsx?$/,
+      use: `ts-loader`,
+    }, {
+      test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/images/[name]${isProduction ? `.[hash:6]` : ``}.[ext]`,
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/media/[name]${isProduction ? `.[hash:6]` : ``}.[ext]`,
+    }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      use: `url-loader?limit=10000&emitFile=false&name=assets/fonts/[name]${isProduction ? `.[hash:6]` : ``}.[ext]`,
+    }],
   },
   node: {
     __dirname: false,
-    __filename: false
-  },
-  entry: {
-    server: path.join(inputDir, `server.jsx`)
+    __filename: false,
   },
   output: {
     path: outputDir,
-    publicPath: isDev ? `/` : config.build.publicPath,
+    publicPath: isProduction ? appConfig.build.publicPath : `/`,
     filename: `[name].js`,
-    sourceMapFilename: `[name].js.map`
-  },
-  module: {
-    rules: [{
-      test: /\.jsx?$/,
-      use: `babel-loader`,
-      exclude: /node_modules/
-    }, {
-      test: /\.p?css$/,
-      use: [{
-        loader: `css-loader/locals?modules&importLoaders=1&localIdentName=[hash:6]${useSourceMap ? `&sourceMap` : ``}`
-      }, {
-        loader: `postcss-loader`,
-        options: {
-          ident: `postcss`,
-          sourceMap: useSourceMap,
-          plugins: () => [
-            require(`postcss-import`)({
-              resolve(id, basedir) {
-                return ResolverFactory.createResolver({
-                  alias: {
-                    '@': inputDir
-                  },
-                  extensions: [`.css`, `.pcss`],
-                  useSyncFileSystemCalls: true,
-                  fileSystem: new CachedInputFileSystem(new NodeJsInputFileSystem(), 60000)
-                }).resolveSync({}, basedir, id);
-              }
-            }),
-            require(`precss`)(),
-            require(`postcss-hexrgba`)(),
-            require(`postcss-calc`)(),
-            require(`autoprefixer`)(),
-            require(`cssnano`)()
-          ]
-        }
-      }]
-    }, {
-      test: /\.(jpe?g|png|gif|svg|ico)(\?.*)?$/,
-      use: `url-loader?limit=10000&emitFile=false&name=assets/images/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
-    }, {
-      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: `url-loader?limit=10000&emitFile=false&name=assets/media/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
-    }, {
-      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: `url-loader?limit=10000&emitFile=false&name=assets/fonts/[name]${isDev ? `` : `.[hash:6]`}.[ext]`
-    }]
-      .concat(useLinter ? [{
-        test: /\.jsx?$/,
-        include: [inputDir],
-        enforce: `pre`,
-        use: {
-          loader: `eslint-loader`,
-          options: {
-            formatter: require(`eslint-friendly-formatter`)
-          }
-        }
-      }] : [])
-  },
-  resolve: {
-    extensions: [`.js`, `.jsx`],
-    alias: {
-      '@': inputDir
-    }
+    sourceMapFilename: `[name].js.map`,
   },
   plugins: [
     new CopyPlugin([{
       from: path.join(cwd, `config`),
+      ignore: [`.*`, `*.conf.js`, `*.conf.json`],
       to: path.join(outputDir, `config`),
-      ignore: [`.*`, `*.conf.js`, `*.conf.json`]
     }]),
-    new EnvironmentPlugin([`NODE_ENV`, `BABEL_ENV`, `DEBUG`]),
-  ]
-    .concat(useSourceMap ? [
+    new EnvironmentPlugin([`NODE_ENV`]),
+    new DefinePlugin({
+      $APP_CONFIG: JSON.stringify(appConfig),
+      $ASSET_MANIFEST: JSON.stringify(manifest),
+    }),
+    ...!useSourceMap ? [] : [
       new BannerPlugin({
         banner: `require('source-map-support').install();`,
+        entryOnly: false,
         raw: true,
-        entryOnly: false
-      })
-    ] : [])
-    .concat(useBundleAnalyzer ? [
-      new BundleAnalyzerPlugin()
-    ] : [])
+      }),
+    ],
+    ...!useBundleAnalyzer ? [] : [
+      new BundleAnalyzerPlugin(),
+    ],
+  ],
+  resolve: {
+    alias: {
+      '@': inputDir,
+    },
+    extensions: [`.js`, `.jsx`, `.ts`, `.tsx`, `.json`],
+  },
+  stats: {
+    colors: true,
+    errorDetails: true,
+    modules: true,
+    reasons: true,
+  },
+  target: `node`,
 };
+
+export default config;

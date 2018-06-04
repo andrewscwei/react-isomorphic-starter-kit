@@ -1,22 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es6",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "jsx": "react",
     "baseUrl": "./",
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "paths": {
       "@/*": [
         "src/*"
-      ],
-    }
+      ]
+    },
+    "sourceMap": true,
+    "target": "es5"
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/**/*.tsx"
   ]
 }

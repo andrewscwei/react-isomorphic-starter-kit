@@ -8,13 +8,13 @@ import React, { PureComponent } from 'react';
 import serialize from 'serialize-javascript';
 
 interface Props {
-  body: string;
+  body?: string;
   title?: string;
   url?: string;
   keywords?: string;
   description?: string;
-  initialState: any;
-  initialLocale: any;
+  initialState: object;
+  initialLocale: object;
   publicPath?: string;
   manifest?: object;
 }
