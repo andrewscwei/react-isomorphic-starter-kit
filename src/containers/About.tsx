@@ -51,6 +51,7 @@ interface Props {
 
 class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
+    console.log(`Fetching data!!!`);
     return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }
 

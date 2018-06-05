@@ -17,17 +17,9 @@ import path from 'path';
 const log = debug(`app`);
 const app = express();
 
-/**
- * Helmet setup.
- * @see {@link https://www.npmjs.com/package/helmet}
- */
 app.use(helmet());
-
-/**
- * HTTP request logger setup.
- * @see {@link https://www.npmjs.com/package/morgan}
- */
 app.use(morgan(`dev`));
+app.use(i18nMiddleware());
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
@@ -51,11 +43,6 @@ if (process.env.NODE_ENV !== `development` && appConfig.forceSSL) {
 }
 
 /**
- * i18n setup.
- */
-app.use(i18nMiddleware());
-
-/**
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
@@ -76,14 +63,15 @@ if (appConfig.ssrEnabled) {
   app.use(renderWithContext());
 }
 else {
-  app.use(renderWithoutContext());
+  app.use(renderWithContext());
+  // app.use(renderWithoutContext());
 }
 
 /**
  * Server 404 error, when the requested URI is not found.
  * @code 404 - URL not found.
  */
-app.use((req, res, next) => {
+app.use((req, _, next) => {
   const err = new Error(`${req.method} ${req.path} is not handled.`);
   err.status = 404;
   next(err);
@@ -97,7 +85,7 @@ app.use((req, res, next) => {
  * have a status code, it will default to 500.
  * @code 500 - Server error.
  */
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error, _: express.Request, res: express.Response) => {
   res.status(err.status || 500).send(err);
 });
 
@@ -127,7 +115,8 @@ http
 
 // Handle unhandled rejections.
 process.on(`unhandledRejection`, reason => {
-  console.error(`Unhandled Promise rejection:`, reason); // tslint:disable-line no-console
+  // tslint:disable-next-line no-console
+  console.error(`Unhandled Promise rejection:`, reason);
   process.exit(1);
 });
 
