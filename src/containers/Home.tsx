@@ -3,35 +3,36 @@ import { translate } from 'react-i18next';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
-  padding: 10% 5%;
-  width: 100%;
-  height: 100%;
-  position: absolute;
+  align-items: flex-start;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
   flex-wrap: nowrap;
-  color: #fff;
-  box-sizing: border-box;
+  font-family: ${props => props.theme.font};
+  height: 100%;
+  justify-content: center;
+  padding: 10% 5%;
+  position: absolute;
+  width: 100%;
 
   & summary {
     max-width: 550px;
   }
 
   & h1 {
+    color: ${props => props.theme.titleColor};
     font-size: 5em;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 3px;
     margin: 0;
+    text-transform: uppercase;
   }
 
-  & description {
+  & p {
+    color: ${props => props.theme.textColor};
     font-weight: 400;
     letter-spacing: .6px;
-    line-height: 1.4em;
-    color: #666;
+    line-height: 1.6em;
   }
 `;
 

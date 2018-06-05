@@ -14,6 +14,12 @@ export default [{
   path: `/about`,
   component: About,
 }, {
+  path: `/jp`,
+  component: Home,
+}, {
+  path: `/jp/about`,
+  component: About,
+}, {
   path: `*`,
   component: NotFound,
 }];

@@ -14,7 +14,7 @@
   "scripts": {
     "start": "node build/server",
     "clean": "rimraf build",
-    "dev": "npm run clean && NODE_ENV=development npm run build:server --quiet && NODE_ENV=development DEBUG=app* nodemon --exec \"node --require dotenv/config\" --verbose --watch build --inspect=5858 build/server & NODE_ENV=development npm run build:server -- --watch",
+    "dev": "npm run clean && NODE_ENV=development npm run build:server --quiet && NODE_ENV=development DEBUG=app* nodemon --exec \"node --require dotenv/config\" --verbose --watch build/server --inspect=5858 build/server & NODE_ENV=development npm run build:server -- --watch",
     "build": "npm run clean && NODE_ENV=production npm run build:client && NODE_ENV=production npm run build:server",
     "build:server": "webpack --colors --profile --config config/build.server.conf.ts --display-error-details",
     "build:client": "webpack --colors --profile --config config/build.client.conf.ts --display-error-details",

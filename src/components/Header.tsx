@@ -1,3 +1,4 @@
+import { IntlProps } from '@/types';
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -35,18 +36,14 @@ const StyledRoot = styled.header`
   }
 `;
 
-interface Props {
-  t: any;
-}
-
-class Header extends PureComponent<Props> {
+class Header extends PureComponent<IntlProps> {
   render() {
-    const { t } = this.props;
+    const { i18n, t } = this.props;
 
     return (
       <StyledRoot>
-        <Link to='/'>{t(`home`)}</Link>
-        <Link to='/about'>{t(`about`)}</Link>
+        <Link to={i18n.language === `en` ? `/` : `/jp/`}>{t(`home`)}</Link>
+        <Link to={i18n.language === `en` ? `/about/` : `/jp/about/`}>{t(`about`)}</Link>
       </StyledRoot>
     );
   }

@@ -1,4 +1,6 @@
 import { Request } from 'express';
+import { i18n } from 'i18next';
+import { TranslationFunction } from 'react-i18next';
 import { Store } from 'react-redux';
 
 export enum ActionType {
@@ -36,6 +38,11 @@ export interface TranslationData {
 
 export interface TranslationDataDict {
   [locale: string]: TranslationData;
+}
+
+export interface IntlProps {
+  t: TranslationFunction;
+  i18n: i18n;
 }
 
 export interface RouteData {
