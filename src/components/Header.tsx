@@ -4,33 +4,33 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledRoot = styled.header`
-  padding: 0 5%;
-  width: 100%;
-  height: 70px;
-  background: #111;
-  position: fixed;
+  align-items: center;
   box-sizing: border-box;
   display: flex;
+  height: 70px;
   justify-content: flex-end;
-  align-items: center;
+  padding: 0 5%;
+  position: fixed;
+  width: 100%;
   z-index: 10;
 
   > a {
-    color: #fff;
-    text-decoration: none;
-    transition: all .2s ease-out;
+    color: ${props => props.theme.linkColor};
+    cursor: pointer;
+    font-family: ${props => props.theme.font};
+    font-size: .8em;
     font-weight: 400;
     letter-spacing: 1px;
-    font-size: .8em;
-    cursor: pointer;
+    text-decoration: none;
     text-transform: uppercase;
-
-    &:not(:last-child) {
-      margin-right: 20px;
-    }
+    transition: all .2s ease-out;
 
     &:hover {
       opacity: .6;
+    }
+
+    &:not(:last-child) {
+      margin-right: 20px;
     }
   }
 `;

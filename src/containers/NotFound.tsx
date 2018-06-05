@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
-import { Route } from 'react-router-dom';
+import { Route, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
@@ -38,9 +38,9 @@ class NotFound extends PureComponent<Props> {
     const { t } = this.props;
 
     return (
-      <Route render={({ staticContext }) => {
-        if (staticContext) {
-          staticContext[`status`] = 404;
+      <Route render={(route: RouteComponentProps<any>) => {
+        if (route.staticContext) {
+          route.staticContext.statusCode = 404;
         }
 
         return (

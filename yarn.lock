@@ -157,6 +157,12 @@
   version "8.4.3"
   resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-8.4.3.tgz#9136a9551bf5bf7169aa9f3125c1743f1f8dd6de"
 
+"@types/ip@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/ip/-/ip-0.0.31.tgz#a363989e72dd11bb21f932d6fe96bd6a85b2b74b"
+  dependencies:
+    "@types/node" "*"
+
 "@types/loglevel@*":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@types/loglevel/-/loglevel-1.5.3.tgz#adfce55383edc5998a2170ad581b3e23d6adb5b8"
@@ -2595,6 +2601,10 @@ invariant@^2.2.0:
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
+
+ip@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
 
 ipaddr.js@1.6.0:
   version "1.6.0"

@@ -22,7 +22,7 @@ const compiler = webpack(buildConfig);
  */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
-    publicPath: buildConfig.output.publicPath,
+    publicPath: buildConfig && buildConfig.output && buildConfig.output.publicPath || `/`,
     stats: { colors: true },
   });
 }
@@ -30,7 +30,7 @@ export function devMiddleware() {
 /**
  * Export configured hot middleware.
  *
- * @return {Function} - Express middleware.
+ * @return Express middleware.
  */
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {

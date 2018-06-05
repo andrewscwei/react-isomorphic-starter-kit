@@ -10,6 +10,7 @@ import express from 'express';
 import fs from 'fs';
 import helmet from 'helmet';
 import http from 'http';
+import ip from 'ip';
 import morgan from 'morgan';
 import path from 'path';
 
@@ -84,7 +85,7 @@ else {
  */
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.path} is not handled.`);
-  err[`status`] = 404;
+  err.status = 404;
   next(err);
 });
 
@@ -96,8 +97,8 @@ app.use((req, res, next) => {
  * have a status code, it will default to 500.
  * @code 500 - Server error.
  */
-app.use((err, req, res, next) => {
-  res.status(err[`status`] || 500).send(err);
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  res.status(err.status || 500).send(err);
 });
 
 http
@@ -109,19 +110,19 @@ http
     // Handle specific errors with friendly messages.
     switch (error.code) {
     case `EACCES`:
-      log(`Port ${this.address().port} requires elevated privileges`);
+      log(`Port ${appConfig.port} requires elevated privileges`);
       process.exit(1);
       break;
     case `EADDRINUSE`:
-      log(`Port ${this.address().port} is already in use`);
+      log(`Port ${appConfig.port} is already in use`);
       process.exit(1);
       break;
     default:
       throw error;
     }
   })
-  .on(`listening`, function() {
-    log(`App is listening on ${this.address().address}:${this.address().port}`);
+  .on(`listening`, () => {
+    log(`App is listening on ${ip.address()}:${appConfig.port}`);
   });
 
 // Handle unhandled rejections.

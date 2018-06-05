@@ -1,28 +1,24 @@
+import { Action, ActionType, UsersLoadedAction, UsersState } from '@/types';
+import { Dispatch } from 'react-redux';
 import request from 'superagent';
 
-export const USERS_LOADED = `@users/loaded`;
+export function fetchUsers() {
+  return async (dispatch: Dispatch<Action>) => {
+    const res = await request.get(`//jsonplaceholder.typicode.com/users`);
+    const action: UsersLoadedAction = {
+      type: ActionType.USERS_LOADED,
+      items: res.body,
+    };
 
-const initialState = {
-  items: [],
-};
+    dispatch(action);
+  };
+}
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: UsersState = { items: [] }, action: Action): UsersState {
   switch (action.type) {
-  case USERS_LOADED:
-    return { ...state,  items: action.items };
+  case ActionType.USERS_LOADED:
+    return { ...state,  items: (action as UsersLoadedAction).items };
   default:
     return state;
   }
-}
-
-export function fetchUsers() {
-  return async dispatch => {
-    const res = await request.get(`//jsonplaceholder.typicode.com/users`);
-    const users = res.body;
-
-    dispatch({
-      type: USERS_LOADED,
-      items: users,
-    });
-  };
 }

@@ -7,9 +7,7 @@ import appConfig from '@/../config/app.conf';
 import path from 'path';
 
 const publicPath = process.env.NODE_ENV === `production` ? appConfig.build.publicPath : `/`;
-const manifest = process.env.ASSET_MANIFEST;
-
-
+const manifest = $ASSET_MANIFEST;
 
 /**
  * Fetches the fingerprinted path of an asset using the provided manifest
@@ -21,9 +19,8 @@ const manifest = process.env.ASSET_MANIFEST;
  * @return The resolved path.
  */
 export default function resolveAssetPath(pathToResolve: string): string {
-  const normalizedPath = path.join.apply(null, pathToResolve.split(`/`));
-
-  let output = normalizedPath;
+  const normalizedPath: string = path.join.apply(null, pathToResolve.split(`/`));
+  let output: string = normalizedPath;
 
   if (manifest && manifest.hasOwnProperty(normalizedPath)) {
     output = manifest[normalizedPath];

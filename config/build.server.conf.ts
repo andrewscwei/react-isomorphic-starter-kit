@@ -63,9 +63,7 @@ const config: Configuration = {
       to: path.join(outputDir, `config`),
     }]),
     new DefinePlugin({
-      'process.env': {
-        ASSET_MANIFEST: JSON.stringify(manifest),
-      },
+      $ASSET_MANIFEST: JSON.stringify(manifest),
     }),
     new EnvironmentPlugin([`NODE_ENV`]),
     ...!useBundleAnalyzer ? [] : [

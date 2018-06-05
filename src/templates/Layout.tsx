@@ -68,7 +68,7 @@ export default class Layout extends PureComponent<Props> {
         <body>
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_LOCALE__=${serialize(initialLocale)};` }}/>
-          <div id='app' dangerouslySetInnerHTML={{ __html: body }}/>
+          <div id='app' dangerouslySetInnerHTML={{ __html: body || `` }}/>
           <script type='application/javascript' src={resolve(`/bundle.js`)}></script>
         </body>
       </html>

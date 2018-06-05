@@ -12,7 +12,7 @@
     "import-spacing": true,
     "interface-name": [true, "never-prefix"],
     "linebreak-style": [true, "LF"],
-    "max-line-length": [true, { "limit": 120, "ignore-pattern": "^import |^export {(.*?)}" }],
+    "max-line-length": false,
     "member-access": [true, "no-public"],
     "member-ordering": [true, { "order": "statics-first" }],
     "new-parens": true,

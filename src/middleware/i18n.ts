@@ -13,17 +13,15 @@ const i18n = i18next.use(LanguageDetector);
 /**
  * Exported i18next instance (not really needed since there is only one shared
  * global instance).
- *
- * @type {Object}
  */
 export { i18n };
 
 /**
  * Express middleware for setting up i18next and injecting custom translations.
  *
- * @param {string} translationsDir - Path to locale translations.
+ * @param translationsDir Path to locale translations.
  *
- * @return {Function} - Express middleware.
+ * @return Express middleware.
  */
 export function i18nMiddleware() {
   if (!i18n.isInitialized) {

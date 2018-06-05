@@ -3,26 +3,28 @@
  * @file Client entry file.
  */
 
+import App from '@/containers/App';
 import routes from '@/routes';
 import * as reducers from '@/store';
+import theme from '@/styles/theme';
 import i18n from 'i18next';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { renderRoutes } from 'react-router-config';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { ThemeProvider } from 'styled-components';
 
 // Set up the store.
-const store = createStore(combineReducers(reducers), window[`__INITIAL_STATE__`], applyMiddleware(thunk));
+const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
 // Set up i18n.
 i18n.init({
   ns: [`common`],
   defaultNS: `common`,
-  lng: window[`__INITIAL_LOCALE__`].locale,
+  lng: window.__INITIAL_LOCALE__.locale,
   react: { wait: true },
   interpolation: { escapeValue: false },
 });
@@ -39,7 +41,7 @@ if (process.env.NODE_ENV === `development`) {
   });
 }
 else {
-  const translations = window[`__INITIAL_LOCALE__`].translations;
+  const translations = window.__INITIAL_LOCALE__.translations;
   for (const locale in translations) {
     if (!translations.hasOwnProperty(locale)) continue;
     i18n.addResourceBundle(locale, `common`, translations[locale], true);
@@ -47,20 +49,24 @@ else {
 }
 
 // Generator for base markup.
-const markup = r => (
+const markup = () => (
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
-      <Router>
-        {renderRoutes(r)}
-      </Router>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Route render={(route: RouteComponentProps<any>) => (
+            <App route={route}/>
+          )}/>
+        </BrowserRouter>
+      </ThemeProvider>
     </Provider>
   </I18nextProvider>
 );
 
 // Render the app.
 if (process.env.NODE_ENV === `development`) {
-  render(markup(routes), document.getElementById(`app`));
+  render(markup(), document.getElementById(`app`));
 }
 else {
-  hydrate(markup(routes), document.getElementById(`app`));
+  hydrate(markup(), document.getElementById(`app`));
 }

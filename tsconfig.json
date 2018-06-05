@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "emitDecoratorMetadata": true,
@@ -9,20 +10,22 @@
     "lib": ["es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noImplicitAny": true,
     "paths": {
       "@/*": [
         "src/*"
       ]
     },
+    "removeComments": true,
     "sourceMap": true,
+    "strict": true,
     "target": "es5"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*",
   ],
   "exclude": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx"
+    "node_modules",
+    "**/*.spec.*"
   ]
 }

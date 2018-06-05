@@ -1,7 +1,8 @@
 import { fetchUsers } from '@/store/users';
-import React, { Component } from 'react';
+import { AppState, User } from '@/types';
+import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
-import { connect } from 'react-redux';
+import { connect, Store } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
@@ -38,8 +39,8 @@ const StyledRoot = styled.div`
   }
 `;
 
-const mapStateToProps = state => ({ users: state.users.items });
-const mapDispatchToProps = dispatch => bindActionCreators({ fetchUsers }, dispatch);
+const mapStateToProps = (state: any): Partial<Props> => ({ users: state.users.items });
+const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({ fetchUsers }, dispatch);
 
 interface Props {
   t: any;
@@ -47,9 +48,9 @@ interface Props {
   fetchUsers: any;
 }
 
-class About extends Component<Props> {
-  static fetchData(store) {
-    return store.dispatch(fetchUsers());
+class About extends PureComponent<Props> {
+  static fetchData(store: Store<AppState>) {
+    return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }
 
   componentDidMount() {
@@ -64,7 +65,7 @@ class About extends Component<Props> {
         <summary>
           <h1>{t(`about-title`)}</h1>
           {
-            this.props.users.map(user => {
+            this.props.users.map((user: User) => {
               return (
                 <div key={user.id} >
                   <span>{user.name}</span>
