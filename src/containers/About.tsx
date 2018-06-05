@@ -32,7 +32,7 @@ const StyledRoot = styled.div`
   }
 
   & span {
-    color: ${props => props.theme.textColor};;
+    color: ${props => props.theme.textColor};
     font-weight: 400;
     letter-spacing: .6px;
     line-height: 1.4em;

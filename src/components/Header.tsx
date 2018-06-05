@@ -14,7 +14,7 @@ const StyledRoot = styled.header`
   width: 100%;
   z-index: 10;
 
-  > a {
+  & > a {
     color: ${props => props.theme.linkColor};
     cursor: pointer;
     font-family: ${props => props.theme.font};

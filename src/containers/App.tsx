@@ -57,7 +57,7 @@ class App extends PureComponent<Props> {
 export default connect<{}, {}, Partial<Props>>(mapStateToProps, mapDispatchToProps)(App);
 
 injectGlobal`
-  ${normalize}
+  ${normalize} /* stylelint-disable-line max-empty-lines */
 
   html,
   body {

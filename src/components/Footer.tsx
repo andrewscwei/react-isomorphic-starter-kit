@@ -20,17 +20,17 @@ const StyledRoot = styled.footer`
 
   & nav {
     flex-grow: 1;
+  }
 
-    & > a {
-      background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
-      display: block;
-      height: 20px;
-      transition: all .2s ease-out;
-      width: 20px;
+  & nav > a {
+    background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
+    display: block;
+    height: 20px;
+    transition: all .2s ease-out;
+    width: 20px;
 
-      &:hover {
-        opacity: .6;
-      }
+    &:hover {
+      opacity: .6;
     }
   }
 
