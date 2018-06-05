@@ -18,7 +18,7 @@ injectGlobal`
 
   html,
   body {
-    background: #111;
+    background: #0f0e13;
     font-family: 'Roboto', sans-serif;
     height: 100%;
     width: 100%;

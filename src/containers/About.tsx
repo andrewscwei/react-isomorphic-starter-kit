@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
-  align-items: flex-start;
+  align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -18,16 +18,14 @@ const StyledRoot = styled.div`
   position: absolute;
   width: 100%;
 
-  & summary {
-    max-width: 550px;
-  }
-
   & h1 {
     color: ${props => props.theme.titleColor};
     font-size: 2.4em;
     font-weight: 700;
     letter-spacing: 3px;
-    margin: 0;
+    margin: 0 0 20px;
+    max-width: 550px;
+    text-align: center;
     text-transform: uppercase;
   }
 
@@ -36,6 +34,7 @@ const StyledRoot = styled.div`
     font-weight: 400;
     letter-spacing: .6px;
     line-height: 1.4em;
+    text-align: center;
   }
 `;
 
@@ -62,18 +61,16 @@ class About extends PureComponent<Props> {
 
     return (
       <StyledRoot>
-        <summary>
-          <h1>{t[`about-title`]}</h1>
-          {
-            this.props.users.map((user: User) => {
-              return (
-                <div key={user.id} >
-                  <span>{user.name}</span>
-                </div>
-              );
-            })
-          }
-        </summary>
+        <h1>{t[`about-title`]}</h1>
+        {
+          this.props.users.map((user: User) => {
+            return (
+              <div key={user.id} >
+                <span>{user.name}</span>
+              </div>
+            );
+          })
+        }
       </StyledRoot>
     );
   }

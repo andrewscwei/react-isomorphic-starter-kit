@@ -1,10 +1,11 @@
+import ReactLogo from '@/components/ReactLogo';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
-  align-items: flex-start;
+  align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -16,16 +17,14 @@ const StyledRoot = styled.div`
   position: absolute;
   width: 100%;
 
-  & summary {
-    max-width: 550px;
-  }
-
   & h1 {
     color: ${props => props.theme.titleColor};
     font-size: 5em;
     font-weight: 700;
     letter-spacing: 3px;
     margin: 0;
+    max-width: 600px;
+    text-align: center;
     text-transform: uppercase;
   }
 
@@ -34,7 +33,14 @@ const StyledRoot = styled.div`
     font-weight: 400;
     letter-spacing: .6px;
     line-height: 1.6em;
+    max-width: 400px;
+    text-align: center;
   }
+`;
+
+const StyledReactLogo = styled(ReactLogo)`
+  height: 200px;
+  margin-bottom: 30px;
 `;
 
 interface Props {
@@ -50,10 +56,9 @@ class Home extends PureComponent<Props> {
 
     return (
       <StyledRoot>
-        <summary>
-          <h1>{t[`hello`]}</h1>
-          <p>{t[`description`]}</p>
-        </summary>
+        <StyledReactLogo/>
+        <h1>{t[`hello`]}</h1>
+        <p>{t[`description`]}</p>
       </StyledRoot>
     );
   }
