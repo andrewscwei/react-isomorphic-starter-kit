@@ -61,9 +61,27 @@ injectGlobal`
 
   html,
   body {
-    font-family: 'Roboto', sans-serif;
-    width: 100%;
-    height: 100%;
     background: #111;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: all .3s;
+  }
+
+  .fade-exit {
+    opacity: 1;
+  }
+
+  .fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: all .3s;
   }
 `;

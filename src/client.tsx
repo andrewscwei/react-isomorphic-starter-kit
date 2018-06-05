@@ -24,7 +24,6 @@ const ConnectedIntlProvider = connect((state: any) => ({
 // Set up the store.
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__, applyMiddleware(thunk));
 
-
 // Generator for base markup.
 const markup = () => (
   <Provider store={store}>
