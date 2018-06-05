@@ -23,7 +23,7 @@ const StyledRoot = styled.div`
     font-weight: 700;
     letter-spacing: 3px;
     margin: 0;
-    max-width: 600px;
+    max-width: 550px;
     text-align: center;
     text-transform: uppercase;
   }

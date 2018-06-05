@@ -31,7 +31,7 @@ export default {
   defaultLocale: `en`,
 
   // Supported locales.
-  locales: [`en`, `jp`],
+  locales: [`en`, `ja`],
 
   // Config options specific to the `build` task.
   build: {

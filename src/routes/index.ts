@@ -15,6 +15,7 @@ export default [{
   component: About,
 }, {
   path: `/ja`,
+  exact: true,
   component: Home,
 }, {
   path: `/ja/about`,

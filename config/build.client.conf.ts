@@ -8,7 +8,7 @@ import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlu
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import appConfig from './app.conf';
-import { getTranslationDataDictFromDir } from './utils';
+import { getTranslationDataDictFromDir, getLocaleDataFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
@@ -62,6 +62,7 @@ const config: Configuration = {
       new DefinePlugin({
         __INTL_CONFIG__: JSON.stringify({
           defaultLocale: appConfig.locales[0],
+          localeData: getLocaleDataFromDir(path.join(cwd, `config/locales`)),
           locales: appConfig.locales,
           dict: getTranslationDataDictFromDir(path.join(cwd, `config/locales`)),
         }),

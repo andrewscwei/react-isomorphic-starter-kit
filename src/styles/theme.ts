@@ -1,7 +1,7 @@
 export default {
   buttonColor: `#666`,
   buttonHoverColor: `#fff`,
-  buttonHoverTextColor: `111`,
+  buttonHoverTextColor: `#111`,
   buttonTextColor: `#fff`,
   font: `Roboto, sans-serif`,
   linkColor: `#fff`,

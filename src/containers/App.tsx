@@ -5,6 +5,7 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
+import { changeLocale } from '@/store/intl';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -53,12 +54,34 @@ interface Props {
   locale: string;
   route: RouteComponentProps<any>;
   t: TranslationData;
+  changeLocale(locale: string): void;
 }
 
 const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations, locale: state.intl.locale });
-const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({ changeLocale }, dispatch);
 
 class App extends PureComponent<Props> {
+  componentWillMount() {
+    this.updateLocale();
+  }
+
+  componentDidUpdate() {
+    this.updateLocale();
+  }
+
+  updateLocale = () => {
+    const { route, changeLocale } = this.props;
+    const locales = __APP_CONFIG__.locales;
+    const locale = route.location.pathname.split('/')[1];
+
+    if (locales.includes(locale)) {
+      changeLocale(locale);
+    }
+    else {
+      changeLocale(locales[0]);
+    }
+  }
+
   generateRoutes = () => {
     return routes.map((route, index) => {
       const { exact, path, component } = route;

@@ -7,7 +7,7 @@ import { Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
-import { getTranslationDataDictFromDir } from './utils';
+import { getTranslationDataDictFromDir, getLocaleDataFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
@@ -63,6 +63,7 @@ const config: Configuration = {
       })()),
       __INTL_CONFIG__: JSON.stringify({
         defaultLocale: appConfig.locales[0],
+        localeData: getLocaleDataFromDir(path.join(cwd, `config/locales`)),
         locales: appConfig.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, `config/locales`)),
       }),

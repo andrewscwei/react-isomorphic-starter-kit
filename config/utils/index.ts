@@ -30,6 +30,26 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
 }
 
 /**
+ * Returns a dictionary of React Intl locale data used by the app.
+ *
+ * @param dir Directory to infer locales from.
+ *
+ * @return Dictionary of all locale data.
+ */
+export function getLocaleDataFromDir(dir: string): LocaleDataDict {
+  const locales = getLocalesFromDir(dir);
+
+  return locales.reduce((dict: LocaleDataDict, locale:string) => {
+    try {
+      const data: ReactIntl.LocaleData = require(`react-intl/locale-data/${locale}`);
+      dict[locale] = data;
+    }
+    catch (err) {}
+    return dict;
+  }, {});
+}
+
+/**
  * Returns a dictionary object of all translations.
  *
  * @param dir Directory to infer translations from.

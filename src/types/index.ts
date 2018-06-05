@@ -1,4 +1,3 @@
-import { Store } from 'react-redux';
 
 export enum ActionType {
   LOCALE_CHANGED = 'localeChanged',
@@ -17,14 +16,6 @@ export interface UsersState {
   items: ReadonlyArray<User>;
 }
 
-export interface LocaleDataDict {
-  [locale: string]: ReactIntl.LocaleData;
-}
-
-export interface DataComponent {
-  fetchData(store: Store<AppState>): void;
-}
-
 export interface UsersLoadedAction extends Action {
   items: ReadonlyArray<User>;
 }
@@ -32,12 +23,6 @@ export interface UsersLoadedAction extends Action {
 export interface IntlState {
   locale: string;
   translations: TranslationData;
-}
-
-export interface RouteData {
-  component: string;
-  exact?: boolean;
-  path: string;
 }
 
 export interface LocaleChangeAction extends Action {

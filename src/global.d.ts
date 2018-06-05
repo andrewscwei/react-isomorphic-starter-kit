@@ -3,6 +3,7 @@ declare const __APP_ENV__: string;
 declare const __ASSET_MANIFEST__: AssetManifest;
 declare const __INTL_CONFIG__: {
   defaultLocale: string;
+  localeData: Readonly<LocaleDataDict>;
   locales: ReadonlyArray<string>;
   dict: Readonly<TranslationDataDict>;
 };
@@ -13,6 +14,16 @@ interface TranslationData {
 
 interface TranslationDataDict {
   [locale: string]: TranslationData;
+}
+
+interface LocaleDataDict {
+  [locale: string]: ReactIntl.LocaleData;
+}
+
+interface RouteData {
+  component: string;
+  exact?: boolean;
+  path: string;
 }
 
 interface AssetManifest {

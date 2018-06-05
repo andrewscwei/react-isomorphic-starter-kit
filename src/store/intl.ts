@@ -1,4 +1,5 @@
 import { Action, ActionType, IntlState, LocaleChangeAction } from '@/types';
+import { addLocaleData } from 'react-intl';
 
 let defaultLocale: string;
 let translations: TranslationDataDict = {};
@@ -11,8 +12,17 @@ if ((__APP_ENV__ === `client`) && (process.env.NODE_ENV === `development`)) {
     translations[locale] = localeReq(path) as TranslationData;
   });
   defaultLocale = __APP_CONFIG__.locales[0];
+
+  for (const locale of __APP_CONFIG__.locales) {
+    addLocaleData(require(`react-intl/locale-data/${locale}`));
+  }
 }
 else {
+  for (const locale in __INTL_CONFIG__.localeData) {
+    if (!__INTL_CONFIG__.localeData.hasOwnProperty(locale)) continue;
+    addLocaleData(__INTL_CONFIG__.localeData[locale]);
+  }
+
   defaultLocale = __INTL_CONFIG__.defaultLocale;
   translations = __INTL_CONFIG__.dict;
 }
