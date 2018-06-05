@@ -1,7 +1,6 @@
 import { fetchUsers } from '@/store/users';
-import { AppState, User } from '@/types';
+import { AppState, TranslationData, User } from '@/types';
 import React, { PureComponent } from 'react';
-import { translate } from 'react-i18next';
 import { connect, Store } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
@@ -40,18 +39,17 @@ const StyledRoot = styled.div`
   }
 `;
 
-const mapStateToProps = (state: any): Partial<Props> => ({ users: state.users.items });
+const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations, users: state.users.items });
 const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({ fetchUsers }, dispatch);
 
 interface Props {
-  t: any;
-  users: any;
-  fetchUsers: any;
+  t: TranslationData;
+  users: ReadonlyArray<User>;
+  fetchUsers(): void;
 }
 
 class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
-    console.log(`Fetching data!!!`);
     return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }
 
@@ -65,7 +63,7 @@ class About extends PureComponent<Props> {
     return (
       <StyledRoot>
         <summary>
-          <h1>{t(`about-title`)}</h1>
+          <h1>{t[`about-title`]}</h1>
           {
             this.props.users.map((user: User) => {
               return (
@@ -81,4 +79,4 @@ class About extends PureComponent<Props> {
   }
 }
 
-export default translate()(connect(mapStateToProps, mapDispatchToProps)(About));
+export default connect(mapStateToProps, mapDispatchToProps)(About);

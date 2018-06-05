@@ -1,9 +1,8 @@
 import { Request } from 'express';
-import { i18n } from 'i18next';
-import { TranslationFunction } from 'react-i18next';
 import { Store } from 'react-redux';
 
 export enum ActionType {
+  LOCALE_CHANGED = 'localeChanged',
   USERS_LOADED = 'usersLoaded',
 }
 
@@ -19,6 +18,18 @@ export interface UsersState {
   items: ReadonlyArray<User>;
 }
 
+export interface TranslationData {
+  [key: string]: string;
+}
+
+export interface TranslationDataDict {
+  [locale: string]: TranslationData;
+}
+
+export interface LocaleDataDict {
+  [locale: string]: ReactIntl.LocaleData;
+}
+
 export interface DataComponent {
   fetchData(store: Store<AppState>): void;
 }
@@ -32,17 +43,9 @@ export interface UsersLoadedAction extends Action {
   items: ReadonlyArray<User>;
 }
 
-export interface TranslationData {
-  [key: string]: string;
-}
-
-export interface TranslationDataDict {
-  [locale: string]: TranslationData;
-}
-
-export interface IntlProps {
-  t: TranslationFunction;
-  i18n: i18n;
+export interface IntlState {
+  locale: string;
+  translations: TranslationData;
 }
 
 export interface RouteData {
@@ -56,5 +59,6 @@ export interface LocaleChangeAction extends Action {
 }
 
 export interface AppState {
+  intl: IntlState;
   users: UsersState;
 }

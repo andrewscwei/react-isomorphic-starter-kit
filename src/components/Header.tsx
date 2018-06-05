@@ -1,6 +1,5 @@
-import { IntlProps } from '@/types';
+import { TranslationData } from '@/types';
 import React, { PureComponent } from 'react';
-import { translate } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -36,17 +35,22 @@ const StyledRoot = styled.header`
   }
 `;
 
-class Header extends PureComponent<IntlProps> {
+interface Props {
+  t: TranslationData;
+  locale: string;
+}
+
+class Header extends PureComponent<Props> {
   render() {
-    const { i18n, t } = this.props;
+    const { locale, t } = this.props;
 
     return (
       <StyledRoot>
-        <Link to={i18n.language === `en` ? `/` : `/jp/`}>{t(`home`)}</Link>
-        <Link to={i18n.language === `en` ? `/about/` : `/jp/about/`}>{t(`about`)}</Link>
+        <Link to={locale === `en` ? `/` : `/ja/`}>{t[`home`]}</Link>
+        <Link to={locale === `en` ? `/about/` : `/ja/about/`}>{t[`about`]}</Link>
       </StyledRoot>
     );
   }
 }
 
-export default translate()(Header);
+export default Header;

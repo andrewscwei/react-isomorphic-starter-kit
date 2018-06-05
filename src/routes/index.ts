@@ -14,10 +14,10 @@ export default [{
   path: `/about`,
   component: About,
 }, {
-  path: `/jp`,
+  path: `/ja`,
   component: Home,
 }, {
-  path: `/jp/about`,
+  path: `/ja/about`,
   component: About,
 }, {
   path: `*`,

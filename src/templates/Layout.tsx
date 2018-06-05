@@ -15,12 +15,12 @@ interface Props {
   keywords?: string;
   description?: string;
   initialState: object;
-  initialLocale: object;
+  // initialLocale: object;
 }
 
 export default class Layout extends PureComponent<Props> {
   render() {
-    const { body, title, url, keywords, description, initialState, initialLocale } = this.props;
+    const { body, title, url, keywords, description, initialState } = this.props;
 
     return (
       <html>
@@ -67,7 +67,7 @@ export default class Layout extends PureComponent<Props> {
         </head>
         <body>
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
-          <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_LOCALE__=${serialize(initialLocale)};` }}/>
+          {/* <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_LOCALE__=${serialize(initialLocale)};` }}/> */}
           <div id='app' dangerouslySetInnerHTML={{ __html: body || `` }}/>
           <script type='application/javascript' src={resolve(`/bundle.js`)}></script>
         </body>

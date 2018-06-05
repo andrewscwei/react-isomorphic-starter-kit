@@ -1,8 +1,9 @@
+import { TranslationData } from '@/types';
 import React, { PureComponent } from 'react';
-import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
-import { IntlProps } from '@/types';
 
 const StyledRoot = styled.div`
   align-items: flex-start;
@@ -31,7 +32,14 @@ const StyledRoot = styled.div`
   }
 `;
 
-class NotFound extends PureComponent<IntlProps> {
+interface Props {
+  t: TranslationData;
+}
+
+const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations });
+const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({}, dispatch);
+
+class NotFound extends PureComponent<Props> {
   render() {
     const { t } = this.props;
 
@@ -44,7 +52,7 @@ class NotFound extends PureComponent<IntlProps> {
         return (
           <StyledRoot>
             <summary>
-              <h1>{t(`not-found`)}</h1>
+              <h1>{t[`not-found`]}</h1>
             </summary>
           </StyledRoot>
         );
@@ -53,4 +61,4 @@ class NotFound extends PureComponent<IntlProps> {
   }
 }
 
-export default translate()(NotFound);
+export default connect(mapStateToProps, mapDispatchToProps)(NotFound);

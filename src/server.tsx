@@ -3,7 +3,6 @@
  */
 
 import appConfig from '@/../config/app.conf';
-import { i18nMiddleware } from '@/middleware/i18n';
 import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 import debug from 'debug';
 import express from 'express';
@@ -19,7 +18,6 @@ const app = express();
 
 app.use(helmet());
 app.use(morgan(`dev`));
-app.use(i18nMiddleware());
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
@@ -63,8 +61,7 @@ if (appConfig.ssrEnabled) {
   app.use(renderWithContext());
 }
 else {
-  app.use(renderWithContext());
-  // app.use(renderWithoutContext());
+  app.use(renderWithoutContext());
 }
 
 /**

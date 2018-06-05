@@ -4,25 +4,32 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import appConfig from '@/../config/app.conf';
 import App from '@/containers/App';
-import { i18n } from '@/middleware/i18n';
 import routes from '@/routes';
 import * as reducers from '@/store';
+import theme from '@/styles/theme';
 import Layout from '@/templates/Layout';
-import { LocalizedRequest, TranslationDataDict } from '@/types';
+import { LocalizedRequest } from '@/types';
 import debug from 'debug';
 import { RequestHandler } from 'express';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
-import { I18nextProvider } from 'react-i18next';
-import { Provider } from 'react-redux';
+import { IntlProvider } from 'react-intl';
+import { connect, Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { ThemeProvider } from 'styled-components';
 
 const log = debug(`app:ssr`);
+
+const ConnectedIntlProvider = connect((state: any) => ({
+  key: state.intl.locale,
+  locale: state.intl.locale,
+  messages: state.intl.translations,
+}))(IntlProvider);
+
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 /**
@@ -42,24 +49,12 @@ function render({ excludeContext = false }: { excludeContext?: boolean } = {}): 
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.normalizedPath || req.path);
 
-    // Prepare i18n data.
-    const locale = req.language;
-    const translations: TranslationDataDict = appConfig.locales.reduce((dict: TranslationDataDict, locale: string) => {
-      dict[locale] = i18n.getResourceBundle(locale, `common`);
-      return dict;
-    }, {});
-
-    if (locale) {
-      i18n.changeLanguage(locale);
-    }
-
     // If `excludeContext` is specified, just render the layout without the app
     // markup.
     if (excludeContext) {
       return res.send(`<!doctype html>${renderToStaticMarkup(
         <Layout
           initialState={store.getState()}
-          initialLocale={{ locale, translations }}
         />,
       )}`);
     }
@@ -76,15 +71,17 @@ function render({ excludeContext = false }: { excludeContext?: boolean } = {}): 
     const context: { [key: string]: any } = {};
 
     const body = renderToString(
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          <StaticRouter location={req.url} context={context}>
-            <Route render={(routeProps: RouteComponentProps<any>) => (
-              <App route={routeProps}/>
-            )}/>
-          </StaticRouter>
-        </Provider>
-      </I18nextProvider>,
+      <Provider store={store}>
+        <ConnectedIntlProvider>
+          <ThemeProvider theme={theme}>
+            <StaticRouter location={req.url} context={context}>
+              <Route render={(routeProps: RouteComponentProps<any>) => (
+                <App route={routeProps}/>
+              )}/>
+            </StaticRouter>
+          </ThemeProvider>
+        </ConnectedIntlProvider>
+      </Provider>,
     );
 
     switch (context[`statusCode`]) {
@@ -99,7 +96,6 @@ function render({ excludeContext = false }: { excludeContext?: boolean } = {}): 
       <Layout
         body={body}
         initialState={store.getState()}
-        initialLocale={{ locale, translations }}
       />,
     )}`);
   };

@@ -1,6 +1,6 @@
-import { IntlProps } from '@/types';
+import { TranslationData } from '@/types';
 import React, { PureComponent } from 'react';
-import { translate } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledRoot = styled.footer`
@@ -20,9 +20,21 @@ const StyledRoot = styled.footer`
 
   & nav {
     flex-grow: 1;
+
+    & > a {
+      background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
+      display: block;
+      height: 20px;
+      transition: all .2s ease-out;
+      width: 20px;
+
+      &:hover {
+        opacity: .6;
+      }
+    }
   }
 
-  & button {
+  & > a {
     align-items: center;
     background: ${props => props.theme.buttonColor};
     border: none;
@@ -35,6 +47,7 @@ const StyledRoot = styled.footer`
     justify-content: center;
     outline: none;
     padding-top: 4px;
+    text-decoration: none;
     transition: all .2s ease-out;
     width: 22px;
 
@@ -47,34 +60,26 @@ const StyledRoot = styled.footer`
       margin-right: 10px;
     }
   }
-
-  & a {
-    background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
-    display: block;
-    height: 20px;
-    transition: all .2s ease-out;
-    width: 20px;
-
-    &:hover {
-      opacity: .6;
-    }
-  }
 `;
 
-class Footer extends PureComponent<IntlProps> {
+interface Props {
+  t: TranslationData;
+}
+
+class Footer extends PureComponent<Props> {
   render() {
-    const { t, i18n } = this.props;
+    const { t } = this.props;
 
     return (
       <StyledRoot>
         <nav>
           <a href='https://github.com/andrewscwei/react-universal-starter-kit'/>
         </nav>
-        <button onClick={() => i18n.changeLanguage(`en`)}>{t(`en`)}</button>
-        <button onClick={() => i18n.changeLanguage(`jp`)}>{t(`jp`)}</button>
+        <Link to='/'>{t[`en`]}</Link>
+        <Link to='/ja/'>{t[`jp`]}</Link>
       </StyledRoot>
     );
   }
 }
 
-export default translate()(Footer);
+export default Footer;

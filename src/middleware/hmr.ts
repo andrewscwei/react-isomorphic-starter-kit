@@ -18,7 +18,7 @@ const compiler = webpack(buildConfig);
 /**
  * Export configured dev middleware.
  *
- * @return {Function} - Express middleware.
+ * @return Express middleware.
  */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
