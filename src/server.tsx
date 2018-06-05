@@ -35,7 +35,10 @@ if (process.env.NODE_ENV === `development`) {
 if (process.env.NODE_ENV !== `development` && appConfig.forceSSL) {
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
-    if (req.secure) return next();
+    if (req.secure) {
+      next();
+      return;
+    }
     res.redirect(`https://` + req.headers.host + req.url);
   });
 }

@@ -65,7 +65,8 @@ export function renderWithContext(): RequestHandler {
 
     switch (context[`statusCode`]) {
     case 302:
-      return res.redirect(302, context[`url`]);
+      res.redirect(302, context[`url`]);
+      return;
     case 404:
       res.status(404);
       break;
