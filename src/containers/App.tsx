@@ -15,9 +15,9 @@ import styled, { injectGlobal } from 'styled-components';
 import normalize from 'styled-normalize';
 
 const StyledRoot = styled.div`
-  width: 100%;
   height: 100%;
   position: absolute;
+  width: 100%;
 `;
 
 interface Props {
