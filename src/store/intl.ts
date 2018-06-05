@@ -2,6 +2,7 @@ import { Action, ActionType, IntlState, LocaleChangeAction } from '@/types';
 import { addLocaleData } from 'react-intl';
 
 let defaultLocale: string;
+let locales: Array<string>;
 let translations: TranslationDataDict = {};
 
 if ((__APP_ENV__ === `client`) && (process.env.NODE_ENV === `development`)) {
@@ -11,7 +12,9 @@ if ((__APP_ENV__ === `client`) && (process.env.NODE_ENV === `development`)) {
     if (!~__APP_CONFIG__.locales.indexOf(locale)) { return; }
     translations[locale] = localeReq(path) as TranslationData;
   });
+
   defaultLocale = __APP_CONFIG__.locales[0];
+  locales = __APP_CONFIG__.locales;
 
   for (const locale of __APP_CONFIG__.locales) {
     addLocaleData(require(`react-intl/locale-data/${locale}`));
@@ -24,11 +27,13 @@ else {
   }
 
   defaultLocale = __INTL_CONFIG__.defaultLocale;
+  locales = __INTL_CONFIG__.locales as Array<string>;
   translations = __INTL_CONFIG__.dict;
 }
 
 const initialState: IntlState = {
   locale: defaultLocale,
+  locales,
   translations: translations[defaultLocale],
 };
 

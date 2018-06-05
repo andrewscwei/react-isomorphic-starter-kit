@@ -22,7 +22,8 @@ export interface UsersLoadedAction extends Action {
 
 export interface IntlState {
   locale: string;
-  translations: TranslationData;
+  locales: ReadonlyArray<string>;
+  translations: Readonly<TranslationData>;
 }
 
 export interface LocaleChangeAction extends Action {

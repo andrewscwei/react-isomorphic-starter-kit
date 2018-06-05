@@ -52,12 +52,13 @@ const StyledRoot = styled.div`
 
 interface Props {
   locale: string;
+  locales: Array<string>;
   route: RouteComponentProps<any>;
   t: TranslationData;
   changeLocale(locale: string): void;
 }
 
-const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations, locale: state.intl.locale });
+const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations, locale: state.intl.locale, locales: state.intl.locales });
 const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({ changeLocale }, dispatch);
 
 class App extends PureComponent<Props> {
@@ -70,11 +71,10 @@ class App extends PureComponent<Props> {
   }
 
   updateLocale = () => {
-    const { route, changeLocale } = this.props;
-    const locales = __APP_CONFIG__.locales;
+    const { route, changeLocale, locales } = this.props;
     const locale = route.location.pathname.split('/')[1];
 
-    if (locales.includes(locale)) {
+    if (~locales.indexOf(locale)) {
       changeLocale(locale);
     }
     else {
