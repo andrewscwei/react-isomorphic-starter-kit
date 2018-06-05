@@ -1,13 +1,13 @@
 import { Action, ActionType, UsersLoadedAction, UsersState } from '@/types';
 import { Dispatch } from 'react-redux';
-import request from 'superagent';
 
 export function fetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
-    const res = await request.get(`//jsonplaceholder.typicode.com/users`);
+    const res = await fetch(`//jsonplaceholder.typicode.com/users`);
+    const items = await res.json();
     const action: UsersLoadedAction = {
+      items,
       type: ActionType.USERS_LOADED,
-      items: res.body,
     };
 
     dispatch(action);

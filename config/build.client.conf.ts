@@ -1,6 +1,5 @@
 /**
- * @file This is the Webpack config for compiling client assets in both
- *       `development` and `production` environments.
+ * @file Webpack config for compiling the app client.
  */
 
 import CopyPlugin from 'copy-webpack-plugin';
@@ -9,6 +8,7 @@ import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlu
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import appConfig from './app.conf';
+import { getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
@@ -49,10 +49,23 @@ const config: Configuration = {
   },
   plugins: [
     new CopyPlugin([{ from: path.join(inputDir, `static`), ignore: [`.*`], to: outputDir }]),
-    new EnvironmentPlugin([`NODE_ENV`]),
+    new DefinePlugin({
+      __APP_CONFIG__: JSON.stringify(appConfig),
+      __APP_ENV__: JSON.stringify(`client`),
+    }),
+    new EnvironmentPlugin({
+      NODE_ENV: `development`,
+    }),
     ...isProduction ? [
       new IgnorePlugin(/^.*\/config\/.*$/),
       new ManifestPlugin({ fileName: `asset-manifest.json` }),
+      new DefinePlugin({
+        __INTL_CONFIG__: JSON.stringify({
+          defaultLocale: appConfig.locales[0],
+          locales: appConfig.locales,
+          dict: getTranslationDataDictFromDir(path.join(cwd, `config/locales`)),
+        }),
+      })
     ] : [
       new HotModuleReplacementPlugin(),
       new NoEmitOnErrorsPlugin(),

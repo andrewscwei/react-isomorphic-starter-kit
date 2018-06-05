@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import { Store } from 'react-redux';
 
 export enum ActionType {
@@ -16,14 +15,6 @@ export interface User {
 
 export interface UsersState {
   items: ReadonlyArray<User>;
-}
-
-export interface TranslationData {
-  [key: string]: string;
-}
-
-export interface TranslationDataDict {
-  [locale: string]: TranslationData;
 }
 
 export interface LocaleDataDict {

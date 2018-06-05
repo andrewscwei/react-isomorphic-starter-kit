@@ -1,5 +1,5 @@
 import { fetchUsers } from '@/store/users';
-import { AppState, TranslationData, User } from '@/types';
+import { AppState, User } from '@/types';
 import React, { PureComponent } from 'react';
 import { connect, Store } from 'react-redux';
 import { bindActionCreators } from 'redux';

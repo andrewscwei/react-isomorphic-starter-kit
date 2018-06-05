@@ -10,6 +10,7 @@ import fs from 'fs';
 import helmet from 'helmet';
 import http from 'http';
 import ip from 'ip';
+import 'isomorphic-fetch';
 import morgan from 'morgan';
 import path from 'path';
 
@@ -32,7 +33,7 @@ if (process.env.NODE_ENV === `development`) {
  * Redirect to HTTPS for insecure requests.
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
-if (process.env.NODE_ENV !== `development` && appConfig.forceSSL) {
+if (appConfig.forceSSL) {
   app.set(`trust proxy`, true);
   app.use((req, res, next) => {
     if (req.secure) {
@@ -60,16 +61,10 @@ if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname,
 /**
  * Server-side rendering setup.
  */
-if (appConfig.ssrEnabled) {
-  app.use(renderWithContext());
-}
-else {
-  app.use(renderWithoutContext());
-}
+app.use(appConfig.ssrEnabled ? renderWithContext() : renderWithoutContext());
 
 /**
  * Server 404 error, when the requested URI is not found.
- * @code 404 - URL not found.
  */
 app.use((req, _, next) => {
   const err = new Error(`${req.method} ${req.path} is not handled.`);
@@ -83,7 +78,6 @@ app.use((req, _, next) => {
  * will first render an error view if the request accepts html, or respond with
  * the error info in a JSON payload. If the error that ends up here does not
  * have a status code, it will default to 500.
- * @code 500 - Server error.
  */
 app.use((err: Error, _: express.Request, res: express.Response) => {
   res.status(err.status || 500).send(err);
@@ -95,7 +89,6 @@ http
   .on(`error`, (error: NodeJS.ErrnoException) => {
     if (error.syscall !== `listen`) throw error;
 
-    // Handle specific errors with friendly messages.
     switch (error.code) {
     case `EACCES`:
       log(`Port ${appConfig.port} requires elevated privileges`);
@@ -115,8 +108,7 @@ http
 
 // Handle unhandled rejections.
 process.on(`unhandledRejection`, reason => {
-  // tslint:disable-next-line no-console
-  console.error(`Unhandled Promise rejection:`, reason);
+  console.error(`Unhandled Promise rejection:`, reason); // tslint:disable-line no-console
   process.exit(1);
 });
 

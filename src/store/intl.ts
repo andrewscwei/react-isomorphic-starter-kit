@@ -1,32 +1,25 @@
-import { Action, ActionType, IntlState, LocaleChangeAction, TranslationData, TranslationDataDict } from '@/types';
+import { Action, ActionType, IntlState, LocaleChangeAction } from '@/types';
 
-// for (const locale of $APP_CONFIG.locales) {
-//   addLocaleData($LOCALE_CONFIG.localeData[locale]);
-// }
+let defaultLocale: string;
+let translations: TranslationDataDict = {};
 
-const translations: TranslationDataDict = {};
-
-// Require context for all locale translation files and apply them to i18next so
-// that they can be watched by Webpack.
-if (process.env.NODE_ENV === `development`) {
-  const appConfig = require(`@/../config/app.conf`).default;
+if ((__APP_ENV__ === `client`) && (process.env.NODE_ENV === `development`)) {
   const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
   localeReq.keys().forEach(path => {
     const locale = path.replace(`./`, ``).replace(`.json`, ``);
-    if (!~appConfig.locales.indexOf(locale)) { return; }
+    if (!~__APP_CONFIG__.locales.indexOf(locale)) { return; }
     translations[locale] = localeReq(path) as TranslationData;
   });
+  defaultLocale = __APP_CONFIG__.locales[0];
 }
 else {
-  for (const locale in $LOCALE_CONFIG.translations) {
-    if (!$LOCALE_CONFIG.translations.hasOwnProperty(locale)) continue;
-    translations[locale] = $LOCALE_CONFIG.translations[locale] as TranslationData;
-  }
+  defaultLocale = __INTL_CONFIG__.defaultLocale;
+  translations = __INTL_CONFIG__.dict;
 }
 
 const initialState: IntlState = {
-  locale: `en`,
-  translations: translations[`en`],
+  locale: defaultLocale,
+  translations: translations[defaultLocale],
 };
 
 export function changeLocale(locale: string): LocaleChangeAction {

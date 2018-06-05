@@ -5,7 +5,6 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
-import { TranslationData } from '@/types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -13,6 +12,36 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import styled, { injectGlobal } from 'styled-components';
 import normalize from 'styled-normalize';
+
+injectGlobal`
+  ${normalize} /* stylelint-disable-line max-empty-lines */
+
+  html,
+  body {
+    background: #111;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: all .3s;
+  }
+
+  .fade-exit {
+    opacity: 1;
+  }
+
+  .fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: all .3s;
+  }
+`;
 
 const StyledRoot = styled.div`
   height: 100%;
@@ -55,33 +84,3 @@ class App extends PureComponent<Props> {
 }
 
 export default connect<{}, {}, Partial<Props>>(mapStateToProps, mapDispatchToProps)(App);
-
-injectGlobal`
-  ${normalize} /* stylelint-disable-line max-empty-lines */
-
-  html,
-  body {
-    background: #111;
-    font-family: 'Roboto', sans-serif;
-    height: 100%;
-    width: 100%;
-  }
-
-  .fade-enter {
-    opacity: 0;
-  }
-
-  .fade-enter.fade-enter-active {
-    opacity: 1;
-    transition: all .3s;
-  }
-
-  .fade-exit {
-    opacity: 1;
-  }
-
-  .fade-exit.fade-exit-active {
-    opacity: 0;
-    transition: all .3s;
-  }
-`;

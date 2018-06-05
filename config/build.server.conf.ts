@@ -1,14 +1,13 @@
 /**
- * @file This is the Webpack config for compiling client assets in both
- *       `development` and `production` environments.
+ * @file Webpack config for compiling the app server.
  */
 
-import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
+import { getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
@@ -16,15 +15,8 @@ const inputDir = path.join(cwd, `src`);
 const outputDir = path.join(cwd, `build`);
 const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
-let manifest;
-
-if (isProduction) {
-  try { manifest = require(`../build/public/asset-manifest.json`); }
-  catch (err) { /* Do nothing */ }
-}
-
 const config: Configuration = {
-  devtool: isProduction ? (appConfig.build.sourceMap ? `source-map` : false) : `cheap-eval-source-map`,
+  devtool: isProduction ? (appConfig.build.sourceMap ? `source-map` : false) : `source-map`,
   entry: {
     server: path.join(inputDir, `server.tsx`),
   },
@@ -57,13 +49,23 @@ const config: Configuration = {
     sourceMapFilename: `[name].js.map`,
   },
   plugins: [
-    new CopyPlugin([{
-      from: path.join(cwd, `config`),
-      ignore: [`.*`, `*.conf.*`, `*.ts`],
-      to: path.join(outputDir, `config`),
-    }]),
     new DefinePlugin({
-      $ASSET_MANIFEST: JSON.stringify(manifest),
+      __APP_ENV__: JSON.stringify(`server`),
+      __ASSET_MANIFEST__: JSON.stringify((() => {
+        let t;
+
+        if (process.env.NODE_ENV === `production`) {
+          try { t = require(path.join(__dirname, `../build/public/asset-manifest.json`)); }
+          catch (err) { /* Do nothing */ }
+        }
+
+        return t;
+      })()),
+      __INTL_CONFIG__: JSON.stringify({
+        defaultLocale: appConfig.locales[0],
+        locales: appConfig.locales,
+        dict: getTranslationDataDictFromDir(path.join(cwd, `config/locales`)),
+      }),
     }),
     new EnvironmentPlugin([`NODE_ENV`]),
     ...!useBundleAnalyzer ? [] : [

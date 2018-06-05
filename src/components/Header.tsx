@@ -1,4 +1,3 @@
-import { TranslationData } from '@/types';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';

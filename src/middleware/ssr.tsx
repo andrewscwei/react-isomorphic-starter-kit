@@ -9,12 +9,12 @@ import routes from '@/routes';
 import * as reducers from '@/store';
 import theme from '@/styles/theme';
 import Layout from '@/templates/Layout';
-import ConnectedIntlProvider from '@/utils/ConnectedIntlProvider';
 import debug from 'debug';
 import { RequestHandler } from 'express';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
+import { IntlProvider } from 'react-intl';
+import { connect, Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
@@ -23,6 +23,12 @@ import { ThemeProvider } from 'styled-components';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
+
+const ConnectedIntlProvider = connect((state: any) => ({
+  key: state.intl.locale,
+  locale: state.intl.locale,
+  messages: state.intl.translations,
+}))(IntlProvider);
 
 /**
  * Express middleware for rendering React views to string based on the request
@@ -90,7 +96,7 @@ export function renderWithoutContext(): RequestHandler {
     log(`Rendering without context: ${req.path}`);
 
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout initialState={store.getState()}/>,
+      <Layout/>,
     )}`);
   };
 }
