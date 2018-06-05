@@ -9,13 +9,12 @@ import routes from '@/routes';
 import * as reducers from '@/store';
 import theme from '@/styles/theme';
 import Layout from '@/templates/Layout';
-import { LocalizedRequest } from '@/types';
+import ConnectedIntlProvider from '@/utils/ConnectedIntlProvider';
 import debug from 'debug';
 import { RequestHandler } from 'express';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
-import { IntlProvider } from 'react-intl';
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
@@ -23,41 +22,21 @@ import thunk from 'redux-thunk';
 import { ThemeProvider } from 'styled-components';
 
 const log = debug(`app:ssr`);
-
-const ConnectedIntlProvider = connect((state: any) => ({
-  key: state.intl.locale,
-  locale: state.intl.locale,
-  messages: state.intl.translations,
-}))(IntlProvider);
-
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 /**
  * Express middleware for rendering React views to string based on the request
- * path and sending the string as a response.
- *
- * @param options Options.
- * @param options.excludeContext Specifies whether the view body should be
- *                               excluded from the rendering process.
+ * path and sending the string as a response.  This method renders the view with
+ * body context.
  *
  * @return Express middleware.
  */
-function render({ excludeContext = false }: { excludeContext?: boolean } = {}): RequestHandler {
-  return async (req: LocalizedRequest, res) => {
-    log(`Processing path: ${req.normalizedPath || req.path}`);
+export function renderWithContext(): RequestHandler {
+  return async (req, res) => {
+    log(`Rendering with context: ${req.path}`);
 
     // Find and store all matching client routes based on the request URL.
-    const matches = matchRoutes(routes, req.normalizedPath || req.path);
-
-    // If `excludeContext` is specified, just render the layout without the app
-    // markup.
-    if (excludeContext) {
-      return res.send(`<!doctype html>${renderToStaticMarkup(
-        <Layout
-          initialState={store.getState()}
-        />,
-      )}`);
-    }
+    const matches = matchRoutes(routes, req.path);
 
     // For each matching route, fetch async data if required.
     for (const t of matches) {
@@ -75,8 +54,8 @@ function render({ excludeContext = false }: { excludeContext?: boolean } = {}): 
         <ConnectedIntlProvider>
           <ThemeProvider theme={theme}>
             <StaticRouter location={req.url} context={context}>
-              <Route render={(routeProps: RouteComponentProps<any>) => (
-                <App route={routeProps}/>
+              <Route render={(route: RouteComponentProps<any>) => (
+                <App route={route}/>
               )}/>
             </StaticRouter>
           </ThemeProvider>
@@ -92,29 +71,25 @@ function render({ excludeContext = false }: { excludeContext?: boolean } = {}): 
       break;
     }
 
-    return res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout
-        body={body}
-        initialState={store.getState()}
-      />,
+    res.send(`<!doctype html>${renderToStaticMarkup(
+      <Layout body={body} initialState={store.getState()}/>,
     )}`);
   };
 }
 
 /**
- * Express middleware to render React views with context.
- *
- * @return Express middleware.
- */
-export function renderWithContext(): RequestHandler {
-  return render({ excludeContext: false });
-}
-
-/**
- * Express middleware to render React views without context.
+ * Express middleware for rendering React view to string based on the request
+ * path and sending the resulting string as a response. This method renders the
+ * view without body context.
  *
  * @return Express middleware.
  */
 export function renderWithoutContext(): RequestHandler {
-  return render({ excludeContext: true });
+  return async (req, res) => {
+    log(`Rendering without context: ${req.path}`);
+
+    res.send(`<!doctype html>${renderToStaticMarkup(
+      <Layout initialState={store.getState()}/>,
+    )}`);
+  };
 }

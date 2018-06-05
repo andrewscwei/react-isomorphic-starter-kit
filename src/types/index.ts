@@ -34,11 +34,6 @@ export interface DataComponent {
   fetchData(store: Store<AppState>): void;
 }
 
-export interface LocalizedRequest extends Request {
-  normalizedPath?: string;
-  language?: string;
-}
-
 export interface UsersLoadedAction extends Action {
   items: ReadonlyArray<User>;
 }
