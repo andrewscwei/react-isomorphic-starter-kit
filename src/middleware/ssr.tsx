@@ -7,7 +7,6 @@
 import App from '@/containers/App';
 import routes from '@/routes';
 import * as reducers from '@/store';
-import theme from '@/styles/theme';
 import Layout from '@/templates/Layout';
 import debug from 'debug';
 import { RequestHandler } from 'express';
@@ -19,7 +18,6 @@ import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { ThemeProvider } from 'styled-components';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
@@ -58,13 +56,11 @@ export function renderWithContext(): RequestHandler {
     const body = renderToString(
       <Provider store={store}>
         <ConnectedIntlProvider>
-          <ThemeProvider theme={theme}>
-            <StaticRouter location={req.url} context={context}>
-              <Route render={(route: RouteComponentProps<any>) => (
-                <App route={route}/>
-              )}/>
-            </StaticRouter>
-          </ThemeProvider>
+          <StaticRouter location={req.url} context={context}>
+            <Route render={(route: RouteComponentProps<any>) => (
+              <App route={route}/>
+            )}/>
+          </StaticRouter>
         </ConnectedIntlProvider>
       </Provider>,
     );

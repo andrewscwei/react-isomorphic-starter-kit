@@ -6,12 +6,13 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
 import { changeLocale } from '@/store/intl';
+import theme from '@/styles/theme';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 import normalize from 'styled-normalize';
 
 injectGlobal`
@@ -19,7 +20,7 @@ injectGlobal`
 
   html,
   body {
-    background: #0f0e13;
+    background: ${theme.backgroundColor};
     font-family: 'Roboto', sans-serif;
     height: 100%;
     width: 100%;
@@ -93,15 +94,17 @@ class App extends PureComponent<Props> {
     const { locale, route, t } = this.props;
 
     return (
-      <StyledRoot>
-        <Header locale={locale} t={t}/>
-        <TransitionGroup>
-          <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
-            <Switch location={route.location}>{this.generateRoutes()}</Switch>
-          </CSSTransition>
-        </TransitionGroup>
-        <Footer t={t}/>
-      </StyledRoot>
+      <ThemeProvider theme={theme}>
+        <StyledRoot>
+          <Header locale={locale} t={t}/>
+          <TransitionGroup>
+            <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
+              <Switch location={route.location}>{this.generateRoutes()}</Switch>
+            </CSSTransition>
+          </TransitionGroup>
+          <Footer t={t}/>
+        </StyledRoot>
+      </ThemeProvider>
     );
   }
 }

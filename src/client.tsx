@@ -4,7 +4,6 @@
 
 import App from '@/containers/App';
 import * as reducers from '@/store';
-import theme from '@/styles/theme';
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
@@ -13,7 +12,6 @@ import { connect, Provider } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { ThemeProvider } from 'styled-components';
 
 // Set up the store.
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__ || {}, applyMiddleware(thunk));
@@ -28,13 +26,11 @@ const ConnectedIntlProvider = connect((state: any) => ({
 const markup = () => (
   <Provider store={store}>
     <ConnectedIntlProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Route render={(route: RouteComponentProps<any>) => (
-            <App route={route}/>
-          )}/>
-        </BrowserRouter>
-      </ThemeProvider>
+      <BrowserRouter>
+        <Route render={(route: RouteComponentProps<any>) => (
+          <App route={route}/>
+        )}/>
+      </BrowserRouter>
     </ConnectedIntlProvider>
   </Provider>
 );
