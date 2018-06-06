@@ -1,6 +1,7 @@
 import { fetchUsers } from '@/store/users';
 import { AppState, User } from '@/types';
 import React, { PureComponent } from 'react';
+import Helmet from 'react-helmet';
 import { connect, Store } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
@@ -61,6 +62,9 @@ class About extends PureComponent<Props> {
 
     return (
       <StyledRoot>
+        <Helmet>
+          <title>{t[`about`]}</title>
+        </Helmet>
         <h1>{t[`about-title`]}</h1>
         {
           this.props.users.map((user: User) => {

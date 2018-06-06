@@ -1,5 +1,6 @@
 import ReactLogo from '@/components/ReactLogo';
 import React, { PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
@@ -56,6 +57,9 @@ class Home extends PureComponent<Props> {
 
     return (
       <StyledRoot>
+        <Helmet>
+          <title>{t[`home`]}</title>
+        </Helmet>
         <StyledReactLogo/>
         <h1>{t[`hello`]}</h1>
         <p>{t[`description`]}</p>
