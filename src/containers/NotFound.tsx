@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
-  align-items: flex-start;
+  align-items: center;
   box-sizing: border-box;
   display: flex;
   font-family: ${props => props.theme.font};
@@ -17,16 +17,13 @@ const StyledRoot = styled.div`
   position: absolute;
   width: 100%;
 
-  & summary {
-    max-width: 550px;
-  }
-
   & h1 {
     color: ${props => props.theme.titleColor};
     font-size: 2.4em;
     font-weight: 700;
     letter-spacing: 3px;
     margin: 0;
+    max-size: 550px;
     text-transform: uppercase;
   }
 `;
@@ -50,9 +47,7 @@ class NotFound extends PureComponent<Props> {
 
         return (
           <StyledRoot>
-            <summary>
-              <h1>{t[`not-found`]}</h1>
-            </summary>
+            <h1>{t[`not-found`]}</h1>
           </StyledRoot>
         );
       }}/>
