@@ -1,4 +1,8 @@
+/* tslint:disable no-reference */
 ///<reference path='../../src/global.d.ts' />
+/**
+ * @file Utility functions for the build process.
+ */
 
 import fs from 'fs';
 import path from 'path';
@@ -39,7 +43,7 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
 export function getLocaleDataFromDir(dir: string): LocaleDataDict {
   const locales = getLocalesFromDir(dir);
 
-  return locales.reduce((dict: LocaleDataDict, locale:string) => {
+  return locales.reduce((dict: LocaleDataDict, locale: string) => {
     try {
       const data: ReactIntl.LocaleData = require(`react-intl/locale-data/${locale}`);
       dict[locale] = data;
