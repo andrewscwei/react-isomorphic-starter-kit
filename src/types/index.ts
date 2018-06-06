@@ -1,3 +1,8 @@
+export interface AppState {
+  intl: IntlState;
+  users: UsersState;
+}
+
 export enum AppActionType {
   LOCALE_CHANGED = 'localeChanged',
   USERS_LOADED = 'usersLoaded',
@@ -29,9 +34,4 @@ export interface IntlState {
 export interface LocaleChangeAction {
   locale: string;
   type: AppActionType.LOCALE_CHANGED;
-}
-
-export interface AppState {
-  intl: IntlState;
-  users: UsersState;
 }
