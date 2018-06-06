@@ -1,12 +1,11 @@
-
-export enum ActionType {
+export enum AppActionType {
   LOCALE_CHANGED = 'localeChanged',
   USERS_LOADED = 'usersLoaded',
 }
 
-export interface Action {
-  type: ActionType;
-}
+export type AppAction =
+  | UsersLoadedAction
+  | LocaleChangeAction;
 
 export interface User {
   [key: string]: any;
@@ -16,8 +15,9 @@ export interface UsersState {
   items: ReadonlyArray<User>;
 }
 
-export interface UsersLoadedAction extends Action {
+export interface UsersLoadedAction {
   items: ReadonlyArray<User>;
+  type: AppActionType.USERS_LOADED;
 }
 
 export interface IntlState {
@@ -26,8 +26,9 @@ export interface IntlState {
   translations: Readonly<TranslationData>;
 }
 
-export interface LocaleChangeAction extends Action {
+export interface LocaleChangeAction {
   locale: string;
+  type: AppActionType.LOCALE_CHANGED;
 }
 
 export interface AppState {

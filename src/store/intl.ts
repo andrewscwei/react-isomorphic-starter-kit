@@ -1,4 +1,4 @@
-import { Action, ActionType, IntlState, LocaleChangeAction } from '@/types';
+import { AppAction, AppActionType, IntlState, LocaleChangeAction } from '@/types';
 import { addLocaleData } from 'react-intl';
 
 let defaultLocale: string;
@@ -40,15 +40,14 @@ const initialState: IntlState = {
 export function changeLocale(locale: string): LocaleChangeAction {
   return {
     locale,
-    type: ActionType.LOCALE_CHANGED,
+    type: AppActionType.LOCALE_CHANGED,
   };
 }
 
-export default function reducer(state = initialState, action: Action): IntlState {
+export default function reducer(state = initialState, action: AppAction): IntlState {
   switch (action.type) {
-  case ActionType.LOCALE_CHANGED:
-    const t = action as LocaleChangeAction;
-    return { ...state, locale: t.locale, translations: translations[t.locale] };
+  case AppActionType.LOCALE_CHANGED:
+    return { ...state, locale: action.locale, translations: translations[action.locale] };
   default:
     return state;
   }

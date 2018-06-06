@@ -1,5 +1,10 @@
-import { Action, ActionType, UsersLoadedAction, UsersState } from '@/types';
+import { AppAction, AppActionType, UsersLoadedAction, UsersState } from '@/types';
 import { Dispatch } from 'react-redux';
+import { Action } from 'redux';
+
+const initialState: UsersState = {
+  items: [],
+};
 
 export function fetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
@@ -7,17 +12,17 @@ export function fetchUsers() {
     const items = await res.json();
     const action: UsersLoadedAction = {
       items,
-      type: ActionType.USERS_LOADED,
+      type: AppActionType.USERS_LOADED,
     };
 
     dispatch(action);
   };
 }
 
-export default function reducer(state: UsersState = { items: [] }, action: Action): UsersState {
+export default function reducer(state = initialState, action: AppAction): UsersState {
   switch (action.type) {
-  case ActionType.USERS_LOADED:
-    return { ...state,  items: (action as UsersLoadedAction).items };
+  case AppActionType.USERS_LOADED:
+    return { ...state, items: action.items };
   default:
     return state;
   }

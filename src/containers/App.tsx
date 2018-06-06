@@ -109,4 +109,4 @@ class App extends PureComponent<Props> {
   }
 }
 
-export default connect<{}, {}, Partial<Props>>(mapStateToProps, mapDispatchToProps)(App);
+export default connect<Partial<Props>, Partial<Props>, Partial<Props>>(mapStateToProps, mapDispatchToProps)(App);
