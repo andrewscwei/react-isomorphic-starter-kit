@@ -78,8 +78,6 @@ export function renderWithContext(): RequestHandler {
       break;
     }
 
-    console.log(sheet.getStyleElement());
-
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout body={body} initialState={store.getState()} initialStyles={sheet.getStyleElement()}/>,
     )}`);
