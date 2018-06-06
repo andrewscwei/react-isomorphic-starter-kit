@@ -18,6 +18,7 @@ import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
@@ -52,13 +53,16 @@ export function renderWithContext(): RequestHandler {
     }
 
     const context: { [key: string]: any } = {};
+    const sheet = new ServerStyleSheet();
 
     const body = renderToString(
       <Provider store={store}>
         <ConnectedIntlProvider>
           <StaticRouter location={req.url} context={context}>
             <Route render={(route: RouteComponentProps<any>) => (
-              <App route={route}/>
+              <StyleSheetManager sheet={sheet.instance}>
+                <App route={route}/>
+              </StyleSheetManager>
             )}/>
           </StaticRouter>
         </ConnectedIntlProvider>
@@ -74,8 +78,10 @@ export function renderWithContext(): RequestHandler {
       break;
     }
 
+    console.log(sheet.getStyleElement());
+
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} initialState={store.getState()}/>,
+      <Layout body={body} initialState={store.getState()} initialStyles={sheet.getStyleElement()}/>,
     )}`);
   };
 }

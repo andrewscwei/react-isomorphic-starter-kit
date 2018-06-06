@@ -3,11 +3,11 @@
  */
 
 import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin } from 'webpack';
+import { Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
-import { getTranslationDataDictFromDir, getLocaleDataFromDir } from './utils';
+import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === `production`;
 const cwd = path.join(__dirname, `../`);
@@ -71,6 +71,12 @@ const config: Configuration = {
     new EnvironmentPlugin([`NODE_ENV`]),
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
+    ],
+    ...isProduction ? [] : [
+      new WatchIgnorePlugin([
+        /containers/,
+        /components/,
+      ]),
     ],
   ],
   resolve: {

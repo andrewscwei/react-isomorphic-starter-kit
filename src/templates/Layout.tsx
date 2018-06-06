@@ -5,7 +5,7 @@
 
 import appConfig from '@/../config/app.conf';
 import path from 'path';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import serialize from 'serialize-javascript';
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   keywords?: string;
   description?: string;
   initialState?: object;
+  initialStyles?: Array<ReactElement<{}>>;
 }
 
 export default class Layout extends PureComponent<Props> {
@@ -45,7 +46,7 @@ export default class Layout extends PureComponent<Props> {
   }
 
   render() {
-    const { body, title, url, keywords, description, initialState } = this.props;
+    const { body, title, url, keywords, description, initialState, initialStyles } = this.props;
 
     return (
       <html>
@@ -89,6 +90,8 @@ export default class Layout extends PureComponent<Props> {
           <meta name='msapplication-navbutton-color' content='#000000'/>
 
           <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i'/>
+
+          { initialStyles }
         </head>
         <body>
           { initialState &&
