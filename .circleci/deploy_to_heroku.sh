@@ -22,7 +22,8 @@ ssh-keyscan -H heroku.com >> ~/.ssh/known_hosts
 # # Deploy to Heroku container registry
 # # heroku plugins:install @heroku-cli/plugin-container-registry
 heroku container:login
-heroku container:push release --app=$CIRCLE_PROJECT_REPONAME
+heroku container:push web --app=$CIRCLE_PROJECT_REPONAME
+heroku container:release web --app=$CIRCLE_PROJECT_REPONAME
 # docker login -u "$HEROKU_LOGIN" -p "$HEROKU_API_KEY" registry.heroku.com
 # docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:$CIRCLE_SHA1 .
 # docker push registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:$CIRCLE_SHA1
