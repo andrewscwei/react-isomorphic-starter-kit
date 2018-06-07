@@ -20,6 +20,7 @@ EOF
 ssh-keyscan -H heroku.com >> ~/.ssh/known_hosts
 
 # Deploy to Heroku container registry
+heroku plugins:install @heroku-cli/plugin-container-registry
 heroku container:login
 heroku container:push release --app=$CIRCLE_PROJECT_REPONAME
 
