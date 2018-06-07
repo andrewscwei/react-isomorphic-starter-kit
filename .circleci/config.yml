@@ -1,22 +1,20 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/app
+  build_and_test:
+    working_directory: ~/repo
     docker:
       - image: node:8.9.4
-    environment:
-      - DOCKER_VERSION: 17.03.1-ce
     steps:
       - checkout
       - run:
-          name: Install Docker
+          name: Install APT packages
           command: |
-            set -x
-            curl -L -o /tmp/docker-$DOCKER_VERSION.tgz https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz
-            tar -xz -C /tmp -f /tmp/docker-$DOCKER_VERSION.tgz
-            mv /tmp/docker/* /usr/bin
+            apt-get update -y
+            apt-get install jq -y
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          keys:
+            - dependency-cache-{{ checksum "yarn.lock" }}
+            - dependency-cache-
       - run:
           name: Install NPM dependencies
           command: yarn
@@ -27,15 +25,59 @@ jobs:
       - run:
           name: Build
           command: npm run build
-      - store_artifacts:
-          path: ~/app/build
-      - setup_remote_docker
       - run:
-          name: Build application Docker image
+          name: Test
+          command: npm test
+      - store_artifacts:
+          path: ~/repo/build
+
+  build_test_and_deploy:
+    working_directory: ~/repo
+    docker:
+      - image: node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: Install APT packages
           command: |
-            docker build -f dockerfile --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t react-isomorphic-starter-kit:$CIRCLE_SHA1 .
+            apt-get update -y
+            apt-get install jq -y
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "yarn.lock" }}
+            - dependency-cache-
+      - run:
+          name: Install NPM dependencies
+          command: yarn
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Test
+          command: npm test
+      - store_artifacts:
+          path: ~/repo/build
+      - deploy:
+          name: Deploy
+          command: .circleci/deploy_to_heroku.sh
+
 workflows:
   version: 2
-  build:
+  build_and_test:
     jobs:
-      - build
+      - build_and_test:
+          filters:
+            tags:
+              ignore: /^v.*/
+  build_test_and_deploy:
+    jobs:
+      - build_test_and_deploy:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

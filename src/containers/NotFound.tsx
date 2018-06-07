@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -48,6 +49,9 @@ class NotFound extends PureComponent<Props> {
 
         return (
           <StyledRoot>
+            <Helmet>
+              <title>{t[`not-found-title`]}</title>
+            </Helmet>
             <h1>{t[`not-found`]}</h1>
           </StyledRoot>
         );
