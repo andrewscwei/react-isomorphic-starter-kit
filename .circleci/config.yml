@@ -78,7 +78,7 @@ jobs:
       - deploy:
           name: Deploy
           command: |
-            docker login --email=$HEROKU_LOGIN --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
             docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:$CIRCLE_SHA1 .
             docker push registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:latest
 
@@ -86,7 +86,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_and_test:
+      - build_test_and_deploy:
           filters:
             tags:
               ignore: /^v.*/
