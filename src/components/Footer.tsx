@@ -72,7 +72,7 @@ class Footer extends PureComponent<Props> {
     return (
       <StyledRoot>
         <nav>
-          <a href='https://github.com/andrewscwei/react-universal-starter-kit'/>
+          <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
         </nav>
         <Link to='/'>{t[`en`]}</Link>
         <Link to='/ja/'>{t[`jp`]}</Link>

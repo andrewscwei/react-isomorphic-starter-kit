@@ -1,5 +1,5 @@
 {
-  "name": "react-universal-starter-kit",
+  "name": "react-isomorphic-starter-kit",
   "version": "2.0.0",
   "description": "Experimental React universal/isomorphic app starter kit",
   "private": true,

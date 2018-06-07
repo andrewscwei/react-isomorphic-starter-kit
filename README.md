@@ -1,4 +1,4 @@
-# react-universal-starter-kit [![CircleCI](https://circleci.com/gh/andrewscwei/react-universal-starter-kit.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-universal-starter-kit)
+# react-isomorphic-starter-kit [![CircleCI](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit)
 
 This is an **experimental** starter kit for a React universal/isomorphic app.
 
