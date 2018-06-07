@@ -2,10 +2,7 @@
 
 set -e
 
-wget https://cli-assets.heroku.com/branches/stable/heroku-linux-amd64.tar.gz
-mkdir -p /usr/local/lib /usr/local/bin
-tar -xvzf heroku-linux-amd64.tar.gz -C /usr/local/lib
-ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 cat > ~/.netrc << EOF
 machine api.heroku.com
@@ -20,7 +17,7 @@ EOF
 ssh-keyscan -H heroku.com >> ~/.ssh/known_hosts
 
 # Deploy to Heroku container registry
-heroku plugins:install @heroku-cli/plugin-container-registry
+# heroku plugins:install @heroku-cli/plugin-container-registry
 heroku container:login
 heroku container:push release --app=$CIRCLE_PROJECT_REPONAME
 
