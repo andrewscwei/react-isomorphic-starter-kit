@@ -15,6 +15,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 9. [nodemon](https://github.com/remy/nodemon)
 10. [Docker](https://docker.com) config
 11. [TSLint](https://palantir.github.io/tslint/) and [StyleLint](https://stylelint.io/) config
+12. [CircleCI](https://circleci.com) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage
 
