@@ -77,10 +77,7 @@ jobs:
       - setup_remote_docker
       - deploy:
           name: Deploy
-          command: |
-            docker login -u "$HEROKU_LOGIN" -p "$HEROKU_API_KEY" registry.heroku.com
-            docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:$CIRCLE_SHA1 .
-            docker push registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:$CIRCLE_SHA1
+          command: ./.circleci/deploy_to_heroku.sh
 
 workflows:
   version: 2
