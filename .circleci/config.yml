@@ -16,9 +16,9 @@ jobs:
             tar -xz -C /tmp -f /tmp/docker-$DOCKER_VERSION.tgz
             mv /tmp/docker/* /usr/bin
       - restore_cache:
-          key:
+          keys:
             - dependency-cache-{{ checksum "yarn.lock" }}
-            - dependency-cache
+            - dependency-cache-
       - run:
           name: Install NPM dependencies
           command: yarn
@@ -39,6 +39,7 @@ jobs:
           name: Build application Docker image
           command: |
             docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t $CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 .
+
   build_test_and_deploy:
     working_directory: ~/repo
     docker:
@@ -55,9 +56,9 @@ jobs:
             tar -xz -C /tmp -f /tmp/docker-$DOCKER_VERSION.tgz
             mv /tmp/docker/* /usr/bin
       - restore_cache:
-          key:
+          keys:
             - dependency-cache-{{ checksum "yarn.lock" }}
-            - dependency-cache
+            - dependency-cache-
       - run:
           name: Install NPM dependencies
           command: yarn
