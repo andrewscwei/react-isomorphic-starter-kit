@@ -13,7 +13,6 @@ machine git.heroku.com
   password $HEROKU_KEY
 EOF
 
-
 docker login -u "$HEROKU_LOGIN" -p "$HEROKU_KEY" registry.heroku.com
 docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:latest .
 docker push registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:latest
