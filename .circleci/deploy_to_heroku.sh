@@ -19,6 +19,8 @@ EOF
 # Add heroku.com to the list of known hosts
 ssh-keyscan -H heroku.com >> ~/.ssh/known_hosts
 
+# Deploy to Heroku container registry
+heroku container:login
 heroku container:push release --app=$CIRCLE_PROJECT_REPONAME
 
 echo
