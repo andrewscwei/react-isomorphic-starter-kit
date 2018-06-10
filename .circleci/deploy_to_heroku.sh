@@ -13,12 +13,14 @@ machine git.heroku.com
   password $HEROKU_KEY
 EOF
 
+APP_NAME="$CIRCLE_PROJECT_REPONAME"
+
 docker login -u "$HEROKU_LOGIN" -p "$HEROKU_KEY" registry.heroku.com
-docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:latest .
-docker push registry.heroku.com/$CIRCLE_PROJECT_REPONAME/web:latest
+docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$APP_NAME/web:latest .
+docker push registry.heroku.com/$APP_NAME/web:latest
 
 heroku container:login
-heroku container:release web --app=react-isomorphic-starter-kit
+heroku container:release web --app=$APP_NAME
 
 echo
 echo "Successfuly deployed to Heroku"
