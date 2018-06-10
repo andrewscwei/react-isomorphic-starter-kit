@@ -2,6 +2,8 @@
 
 set -e
 
+APP_NAME="$CIRCLE_PROJECT_REPONAME"
+
 wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 cat > ~/.netrc << EOF
@@ -12,8 +14,6 @@ machine git.heroku.com
   login $HEROKU_LOGIN
   password $HEROKU_KEY
 EOF
-
-APP_NAME="$CIRCLE_PROJECT_REPONAME"
 
 docker login -u "$HEROKU_LOGIN" -p "$HEROKU_KEY" registry.heroku.com
 docker build --rm=false --build-arg NODE_ENV=production --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$APP_NAME/web:latest .
