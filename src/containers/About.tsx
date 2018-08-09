@@ -3,7 +3,7 @@ import { AppState, User } from '@/types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { bindActionCreators, Store } from 'redux';
+import { Action, bindActionCreators, Dispatch, Store } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
@@ -39,8 +39,8 @@ const StyledRoot = styled.div`
   }
 `;
 
-const mapStateToProps = (state: any): StateProps => ({ t: state.intl.translations, users: state.users.items });
-const mapDispatchToProps = (dispatch: any): DispatchProps => bindActionCreators({ fetchUsers }, dispatch);
+const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations, users: state.users.items });
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({ fetchUsers }, dispatch);
 
 interface StateProps {
   t: TranslationData;
@@ -89,4 +89,4 @@ class About extends PureComponent<Props> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(About);

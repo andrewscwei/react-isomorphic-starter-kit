@@ -1,8 +1,9 @@
+import { AppState } from '@/types';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
@@ -44,8 +45,8 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const mapStateToProps = (state: any): StateProps => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: any): DispatchProps => bindActionCreators({}, dispatch);
+const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations });
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({}, dispatch);
 
 class NotFound extends PureComponent<Props> {
   render() {
@@ -70,4 +71,4 @@ class NotFound extends PureComponent<Props> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(NotFound);
+export default connect(mapStateToProps, mapDispatchToProps)(NotFound);

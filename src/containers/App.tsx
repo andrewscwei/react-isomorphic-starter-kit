@@ -7,11 +7,12 @@ import Header from '@/components/Header';
 import routes from '@/routes';
 import { changeLocale } from '@/store/intl';
 import theme from '@/styles/theme';
+import { AppState } from '@/types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { bindActionCreators } from 'redux';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 import normalize from 'styled-normalize';
 
@@ -53,7 +54,7 @@ const StyledRoot = styled.div`
 
 interface StateProps {
   locale: string;
-  locales: Array<string>;
+  locales: ReadonlyArray<string>;
   t: TranslationData;
 }
 
@@ -67,8 +68,8 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const mapStateToProps = (state: any): StateProps => ({ t: state.intl.translations, locale: state.intl.locale, locales: state.intl.locales });
-const mapDispatchToProps = (dispatch: any): DispatchProps => bindActionCreators({ changeLocale }, dispatch);
+const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations, locale: state.intl.locale, locales: state.intl.locales });
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({ changeLocale }, dispatch);
 
 class App extends PureComponent<Props> {
   componentWillMount() {
@@ -117,4 +118,4 @@ class App extends PureComponent<Props> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

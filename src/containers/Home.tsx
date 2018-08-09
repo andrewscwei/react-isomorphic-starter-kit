@@ -1,8 +1,9 @@
 import ReactLogo from '@/components/ReactLogo';
+import { AppState } from '@/types';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`
@@ -58,8 +59,8 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const mapStateToProps = (state: any, ownProps: OwnProps): StateProps => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: any, ownProps: OwnProps): DispatchProps => bindActionCreators({}, dispatch);
+const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations });
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({}, dispatch);
 
 class Home extends PureComponent<Props> {
   render() {
@@ -78,4 +79,4 @@ class Home extends PureComponent<Props> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
