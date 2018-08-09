@@ -55,9 +55,7 @@ interface OwnProps {
 
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
-class About extends PureComponent<Props> {
+class About extends PureComponent<StateProps & DispatchProps & OwnProps> {
   static fetchData(store: Store<AppState>) {
     return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }

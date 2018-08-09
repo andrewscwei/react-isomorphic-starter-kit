@@ -43,12 +43,10 @@ interface OwnProps {
 
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
 const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations });
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({}, dispatch);
 
-class NotFound extends PureComponent<Props> {
+class NotFound extends PureComponent<StateProps & DispatchProps & OwnProps> {
   render() {
     const { t } = this.props;
 

@@ -66,12 +66,10 @@ interface OwnProps {
   route: RouteComponentProps<any>;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
 const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations, locale: state.intl.locale, locales: state.intl.locales });
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({ changeLocale }, dispatch);
 
-class App extends PureComponent<Props> {
+class App extends PureComponent<StateProps & DispatchProps & OwnProps> {
   componentWillMount() {
     this.updateLocale();
   }
