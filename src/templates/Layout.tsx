@@ -27,7 +27,7 @@ export default class Layout extends PureComponent<Props> {
    *
    * @return The resolved path.
    */
-  resolveAssetPath(pathToResolve: string, manifest: { [key: string]: any } = __ASSET_MANIFEST__): string {
+  resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASSET_MANIFEST__): string {
     const normalizedPath: string = path.join.apply(null, pathToResolve.split(`/`));
     const publicPath = process.env.NODE_ENV === `production` ? appConfig.build.publicPath : `/`;
 

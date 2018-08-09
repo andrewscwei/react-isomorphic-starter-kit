@@ -6,7 +6,7 @@ const initialState: UsersState = {
 };
 
 export function fetchUsers() {
-  return async (dispatch: Dispatch<Action>) => {
+  return async (dispatch: Dispatch<AppAction>) => {
     const res = await fetch(`//jsonplaceholder.typicode.com/users`);
     const items = await res.json();
     const action: UsersLoadedAction = {

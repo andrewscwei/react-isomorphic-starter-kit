@@ -4,6 +4,7 @@
 
 import App from '@/containers/App';
 import * as reducers from '@/store';
+import { AppState } from '@/types';
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
@@ -16,7 +17,7 @@ import thunk from 'redux-thunk';
 // Set up the store.
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__ || {}, applyMiddleware(thunk));
 
-const ConnectedIntlProvider = connect((state: any) => ({
+const ConnectedIntlProvider = connect((state: AppState) => ({
   key: state.intl.locale,
   locale: state.intl.locale,
   messages: state.intl.translations,

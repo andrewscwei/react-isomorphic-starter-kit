@@ -8,6 +8,7 @@ import App from '@/containers/App';
 import routes from '@/routes';
 import * as reducers from '@/store';
 import Layout from '@/templates/Layout';
+import { AppState } from '@/types';
 import debug from 'debug';
 import { RequestHandler } from 'express';
 import React from 'react';
@@ -23,7 +24,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 const log = debug(`app:ssr`);
 const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
-const ConnectedIntlProvider = connect((state: any) => ({
+const ConnectedIntlProvider = connect((state: AppState) => ({
   key: state.intl.locale,
   locale: state.intl.locale,
   messages: state.intl.translations,
