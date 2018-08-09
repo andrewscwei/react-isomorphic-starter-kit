@@ -39,14 +39,23 @@ const StyledRoot = styled.div`
   }
 `;
 
-const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations, users: state.users.items });
-const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({ fetchUsers }, dispatch);
+const mapStateToProps = (state: any): StateProps => ({ t: state.intl.translations, users: state.users.items });
+const mapDispatchToProps = (dispatch: any): DispatchProps => bindActionCreators({ fetchUsers }, dispatch);
 
-interface Props {
+interface StateProps {
   t: TranslationData;
   users: ReadonlyArray<User>;
+}
+
+interface DispatchProps {
   fetchUsers(): void;
 }
+
+interface OwnProps {
+
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
@@ -80,4 +89,4 @@ class About extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(About);

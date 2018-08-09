@@ -44,12 +44,22 @@ const StyledReactLogo = styled(ReactLogo)`
   margin-bottom: 30px;
 `;
 
-interface Props {
+interface StateProps {
   t: TranslationData;
 }
 
-const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({}, dispatch);
+interface DispatchProps {
+
+}
+
+interface OwnProps {
+
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+const mapStateToProps = (state: any, ownProps: OwnProps): StateProps => ({ t: state.intl.translations });
+const mapDispatchToProps = (dispatch: any, ownProps: OwnProps): DispatchProps => bindActionCreators({}, dispatch);
 
 class Home extends PureComponent<Props> {
   render() {
@@ -68,4 +78,4 @@ class Home extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Home);

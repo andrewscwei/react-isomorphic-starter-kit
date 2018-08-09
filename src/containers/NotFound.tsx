@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
-import { connect } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
@@ -30,12 +30,22 @@ const StyledRoot = styled.div`
   }
 `;
 
-interface Props {
+interface StateProps {
   t: TranslationData;
 }
 
-const mapStateToProps = (state: any): Partial<Props> => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: any): Partial<Props> => bindActionCreators({}, dispatch);
+interface DispatchProps {
+
+}
+
+interface OwnProps {
+
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+const mapStateToProps = (state: any): StateProps => ({ t: state.intl.translations });
+const mapDispatchToProps = (dispatch: any): DispatchProps => bindActionCreators({}, dispatch);
 
 class NotFound extends PureComponent<Props> {
   render() {
@@ -60,4 +70,4 @@ class NotFound extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotFound);
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(NotFound);
