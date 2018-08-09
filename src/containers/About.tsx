@@ -2,8 +2,8 @@ import { fetchUsers } from '@/store/users';
 import { AppState, User } from '@/types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { connect, Store } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators, Store } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.div`

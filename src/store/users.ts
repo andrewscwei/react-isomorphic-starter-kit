@@ -1,6 +1,5 @@
 import { AppAction, AppActionType, UsersLoadedAction, UsersState } from '@/types';
-import { Dispatch } from 'react-redux';
-import { Action } from 'redux';
+import { Action, Dispatch } from 'redux';
 
 const initialState: UsersState = {
   items: [],

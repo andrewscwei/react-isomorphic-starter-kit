@@ -4,7 +4,7 @@
 
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NoEmitOnErrorsPlugin } from 'webpack';
+import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NoEmitOnErrorsPlugin, Plugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import appConfig from './app.conf';
@@ -74,7 +74,7 @@ const config: Configuration = {
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
-  ],
+  ] as Array<Plugin>,
   resolve: {
     alias: {
       '@': inputDir,

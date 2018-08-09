@@ -3,7 +3,7 @@
  */
 
 import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
+import { Configuration, DefinePlugin, EnvironmentPlugin, Plugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
@@ -78,7 +78,7 @@ const config: Configuration = {
         /components/,
       ]),
     ],
-  ],
+  ] as Array<Plugin>,
   resolve: {
     alias: {
       '@': inputDir,
