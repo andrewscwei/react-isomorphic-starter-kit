@@ -33,8 +33,12 @@ jobs:
             - config/
             - node_modules/
             - scripts/
+            - src/
             - Dockerfile
             - package.json
+            - tsconfig.json
+            - tslint.json
+            - yarn.lock
   test:
     <<: *defaults
     steps:
