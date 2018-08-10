@@ -28,6 +28,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
+            - .circleci/
             - build/
             - config/
             - node_modules/
@@ -75,4 +76,6 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              ignore: /.*/
+            tags:
+              only: /^v.*/
