@@ -1,5 +1,5 @@
+import { AppState } from '@/client';
 import ReactLogo from '@/components/ReactLogo';
-import { AppState } from '@/types';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';

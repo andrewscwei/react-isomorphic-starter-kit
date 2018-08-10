@@ -2,12 +2,12 @@
  * @file Client app root.
  */
 
+import { AppState } from '@/client';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
 import { changeLocale } from '@/store/intl';
 import theme from '@/styles/theme';
-import { AppState } from '@/types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import { AppState } from '@/types';
+import { AppState } from '@/client';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';

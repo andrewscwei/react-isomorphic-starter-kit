@@ -4,7 +4,8 @@
 
 import App from '@/containers/App';
 import * as reducers from '@/store';
-import { AppState } from '@/types';
+import { IntlState } from '@/store/intl';
+import { UsersState } from '@/store/users';
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
@@ -13,6 +14,11 @@ import { connect, Provider } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+
+export interface AppState {
+  intl: IntlState;
+  users: UsersState;
+}
 
 // Set up the store.
 const store = createStore(combineReducers(reducers), window.__INITIAL_STATE__ || {}, applyMiddleware(thunk));

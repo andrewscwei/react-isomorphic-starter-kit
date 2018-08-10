@@ -1,5 +1,5 @@
-import { fetchUsers } from '@/store/users';
-import { AppState, User } from '@/types';
+import { AppState } from '@/client';
+import { fetchUsers, User } from '@/store/users';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';

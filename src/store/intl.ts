@@ -1,5 +1,21 @@
-import { AppAction, AppActionType, IntlState, LocaleChangeAction } from '@/types';
 import { addLocaleData } from 'react-intl';
+
+export enum IntlActionType {
+  LOCALE_CHANGED = 'localeChanged',
+}
+
+export interface IntlLocaleChangeAction {
+  locale: string;
+  type: IntlActionType.LOCALE_CHANGED;
+}
+
+export interface IntlState {
+  locale: string;
+  locales: ReadonlyArray<string>;
+  translations: Readonly<TranslationData>;
+}
+
+export type IntlAction = IntlLocaleChangeAction;
 
 let defaultLocale: string;
 let locales: Array<string>;
@@ -37,16 +53,16 @@ const initialState: IntlState = {
   translations: translations[defaultLocale],
 };
 
-export function changeLocale(locale: string): LocaleChangeAction {
+export function changeLocale(locale: string): IntlLocaleChangeAction {
   return {
     locale,
-    type: AppActionType.LOCALE_CHANGED,
+    type: IntlActionType.LOCALE_CHANGED,
   };
 }
 
-export default function reducer(state = initialState, action: AppAction): IntlState {
+export default function reducer(state = initialState, action: IntlAction): IntlState {
   switch (action.type) {
-  case AppActionType.LOCALE_CHANGED:
+  case IntlActionType.LOCALE_CHANGED:
     return { ...state, locale: action.locale, translations: translations[action.locale] };
   default:
     return state;
