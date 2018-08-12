@@ -73,7 +73,7 @@ class About extends PureComponent<Props> {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, users } = this.props;
 
     return (
       <StyledRoot>
@@ -82,7 +82,7 @@ class About extends PureComponent<Props> {
         </Helmet>
         <h1>{t[`about-title`]}</h1>
         {
-          this.props.users.map((user: User) => {
+          users.map((user: User) => {
             return (
               <div key={user.id} >
                 <span>{user.name}</span>
