@@ -1,5 +1,8 @@
+import { AppState } from '@/store';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.footer`
@@ -61,9 +64,23 @@ const StyledRoot = styled.footer`
   }
 `;
 
-interface Props {
+interface StateProps {
   t: TranslationData;
 }
+
+interface DispatchProps {}
+
+interface OwnProps {}
+
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+}, dispatch);
 
 class Footer extends PureComponent<Props> {
   render() {
@@ -81,4 +98,4 @@ class Footer extends PureComponent<Props> {
   }
 }
 
-export default Footer;
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

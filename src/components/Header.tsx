@@ -1,5 +1,8 @@
+import { AppState } from '@/store';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.header`
@@ -34,10 +37,25 @@ const StyledRoot = styled.header`
   }
 `;
 
-interface Props {
+interface StateProps {
   t: TranslationData;
   locale: string;
 }
+
+interface DispatchProps {}
+
+interface OwnProps {}
+
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+  locale: state.intl.locale,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+}, dispatch);
 
 class Header extends PureComponent<Props> {
   render() {
@@ -52,4 +70,4 @@ class Header extends PureComponent<Props> {
   }
 }
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

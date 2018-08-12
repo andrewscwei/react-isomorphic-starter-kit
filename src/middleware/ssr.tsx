@@ -4,10 +4,9 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import { AppState } from '@/client';
 import App from '@/containers/App';
 import routes from '@/routes';
-import * as reducers from '@/store';
+import store, { AppState } from '@/store';
 import Layout from '@/templates/Layout';
 import debug from 'debug';
 import { RequestHandler } from 'express';
@@ -17,12 +16,9 @@ import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 const log = debug(`app:ssr`);
-const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 const ConnectedIntlProvider = connect((state: AppState) => ({
   key: state.intl.locale,

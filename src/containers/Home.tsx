@@ -1,6 +1,6 @@
-import { AppState } from '@/client';
 import ReactLogo from '@/components/ReactLogo';
-import React, { PureComponent } from 'react';
+import { AppState } from '@/store';
+import React, { ComponentType, PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch } from 'redux';
@@ -40,7 +40,7 @@ const StyledRoot = styled.div`
   }
 `;
 
-const StyledReactLogo = styled(ReactLogo)`
+const StyledReactLogo = styled(ReactLogo as ComponentType)`
   height: 200px;
   margin-bottom: 30px;
 `;
@@ -57,10 +57,17 @@ interface OwnProps {
 
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({}, dispatch);
+interface Props extends StateProps, DispatchProps, OwnProps {}
 
-class Home extends PureComponent<StateProps & DispatchProps & OwnProps> {
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+}, dispatch);
+
+class Home extends PureComponent<Props> {
   render() {
     const { t } = this.props;
 

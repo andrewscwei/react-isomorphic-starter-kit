@@ -1,4 +1,4 @@
-import { AppState } from '@/client';
+import { AppState } from '@/store';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
@@ -43,10 +43,17 @@ interface OwnProps {
 
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations });
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({}, dispatch);
+interface Props extends StateProps, DispatchProps, OwnProps {}
 
-class NotFound extends PureComponent<StateProps & DispatchProps & OwnProps> {
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+}, dispatch);
+
+class NotFound extends PureComponent<Props> {
   render() {
     const { t } = this.props;
 

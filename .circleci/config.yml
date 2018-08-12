@@ -78,3 +78,8 @@ workflows:
           context: heroku_deployment
           requires:
             - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

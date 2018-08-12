@@ -8,7 +8,6 @@ export interface UsersState {
   items: ReadonlyArray<User>;
 }
 
-
 export enum UsersActionType {
   USERS_LOADED = 'usersLoaded',
 }

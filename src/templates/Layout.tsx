@@ -50,6 +50,9 @@ export default class Layout extends PureComponent<Props> {
 
     return (
       <html>
+        { process.env.NODE_ENV !== `development` &&
+          <script dangerouslySetInnerHTML={{ __html: `if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }` }}/>
+        }
         <head>
           <meta charSet='utf-8'/>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>

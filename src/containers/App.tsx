@@ -2,10 +2,10 @@
  * @file Client app root.
  */
 
-import { AppState } from '@/client';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
+import { AppState } from '@/store';
 import { changeLocale } from '@/store/intl';
 import theme from '@/styles/theme';
 import React, { PureComponent } from 'react';
@@ -66,10 +66,19 @@ interface OwnProps {
   route: RouteComponentProps<any>;
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations, locale: state.intl.locale, locales: state.intl.locales });
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({ changeLocale }, dispatch);
+interface Props extends StateProps, DispatchProps, OwnProps {}
 
-class App extends PureComponent<StateProps & DispatchProps & OwnProps> {
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+  locale: state.intl.locale,
+  locales: state.intl.locales,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  changeLocale,
+}, dispatch);
+
+class App extends PureComponent<Props> {
   componentWillMount() {
     this.updateLocale();
   }
@@ -103,13 +112,13 @@ class App extends PureComponent<StateProps & DispatchProps & OwnProps> {
     return (
       <ThemeProvider theme={theme}>
         <StyledRoot>
-          <Header locale={locale} t={t}/>
+          <Header/>
           <TransitionGroup>
             <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
               <Switch location={route.location}>{this.generateRoutes()}</Switch>
             </CSSTransition>
           </TransitionGroup>
-          <Footer t={t}/>
+          <Footer/>
         </StyledRoot>
       </ThemeProvider>
     );

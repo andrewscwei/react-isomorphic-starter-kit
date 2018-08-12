@@ -1,4 +1,7 @@
+import { AppState } from '@/store';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
 const StyledRoot = styled.figure`
@@ -19,11 +22,25 @@ const StyledRoot = styled.figure`
   }
 `;
 
-interface Props {
-  className: string;
+interface StateProps {}
+
+interface DispatchProps {}
+
+interface OwnProps {
+  className?: string;
 }
 
-class ReactLogo extends PureComponent<Partial<Props>> {
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const mapStateToProps = (state: AppState): StateProps => ({
+
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+}, dispatch);
+
+class ReactLogo extends PureComponent<Props> {
   render() {
     const { className } = this.props;
 
@@ -33,4 +50,4 @@ class ReactLogo extends PureComponent<Partial<Props>> {
   }
 }
 
-export default ReactLogo;
+export default connect(mapStateToProps, mapDispatchToProps)(ReactLogo);

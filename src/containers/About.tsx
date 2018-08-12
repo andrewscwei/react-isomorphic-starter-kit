@@ -1,4 +1,4 @@
-import { AppState } from '@/client';
+import { AppState } from '@/store';
 import { fetchUsers, User } from '@/store/users';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
@@ -39,9 +39,6 @@ const StyledRoot = styled.div`
   }
 `;
 
-const mapStateToProps = (state: AppState): StateProps => ({ t: state.intl.translations, users: state.users.items });
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({ fetchUsers }, dispatch);
-
 interface StateProps {
   t: TranslationData;
   users: ReadonlyArray<User>;
@@ -55,7 +52,18 @@ interface OwnProps {
 
 }
 
-class About extends PureComponent<StateProps & DispatchProps & OwnProps> {
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  t: state.intl.translations,
+  users: state.users.items,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  fetchUsers,
+}, dispatch);
+
+class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
     return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }
