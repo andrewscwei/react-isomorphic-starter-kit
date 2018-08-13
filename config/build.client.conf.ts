@@ -47,6 +47,9 @@ const config: Configuration = {
     filename: isProduction ? `[name].[chunkhash].js` : `[name].js`,
     sourceMapFilename: `[file].map`,
   },
+  performance: {
+    hints: isProduction ? `warning` : false,
+  },
   plugins: [
     new CopyPlugin([{ from: path.join(inputDir, `static`), ignore: [`.*`], to: outputDir }]),
     new DefinePlugin({

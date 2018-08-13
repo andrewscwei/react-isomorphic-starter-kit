@@ -48,6 +48,9 @@ const config: Configuration = {
     publicPath: isProduction ? appConfig.build.publicPath : `/`,
     sourceMapFilename: `[name].js.map`,
   },
+  performance: {
+    hints: isProduction ? `warning` : false,
+  },
   plugins: [
     new DefinePlugin({
       __APP_ENV__: JSON.stringify(`server`),

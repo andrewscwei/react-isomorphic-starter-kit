@@ -6,7 +6,10 @@
 
 import fs from 'fs';
 import path from 'path';
+import requireDir from 'require-dir';
 import appConfig from '../app.conf';
+
+const cwd = path.join(__dirname, `../../`);
 
 /**
  * Returns a list of all supported locales by inferring from the translations
@@ -40,17 +43,18 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
  *
  * @return Dictionary of all locale data.
  */
-export function getLocaleDataFromDir(dir: string): LocaleDataDict {
+export function getLocaleDataFromDir(dir: string, req?: any): LocaleDataDict {
+  const dict: LocaleDataDict = {};
   const locales = getLocalesFromDir(dir);
+  const t: { [key: string]: any } = requireDir(path.resolve(cwd, `node_modules`, `react-intl/locale-data`));
 
-  return locales.reduce((dict: LocaleDataDict, locale: string) => {
-    try {
-      const data: ReactIntl.LocaleData = require(`react-intl/locale-data/${locale}`);
-      dict[locale] = data;
+  for (const locale in t) {
+    if (~locales.indexOf(locale)) {
+      dict[locale] = t[locale];
     }
-    catch (err) {}
-    return dict;
-  }, {});
+  }
+
+  return dict;
 }
 
 /**
@@ -61,11 +65,15 @@ export function getLocaleDataFromDir(dir: string): LocaleDataDict {
  * @return Dictionary object of all translations.
  */
 export function getTranslationDataDictFromDir(dir: string): Readonly<TranslationDataDict> {
+  const dict: TranslationDataDict = {};
   const locales = getLocalesFromDir(dir);
+  const t: { [key: string]: any } = requireDir(path.resolve(dir));
 
-  return locales.reduce((dict: TranslationDataDict, locale: string) => {
-    const translations: TranslationData = require(path.resolve(dir, `${locale}.json`));
-    dict[locale] = translations;
-    return dict;
-  }, {});
+  for (const locale in t) {
+    if (~locales.indexOf(locale)) {
+      dict[locale] = t[locale];
+    }
+  }
+
+  return dict;
 }
