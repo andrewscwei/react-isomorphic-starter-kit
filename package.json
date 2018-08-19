@@ -1,13 +1,13 @@
 {
   "name": "react-isomorphic-starter-kit",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "Experimental React universal/isomorphic app starter kit",
   "private": true,
   "license": "MIT",
   "scripts": {
     "start": "node build/server",
     "clean": "rimraf build",
-    "dev": "npm run clean && NODE_ENV=development npm run build:server && NODE_ENV=development DEBUG=app* nodemon --exec 'node --require dotenv/config' --watch ./build --inspect=5858 build/server & NODE_ENV=development npm run build:server -- --watch",
+    "dev": "npm run clean && NODE_ENV=development npm run build:server && NODE_ENV=development DEBUG=app* nodemon --watch ./build --inspect=5858 build/server & NODE_ENV=development npm run build:server -- --watch",
     "build": "npm run clean && NODE_ENV=production npm run build:client && NODE_ENV=production npm run build:server",
     "build:server": "webpack --colors --profile --config config/build.server.conf.ts --display-error-details",
     "build:client": "webpack --colors --profile --config config/build.client.conf.ts --display-error-details",
@@ -48,6 +48,7 @@
   "devDependencies": {
     "@types/copy-webpack-plugin": "^4.4.1",
     "@types/debug": "^0.0.30",
+    "@types/dotenv": "^4.0.3",
     "@types/helmet": "^0.0.38",
     "@types/ip": "^0.0.31",
     "@types/isomorphic-fetch": "^0.0.34",

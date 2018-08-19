@@ -53,6 +53,7 @@ const config: Configuration = {
   },
   plugins: [
     new DefinePlugin({
+      __APP_CONFIG__: JSON.stringify(appConfig),
       __APP_ENV__: JSON.stringify(`server`),
       __ASSET_MANIFEST__: JSON.stringify((() => {
         let t;

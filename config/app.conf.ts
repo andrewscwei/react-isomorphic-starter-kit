@@ -2,6 +2,10 @@
  * @file Configuration for both client and server environments.
  */
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export default {
   // HTML metadata.
   meta: {
