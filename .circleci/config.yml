@@ -25,7 +25,7 @@ jobs:
             - "node_modules"
       - run:
           name: Build
-          command: npm run build
+          command: BUILD_NUMBER=$CIRCLE_SHA1 npm run build
       - store_artifacts:
           path: ~/repo/build
       - persist_to_workspace:
