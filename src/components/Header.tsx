@@ -1,5 +1,5 @@
 import { AppState } from '@/store';
-import React, { PureComponent } from 'react';
+import React, { ReactNode, SFC } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
@@ -16,7 +16,7 @@ const StyledRoot = styled.header`
   width: 100%;
   z-index: 10;
 
-  & > a {
+  > a {
     color: ${props => props.theme.linkColor};
     cursor: pointer;
     font-family: ${props => props.theme.font};
@@ -27,11 +27,11 @@ const StyledRoot = styled.header`
     text-transform: uppercase;
     transition: all .2s ease-out;
 
-    &:hover {
+    :hover {
       opacity: .6;
     }
 
-    &:not(:last-child) {
+    :not(:last-child) {
       margin-right: 20px;
     }
   }
@@ -44,30 +44,25 @@ interface StateProps {
 
 interface DispatchProps {}
 
-interface OwnProps {}
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  t: state.intl.translations,
-  locale: state.intl.locale,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-}, dispatch);
-
-class Header extends PureComponent<Props> {
-  render() {
-    const { locale, t } = this.props;
-
-    return (
-      <StyledRoot>
-        <Link to={locale === `en` ? `/` : `/ja/`}>{t[`home`]}</Link>
-        <Link to={locale === `en` ? `/about/` : `/ja/about/`}>{t[`about`]}</Link>
-      </StyledRoot>
-    );
-  }
+interface OwnProps {
+  children?: ReactNode;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const Header: SFC<Props> = ({ locale, t }) => (
+  <StyledRoot>
+    <Link to={locale === 'en' ? '/' : '/ja/'}>{t['home']}</Link>
+    <Link to={locale === 'en' ? '/about/' : '/ja/about/'}>{t['about']}</Link>
+  </StyledRoot>
+);
+
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+    locale: state.intl.locale,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+  }, dispatch),
+)(Header);

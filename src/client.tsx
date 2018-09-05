@@ -31,11 +31,11 @@ const markup = () => (
 );
 
 // Render the app.
-if (process.env.NODE_ENV === `development`) {
-  render(markup(), document.getElementById(`app`));
+if (process.env.NODE_ENV === 'development') {
+  render(markup(), document.getElementById('app'));
 }
 else {
-  hydrate(markup(), document.getElementById(`app`));
+  hydrate(markup(), document.getElementById('app'));
 }
 
 if (module.hot) {

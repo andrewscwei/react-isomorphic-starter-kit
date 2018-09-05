@@ -28,8 +28,8 @@ export default class Layout extends PureComponent<Props> {
    * @return The resolved path.
    */
   resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASSET_MANIFEST__): string {
-    const normalizedPath: string = path.join.apply(null, pathToResolve.split(`/`));
-    const publicPath = process.env.NODE_ENV === `production` ? appConfig.build.publicPath : `/`;
+    const normalizedPath: string = path.join.apply(null, pathToResolve.split('/'));
+    const publicPath = process.env.NODE_ENV === 'production' ? appConfig.build.publicPath : '/';
 
     let out = normalizedPath;
 
@@ -50,25 +50,25 @@ export default class Layout extends PureComponent<Props> {
 
     return (
       <html>
-        { process.env.NODE_ENV !== `development` &&
-          <script dangerouslySetInnerHTML={{ __html: `if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }` }}/>
+        { process.env.NODE_ENV !== 'development' &&
+          <script dangerouslySetInnerHTML={{ __html: "if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }" }}/>
         }
         <head>
           <meta charSet='utf-8'/>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
           <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'/>
-          <link rel='icon' href={this.resolveAssetPath(`/favicon.png`)}/>
+          <link rel='icon' href={this.resolveAssetPath('/favicon.png')}/>
 
           <title>{title || appConfig.meta.title}</title>
           <meta name='description' content={description || appConfig.meta.description}/>
           <meta name='keywords' content={keywords || appConfig.meta.keywords}/>
 
           <meta property='og:url' content={url || appConfig.meta.url}/>
-          <meta property='og:image' content={this.resolveAssetPath(`/og-image.png`)}/>
+          <meta property='og:image' content={this.resolveAssetPath('/og-image.png')}/>
           <meta property='og:title' content={appConfig.meta.title}/>
           <meta property='og:description' content={description || appConfig.meta.description}/>
 
-          <link rel='' href={this.resolveAssetPath(`/manifest.json`)}/>
+          <link rel='' href={this.resolveAssetPath('/manifest.json')}/>
           <meta name='theme-color' content='#000000'/>
           <meta name='mobile-web-app-capable' content='yes'/>
           <meta name='application-name' content={appConfig.meta.title}/>
@@ -76,20 +76,20 @@ export default class Layout extends PureComponent<Props> {
           <meta name='apple-mobile-web-app-capable' content='yes'/>
           <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
           <meta name='apple-mobile-web-app-title' content={appConfig.meta.title}/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-180x180-precomposed.png`)} sizes='180x180'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-152x152-precomposed.png`)} sizes='152x152'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-144x144-precomposed.png`)} sizes='144x144'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-120x120-precomposed.png`)} sizes='120x120'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-114x114-precomposed.png`)} sizes='114x114'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-76x76-precomposed.png`)} sizes='76x76'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-72x72-precomposed.png`)} sizes='72x72'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-60x60-precomposed.png`)} sizes='60x60'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-57x57-precomposed.png`)} sizes='57x57'/>
-          <link rel='apple-touch-icon' href={this.resolveAssetPath(`/apple-touch-icon-precomposed.png`)}/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-180x180-precomposed.png')} sizes='180x180'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-152x152-precomposed.png')} sizes='152x152'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-144x144-precomposed.png')} sizes='144x144'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-120x120-precomposed.png')} sizes='120x120'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-114x114-precomposed.png')} sizes='114x114'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-76x76-precomposed.png')} sizes='76x76'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-72x72-precomposed.png')} sizes='72x72'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-60x60-precomposed.png')} sizes='60x60'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-57x57-precomposed.png')} sizes='57x57'/>
+          <link rel='apple-touch-icon' href={this.resolveAssetPath('/apple-touch-icon-precomposed.png')}/>
 
-          <meta name='msapplication-TileImage' content={this.resolveAssetPath(`/apple-touch-icon-144x144-precomposed.png`)}/>
+          <meta name='msapplication-TileImage' content={this.resolveAssetPath('/apple-touch-icon-144x144-precomposed.png')}/>
           <meta name='msapplication-TileColor' content='#000000'/>
-          <meta name='msapplication-config' content={this.resolveAssetPath(`/browserconfig.xml`)}/>
+          <meta name='msapplication-config' content={this.resolveAssetPath('/browserconfig.xml')}/>
           <meta name='msapplication-navbutton-color' content='#000000'/>
 
           <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i'/>
@@ -97,11 +97,13 @@ export default class Layout extends PureComponent<Props> {
           { initialStyles }
         </head>
         <body>
+          <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__='${__APP_CONFIG__.version}';` }}/>
+          <script dangerouslySetInnerHTML={{ __html: `window.__BUILD_NUMBER__='${__APP_CONFIG__.buildNumber}';` }}/>
           { initialState &&
             <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
           }
-          <div id='app' dangerouslySetInnerHTML={{ __html: body || `` }}/>
-          <script type='application/javascript' src={this.resolveAssetPath(`/bundle.js`)}></script>
+          <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
+          <script type='application/javascript' src={this.resolveAssetPath('/bundle.js')}></script>
         </body>
       </html>
     );

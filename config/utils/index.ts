@@ -9,7 +9,7 @@ import path from 'path';
 import requireDir from 'require-dir';
 import appConfig from '../app.conf';
 
-const cwd = path.join(__dirname, `../../`);
+const cwd = path.join(__dirname, '../../');
 
 /**
  * Returns a list of all supported locales by inferring from the translations
@@ -25,7 +25,7 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
   const t = fs
     .readdirSync(dir)
     .filter((val: string) => !(/(^|\/)\.[^/.]/g).test(val))
-    .map((val: string) => path.basename(val, `.json`))
+    .map((val: string) => path.basename(val, '.json'))
     .filter((val: string) => whitelistedLocales ? ~whitelistedLocales.indexOf(val) : true);
 
   if (defaultLocale && ~t.indexOf(defaultLocale)) {
@@ -46,7 +46,7 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
 export function getLocaleDataFromDir(dir: string, req?: any): LocaleDataDict {
   const dict: LocaleDataDict = {};
   const locales = getLocalesFromDir(dir);
-  const t: { [key: string]: any } = requireDir(path.resolve(cwd, `node_modules`, `react-intl/locale-data`));
+  const t: { [key: string]: any } = requireDir(path.resolve(cwd, 'node_modules', 'react-intl/locale-data'));
 
   for (const locale in t) {
     if (~locales.indexOf(locale)) {

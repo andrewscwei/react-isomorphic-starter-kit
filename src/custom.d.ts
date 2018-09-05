@@ -1,3 +1,5 @@
+declare module 'happypack';
+
 declare const __APP_CONFIG__: { [key: string]: any };
 declare const __APP_ENV__: string;
 declare const __ASSET_MANIFEST__: AssetManifest;

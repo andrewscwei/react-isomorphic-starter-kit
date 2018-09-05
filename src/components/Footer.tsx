@@ -1,5 +1,5 @@
 import { AppState } from '@/store';
-import React, { PureComponent } from 'react';
+import React, { ReactNode, SFC } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
@@ -20,23 +20,23 @@ const StyledRoot = styled.footer`
   position: fixed;
   z-index: 10;
 
-  & nav {
+  nav {
     flex-grow: 1;
   }
 
-  & nav > a {
-    background: url(${require(`@/assets/images/github-icon.svg`)}) center / 100% no-repeat;
+  nav > a {
+    background: url(${require('@/assets/images/github-icon.svg')}) center / 100% no-repeat;
     display: block;
     height: 20px;
     transition: all .2s ease-out;
     width: 20px;
 
-    &:hover {
+    :hover {
       opacity: .6;
     }
   }
 
-  & > a {
+  > a {
     align-items: center;
     background: ${props => props.theme.buttonColor};
     border: none;
@@ -53,12 +53,12 @@ const StyledRoot = styled.footer`
     transition: all .2s ease-out;
     width: 22px;
 
-    &:hover {
+    :hover {
       background: ${props => props.theme.buttonHoverColor};
       color: ${props => props.theme.buttonHoverTextColor};
     }
 
-    &:not(:last-child) {
+    :not(:last-child) {
       margin-right: 10px;
     }
   }
@@ -70,32 +70,27 @@ interface StateProps {
 
 interface DispatchProps {}
 
-interface OwnProps {}
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  t: state.intl.translations,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-}, dispatch);
-
-class Footer extends PureComponent<Props> {
-  render() {
-    const { t } = this.props;
-
-    return (
-      <StyledRoot>
-        <nav>
-          <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
-        </nav>
-        <Link to='/'>{t[`en`]}</Link>
-        <Link to='/ja/'>{t[`jp`]}</Link>
-      </StyledRoot>
-    );
-  }
+interface OwnProps {
+  children?: ReactNode;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const Footer: SFC<Props> = ({ t }) => (
+  <StyledRoot>
+    <nav>
+      <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
+    </nav>
+    <Link to='/'>{t['en']}</Link>
+    <Link to='/ja/'>{t['jp']}</Link>
+  </StyledRoot>
+);
+
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+  }, dispatch),
+)(Footer);

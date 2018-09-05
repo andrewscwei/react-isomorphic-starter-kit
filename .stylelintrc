@@ -5,21 +5,12 @@
     "stylelint-config-styled-components"
   ],
   "rules": {
-    "max-nesting-depth": 2,
-    "number-leading-zero": "never",
-    "string-quotes": "single",
-    "selector-nested-pattern": "^&",
-    "property-no-unknown": [
-      true,
-      {
-        "ignoreProperties": [
-          "/^#.*$/"
-        ]
-      }
-    ],
     "at-rule-empty-line-before": [
       "always",
       {
+        "ignore": [
+          "first-nested"
+        ],
         "ignoreAtRules": [
           "extend",
           "import"
@@ -35,7 +26,22 @@
         ]
       }
     ],
-    "declaration-empty-line-before": "never",
-    "no-descending-specificity": null
+    "block-no-empty": null,
+    "comment-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "declaration-block-semicolon-newline-after": null,
+    "max-nesting-depth": 3,
+    "no-descending-specificity": null,
+    "number-leading-zero": "never",
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "/^#.*$/"
+        ]
+      }
+    ],
+    "rule-empty-line-before": null,
+    "string-quotes": "single"
   }
 }

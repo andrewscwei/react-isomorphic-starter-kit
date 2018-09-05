@@ -19,7 +19,7 @@ const StyledRoot = styled.div`
   position: absolute;
   width: 100%;
 
-  & h1 {
+  h1 {
     color: ${props => props.theme.titleColor};
     font-size: 5em;
     font-weight: 700;
@@ -30,7 +30,7 @@ const StyledRoot = styled.div`
     text-transform: uppercase;
   }
 
-  & p {
+  p {
     color: ${props => props.theme.textColor};
     font-weight: 400;
     letter-spacing: .6px;
@@ -57,31 +57,34 @@ interface OwnProps {
 
 }
 
-interface Props extends StateProps, DispatchProps, OwnProps {}
+export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  t: state.intl.translations,
-});
+export interface State {
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+}
 
-}, dispatch);
-
-class Home extends PureComponent<Props> {
+class Home extends PureComponent<Props, State> {
   render() {
     const { t } = this.props;
 
     return (
       <StyledRoot>
         <Helmet>
-          <title>{t[`home`]}</title>
+          <title>{t['home']}</title>
         </Helmet>
         <StyledReactLogo/>
-        <h1>{t[`hello`]}</h1>
-        <p>{t[`description`]}</p>
+        <h1>{t['hello']}</h1>
+        <p>{t['description']}</p>
       </StyledRoot>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+  }, dispatch),
+)(Home);

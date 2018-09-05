@@ -53,9 +53,7 @@ const StyledRoot = styled.div`
 `;
 
 interface StateProps {
-  locale: string;
   locales: ReadonlyArray<string>;
-  t: TranslationData;
 }
 
 interface DispatchProps {
@@ -66,19 +64,13 @@ interface OwnProps {
   route: RouteComponentProps<any>;
 }
 
-interface Props extends StateProps, DispatchProps, OwnProps {}
+export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  t: state.intl.translations,
-  locale: state.intl.locale,
-  locales: state.intl.locales,
-});
+export interface State {
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-  changeLocale,
-}, dispatch);
+}
 
-class App extends PureComponent<Props> {
+class App extends PureComponent<Props, State> {
   componentWillMount() {
     this.updateLocale();
   }
@@ -107,7 +99,7 @@ class App extends PureComponent<Props> {
   }
 
   render() {
-    const { locale, route, t } = this.props;
+    const { route } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
@@ -125,4 +117,11 @@ class App extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  (state: AppState): StateProps => ({
+    locales: state.intl.locales,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+    changeLocale,
+  }, dispatch),
+)(App);

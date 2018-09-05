@@ -9,15 +9,18 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Install APT packages
+          command: apt-get update && apt-get install nasm -y
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "yarn.lock" }}
-            - dependency-cache-
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
+            - v1-npm-deps-
       - run:
           name: Install NPM dependencies
           command: yarn
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
       - run:

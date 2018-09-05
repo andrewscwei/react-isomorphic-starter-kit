@@ -21,10 +21,10 @@ let defaultLocale: string;
 let locales: Array<string>;
 let translations: TranslationDataDict = {};
 
-if ((__APP_ENV__ === `client`) && (process.env.NODE_ENV === `development`)) {
-  const localeReq = require.context(`@/../config/locales`, true, /^.*\.json$/);
+if ((__APP_ENV__ === 'client') && (process.env.NODE_ENV === 'development')) {
+  const localeReq = require.context('@/../config/locales', true, /^.*\.json$/);
   localeReq.keys().forEach(path => {
-    const locale = path.replace(`./`, ``).replace(`.json`, ``);
+    const locale = path.replace('./', '').replace('.json', '');
     if (!~__APP_CONFIG__.locales.indexOf(locale)) { return; }
     translations[locale] = localeReq(path) as TranslationData;
   });

@@ -21,11 +21,13 @@
     "no-conditional-assignment": true,
     "no-console": true,
     "no-duplicate-imports": true,
-    "no-empty": [true, "allow-empty-catch"],
+    "no-empty": [true, "allow-empty-catch", "allow-empty-functions"],
     "no-empty-interface": false,
     "no-implicit-dependencies": false,
+    "no-namespace": true,
     "no-shadowed-variable": false,
     "no-submodule-imports": false,
+    "no-string-literal": false,
     "no-unused-expression": false,
     "no-var-requires": false,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"],
@@ -35,7 +37,7 @@
     "semicolon": [true, "always"],
     "space-before-function-paren": [true, { "anonymous": "never", "named": "never", "asyncArrow": "always" }],
     "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "avoid-template", "avoid-escape"],
     "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-type-operator", "check-preblock"]
   }
 }

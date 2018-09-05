@@ -19,7 +19,7 @@ const StyledRoot = styled.div`
   position: absolute;
   width: 100%;
 
-  & h1 {
+  h1 {
     color: ${props => props.theme.titleColor};
     font-size: 2.4em;
     font-weight: 700;
@@ -30,7 +30,7 @@ const StyledRoot = styled.div`
     text-transform: uppercase;
   }
 
-  & span {
+  span {
     color: ${props => props.theme.textColor};
     font-weight: 400;
     letter-spacing: .6px;
@@ -52,18 +52,13 @@ interface OwnProps {
 
 }
 
-interface Props extends StateProps, DispatchProps, OwnProps {}
+export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  t: state.intl.translations,
-  users: state.users.items,
-});
+export interface State {
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-  fetchUsers,
-}, dispatch);
+}
 
-class About extends PureComponent<Props> {
+class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {
     return store.dispatch(fetchUsers() as any); // TODO: Fix this
   }
@@ -78,9 +73,9 @@ class About extends PureComponent<Props> {
     return (
       <StyledRoot>
         <Helmet>
-          <title>{t[`about`]}</title>
+          <title>{t['about']}</title>
         </Helmet>
-        <h1>{t[`about-title`]}</h1>
+        <h1>{t['about-title']}</h1>
         {
           users.map((user: User) => {
             return (
@@ -95,4 +90,12 @@ class About extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+    users: state.users.items,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+    fetchUsers,
+  }, dispatch),
+)(About);

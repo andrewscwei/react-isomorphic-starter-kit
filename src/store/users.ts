@@ -25,7 +25,7 @@ const initialState: UsersState = {
 
 export function fetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
-    const res = await fetch(`//jsonplaceholder.typicode.com/users`);
+    const res = await fetch('//jsonplaceholder.typicode.com/users');
     const items = await res.json();
     const action = {
       items,

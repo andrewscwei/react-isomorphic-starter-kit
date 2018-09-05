@@ -14,19 +14,19 @@ import 'isomorphic-fetch';
 import morgan from 'morgan';
 import path from 'path';
 
-const log = debug(`app`);
+const log = debug('app');
 const app = express();
 
 app.use(helmet());
-app.use(morgan(`dev`));
+app.use(morgan('dev'));
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
  * reloading.
  */
-if (process.env.NODE_ENV === `development`) {
-  app.use(require(`./middleware/hmr`).devMiddleware());
-  app.use(require(`./middleware/hmr`).hotMiddleware());
+if (process.env.NODE_ENV === 'development') {
+  app.use(require('./middleware/hmr').devMiddleware());
+  app.use(require('./middleware/hmr').hotMiddleware());
 }
 
 /**
@@ -34,13 +34,13 @@ if (process.env.NODE_ENV === `development`) {
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
 if (appConfig.forceSSL) {
-  app.set(`trust proxy`, true);
+  app.set('trust proxy', true);
   app.use((req, res, next) => {
     if (req.secure) {
       next();
       return;
     }
-    res.redirect(`https://` + req.headers.host + req.url);
+    res.redirect('https://' + req.headers.host + req.url);
   });
 }
 
@@ -48,12 +48,12 @@ if (appConfig.forceSSL) {
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-if (process.env.NODE_ENV !== `development` && fs.existsSync(path.join(__dirname, `public`))) {
-  app.use(express.static(path.join(__dirname, `public`), {
+if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, 'public'))) {
+  app.use(express.static(path.join(__dirname, 'public'), {
     setHeaders(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
-      res.setHeader(`Expires`, (new Date(Date.now() + duration)).toUTCString());
-      res.setHeader(`Cache-Control`, `max-age=${duration / 1000}`);
+      res.setHeader('Expires', (new Date(Date.now() + duration)).toUTCString());
+      res.setHeader('Cache-Control', `max-age=${duration / 1000}`);
     },
   }));
 }
@@ -86,15 +86,15 @@ app.use((err: Error, _: express.Request, res: express.Response) => {
 http
   .createServer(app)
   .listen(appConfig.port)
-  .on(`error`, (error: NodeJS.ErrnoException) => {
-    if (error.syscall !== `listen`) throw error;
+  .on('error', (error: NodeJS.ErrnoException) => {
+    if (error.syscall !== 'listen') throw error;
 
     switch (error.code) {
-    case `EACCES`:
+    case 'EACCES':
       log(`Port ${appConfig.port} requires elevated privileges`);
       process.exit(1);
       break;
-    case `EADDRINUSE`:
+    case 'EADDRINUSE':
       log(`Port ${appConfig.port} is already in use`);
       process.exit(1);
       break;
@@ -102,13 +102,13 @@ http
       throw error;
     }
   })
-  .on(`listening`, () => {
+  .on('listening', () => {
     log(`App is listening on ${ip.address()}:${appConfig.port}`);
   });
 
 // Handle unhandled rejections.
-process.on(`unhandledRejection`, reason => {
-  console.error(`Unhandled Promise rejection:`, reason); // tslint:disable-line no-console
+process.on('unhandledRejection', reason => {
+  console.error('Unhandled Promise rejection:', reason); // tslint:disable-line no-console
   process.exit(1);
 });
 

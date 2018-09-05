@@ -7,20 +7,20 @@ import Home from '@/containers/Home';
 import NotFound from '@/containers/NotFound';
 
 export default [{
-  path: `/`,
+  path: '/',
   exact: true,
   component: Home,
 }, {
-  path: `/about`,
+  path: '/about',
   component: About,
 }, {
-  path: `/ja`,
+  path: '/ja',
   exact: true,
   component: Home,
 }, {
-  path: `/ja/about`,
+  path: '/ja/about',
   component: About,
 }, {
-  path: `*`,
+  path: '*',
   component: NotFound,
 }];

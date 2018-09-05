@@ -18,7 +18,7 @@ import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
-const log = debug(`app:ssr`);
+const log = debug('app:ssr');
 
 const ConnectedIntlProvider = connect((state: AppState) => ({
   key: state.intl.locale,
@@ -66,9 +66,9 @@ export function renderWithContext(): RequestHandler {
       </Provider>,
     );
 
-    switch (context[`statusCode`]) {
+    switch (context['statusCode']) {
     case 302:
-      res.redirect(302, context[`url`]);
+      res.redirect(302, context['url']);
       return;
     case 404:
       res.status(404);
