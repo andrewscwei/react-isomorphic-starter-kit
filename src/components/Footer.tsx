@@ -5,6 +5,37 @@ import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
+interface StateProps {
+  t: TranslationData;
+}
+
+interface DispatchProps {}
+
+interface OwnProps {
+  children?: ReactNode;
+}
+
+export interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const Footer: SFC<Props> = ({ t }) => (
+  <StyledRoot>
+    <nav>
+      <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
+    </nav>
+    <Link to='/'>{t['en']}</Link>
+    <Link to='/ja/'>{t['jp']}</Link>
+  </StyledRoot>
+);
+
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+  }, dispatch),
+)(Footer);
+
 const StyledRoot = styled.footer`
   align-items: center;
   border-top: 1px solid #1e1e1e;
@@ -63,34 +94,3 @@ const StyledRoot = styled.footer`
     }
   }
 `;
-
-interface StateProps {
-  t: TranslationData;
-}
-
-interface DispatchProps {}
-
-interface OwnProps {
-  children?: ReactNode;
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-const Footer: SFC<Props> = ({ t }) => (
-  <StyledRoot>
-    <nav>
-      <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
-    </nav>
-    <Link to='/'>{t['en']}</Link>
-    <Link to='/ja/'>{t['jp']}</Link>
-  </StyledRoot>
-);
-
-export default connect(
-  (state: AppState): StateProps => ({
-    t: state.intl.translations,
-  }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-  }, dispatch),
-)(Footer);

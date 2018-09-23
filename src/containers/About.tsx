@@ -6,39 +6,6 @@ import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch, Store } from 'redux';
 import styled from 'styled-components';
 
-const StyledRoot = styled.div`
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  font-family: ${props => props.theme.font};
-  height: 100%;
-  justify-content: center;
-  padding: 10% 5%;
-  position: absolute;
-  width: 100%;
-
-  h1 {
-    color: ${props => props.theme.titleColor};
-    font-size: 2.4em;
-    font-weight: 700;
-    letter-spacing: 3px;
-    margin: 0 0 20px;
-    max-width: 550px;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  span {
-    color: ${props => props.theme.textColor};
-    font-weight: 400;
-    letter-spacing: .6px;
-    line-height: 1.4em;
-    text-align: center;
-  }
-`;
-
 interface StateProps {
   t: TranslationData;
   users: ReadonlyArray<User>;
@@ -99,3 +66,36 @@ export default connect(
     fetchUsers,
   }, dispatch),
 )(About);
+
+const StyledRoot = styled.div`
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  font-family: ${props => props.theme.font};
+  height: 100%;
+  justify-content: center;
+  padding: 10% 5%;
+  position: absolute;
+  width: 100%;
+
+  h1 {
+    color: ${props => props.theme.titleColor};
+    font-size: 2.4em;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin: 0 0 20px;
+    max-width: 550px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  span {
+    color: ${props => props.theme.textColor};
+    font-weight: 400;
+    letter-spacing: .6px;
+    line-height: 1.4em;
+    text-align: center;
+  }
+`;

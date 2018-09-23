@@ -1,6 +1,17 @@
 import React, { ReactNode, SFC } from 'react';
 import styled from 'styled-components';
 
+export interface Props {
+  className?: string;
+  children?: ReactNode;
+}
+
+const ReactLogo: SFC<Props> = ({ className }) => (
+  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!@/assets/images/react-logo.svg') }}/>
+);
+
+export default ReactLogo;
+
 const StyledRoot = styled.figure`
   animation: rotate 5s linear infinite;
   height: 100%;
@@ -18,14 +29,3 @@ const StyledRoot = styled.figure`
     to { transform: rotate(360deg); }
   }
 `;
-
-export interface Props {
-  className?: string;
-  children?: ReactNode;
-}
-
-const ReactLogo: SFC<Props> = ({ className }) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!@/assets/images/react-logo.svg') }}/>
-);
-
-export default ReactLogo;

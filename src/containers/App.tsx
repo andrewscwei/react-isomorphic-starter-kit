@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import routes from '@/routes';
 import { AppState } from '@/store';
 import { changeLocale } from '@/store/intl';
+import globalStyles from '@/styles/global';
 import theme from '@/styles/theme';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -14,42 +15,9 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
-import normalize from 'styled-normalize';
 
 injectGlobal`
-  ${normalize} /* stylelint-disable-line max-empty-lines */
-
-  html,
-  body {
-    background: ${theme.backgroundColor};
-    font-family: 'Roboto', sans-serif;
-    height: 100%;
-    width: 100%;
-  }
-
-  .fade-enter {
-    opacity: 0;
-  }
-
-  .fade-enter.fade-enter-active {
-    opacity: 1;
-    transition: all .3s;
-  }
-
-  .fade-exit {
-    opacity: 1;
-  }
-
-  .fade-exit.fade-exit-active {
-    opacity: 0;
-    transition: all .3s;
-  }
-`;
-
-const StyledRoot = styled.div`
-  height: 100%;
-  position: absolute;
-  width: 100%;
+  ${globalStyles}
 `;
 
 interface StateProps {
@@ -105,11 +73,11 @@ class App extends PureComponent<Props, State> {
       <ThemeProvider theme={theme}>
         <StyledRoot>
           <Header/>
-          <TransitionGroup>
+          <StyledBody>
             <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
               <Switch location={route.location}>{this.generateRoutes()}</Switch>
             </CSSTransition>
-          </TransitionGroup>
+          </StyledBody>
           <Footer/>
         </StyledRoot>
       </ThemeProvider>
@@ -125,3 +93,15 @@ export default connect(
     changeLocale,
   }, dispatch),
 )(App);
+
+const StyledRoot = styled.div`
+  height: 100%;
+  position: absolute;
+  width: 100%;
+`;
+
+const StyledBody = styled(TransitionGroup)`
+  height: 100%;
+  position: absolute;
+  width: 100%;
+`;

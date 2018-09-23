@@ -5,6 +5,36 @@ import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 
+interface StateProps {
+  t: TranslationData;
+  locale: string;
+}
+
+interface DispatchProps {}
+
+interface OwnProps {
+  children?: ReactNode;
+}
+
+export interface Props extends StateProps, DispatchProps, OwnProps {}
+
+const Header: SFC<Props> = ({ locale, t }) => (
+  <StyledRoot>
+    <Link to={locale === 'en' ? '/' : '/ja/'}>{t['home']}</Link>
+    <Link to={locale === 'en' ? '/about/' : '/ja/about/'}>{t['about']}</Link>
+  </StyledRoot>
+);
+
+export default connect(
+  (state: AppState): StateProps => ({
+    t: state.intl.translations,
+    locale: state.intl.locale,
+  }),
+  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+
+  }, dispatch),
+)(Header);
+
 const StyledRoot = styled.header`
   align-items: center;
   box-sizing: border-box;
@@ -36,33 +66,3 @@ const StyledRoot = styled.header`
     }
   }
 `;
-
-interface StateProps {
-  t: TranslationData;
-  locale: string;
-}
-
-interface DispatchProps {}
-
-interface OwnProps {
-  children?: ReactNode;
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-const Header: SFC<Props> = ({ locale, t }) => (
-  <StyledRoot>
-    <Link to={locale === 'en' ? '/' : '/ja/'}>{t['home']}</Link>
-    <Link to={locale === 'en' ? '/about/' : '/ja/about/'}>{t['about']}</Link>
-  </StyledRoot>
-);
-
-export default connect(
-  (state: AppState): StateProps => ({
-    t: state.intl.translations,
-    locale: state.intl.locale,
-  }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-  }, dispatch),
-)(Header);
