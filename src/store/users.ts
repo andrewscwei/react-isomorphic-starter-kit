@@ -9,7 +9,7 @@ export interface UsersState {
 }
 
 export enum UsersActionType {
-  USERS_LOADED = 'usersLoaded',
+  USERS_LOADED = 'users-loaded',
 }
 
 export interface UsersLoadedAction {

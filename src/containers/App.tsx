@@ -16,10 +16,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 
-injectGlobal`
-  ${globalStyles}
-`;
-
 interface StateProps {
   locales: ReadonlyArray<string>;
 }
@@ -39,7 +35,9 @@ export interface State {
 }
 
 class App extends PureComponent<Props, State> {
-  componentWillMount() {
+  constructor(props: Props) {
+    super(props);
+
     this.updateLocale();
   }
 
@@ -93,6 +91,10 @@ export default connect(
     changeLocale,
   }, dispatch),
 )(App);
+
+injectGlobal`
+  ${globalStyles}
+`;
 
 const StyledRoot = styled.div`
   height: 100%;

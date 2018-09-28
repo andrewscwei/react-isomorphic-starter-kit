@@ -1,7 +1,7 @@
 import { addLocaleData } from 'react-intl';
 
 export enum IntlActionType {
-  LOCALE_CHANGED = 'localeChanged',
+  LOCALE_CHANGED = 'locale-changed',
 }
 
 export interface IntlLocaleChangeAction {
