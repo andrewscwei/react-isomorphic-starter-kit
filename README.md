@@ -6,7 +6,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 
 1. Server-side rendering (in production) with [Express](https://expressjs.com/)
 2. Hot module replacement (in development)
-3. [TypeScript](https://www.typescriptlang.org/)
+3. [Babel](https://babeljs.io/)
 4. [React Router 4](https://reacttraining.com/react-router/)
 5. [Redux](https://redux.js.org/introduction)
 6. [React Intl](https://github.com/yahoo/react-intl/wiki)
@@ -14,7 +14,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 8. [React Transition Group](http://reactcommunity.org/react-transition-group/)
 9. [nodemon](https://github.com/remy/nodemon)
 10. [Docker](https://docker.com) config
-11. [TSLint](https://palantir.github.io/tslint/) and [StyleLint](https://stylelint.io/) config
+11. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
 12. [CircleCI](https://circleci.com) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage

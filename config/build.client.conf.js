@@ -5,7 +5,7 @@
 import CopyPlugin from 'copy-webpack-plugin';
 import HappyPack from 'happypack';
 import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NamedModulesPlugin, Plugin } from 'webpack';
+import { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NamedModulesPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import appConfig from './app.conf';
@@ -17,20 +17,20 @@ const inputDir = path.join(cwd, 'src');
 const outputDir = path.join(cwd, 'build/public');
 const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
-const config: Configuration = {
+const config = {
   devtool: isProduction ? (appConfig.build.sourceMap ? 'source-map' : false) : 'cheap-eval-source-map',
   entry: {
     bundle: [
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
-      path.join(inputDir, 'client.tsx'),
+      path.join(inputDir, 'client.jsx'),
     ],
   },
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
       exclude: /node_modules/,
-      test: /\.tsx?$/,
-      use: 'happypack/loader?id=ts',
+      test: /\.jsx?$/,
+      use: 'happypack/loader?id=babel',
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
       loaders: [
@@ -64,11 +64,10 @@ const config: Configuration = {
       NODE_ENV: 'development',
     }),
     new HappyPack({
-      id: 'ts',
+      id: 'babel',
       threads: 2,
       loaders: [{
-        path: 'ts-loader',
-        query: { happyPackMode: true },
+        path: 'babel-loader',
       }],
     }),
     ...isProduction ? [
@@ -89,12 +88,12 @@ const config: Configuration = {
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
-  ] as Array<Plugin>,
+  ],
   resolve: {
     alias: {
       '@': inputDir,
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.json'],
   },
   stats: {
     colors: true,

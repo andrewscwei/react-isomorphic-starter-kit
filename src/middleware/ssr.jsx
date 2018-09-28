@@ -6,21 +6,20 @@
 
 import App from '@/containers/App';
 import routes from '@/routes';
-import store, { AppState } from '@/store';
+import store from '@/store';
 import Layout from '@/templates/Layout';
 import debug from 'debug';
-import { RequestHandler } from 'express';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
-import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
+import { Route, StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 const log = debug('app:ssr');
 
-const ConnectedIntlProvider = connect((state: AppState) => ({
+const ConnectedIntlProvider = connect((state) => ({
   key: state.intl.locale,
   locale: state.intl.locale,
   messages: state.intl.translations,
@@ -33,8 +32,8 @@ const ConnectedIntlProvider = connect((state: AppState) => ({
  *
  * @return Express middleware.
  */
-export function renderWithContext(): RequestHandler {
-  return async (req, res) => {
+export function renderWithContext() {
+  return async(req, res) => {
     log(`Rendering with context: ${req.path}`);
 
     // Find and store all matching client routes based on the request URL.
@@ -44,19 +43,19 @@ export function renderWithContext(): RequestHandler {
     for (const t of matches) {
       const { route, match } = t;
       if (!route.component) continue;
-      if ((route.component as any).fetchData === undefined) continue;
+      if ((route.component).fetchData === undefined) continue;
       log(`Fetching data for route: ${match.url}`);
-      await (route.component as any).fetchData(store);
+      await (route.component).fetchData(store);
     }
 
-    const context: { [key: string]: any } = {};
+    const context = {};
     const sheet = new ServerStyleSheet();
 
     const body = renderToString(
       <Provider store={store}>
         <ConnectedIntlProvider>
           <StaticRouter location={req.url} context={context}>
-            <Route render={(route: RouteComponentProps<any>) => (
+            <Route render={(route) => (
               <StyleSheetManager sheet={sheet.instance}>
                 <App route={route}/>
               </StyleSheetManager>
@@ -88,8 +87,8 @@ export function renderWithContext(): RequestHandler {
  *
  * @return Express middleware.
  */
-export function renderWithoutContext(): RequestHandler {
-  return async (req, res) => {
+export function renderWithoutContext() {
+  return async(req, res) => {
     log(`Rendering without context: ${req.path}`);
 
     res.send(`<!doctype html>${renderToStaticMarkup(

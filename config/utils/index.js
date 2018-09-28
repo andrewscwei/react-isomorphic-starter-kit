@@ -1,5 +1,3 @@
-/* tslint:disable no-reference */
-///<reference path='../../src/custom.d.ts' />
 /**
  * @file Utility functions for the build process.
  */
@@ -19,14 +17,14 @@ const cwd = path.join(__dirname, '../../');
  *
  * @return List of all supported locales.
  */
-export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
+export function getLocalesFromDir(dir) {
   const defaultLocale = appConfig.locales[0];
   const whitelistedLocales = appConfig.locales;
   const t = fs
     .readdirSync(dir)
-    .filter((val: string) => !(/(^|\/)\.[^/.]/g).test(val))
-    .map((val: string) => path.basename(val, '.json'))
-    .filter((val: string) => whitelistedLocales ? ~whitelistedLocales.indexOf(val) : true);
+    .filter((val) => !(/(^|\/)\.[^/.]/g).test(val))
+    .map((val) => path.basename(val, '.json'))
+    .filter((val) => whitelistedLocales ? ~whitelistedLocales.indexOf(val) : true);
 
   if (defaultLocale && ~t.indexOf(defaultLocale)) {
     t.splice(t.indexOf(defaultLocale), 1);
@@ -43,10 +41,10 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
  *
  * @return Dictionary of all locale data.
  */
-export function getLocaleDataFromDir(dir: string, req?: any): LocaleDataDict {
-  const dict: LocaleDataDict = {};
+export function getLocaleDataFromDir(dir, req) {
+  const dict = {};
   const locales = getLocalesFromDir(dir);
-  const t: { [key: string]: any } = requireDir(path.resolve(cwd, 'node_modules', 'react-intl/locale-data'));
+  const t = requireDir(path.resolve(cwd, 'node_modules', 'react-intl/locale-data'));
 
   for (const locale in t) {
     if (~locales.indexOf(locale)) {
@@ -64,10 +62,10 @@ export function getLocaleDataFromDir(dir: string, req?: any): LocaleDataDict {
  *
  * @return Dictionary object of all translations.
  */
-export function getTranslationDataDictFromDir(dir: string): Readonly<TranslationDataDict> {
-  const dict: TranslationDataDict = {};
+export function getTranslationDataDictFromDir(dir) {
+  const dict = {};
   const locales = getLocalesFromDir(dir);
-  const t: { [key: string]: any } = requireDir(path.resolve(dir));
+  const t = requireDir(path.resolve(dir));
 
   for (const locale in t) {
     if (~locales.indexOf(locale)) {

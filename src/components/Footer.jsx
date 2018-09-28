@@ -1,23 +1,11 @@
-import { AppState } from '@/store';
-import React, { ReactNode, SFC } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Action, bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
-interface StateProps {
-  t: TranslationData;
-}
-
-interface DispatchProps {}
-
-interface OwnProps {
-  children?: ReactNode;
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-const Footer: SFC<Props> = ({ t }) => (
+const Footer = ({ t }) => (
   <StyledRoot>
     <nav>
       <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
@@ -27,11 +15,15 @@ const Footer: SFC<Props> = ({ t }) => (
   </StyledRoot>
 );
 
+Footer.propTypes = {
+  t: PropTypes.object.isRequired,
+};
+
 export default connect(
-  (state: AppState): StateProps => ({
+  (state) => ({
     t: state.intl.translations,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  (dispatch) => bindActionCreators({
 
   }, dispatch),
 )(Footer);

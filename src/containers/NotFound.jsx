@@ -1,35 +1,21 @@
-import { AppState } from '@/store';
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import { Route, RouteComponentProps } from 'react-router-dom';
-import { Action, bindActionCreators, Dispatch } from 'redux';
+import { Route } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
-interface StateProps {
-  t: TranslationData;
-}
+class NotFound extends PureComponent {
+  static propTypes = {
+    t: PropTypes.object.isRequired,
+  };
 
-interface DispatchProps {
-
-}
-
-interface OwnProps {
-
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-export interface State {
-
-}
-
-class NotFound extends PureComponent<Props, State> {
   render() {
     const { t } = this.props;
 
     return (
-      <Route render={(route: RouteComponentProps<any>) => {
+      <Route render={(route) => {
         if (route.staticContext) {
           route.staticContext.statusCode = 404;
         }
@@ -48,10 +34,10 @@ class NotFound extends PureComponent<Props, State> {
 }
 
 export default connect(
-  (state: AppState): StateProps => ({
+  (state) => ({
     t: state.intl.translations,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  (dispatch) => bindActionCreators({
 
   }, dispatch),
 )(NotFound);

@@ -5,41 +5,27 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import routes from '@/routes';
-import { AppState } from '@/store';
 import { changeLocale } from '@/store/intl';
 import globalStyles from '@/styles/global';
 import theme from '@/styles/theme';
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Action, bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators } from 'redux';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 
-injectGlobal`
-  ${globalStyles}
-`;
+class App extends PureComponent {
+  static propTypes = {
+    locales: PropTypes.array.isRequired,
+    changeLocale: PropTypes.func.isRequired,
+    route: PropTypes.object.isRequired,
+  };
 
-interface StateProps {
-  locales: ReadonlyArray<string>;
-}
+  constructor(props) {
+    super(props);
 
-interface DispatchProps {
-  changeLocale(locale: string): void;
-}
-
-interface OwnProps {
-  route: RouteComponentProps<any>;
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-export interface State {
-
-}
-
-class App extends PureComponent<Props, State> {
-  componentWillMount() {
     this.updateLocale();
   }
 
@@ -86,13 +72,17 @@ class App extends PureComponent<Props, State> {
 }
 
 export default connect(
-  (state: AppState): StateProps => ({
+  (state) => ({
     locales: state.intl.locales,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  (dispatch) => bindActionCreators({
     changeLocale,
   }, dispatch),
 )(App);
+
+injectGlobal`
+  ${globalStyles}
+`;
 
 const StyledRoot = styled.div`
   height: 100%;

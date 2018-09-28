@@ -4,7 +4,7 @@
 
 import HappyPack from 'happypack';
 import path from 'path';
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, Plugin, WatchIgnorePlugin } from 'webpack';
+import { BannerPlugin, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import appConfig from './app.conf';
@@ -16,18 +16,18 @@ const inputDir = path.join(cwd, 'src');
 const outputDir = path.join(cwd, 'build');
 const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
 
-const config: Configuration = {
+const config = {
   devtool: isProduction ? (appConfig.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
-    server: path.join(inputDir, 'server.tsx'),
+    server: path.join(inputDir, 'server.jsx'),
   },
   externals: [nodeExternals()],
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
       exclude: /node_modules/,
-      test: /\.tsx?$/,
-      use: 'happypack/loader?id=ts',
+      test: /\.jsx?$/,
+      use: 'happypack/loader?id=babel',
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
       loaders: [
@@ -77,11 +77,10 @@ const config: Configuration = {
       }),
     }),
     new HappyPack({
-      id: 'ts',
+      id: 'babel',
       threads: 2,
       loaders: [{
-        path: 'ts-loader',
-        query: { happyPackMode: true },
+        path: 'babel-loader',
       }],
     }),
     new EnvironmentPlugin(['NODE_ENV']),
@@ -96,17 +95,17 @@ const config: Configuration = {
     ],
     ...!appConfig.build.sourceMap ? [] : [
       new BannerPlugin({
-        banner: "require('source-map-support').install();",
+        banner: 'require(\'source-map-support\').install();',
         raw: true,
         entryOnly: false,
       }),
     ],
-  ] as Array<Plugin>,
+  ],
   resolve: {
     alias: {
       '@': inputDir,
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.json'],
   },
   stats: {
     colors: true,

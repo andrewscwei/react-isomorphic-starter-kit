@@ -5,20 +5,21 @@
 
 import appConfig from '@/../config/app.conf';
 import path from 'path';
-import React, { PureComponent, ReactElement } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import serialize from 'serialize-javascript';
 
-interface Props {
-  body?: string;
-  title?: string;
-  url?: string;
-  keywords?: string;
-  description?: string;
-  initialState?: object;
-  initialStyles?: Array<ReactElement<{}>>;
-}
+export default class Layout extends PureComponent {
+  static propTypes = {
+    body: PropTypes.string,
+    title: PropTypes.string,
+    url: PropTypes.string,
+    keywords: PropTypes.string,
+    description: PropTypes.string,
+    initialState: PropTypes.object,
+    initialStyles: PropTypes.array,
+  };
 
-export default class Layout extends PureComponent<Props> {
   /**
    * Resolves a raw asset path with the fingerprinted equivalent. This only works
    * if a manifest object is provided globally.
@@ -27,8 +28,8 @@ export default class Layout extends PureComponent<Props> {
    *
    * @return The resolved path.
    */
-  resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASSET_MANIFEST__): string {
-    const normalizedPath: string = path.join.apply(null, pathToResolve.split('/'));
+  resolveAssetPath(pathToResolve, manifest = __ASSET_MANIFEST__) {
+    const normalizedPath = path.join.apply(null, pathToResolve.split('/'));
     const publicPath = process.env.NODE_ENV === 'production' ? appConfig.build.publicPath : '/';
 
     let out = normalizedPath;
@@ -51,7 +52,7 @@ export default class Layout extends PureComponent<Props> {
     return (
       <html>
         { process.env.NODE_ENV !== 'development' &&
-          <script dangerouslySetInnerHTML={{ __html: "if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }" }}/>
+          <script dangerouslySetInnerHTML={{ __html: 'if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === \'object\') { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }' }}/>
         }
         <head>
           <meta charSet='utf-8'/>

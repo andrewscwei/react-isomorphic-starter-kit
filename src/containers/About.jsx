@@ -1,33 +1,20 @@
-import { AppState } from '@/store';
-import { fetchUsers, User } from '@/store/users';
+import { fetchUsers } from '@/store/users';
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Action, bindActionCreators, Dispatch, Store } from 'redux';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
-interface StateProps {
-  t: TranslationData;
-  users: ReadonlyArray<User>;
-}
+class About extends PureComponent {
+  static propTypes = {
+    t: PropTypes.object.isRequired,
+    users: PropTypes.array.isRequired,
+    fetchUsers: PropTypes.func.isRequired,
+  };
 
-interface DispatchProps {
-  fetchUsers(): void;
-}
-
-interface OwnProps {
-
-}
-
-export interface Props extends StateProps, DispatchProps, OwnProps {}
-
-export interface State {
-
-}
-
-class About extends PureComponent<Props, State> {
-  static fetchData(store: Store<AppState>) {
-    return store.dispatch(fetchUsers() as any); // TODO: Fix this
+  static fetchData(store) {
+    return store.dispatch(fetchUsers());
   }
 
   componentDidMount() {
@@ -44,7 +31,7 @@ class About extends PureComponent<Props, State> {
         </Helmet>
         <h1>{t['about-title']}</h1>
         {
-          users.map((user: User) => {
+          users.map((user) => {
             return (
               <div key={user.id} >
                 <span>{user.name}</span>
@@ -58,11 +45,11 @@ class About extends PureComponent<Props, State> {
 }
 
 export default connect(
-  (state: AppState): StateProps => ({
+  (state) => ({
     t: state.intl.translations,
     users: state.users.items,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  (dispatch) => bindActionCreators({
     fetchUsers,
   }, dispatch),
 )(About);

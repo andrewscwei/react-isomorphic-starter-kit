@@ -79,14 +79,14 @@ app.use((req, _, next) => {
  * the error info in a JSON payload. If the error that ends up here does not
  * have a status code, it will default to 500.
  */
-app.use((err: Error, _: express.Request, res: express.Response) => {
+app.use((err, req, res) => {
   res.status(err.status || 500).send(err);
 });
 
 http
   .createServer(app)
   .listen(appConfig.port)
-  .on('error', (error: NodeJS.ErrnoException) => {
+  .on('error', (error) => {
     if (error.syscall !== 'listen') throw error;
 
     switch (error.code) {
@@ -108,7 +108,8 @@ http
 
 // Handle unhandled rejections.
 process.on('unhandledRejection', reason => {
-  console.error('Unhandled Promise rejection:', reason); // tslint:disable-line no-console
+  // eslint-disable-next-line no-console
+  console.error('Unhandled Promise rejection:', reason);
   process.exit(1);
 });
 
