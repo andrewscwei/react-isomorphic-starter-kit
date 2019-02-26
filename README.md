@@ -31,7 +31,3 @@ $ npm run build && npm start
 ```
 
 See `scripts` in `package.json` for additional commands.
-
-## License
-
-This software is released under the [MIT License](http://opensource.org/licenses/MIT).
