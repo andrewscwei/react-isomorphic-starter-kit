@@ -1,4 +1,4 @@
-# react-isomorphic-starter-kit [![CircleCI](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit)
+# react-isomorphic-starter-kit [![CircleCI](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit/tree/javascript.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit/tree/javascript)
 
 This is an **experimental** starter kit for a React universal/isomorphic app.
 
@@ -31,7 +31,3 @@ $ npm run build && npm start
 ```
 
 See `scripts` in `package.json` for additional commands.
-
-## License
-
-This software is released under the [MIT License](http://opensource.org/licenses/MIT).
