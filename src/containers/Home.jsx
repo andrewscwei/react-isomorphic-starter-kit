@@ -1,10 +1,10 @@
-import ReactLogo from '@/components/ReactLogo';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import ReactLogo from '../components/ReactLogo';
 
 class Home extends PureComponent {
   static propTypes = {

@@ -16,7 +16,7 @@ machine git.heroku.com
 EOF
 
 docker login -u "$HEROKU_LOGIN" -p "$HEROKU_KEY" registry.heroku.com
-docker build --rm=false --build-arg NODE_ENV=production --build-arg BUILD_NUMBER=$CIRCLE_SHA1 --build-arg GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN} --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$APP_NAME/web:latest .
+docker build --rm=false --build-arg NODE_ENV=production --build-arg BUILD_NUMBER=$CIRCLE_SHA1 --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$APP_NAME/web:latest .
 docker push registry.heroku.com/$APP_NAME/web:latest
 
 heroku container:login

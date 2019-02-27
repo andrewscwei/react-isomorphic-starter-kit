@@ -15,7 +15,6 @@ npm run build
 
 docker build \
   --build-arg BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse HEAD)} \
-  --build-arg GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN} \
   --build-arg NODE_ENV=${ENVIRONMENT} \
   --build-arg PUBLIC_PATH=${PUBLIC_PATH:-/static/} \
   --rm=false \

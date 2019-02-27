@@ -4,10 +4,10 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import App from '@/containers/App';
-import routes from '@/routes';
-import store from '@/store';
-import Layout from '@/templates/Layout';
+import App from '../containers/App';
+import routes from '../routes/client';
+import store from '../store';
+import Layout from '../templates/Layout';
 import debug from 'debug';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';

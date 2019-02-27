@@ -9,7 +9,7 @@ let locales;
 let translations = {};
 
 if ((__APP_ENV__ === 'client') && (process.env.NODE_ENV === 'development')) {
-  const localeReq = require.context('@/../config/locales', true, /^.*\.json$/);
+  const localeReq = require.context('../../config/locales', true, /^.*\.json$/);
   localeReq.keys().forEach(path => {
     const locale = path.replace('./', '').replace('.json', '');
     if (!~__BUILD_CONFIG__.locales.indexOf(locale)) { return; }

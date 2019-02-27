@@ -1,26 +1,22 @@
-/**
- * @file Route definitions for React router.
- */
+import { Router } from 'express';
 
-import About from '@/containers/About';
-import Home from '@/containers/Home';
-import NotFound from '@/containers/NotFound';
+const router = Router();
 
-export default [{
-  path: '/',
-  exact: true,
-  component: Home,
-}, {
-  path: '/about',
-  component: About,
-}, {
-  path: '/ja',
-  exact: true,
-  component: Home,
-}, {
-  path: '/ja/about',
-  component: About,
-}, {
-  path: '*',
-  component: NotFound,
-}];
+router.get('/version', (req, res, next) => {
+  switch (req.accepts(['html', 'json'])) {
+  case 'html':
+    next();
+    return;
+  case 'json':
+    res.status(200).send({ version: __BUILD_CONFIG__.version, build: __BUILD_CONFIG__.buildNumber });
+    return;
+  default:
+    next(new Error('Bad request'));
+  }
+});
+
+router.get('/health', (req, res, next) => {
+  res.sendStatus(200);
+});
+
+export default router;

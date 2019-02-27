@@ -2,14 +2,14 @@
  * @file Client entry file.
  */
 
-import App from '@/containers/App';
-import store from '@/store';
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
+import App from './containers/App';
+import store from './store';
 
 const ConnectedIntlProvider = connect((state) => ({
   key: state.intl.locale,

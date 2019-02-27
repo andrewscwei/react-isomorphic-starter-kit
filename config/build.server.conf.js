@@ -96,7 +96,6 @@ const config = {
   ],
   resolve: {
     alias: {
-      '@': inputDir,
       ...isProduction ? {} : {
         'react-dom': '@hot-loader/react-dom',
       },

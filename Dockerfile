@@ -4,7 +4,6 @@
 FROM node:10.15.1 as build-dev
 
 ARG BUILD_NUMBER
-ARG GH_ACCESS_TOKEN
 ARG GOOGLE_ANALYTICS_ID
 ARG PUBLIC_PATH
 
@@ -34,7 +33,7 @@ RUN npm prune --production
 
 
 # Final production build.
-FROM node:10.14.1-alpine
+FROM node:10.15.1-alpine
 
 ARG BUILD_NUMBER
 

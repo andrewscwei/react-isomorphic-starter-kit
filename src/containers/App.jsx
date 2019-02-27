@@ -2,12 +2,6 @@
  * @file Client app root.
  */
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import routes from '@/routes';
-import { changeLocale } from '@/store/intl';
-import globalStyles from '@/styles/global';
-import theme from '@/styles/theme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -15,6 +9,12 @@ import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import routes from '../routes/client';
+import { changeLocale } from '../store/intl';
+import globalStyles from '../styles/global';
+import theme from '../styles/theme';
 
 class App extends PureComponent {
   static propTypes = {

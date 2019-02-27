@@ -1,10 +1,10 @@
-import { fetchUsers } from '@/store/users';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import { fetchUsers } from '../store/users';
 
 class About extends PureComponent {
   static propTypes = {

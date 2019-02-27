@@ -2,7 +2,7 @@
  * @file Server entry file.
  */
 
-import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
+import compression from 'compression';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -12,10 +12,14 @@ import ip from 'ip';
 import 'isomorphic-fetch';
 import morgan from 'morgan';
 import path from 'path';
+import { generateSitemap } from './middleware/sitemap';
+import { renderWithContext, renderWithoutContext } from './middleware/ssr';
+import routes from './routes';
 
 const log = debug('app');
 const app = express();
 
+app.use(compression());
 app.use(helmet());
 app.use(morgan('dev'));
 
@@ -41,6 +45,16 @@ if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname,
     },
   }));
 }
+
+/**
+ * Sitemap generator.
+ */
+app.use('/sitemap.xml', generateSitemap());
+
+/**
+ * Handle server routes.
+ */
+app.use('/', routes);
 
 /**
  * Server-side rendering setup.

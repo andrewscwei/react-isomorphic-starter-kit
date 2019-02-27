@@ -48,7 +48,7 @@ const StyledRoot = styled.footer`
   }
 
   nav > a {
-    background: url(${require('@/assets/images/github-icon.svg')}) center / 100% no-repeat;
+    background: url(${require('../assets/images/github-icon.svg')}) center / 100% no-repeat;
     display: block;
     height: 20px;
     transition: all .2s ease-out;
