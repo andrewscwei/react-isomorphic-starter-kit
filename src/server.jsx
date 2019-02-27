@@ -12,6 +12,7 @@ import ip from 'ip';
 import 'isomorphic-fetch';
 import morgan from 'morgan';
 import path from 'path';
+import appConf from './app.conf';
 import { generateSitemap } from './middleware/sitemap';
 import { renderWithContext, renderWithoutContext } from './middleware/ssr';
 import routes from './routes';
@@ -59,7 +60,7 @@ app.use('/', routes);
 /**
  * Server-side rendering setup.
  */
-app.use(__BUILD_CONFIG__.ssrEnabled ? renderWithContext() : renderWithoutContext());
+app.use(appConf.ssrEnabled ? renderWithContext() : renderWithoutContext());
 
 /**
  * Server 404 error, when the requested URI is not found.
@@ -83,17 +84,17 @@ app.use((err, req, res) => {
 
 http
   .createServer(app)
-  .listen(__BUILD_CONFIG__.port)
+  .listen(appConf.port)
   .on('error', (error) => {
     if (error.syscall !== 'listen') throw error;
 
     switch (error.code) {
     case 'EACCES':
-      log(`Port ${__BUILD_CONFIG__.port} requires elevated privileges`);
+      log(`Port ${appConf.port} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      log(`Port ${__BUILD_CONFIG__.port} is already in use`);
+      log(`Port ${appConf.port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -101,7 +102,7 @@ http
     }
   })
   .on('listening', () => {
-    log(`App is listening on ${ip.address()}:${__BUILD_CONFIG__.port}`);
+    log(`App is listening on ${ip.address()}:${appConf.port}`);
   });
 
 // Handle unhandled rejections.
