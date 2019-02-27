@@ -17,11 +17,6 @@
     "target": "es6",
     "types": ["react", "webpack-env"]
   },
-  "paths": {
-    "@/*": [
-      "src/*"
-    ]
-  },
   "include": [
     "src/**/*",
     "config/**/*"

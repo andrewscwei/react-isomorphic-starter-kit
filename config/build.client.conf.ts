@@ -83,7 +83,6 @@ const config: Configuration = {
   ] as Array<Plugin>,
   resolve: {
     alias: {
-      '@': inputDir,
       ...isProduction ? {} : {
         'react-dom': '@hot-loader/react-dom',
       },
