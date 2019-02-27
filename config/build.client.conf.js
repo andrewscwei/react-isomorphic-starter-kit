@@ -3,22 +3,21 @@
  */
 
 import CopyPlugin from 'copy-webpack-plugin';
-import HappyPack from 'happypack';
 import path from 'path';
 import { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NamedModulesPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
-import appConfig from './app.conf';
+import buildConf from './build.conf';
 import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const cwd = path.join(__dirname, '../');
 const inputDir = path.join(cwd, 'src');
-const outputDir = path.join(cwd, 'build/public');
-const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
+const outputDir = path.join(cwd, 'build/static');
+const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
 
 const config = {
-  devtool: isProduction ? (appConfig.build.sourceMap ? 'source-map' : false) : 'cheap-eval-source-map',
+  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'cheap-eval-source-map',
   entry: {
     bundle: [
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
@@ -30,7 +29,7 @@ const config = {
     rules: [{
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: 'happypack/loader?id=babel',
+      use: 'babel-loader?cacheDirectory',
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
       loaders: [
@@ -47,7 +46,7 @@ const config = {
   },
   output: {
     path: outputDir,
-    publicPath: isProduction ? appConfig.build.publicPath : '/',
+    publicPath: buildConf.build.publicPath,
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     sourceMapFilename: '[file].map',
   },
@@ -57,27 +56,20 @@ const config = {
   plugins: [
     new CopyPlugin([{ from: path.join(inputDir, 'static'), ignore: ['.*'], to: outputDir }]),
     new DefinePlugin({
-      __APP_CONFIG__: JSON.stringify(appConfig),
+      __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('client'),
     }),
     new EnvironmentPlugin({
       NODE_ENV: 'development',
-    }),
-    new HappyPack({
-      id: 'babel',
-      threads: 2,
-      loaders: [{
-        path: 'babel-loader',
-      }],
     }),
     ...isProduction ? [
       new IgnorePlugin(/^.*\/config\/.*$/),
       new ManifestPlugin({ fileName: 'asset-manifest.json' }),
       new DefinePlugin({
         __INTL_CONFIG__: JSON.stringify({
-          defaultLocale: appConfig.locales[0],
+          defaultLocale: buildConf.locales[0],
           localeData: getLocaleDataFromDir(path.join(cwd, 'config/locales')),
-          locales: appConfig.locales,
+          locales: buildConf.locales,
           dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
         }),
       }),
@@ -92,6 +84,9 @@ const config = {
   resolve: {
     alias: {
       '@': inputDir,
+      ...isProduction ? {} : {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
     extensions: ['.js', '.jsx', '.json'],
   },

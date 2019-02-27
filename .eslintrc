@@ -2,25 +2,26 @@
   "root": true,
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
   ],
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2017,
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      "experimentalObjectRestSpread": true,
+      "legacyDecorators": true
     }
   },
   "globals": {
-    "__APP_CONFIG__": true,
+    "__BUILD_CONFIG__": true,
     "__APP_ENV__": true,
     "__INTL_CONFIG__": true,
     "__ASSET_MANIFEST__": true
   },
   "env": {
-    "es6": true,
     "browser": true,
+    "es6": true,
     "node": true
   },
   "rules": {
@@ -32,6 +33,7 @@
         "allowSingleLine": true
       }
     ],
+    "comma-dangle": ["error", "always-multiline"],
     "comma-spacing": [
       "error",
       {
@@ -106,7 +108,11 @@
     ],
     "space-before-function-paren": [
       "error",
-      "never"
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
     ],
     "spaced-comment": [
       "error",

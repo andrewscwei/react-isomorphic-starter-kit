@@ -12,22 +12,4 @@ export default css`
     height: 100%;
     width: 100%;
   }
-
-  .fade-enter {
-    opacity: 0;
-  }
-
-  .fade-enter.fade-enter-active {
-    opacity: 1;
-    transition: all .3s;
-  }
-
-  .fade-exit {
-    opacity: 1;
-  }
-
-  .fade-exit.fade-exit-active {
-    opacity: 0;
-    transition: all .3s;
-  }
 `;

@@ -14,9 +14,12 @@ echo -e "Building $(cyan ${IMAGE_NAME}:${IMAGE_TAG}) in $(cyan ${ENVIRONMENT})..
 npm run build
 
 docker build \
+  --build-arg BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse HEAD)} \
+  --build-arg GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN} \
   --build-arg NODE_ENV=${ENVIRONMENT} \
-  --build-arg PUBLIC_PATH=${PUBLIC_PATH} \
+  --build-arg PUBLIC_PATH=${PUBLIC_PATH:-/static/} \
   --rm=false \
   -f $BASE_DIR/Dockerfile \
-  -t ${IMAGE_NAME}:${IMAGE_TAG} .
-docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest${IMAGE_TAG_SUFFIX}
+  -t ${IMAGE_NAME}:${IMAGE_TAG} \
+  -t ${IMAGE_NAME}:${BUILD_NUMBER:-$(git rev-parse HEAD)} \
+  .

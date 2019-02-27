@@ -1,4 +1,12 @@
 {
+  "env": {
+    "development": {
+      "plugins": [
+        "babel-plugin-styled-components",
+        "react-hot-loader/babel",
+      ]
+    }
+  },
   "retainLines": true,
   "presets": [
     "@babel/preset-env",

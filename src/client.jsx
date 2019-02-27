@@ -37,7 +37,3 @@ if (process.env.NODE_ENV === 'development') {
 else {
   hydrate(markup(), document.getElementById('app'));
 }
-
-if (module.hot) {
-  module.hot.accept();
-}

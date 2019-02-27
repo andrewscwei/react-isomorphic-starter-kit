@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
-import styled, { injectGlobal, ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 class App extends PureComponent {
   static propTypes = {
@@ -58,6 +58,7 @@ class App extends PureComponent {
     return (
       <ThemeProvider theme={theme}>
         <StyledRoot>
+          <GlobalStyles/>
           <Header/>
           <StyledBody>
             <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
@@ -71,16 +72,19 @@ class App extends PureComponent {
   }
 }
 
-export default connect(
+export default (component => {
+  if (process.env.NODE_ENV === 'development') return require('react-hot-loader/root').hot(component);
+  return component;
+})(connect(
   (state) => ({
     locales: state.intl.locales,
   }),
   (dispatch) => bindActionCreators({
     changeLocale,
   }, dispatch),
-)(App);
+)(App));
 
-injectGlobal`
+const GlobalStyles = createGlobalStyle`
   ${globalStyles}
 `;
 
@@ -94,4 +98,22 @@ const StyledBody = styled(TransitionGroup)`
   height: 100%;
   position: absolute;
   width: 100%;
+
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: all .3s;
+  }
+
+  .fade-exit {
+    opacity: 1;
+  }
+
+  .fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: all .3s;
+  }
 `;

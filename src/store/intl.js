@@ -12,14 +12,14 @@ if ((__APP_ENV__ === 'client') && (process.env.NODE_ENV === 'development')) {
   const localeReq = require.context('@/../config/locales', true, /^.*\.json$/);
   localeReq.keys().forEach(path => {
     const locale = path.replace('./', '').replace('.json', '');
-    if (!~__APP_CONFIG__.locales.indexOf(locale)) { return; }
+    if (!~__BUILD_CONFIG__.locales.indexOf(locale)) { return; }
     translations[locale] = localeReq(path);
   });
 
-  defaultLocale = __APP_CONFIG__.locales[0];
-  locales = __APP_CONFIG__.locales;
+  defaultLocale = __BUILD_CONFIG__.locales[0];
+  locales = __BUILD_CONFIG__.locales;
 
-  for (const locale of __APP_CONFIG__.locales) {
+  for (const locale of __BUILD_CONFIG__.locales) {
     addLocaleData(require(`react-intl/locale-data/${locale}`));
   }
 }

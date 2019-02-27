@@ -2,7 +2,6 @@
  * @file Server entry file.
  */
 
-import appConfig from '@/../config/app.conf';
 import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
 import debug from 'debug';
 import express from 'express';
@@ -30,26 +29,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /**
- * Redirect to HTTPS for insecure requests.
- * @see {@link http://expressjs.com/en/api.html#req.secure}
- */
-if (appConfig.forceSSL) {
-  app.set('trust proxy', true);
-  app.use((req, res, next) => {
-    if (req.secure) {
-      next();
-      return;
-    }
-    res.redirect('https://' + req.headers.host + req.url);
-  });
-}
-
-/**
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, 'public'))) {
-  app.use(express.static(path.join(__dirname, 'public'), {
+if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, __BUILD_CONFIG__.build.publicPath))) {
+  app.use(__BUILD_CONFIG__.build.publicPath, express.static(path.join(__dirname, __BUILD_CONFIG__.build.publicPath), {
     setHeaders(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader('Expires', (new Date(Date.now() + duration)).toUTCString());
@@ -61,7 +45,7 @@ if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname,
 /**
  * Server-side rendering setup.
  */
-app.use(appConfig.ssrEnabled ? renderWithContext() : renderWithoutContext());
+app.use(__BUILD_CONFIG__.ssrEnabled ? renderWithContext() : renderWithoutContext());
 
 /**
  * Server 404 error, when the requested URI is not found.
@@ -85,17 +69,17 @@ app.use((err, req, res) => {
 
 http
   .createServer(app)
-  .listen(appConfig.port)
+  .listen(__BUILD_CONFIG__.port)
   .on('error', (error) => {
     if (error.syscall !== 'listen') throw error;
 
     switch (error.code) {
     case 'EACCES':
-      log(`Port ${appConfig.port} requires elevated privileges`);
+      log(`Port ${__BUILD_CONFIG__.port} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      log(`Port ${appConfig.port} is already in use`);
+      log(`Port ${__BUILD_CONFIG__.port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -103,7 +87,7 @@ http
     }
   })
   .on('listening', () => {
-    log(`App is listening on ${ip.address()}:${appConfig.port}`);
+    log(`App is listening on ${ip.address()}:${__BUILD_CONFIG__.port}`);
   });
 
 // Handle unhandled rejections.

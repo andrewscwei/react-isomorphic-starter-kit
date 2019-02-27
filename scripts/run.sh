@@ -6,10 +6,6 @@ set -e
 
 source $(dirname $0)/get_opts.sh
 
-echo -e "Running $(cyan $IMAGE_NAME:latest$IMAGE_TAG_SUFFIX)..."
+echo -e "Running $(cyan $IMAGE_NAME:$IMAGE_TAG)..."
 
-# Volume mapping.
-VOLUME_MAPPING=" \
-  -v $(pwd)/src:/var/$APP_NAME/src"
-
-docker run -it --rm --net=$NET -p $PORT:8080 --name $APP_NAME $VOLUME_MAPPING $IMAGE_NAME:latest$IMAGE_TAG_SUFFIX
+docker run -it --rm --net=$NET -p $PORT:8080 --entrypoint /bin/sh --name $APP_NAME $IMAGE_NAME:$IMAGE_TAG

@@ -2,22 +2,21 @@
  * @file Webpack config for compiling the app server.
  */
 
-import HappyPack from 'happypack';
 import path from 'path';
 import { BannerPlugin, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
-import appConfig from './app.conf';
+import buildConf from './build.conf';
 import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const cwd = path.join(__dirname, '../');
 const inputDir = path.join(cwd, 'src');
 const outputDir = path.join(cwd, 'build');
-const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
+const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
 
 const config = {
-  devtool: isProduction ? (appConfig.build.sourceMap ? 'source-map' : false) : 'source-map',
+  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
     server: path.join(inputDir, 'server.jsx'),
   },
@@ -27,7 +26,7 @@ const config = {
     rules: [{
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: 'happypack/loader?id=babel',
+      use: 'babel-loader?cacheDirectory',
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
       loaders: [
@@ -49,39 +48,33 @@ const config = {
   output: {
     filename: '[name].js',
     path: outputDir,
-    publicPath: isProduction ? appConfig.build.publicPath : '/',
+    publicPath: buildConf.build.publicPath,
     sourceMapFilename: '[name].js.map',
+    libraryTarget: 'commonjs2',
   },
   performance: {
     hints: isProduction ? 'warning' : false,
   },
   plugins: [
     new DefinePlugin({
-      __APP_CONFIG__: JSON.stringify(appConfig),
+      __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('server'),
       __ASSET_MANIFEST__: JSON.stringify((() => {
         let t;
 
         if (process.env.NODE_ENV === 'production') {
-          try { t = require(path.join(__dirname, '../build/public/asset-manifest.json')); }
+          try { t = require(path.join(__dirname, '../build/static/asset-manifest.json')); }
           catch (err) { /* Do nothing */ }
         }
 
         return t;
       })()),
       __INTL_CONFIG__: JSON.stringify({
-        defaultLocale: appConfig.locales[0],
+        defaultLocale: buildConf.locales[0],
         localeData: getLocaleDataFromDir(path.join(cwd, 'config/locales')),
-        locales: appConfig.locales,
+        locales: buildConf.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
       }),
-    }),
-    new HappyPack({
-      id: 'babel',
-      threads: 2,
-      loaders: [{
-        path: 'babel-loader',
-      }],
     }),
     new EnvironmentPlugin(['NODE_ENV']),
     ...!useBundleAnalyzer ? [] : [
@@ -93,7 +86,7 @@ const config = {
         /components/,
       ]),
     ],
-    ...!appConfig.build.sourceMap ? [] : [
+    ...!buildConf.build.sourceMap ? [] : [
       new BannerPlugin({
         banner: 'require(\'source-map-support\').install();',
         raw: true,
@@ -104,6 +97,9 @@ const config = {
   resolve: {
     alias: {
       '@': inputDir,
+      ...isProduction ? {} : {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
     extensions: ['.js', '.jsx', '.json'],
   },
