@@ -37,6 +37,7 @@ jobs:
             - node_modules/
             - scripts/
             - src/
+            - tests/
             - Dockerfile
             - package.json
             - jsconfig.json
