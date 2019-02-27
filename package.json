@@ -78,7 +78,7 @@
     "@types/react-transition-group": "^2.0.16",
     "@types/require-dir": "^1.0.0",
     "@types/serialize-javascript": "^1.5.0",
-    "@types/styled-components": "^4.1.10",
+    "@types/styled-components": "4.1.8",
     "@types/supertest": "^2.0.7",
     "@types/webpack": "^4.4.25",
     "@types/webpack-bundle-analyzer": "^2.13.1",

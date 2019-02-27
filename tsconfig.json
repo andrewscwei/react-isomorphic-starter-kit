@@ -14,8 +14,7 @@
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6",
-    "types": ["react", "webpack-env"]
+    "target": "es6"
   },
   "include": [
     "src/**/*",
