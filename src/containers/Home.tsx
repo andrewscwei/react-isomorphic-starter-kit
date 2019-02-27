@@ -1,10 +1,10 @@
-import ReactLogo from '@/components/ReactLogo';
-import { AppState } from '@/store';
 import React, { ComponentType, PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
+import ReactLogo from '../components/ReactLogo';
+import { AppState } from '../store';
 
 interface StateProps {
   t: TranslationData;

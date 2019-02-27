@@ -2,14 +2,14 @@
  * @file Client entry file.
  */
 
-import App from '@/containers/App';
-import store, { AppState } from '@/store';
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps } from 'react-router-dom';
+import App from './containers/App';
+import store, { AppState } from './store';
 
 const ConnectedIntlProvider = connect((state: AppState) => ({
   key: state.intl.locale,
@@ -36,8 +36,4 @@ if (process.env.NODE_ENV === 'development') {
 }
 else {
   hydrate(markup(), document.getElementById('app'));
-}
-
-if (module.hot) {
-  module.hot.accept();
 }

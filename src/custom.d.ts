@@ -1,6 +1,6 @@
-declare module 'happypack';
+declare module 'sitemap';
 
-declare const __APP_CONFIG__: { [key: string]: any };
+declare const __BUILD_CONFIG__: { [key: string]: any };
 declare const __APP_ENV__: string;
 declare const __ASSET_MANIFEST__: AssetManifest;
 declare const __INTL_CONFIG__: {

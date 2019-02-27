@@ -7,7 +7,7 @@ export interface Props {
 }
 
 const ReactLogo: SFC<Props> = ({ className }) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!@/assets/images/react-logo.svg') }}/>
+  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!../assets/images/react-logo.svg') }}/>
 );
 
 export default ReactLogo;

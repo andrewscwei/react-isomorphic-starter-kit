@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import requireDir from 'require-dir';
-import appConfig from '../app.conf';
+import buildConf from '../build.conf';
 
 const cwd = path.join(__dirname, '../../');
 
@@ -20,8 +20,8 @@ const cwd = path.join(__dirname, '../../');
  * @return List of all supported locales.
  */
 export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
-  const defaultLocale = appConfig.locales[0];
-  const whitelistedLocales = appConfig.locales;
+  const defaultLocale = buildConf.locales[0];
+  const whitelistedLocales = buildConf.locales;
   const t = fs
     .readdirSync(dir)
     .filter((val: string) => !(/(^|\/)\.[^/.]/g).test(val))

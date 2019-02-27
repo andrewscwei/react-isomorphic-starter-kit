@@ -1,20 +1,51 @@
-FROM node:8.11.3-alpine
+# This is a Dockerfile with multi-stage builds.
 
-# Set environment variables
-ARG NODE_ENV=production
+# Builds the app with dev dependencies included.
+FROM node:10.15.1 as build-dev
+
+ARG BUILD_NUMBER
+ARG GOOGLE_ANALYTICS_ID
 ARG PUBLIC_PATH
 
-ENV NODE_ENV=$NODE_ENV
-ENV PUBLIC_PATH=$PUBLIC_PATH
+WORKDIR /var/app
 
-# Install NPM dependencies
-ADD package.json /var/repo/
-ADD yarn.lock /var/repo/
-WORKDIR /var/repo
-RUN yarn
+COPY package*.json ./
 
-# Clone built files
-ADD build /var/repo/build
+RUN npm install
 
-# Run
+COPY config ./config
+COPY src ./src
+COPY ts*.json ./
+COPY .babelrc ./
+
+RUN NODE_ENV=production npm run build
+
+
+# Rebuilds the app with unit tests included.
+FROM build-dev as test
+
+COPY tests ./tests
+
+# Strips dev dependencies from the dev build.
+FROM build-dev as build-prod
+
+RUN npm prune --production
+
+
+# Final production build.
+FROM node:10.15.1-alpine
+
+ARG BUILD_NUMBER
+
+ENV NODE_ENV=production
+ENV BUILD_NUMBER=$BUILD_NUMBER
+
+WORKDIR /var/app
+
+COPY package*.json ./
+COPY --from=build-prod /var/app/build ./build
+COPY --from=build-prod /var/app/node_modules ./node_modules
+
 CMD npm start
+
+EXPOSE 8080

@@ -6,11 +6,11 @@
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
 
-import buildConfig from '@/../config/build.client.conf';
 import debug from 'debug';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import buildConfig from '../../config/build.client.conf';
 
 const log = debug('app:hmr');
 const compiler = webpack(buildConfig);
@@ -22,7 +22,7 @@ const compiler = webpack(buildConfig);
  */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
-    publicPath: buildConfig && buildConfig.output && buildConfig.output.publicPath || '/',
+    publicPath: buildConfig.output!.publicPath!,
     stats: { colors: true },
   });
 }

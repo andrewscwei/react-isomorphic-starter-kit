@@ -2,22 +2,22 @@
  * @file Webpack config for compiling the app server.
  */
 
-import HappyPack from 'happypack';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path from 'path';
 import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, Plugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
-import appConfig from './app.conf';
+import buildConf from './build.conf';
 import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const cwd = path.join(__dirname, '../');
 const inputDir = path.join(cwd, 'src');
 const outputDir = path.join(cwd, 'build');
-const useBundleAnalyzer = isProduction && appConfig.build.analyzer;
+const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
 
 const config: Configuration = {
-  devtool: isProduction ? (appConfig.build.sourceMap ? 'source-map' : false) : 'source-map',
+  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
     server: path.join(inputDir, 'server.tsx'),
   },
@@ -27,7 +27,7 @@ const config: Configuration = {
     rules: [{
       exclude: /node_modules/,
       test: /\.tsx?$/,
-      use: 'happypack/loader?id=ts',
+      use: 'babel-loader?cacheDirectory',
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
       loaders: [
@@ -49,40 +49,34 @@ const config: Configuration = {
   output: {
     filename: '[name].js',
     path: outputDir,
-    publicPath: isProduction ? appConfig.build.publicPath : '/',
+    publicPath: buildConf.build.publicPath,
     sourceMapFilename: '[name].js.map',
+    libraryTarget: 'commonjs2',
   },
   performance: {
     hints: isProduction ? 'warning' : false,
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new DefinePlugin({
-      __APP_CONFIG__: JSON.stringify(appConfig),
+      __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('server'),
       __ASSET_MANIFEST__: JSON.stringify((() => {
         let t;
 
         if (process.env.NODE_ENV === 'production') {
-          try { t = require(path.join(__dirname, '../build/public/asset-manifest.json')); }
+          try { t = require(path.join(__dirname, '../build/static/asset-manifest.json')); }
           catch (err) { /* Do nothing */ }
         }
 
         return t;
       })()),
       __INTL_CONFIG__: JSON.stringify({
-        defaultLocale: appConfig.locales[0],
+        defaultLocale: buildConf.locales[0],
         localeData: getLocaleDataFromDir(path.join(cwd, 'config/locales')),
-        locales: appConfig.locales,
+        locales: buildConf.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
       }),
-    }),
-    new HappyPack({
-      id: 'ts',
-      threads: 2,
-      loaders: [{
-        path: 'ts-loader',
-        query: { happyPackMode: true },
-      }],
     }),
     new EnvironmentPlugin(['NODE_ENV']),
     ...!useBundleAnalyzer ? [] : [
@@ -94,7 +88,7 @@ const config: Configuration = {
         /components/,
       ]),
     ],
-    ...!appConfig.build.sourceMap ? [] : [
+    ...!buildConf.build.sourceMap ? [] : [
       new BannerPlugin({
         banner: "require('source-map-support').install();",
         raw: true,
@@ -105,6 +99,9 @@ const config: Configuration = {
   resolve: {
     alias: {
       '@': inputDir,
+      ...isProduction ? {} : {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },

@@ -13,6 +13,9 @@ export default {
   // Build number.
   buildNumber: process.env.BUILD_NUMBER || 0,
 
+  // Google Analytics ID (i.e. UA-XXXXXXXX-1)
+  ga: undefined,
+
   // HTML metadata.
   meta: {
     // Title of the app.
@@ -46,10 +49,7 @@ export default {
   // Config options specific to the `build` task.
   build: {
     // Public path of all loaded assets.
-    publicPath: process.env.PUBLIC_PATH || '/',
-
-    // Manifest path.
-    manifestPath: process.env.MANIFEST_PATH || 'public/asset-manifest.json',
+    publicPath: process.env.PUBLIC_PATH || '/static/',
 
     // Specifies whether JavaScript and CSS source maps should be generated.
     sourceMap: true,

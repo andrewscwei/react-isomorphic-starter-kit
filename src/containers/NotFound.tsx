@@ -1,10 +1,10 @@
-import { AppState } from '@/store';
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
+import { AppState } from '../store';
 
 interface StateProps {
   t: TranslationData;

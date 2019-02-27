@@ -4,10 +4,6 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import App from '@/containers/App';
-import routes from '@/routes';
-import store, { AppState } from '@/store';
-import Layout from '@/templates/Layout';
 import debug from 'debug';
 import { RequestHandler } from 'express';
 import React from 'react';
@@ -17,6 +13,10 @@ import { connect, Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+import App from '../containers/App';
+import routes from '../routes/client';
+import store, { AppState } from '../store';
+import Layout from '../templates/Layout';
 
 const log = debug('app:ssr');
 

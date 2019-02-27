@@ -11,18 +11,16 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "plugins": [{
-      "name": "typescript-styled-plugin"
-    }],
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6"
+    "target": "es6",
+    "types": ["react", "webpack-env"]
+  },
+  "paths": {
+    "@/*": [
+      "src/*"
+    ]
   },
   "include": [
     "src/**/*",

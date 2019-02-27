@@ -2,8 +2,7 @@
  * @file Server entry file.
  */
 
-import appConfig from '@/../config/app.conf';
-import { renderWithContext, renderWithoutContext } from '@/middleware/ssr';
+import compression from 'compression';
 import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
@@ -13,10 +12,14 @@ import ip from 'ip';
 import 'isomorphic-fetch';
 import morgan from 'morgan';
 import path from 'path';
+import { generateSitemap } from './middleware/sitemap';
+import { renderWithContext, renderWithoutContext } from './middleware/ssr';
+import routes from './routes';
 
 const log = debug('app');
 const app = express();
 
+app.use(compression());
 app.use(helmet());
 app.use(morgan('dev'));
 
@@ -33,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
  * Redirect to HTTPS for insecure requests.
  * @see {@link http://expressjs.com/en/api.html#req.secure}
  */
-if (appConfig.forceSSL) {
+if (__BUILD_CONFIG__.forceSSL) {
   app.set('trust proxy', true);
   app.use((req, res, next) => {
     if (req.secure) {
@@ -48,8 +51,8 @@ if (appConfig.forceSSL) {
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, 'public'))) {
-  app.use(express.static(path.join(__dirname, 'public'), {
+if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, __BUILD_CONFIG__.build.publicPath))) {
+  app.use(__BUILD_CONFIG__.build.publicPath, express.static(path.join(__dirname, __BUILD_CONFIG__.build.publicPath), {
     setHeaders(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10;
       res.setHeader('Expires', (new Date(Date.now() + duration)).toUTCString());
@@ -59,9 +62,19 @@ if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname,
 }
 
 /**
+ * Sitemap generator.
+ */
+app.use('/sitemap.xml', generateSitemap());
+
+/**
+ * Handle server routes.
+ */
+app.use('/', routes);
+
+/**
  * Server-side rendering setup.
  */
-app.use(appConfig.ssrEnabled ? renderWithContext() : renderWithoutContext());
+app.use(__BUILD_CONFIG__.ssrEnabled ? renderWithContext() : renderWithoutContext());
 
 /**
  * Server 404 error, when the requested URI is not found.
@@ -85,17 +98,17 @@ app.use((err: Error, _: express.Request, res: express.Response) => {
 
 http
   .createServer(app)
-  .listen(appConfig.port)
+  .listen(__BUILD_CONFIG__.port)
   .on('error', (error: NodeJS.ErrnoException) => {
     if (error.syscall !== 'listen') throw error;
 
     switch (error.code) {
     case 'EACCES':
-      log(`Port ${appConfig.port} requires elevated privileges`);
+      log(`Port ${__BUILD_CONFIG__.port} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      log(`Port ${appConfig.port} is already in use`);
+      log(`Port ${__BUILD_CONFIG__.port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -103,7 +116,7 @@ http
     }
   })
   .on('listening', () => {
-    log(`App is listening on ${ip.address()}:${appConfig.port}`);
+    log(`App is listening on ${ip.address()}:${__BUILD_CONFIG__.port}`);
   });
 
 // Handle unhandled rejections.

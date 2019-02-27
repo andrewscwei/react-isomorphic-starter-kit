@@ -1,10 +1,10 @@
-import { AppState } from '@/store';
-import { fetchUsers, User } from '@/store/users';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch, Store } from 'redux';
 import styled from 'styled-components';
+import { AppState } from '../store';
+import { fetchUsers, User } from '../store/users';
 
 interface StateProps {
   t: TranslationData;

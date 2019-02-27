@@ -1,9 +1,9 @@
-import { AppState } from '@/store';
 import React, { ReactNode, SFC } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
+import { AppState } from '../store';
 
 interface StateProps {
   t: TranslationData;

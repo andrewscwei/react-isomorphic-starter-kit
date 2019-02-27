@@ -1,9 +1,9 @@
-import { AppState } from '@/store';
 import React, { ReactNode, SFC } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
+import { AppState } from '../store';
 
 interface StateProps {
   t: TranslationData;
@@ -56,7 +56,7 @@ const StyledRoot = styled.footer`
   }
 
   nav > a {
-    background: url(${require('@/assets/images/github-icon.svg')}) center / 100% no-repeat;
+    background: url(${require('../assets/images/github-icon.svg')}) center / 100% no-repeat;
     display: block;
     height: 20px;
     transition: all .2s ease-out;
