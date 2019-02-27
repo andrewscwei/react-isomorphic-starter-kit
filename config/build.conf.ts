@@ -31,15 +31,6 @@ export default {
     url: require('../package.json').homepage,
   },
 
-  // Port.
-  port: process.env.PORT || 8080,
-
-  // Force redirects to HTTPS.
-  forceSSL: process.env.FORCE_SSL || false,
-
-  // Determines whether SSR is enabled.
-  ssrEnabled: process.env.NODE_ENV !== 'development',
-
   // Default locale.
   defaultLocale: 'en',
 
