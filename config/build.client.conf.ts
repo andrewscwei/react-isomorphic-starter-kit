@@ -3,6 +3,7 @@
  */
 
 import CopyPlugin from 'copy-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NamedModulesPlugin, Plugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -54,6 +55,7 @@ const config: Configuration = {
     hints: isProduction ? 'warning' : false,
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new CopyPlugin([{ from: path.join(inputDir, 'static'), ignore: ['.*'], to: outputDir }]),
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
