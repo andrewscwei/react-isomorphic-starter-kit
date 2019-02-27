@@ -5,7 +5,7 @@
 
 import path from 'path';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import serialize from 'serialize-javascript';
 
 /**

@@ -33,7 +33,7 @@ const ConnectedIntlProvider = connect((state) => ({
  * @return Express middleware.
  */
 export function renderWithContext() {
-  return async(req, res) => {
+  return async (req, res) => {
     log(`Rendering with context: ${req.path}`);
 
     // Find and store all matching client routes based on the request URL.
@@ -88,7 +88,7 @@ export function renderWithContext() {
  * @return Express middleware.
  */
 export function renderWithoutContext() {
-  return async(req, res) => {
+  return async (req, res) => {
     log(`Rendering without context: ${req.path}`);
 
     res.send(`<!doctype html>${renderToStaticMarkup(
