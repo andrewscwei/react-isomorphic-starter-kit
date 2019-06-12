@@ -21,6 +21,7 @@ class Home extends PureComponent {
         </Helmet>
         <StyledReactLogo/>
         <h1>{t['hello']}</h1>
+        <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
         <p>{t['description']}</p>
       </StyledRoot>
     );
@@ -66,6 +67,7 @@ const StyledRoot = styled.div`
     letter-spacing: .6px;
     line-height: 1.6em;
     max-width: 400px;
+    margin: 0;
     text-align: center;
   }
 `;

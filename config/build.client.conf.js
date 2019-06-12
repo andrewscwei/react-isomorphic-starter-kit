@@ -29,19 +29,44 @@ const config = {
     rules: [{
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: 'babel-loader?cacheDirectory',
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
     }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
-      loaders: [
-        `url-loader?limit=8192&name=assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        `image-webpack-loader?${isProduction ? '' : 'disable'}`,
-      ],
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+          name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+        },
+      }, {
+        loader: 'image-webpack-loader',
+        options: {
+          disable: !isProduction,
+        },
+      }],
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: `url-loader?limit=8192&name=assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+          name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+        },
+      }],
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: `url-loader?limit=8192&name=assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+          name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+        },
+      }],
     }],
   },
   output: {
@@ -49,6 +74,7 @@ const config = {
     publicPath: buildConf.build.publicPath,
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     sourceMapFilename: '[file].map',
+    globalObject: 'this', // https://github.com/webpack/webpack/issues/6642#issuecomment-373244198
   },
   performance: {
     hints: isProduction ? 'warning' : false,

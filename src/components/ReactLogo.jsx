@@ -1,9 +1,10 @@
+import $$Logo from '!!raw-loader!../assets/images/react-logo.svg';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
 const ReactLogo = ({ className }) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!../assets/images/react-logo.svg') }}/>
+  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
 );
 
 ReactLogo.propTypes = {
