@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: node:10.15.1
+    - image: node:10.16.0
 
 version: 2
 jobs:
