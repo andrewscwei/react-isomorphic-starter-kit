@@ -1,5 +1,5 @@
 /**
- * @file Configuration for both client and server environments.
+ * @file Buildtime configuration for both client and server environments.
  */
 
 import dotenv from 'dotenv';

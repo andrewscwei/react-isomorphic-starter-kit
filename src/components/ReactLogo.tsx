@@ -1,3 +1,4 @@
+import $$Logo from '!!raw-loader!../assets/images/react-logo.svg';
 import React, { ReactNode, SFC } from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +8,7 @@ export interface Props {
 }
 
 const ReactLogo: SFC<Props> = ({ className }) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: require('!raw-loader!../assets/images/react-logo.svg') }}/>
+  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
 );
 
 export default ReactLogo;

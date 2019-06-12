@@ -10,6 +10,14 @@ declare const __INTL_CONFIG__: {
   dict: Readonly<TranslationDataDict>;
 };
 
+declare module 'worker-loader!*' {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  export default WebpackWorker;
+}
+
 interface TranslationData {
   [key: string]: string;
 }
