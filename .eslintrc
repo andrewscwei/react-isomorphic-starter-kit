@@ -16,7 +16,7 @@
   "globals": {
     "__BUILD_CONFIG__": true,
     "__APP_ENV__": true,
-    "__INTL_CONFIG__": true,
+    "__I18N_CONFIG__": true,
     "__ASSET_MANIFEST__": true
   },
   "env": {

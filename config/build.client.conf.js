@@ -84,7 +84,7 @@ const config = {
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('client'),
-      __INTL_CONFIG__: JSON.stringify({
+      __I18N_CONFIG__: JSON.stringify({
         defaultLocale: buildConf.locales[0],
         locales: buildConf.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),

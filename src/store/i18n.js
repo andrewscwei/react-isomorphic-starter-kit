@@ -7,8 +7,8 @@ const I18nActionType = {
 };
 
 const initialState = {
-  locale: __INTL_CONFIG__.defaultLocale,
-  ltxt: (...args) => getPolyglotByLocale(__INTL_CONFIG__.defaultLocale).t(...args),
+  locale: __I18N_CONFIG__.defaultLocale,
+  ltxt: (...args) => getPolyglotByLocale(__I18N_CONFIG__.defaultLocale).t(...args),
 };
 
 export function changeLocale(locale) {

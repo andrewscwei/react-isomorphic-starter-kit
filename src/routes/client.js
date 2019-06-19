@@ -8,7 +8,7 @@ import NotFound from '../containers/NotFound';
 import { getPolyglotByLocale } from '../utils/i18n';
 
 export function getLocaleFromPath(path) {
-  const locales = __INTL_CONFIG__.locales;
+  const locales = __I18N_CONFIG__.locales;
   const possibleLocale = path.split('/')[1];
 
   if (~locales.indexOf(possibleLocale)) {
@@ -19,15 +19,15 @@ export function getLocaleFromPath(path) {
   }
 }
 
-export function getLocalizedPath(path, locale = __INTL_CONFIG__.defaultLocale) {
+export function getLocalizedPath(path, locale = __I18N_CONFIG__.defaultLocale) {
   const t = path.split('/').filter(v => v);
 
-  if (t.length > 0 && __INTL_CONFIG__.locales.indexOf(t[0]) >= 0) {
+  if (t.length > 0 && __I18N_CONFIG__.locales.indexOf(t[0]) >= 0) {
     t.shift();
   }
 
   switch (locale) {
-  case __INTL_CONFIG__.defaultLocale:
+  case __I18N_CONFIG__.defaultLocale:
     return `/${t.join('/')}`;
   default:
     return `/${locale}/${t.join('/')}`;

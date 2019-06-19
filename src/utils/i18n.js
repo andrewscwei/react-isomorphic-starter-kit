@@ -1,8 +1,8 @@
 import Polyglot from 'node-polyglot';
 
 const debug = require('debug')('app:i18n');
-const locales = __INTL_CONFIG__.locales;
-const dict = __INTL_CONFIG__.dict;
+const locales = __I18N_CONFIG__.locales;
+const dict = __I18N_CONFIG__.dict;
 const polyglots = {};
 
 // In development, require context for all locale translation files and add them
