@@ -10,14 +10,16 @@ import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import routes from '../routes/client';
+import routes, { getLocaleFromPath } from '../routes/client';
 import { AppState } from '../store';
-import { changeLocale } from '../store/intl';
+import { changeLocale } from '../store/i18n';
 import globalStyles from '../styles/global';
 import theme from '../styles/theme';
 
+const debug = require('debug')('app');
+
 interface StateProps {
-  locales: ReadonlyArray<string>;
+  locale: string;
 }
 
 interface DispatchProps {
@@ -37,24 +39,27 @@ export interface State {
 class App extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.syncLocaleWithUrl();
 
-    this.updateLocale();
+    debug('Initializing...', 'OK');
   }
 
-  componentDidUpdate() {
-    this.updateLocale();
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if ((prevProps.locale !== this.props.locale) || (prevProps.route.location.pathname !== this.props.route.location.pathname)) {
+      this.syncLocaleWithUrl();
+    }
   }
 
-  updateLocale = () => {
-    const { route, changeLocale, locales } = this.props;
-    const locale = route.location.pathname.split('/')[1];
+  syncLocaleWithUrl = () => {
+    const { route, changeLocale, locale } = this.props;
+    const newLocale = getLocaleFromPath(route.location.pathname);
 
-    if (~locales.indexOf(locale)) {
-      changeLocale(locale);
+    if (newLocale === locale) {
+      debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
+      return;
     }
-    else {
-      changeLocale(locales[0]);
-    }
+
+    changeLocale(newLocale);
   }
 
   generateRoutes = () => {
@@ -88,7 +93,7 @@ export default (component => {
   if (process.env.NODE_ENV === 'development') return require('react-hot-loader/root').hot(component);
   return component;
 })(connect((state: AppState): StateProps => ({
-    locales: state.intl.locales,
+    locale: state.i18n.locale,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     changeLocale,

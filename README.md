@@ -7,9 +7,9 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 1. Server-side rendering (in production) with [Express](https://expressjs.com/)
 2. Hot module replacement (in development)
 3. [TypeScript](https://www.typescriptlang.org/)
-4. [React Router 4](https://reacttraining.com/react-router/)
+4. [React Router](https://reacttraining.com/react-router/)
 5. [Redux](https://redux.js.org/introduction)
-6. [React Intl](https://github.com/yahoo/react-intl/wiki)
+6. [Polyglot](http://airbnb.io/polyglot.js/)
 7. [Styled Components](https://www.styled-components.com/)
 8. [React Transition Group](http://reactcommunity.org/react-transition-group/)
 9. [nodemon](https://github.com/remy/nodemon)
@@ -21,7 +21,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 
 ```sh
 # Install dependencies
-$ yarn
+$ npm install
 
 # Run in dev
 $ npm run dev

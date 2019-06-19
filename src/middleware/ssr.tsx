@@ -6,25 +6,19 @@
 
 import debug from 'debug';
 import { RequestHandler } from 'express';
+import _ from 'lodash';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
-import { IntlProvider } from 'react-intl';
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import App from '../containers/App';
 import routes from '../routes/client';
-import store, { AppState } from '../store';
+import store from '../store';
 import Layout from '../templates/Layout';
 
 const log = debug('app:ssr');
-
-const ConnectedIntlProvider = connect((state: AppState) => ({
-  key: state.intl.locale,
-  locale: state.intl.locale,
-  messages: state.intl.translations,
-}))(IntlProvider);
 
 /**
  * Express middleware for rendering React views to string based on the request
@@ -39,6 +33,7 @@ export function renderWithContext(): RequestHandler {
 
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
+    const title = (matches.length > 0) && (matches[0].route as any).title;
 
     // For each matching route, fetch async data if required.
     for (const t of matches) {
@@ -54,15 +49,13 @@ export function renderWithContext(): RequestHandler {
 
     const body = renderToString(
       <Provider store={store}>
-        <ConnectedIntlProvider>
-          <StaticRouter location={req.url} context={context}>
-            <Route render={(route: RouteComponentProps<any>) => (
-              <StyleSheetManager sheet={sheet.instance}>
-                <App route={route}/>
-              </StyleSheetManager>
-            )}/>
-          </StaticRouter>
-        </ConnectedIntlProvider>
+        <StaticRouter location={req.url} context={context}>
+          <Route render={(route: RouteComponentProps<any>) => (
+            <StyleSheetManager sheet={sheet.instance}>
+              <App route={route}/>
+            </StyleSheetManager>
+          )}/>
+        </StaticRouter>
       </Provider>,
     );
 
@@ -76,7 +69,7 @@ export function renderWithContext(): RequestHandler {
     }
 
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout body={body} initialState={store.getState()} initialStyles={sheet.getStyleElement()}/>,
+      <Layout title={title} body={body} initialState={_.omit(store.getState(), 'i18n')} initialStyles={sheet.getStyleElement()}/>,
     )}`);
   };
 }
@@ -92,8 +85,12 @@ export function renderWithoutContext(): RequestHandler {
   return async (req, res) => {
     log(`Rendering without context: ${req.path}`);
 
+    // Find and store all matching client routes based on the request URL.
+    const matches = matchRoutes(routes, req.path);
+    const title = (matches.length > 0) && (matches[0].route as any).title;
+
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout/>,
+      <Layout title={title}/>,
     )}`);
   };
 }

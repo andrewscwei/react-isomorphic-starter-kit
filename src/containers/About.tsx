@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
-import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch, Store } from 'redux';
 import styled from 'styled-components';
+import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
+import { I18nState } from '../store/i18n';
 import { fetchUsers, User } from '../store/users';
 
 interface StateProps {
-  t: TranslationData;
+  ltxt: I18nState['ltxt'];
   users: ReadonlyArray<User>;
 }
 
@@ -35,14 +36,11 @@ class About extends PureComponent<Props, State> {
   }
 
   render() {
-    const { t, users } = this.props;
+    const { ltxt, users } = this.props;
 
     return (
       <StyledRoot>
-        <Helmet>
-          <title>{t['about']}</title>
-        </Helmet>
-        <h1>{t['about-title']}</h1>
+        <h1>{ltxt('about-title')}</h1>
         {
           users.map((user: User) => {
             return (
@@ -59,13 +57,13 @@ class About extends PureComponent<Props, State> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    t: state.intl.translations,
+    ltxt: state.i18n.ltxt,
     users: state.users.items,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,
   }, dispatch),
-)(About);
+)(withPageTitle('about')(About));
 
 const StyledRoot = styled.div`
   align-items: center;

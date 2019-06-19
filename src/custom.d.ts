@@ -3,12 +3,16 @@ declare module 'sitemap';
 declare const __BUILD_CONFIG__: { [key: string]: any };
 declare const __APP_ENV__: string;
 declare const __ASSET_MANIFEST__: AssetManifest;
-declare const __INTL_CONFIG__: {
+declare const __INTL_CONFIG__: Readonly<{
   defaultLocale: string;
-  localeData: Readonly<LocaleDataDict>;
-  locales: ReadonlyArray<string>;
-  dict: Readonly<TranslationDataDict>;
-};
+  locales: string;
+  dict: TranslationDataDict;
+}>;
+
+declare module '*.svg' {
+  const content: any;
+  export default content;
+}
 
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
@@ -24,10 +28,6 @@ interface TranslationData {
 
 interface TranslationDataDict {
   [locale: string]: TranslationData;
-}
-
-interface LocaleDataDict {
-  [locale: string]: ReactIntl.LocaleData;
 }
 
 interface RouteData {

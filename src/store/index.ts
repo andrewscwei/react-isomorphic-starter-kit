@@ -1,17 +1,17 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import intl, { IntlState } from './intl';
+import i18n, { I18nState } from './i18n';
 import users, { UsersState } from './users';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' && __APP_ENV__ === 'client' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export interface AppState {
-  intl: IntlState;
+  i18n: I18nState;
   users: UsersState;
 }
 
 export const reducer = combineReducers({
-  intl,
+  i18n,
   users,
 });
 

@@ -7,7 +7,7 @@ import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, Plugin, W
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import buildConf from './build.conf';
-import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
+import { getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const cwd = path.join(__dirname, '../');
@@ -100,7 +100,6 @@ const config: Configuration = {
       })()),
       __INTL_CONFIG__: JSON.stringify({
         defaultLocale: buildConf.locales[0],
-        localeData: getLocaleDataFromDir(path.join(cwd, 'config/locales')),
         locales: buildConf.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
       }),

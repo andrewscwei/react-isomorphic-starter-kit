@@ -1,13 +1,14 @@
 import React, { ComponentType, PureComponent } from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 import ReactLogo from '../components/ReactLogo';
+import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
+import { I18nState } from '../store/i18n';
 
 interface StateProps {
-  t: TranslationData;
+  ltxt: I18nState['ltxt'];
 }
 
 interface DispatchProps {
@@ -26,17 +27,14 @@ export interface State {
 
 class Home extends PureComponent<Props, State> {
   render() {
-    const { t } = this.props;
+    const { ltxt } = this.props;
 
     return (
       <StyledRoot>
-        <Helmet>
-          <title>{t['home']}</title>
-        </Helmet>
         <StyledReactLogo/>
-        <h1>{t['hello']}</h1>
+        <h1>{ltxt('hello')}</h1>
         <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
-        <p>{t['description']}</p>
+        <p>{ltxt('description')}</p>
       </StyledRoot>
     );
   }
@@ -44,12 +42,12 @@ class Home extends PureComponent<Props, State> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    t: state.intl.translations,
+    ltxt: state.i18n.ltxt,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
   }, dispatch),
-)(Home);
+)(withPageTitle('home')(Home));
 
 const StyledRoot = styled.div`
   align-items: center;
