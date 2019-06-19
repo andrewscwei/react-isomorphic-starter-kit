@@ -98,7 +98,7 @@ const config: Configuration = {
 
         return t;
       })()),
-      __INTL_CONFIG__: JSON.stringify({
+      __I18N_CONFIG__: JSON.stringify({
         defaultLocale: buildConf.locales[0],
         locales: buildConf.locales,
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),

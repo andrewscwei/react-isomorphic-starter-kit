@@ -18,8 +18,8 @@ export interface I18nState {
 }
 
 const initialState: I18nState = {
-  locale: __INTL_CONFIG__.defaultLocale,
-  ltxt: (...args) => getPolyglotByLocale(__INTL_CONFIG__.defaultLocale).t(...args),
+  locale: __I18N_CONFIG__.defaultLocale,
+  ltxt: (...args) => getPolyglotByLocale(__I18N_CONFIG__.defaultLocale).t(...args),
 };
 
 export function changeLocale(locale: string): I18nAction {
