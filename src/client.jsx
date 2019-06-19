@@ -5,8 +5,7 @@
 import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
-import { IntlProvider } from 'react-intl';
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Worker from 'worker-loader!./workers/web';
 import App from './containers/App';
@@ -24,22 +23,14 @@ worker.addEventListener('message', event => {
   debug(event.data.message);
 });
 
-const ConnectedIntlProvider = connect((state) => ({
-  key: state.intl.locale,
-  locale: state.intl.locale,
-  messages: state.intl.translations,
-}))(IntlProvider);
-
 // Generator for base markup.
 const markup = () => (
   <Provider store={store}>
-    <ConnectedIntlProvider>
-      <BrowserRouter>
-        <Route render={(route) => (
-          <App route={route}/>
-        )}/>
-      </BrowserRouter>
-    </ConnectedIntlProvider>
+    <BrowserRouter>
+      <Route render={(route) => (
+        <App route={route}/>
+      )}/>
+    </BrowserRouter>
   </Provider>
 );
 

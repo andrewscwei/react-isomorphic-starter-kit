@@ -8,7 +8,7 @@ import { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlug
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import buildConf from './build.conf';
-import { getLocaleDataFromDir, getTranslationDataDictFromDir } from './utils';
+import { getTranslationDataDictFromDir } from './utils';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const cwd = path.join(__dirname, '../');
@@ -84,6 +84,11 @@ const config = {
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('client'),
+      __INTL_CONFIG__: JSON.stringify({
+        defaultLocale: buildConf.locales[0],
+        locales: buildConf.locales,
+        dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
+      }),
     }),
     new EnvironmentPlugin({
       NODE_ENV: 'development',
@@ -91,14 +96,6 @@ const config = {
     ...isProduction ? [
       new IgnorePlugin(/^.*\/config\/.*$/),
       new ManifestPlugin({ fileName: 'asset-manifest.json' }),
-      new DefinePlugin({
-        __INTL_CONFIG__: JSON.stringify({
-          defaultLocale: buildConf.locales[0],
-          localeData: getLocaleDataFromDir(path.join(cwd, 'config/locales')),
-          locales: buildConf.locales,
-          dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
-        }),
-      }),
     ] : [
       new HotModuleReplacementPlugin(),
       new NamedModulesPlugin(),

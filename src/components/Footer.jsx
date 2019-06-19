@@ -4,24 +4,25 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import { getLocalizedPath } from '../routes/client';
 
-const Footer = ({ t }) => (
+const Footer = ({ ltxt }) => (
   <StyledRoot>
     <nav>
       <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
     </nav>
-    <Link to='/'>{t['en']}</Link>
-    <Link to='/ja/'>{t['jp']}</Link>
+    <Link to={getLocalizedPath('/', 'en')}>{ltxt('en')}</Link>
+    <Link to={getLocalizedPath('/', 'ja')}>{ltxt('jp')}</Link>
   </StyledRoot>
 );
 
 Footer.propTypes = {
-  t: PropTypes.object.isRequired,
+  ltxt: PropTypes.func.isRequired,
 };
 
 export default connect(
   (state) => ({
-    t: state.intl.translations,
+    ltxt: state.i18n.ltxt,
   }),
   (dispatch) => bindActionCreators({
 

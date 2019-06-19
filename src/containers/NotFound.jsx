@@ -1,18 +1,27 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import withPageTitle from '../decorators/withPageTitle';
 
-class NotFound extends PureComponent {
+@connect(
+  (state) => ({
+    ltxt: state.i18n.ltxt,
+  }),
+  (dispatch) => bindActionCreators({
+
+  }, dispatch),
+)
+@withPageTitle('not-found-title')
+export default class NotFound extends PureComponent {
   static propTypes = {
-    t: PropTypes.object.isRequired,
+    ltxt: PropTypes.func.isRequired,
   };
 
   render() {
-    const { t } = this.props;
+    const { ltxt } = this.props;
 
     return (
       <Route render={(route) => {
@@ -22,25 +31,13 @@ class NotFound extends PureComponent {
 
         return (
           <StyledRoot>
-            <Helmet>
-              <title>{t['not-found-title']}</title>
-            </Helmet>
-            <h1>{t['not-found']}</h1>
+            <h1>{ltxt('not-found')}</h1>
           </StyledRoot>
         );
       }}/>
     );
   }
 }
-
-export default connect(
-  (state) => ({
-    t: state.intl.translations,
-  }),
-  (dispatch) => bindActionCreators({
-
-  }, dispatch),
-)(NotFound);
 
 const StyledRoot = styled.div`
   align-items: center;

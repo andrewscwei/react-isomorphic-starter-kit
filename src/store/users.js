@@ -1,4 +1,5 @@
-const UsersActionType = {
+
+export const UsersActionType = {
   USERS_LOADED: 'users-loaded',
 };
 
@@ -7,12 +8,20 @@ const initialState = {
 };
 
 export function fetchUsers() {
-  return async (dispatch) => {
-    const res = await fetch('//jsonplaceholder.typicode.com/users');
+  return async dispatch => {
+    const res = await fetch('//jsonplaceholder.typicode.com/users')
+      .catch(err => {
+        if (err.name !== 'AbortError') throw err;
+      });
+
+    if (!res) return;
+
     const items = await res.json();
     const action = {
-      items,
       type: UsersActionType.USERS_LOADED,
+      payload: {
+        items,
+      },
     };
 
     dispatch(action);
@@ -22,7 +31,10 @@ export function fetchUsers() {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
   case UsersActionType.USERS_LOADED:
-    return { ...state, items: action.items };
+    return {
+      ...state,
+      ...action.payload,
+    };
   default:
     return state;
   }

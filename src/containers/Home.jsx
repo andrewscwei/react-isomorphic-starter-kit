@@ -1,41 +1,38 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import ReactLogo from '../components/ReactLogo';
+import withPageTitle from '../decorators/withPageTitle';
 
-class Home extends PureComponent {
-  static propTypes = {
-    t: PropTypes.object.isRequired,
-  };
-
-  render() {
-    const { t } = this.props;
-
-    return (
-      <StyledRoot>
-        <Helmet>
-          <title>{t['home']}</title>
-        </Helmet>
-        <StyledReactLogo/>
-        <h1>{t['hello']}</h1>
-        <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
-        <p>{t['description']}</p>
-      </StyledRoot>
-    );
-  }
-}
-
-export default connect(
+@connect(
   (state) => ({
-    t: state.intl.translations,
+    ltxt: state.i18n.ltxt,
   }),
   (dispatch) => bindActionCreators({
 
   }, dispatch),
-)(Home);
+)
+@withPageTitle('home')
+export default class Home extends PureComponent {
+  static propTypes = {
+    ltxt: PropTypes.func.isRequired,
+  };
+
+  render() {
+    const { ltxt } = this.props;
+
+    return (
+      <StyledRoot>
+        <StyledReactLogo/>
+        <h1>{ltxt('hello')}</h1>
+        <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
+        <p>{ltxt('description')}</p>
+      </StyledRoot>
+    );
+  }
+}
 
 const StyledRoot = styled.div`
   align-items: center;

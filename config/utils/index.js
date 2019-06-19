@@ -7,8 +7,6 @@ import path from 'path';
 import requireDir from 'require-dir';
 import buildConf from '../build.conf';
 
-const cwd = path.join(__dirname, '../../');
-
 /**
  * Returns a list of all supported locales by inferring from the translations
  * directory.
@@ -32,27 +30,6 @@ export function getLocalesFromDir(dir) {
   }
 
   return t;
-}
-
-/**
- * Returns a dictionary of React Intl locale data used by the app.
- *
- * @param dir Directory to infer locales from.
- *
- * @return Dictionary of all locale data.
- */
-export function getLocaleDataFromDir(dir, req) {
-  const dict = {};
-  const locales = getLocalesFromDir(dir);
-  const t = requireDir(path.resolve(cwd, 'node_modules', 'react-intl/locale-data'));
-
-  for (const locale in t) {
-    if (~locales.indexOf(locale)) {
-      dict[locale] = t[locale];
-    }
-  }
-
-  return dict;
 }
 
 /**

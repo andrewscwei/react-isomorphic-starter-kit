@@ -4,23 +4,24 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import { getLocalizedPath } from '../routes/client';
 
-const Header = ({ locale, t }) => (
+const Header = ({ locale, ltxt }) => (
   <StyledRoot>
-    <Link to={locale === 'en' ? '/' : '/ja/'}>{t['home']}</Link>
-    <Link to={locale === 'en' ? '/about/' : '/ja/about/'}>{t['about']}</Link>
+    <Link to={getLocalizedPath('/', locale)}>{ltxt('home')}</Link>
+    <Link to={getLocalizedPath('/about', locale)}>{ltxt('about')}</Link>
   </StyledRoot>
 );
 
 Header.propTypes = {
-  t: PropTypes.object.isRequired,
+  ltxt: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
 };
 
 export default connect(
   (state) => ({
-    t: state.intl.translations,
-    locale: state.intl.locale,
+    ltxt: state.i18n.ltxt,
+    locale: state.i18n.locale,
   }),
   (dispatch) => bindActionCreators({
 
