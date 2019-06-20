@@ -3,7 +3,6 @@
  */
 
 import compression from 'compression';
-import debug from 'debug';
 import express from 'express';
 import fs from 'fs';
 import helmet from 'helmet';
@@ -17,7 +16,7 @@ import { generateSitemap } from './middleware/sitemap';
 import { renderWithContext, renderWithoutContext } from './middleware/ssr';
 import routes from './routes';
 
-const log = debug('app');
+const debug = require('debug')('app');
 const app = express();
 
 app.use(compression());
@@ -90,11 +89,11 @@ http
 
     switch (error.code) {
     case 'EACCES':
-      log(`Port ${appConf.port} requires elevated privileges`);
+      debug(`Port ${appConf.port} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      log(`Port ${appConf.port} is already in use`);
+      debug(`Port ${appConf.port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -102,7 +101,7 @@ http
     }
   })
   .on('listening', () => {
-    log(`App is listening on ${ip.address()}:${appConf.port}`);
+    debug(`App is listening on ${ip.address()}:${appConf.port}`);
   });
 
 // Handle unhandled rejections.

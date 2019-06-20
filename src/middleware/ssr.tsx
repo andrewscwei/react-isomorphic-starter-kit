@@ -4,7 +4,6 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import debug from 'debug';
 import { RequestHandler } from 'express';
 import _ from 'lodash';
 import React from 'react';
@@ -18,7 +17,7 @@ import routes from '../routes/client';
 import store from '../store';
 import Layout from '../templates/Layout';
 
-const log = debug('app:ssr');
+const debug = require('debug')('app:ssr');
 
 /**
  * Express middleware for rendering React views to string based on the request
@@ -29,7 +28,7 @@ const log = debug('app:ssr');
  */
 export function renderWithContext(): RequestHandler {
   return async (req, res) => {
-    log(`Rendering with context: ${req.path}`);
+    debug(`Rendering with context: ${req.path}`);
 
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
@@ -40,8 +39,8 @@ export function renderWithContext(): RequestHandler {
       const { route, match } = t;
       if (!route.component) continue;
       if ((route.component as any).fetchData === undefined) continue;
-      log(`Fetching data for route: ${match.url}`);
       await (route.component as any).fetchData(store);
+      debug(`Fetching data for route <${match.url}`>..., 'OK');
     }
 
     const context: { [key: string]: any } = {};
@@ -83,7 +82,7 @@ export function renderWithContext(): RequestHandler {
  */
 export function renderWithoutContext(): RequestHandler {
   return async (req, res) => {
-    log(`Rendering without context: ${req.path}`);
+    debug(`Rendering without context <${req.path}>...`, 'OK');
 
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
