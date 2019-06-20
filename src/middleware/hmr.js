@@ -6,13 +6,12 @@
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
 
-import buildConfig from '../../config/build.client.conf';
-import debug from 'debug';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import buildConfig from '../../config/build.client.conf';
 
-const log = debug('app:hmr');
+const debug = require('debug')('app:hmr');
 const compiler = webpack(buildConfig);
 
 /**
@@ -34,7 +33,7 @@ export function devMiddleware() {
  */
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
-    log,
+    log: debug,
     heartbeat: 2000,
   });
 }

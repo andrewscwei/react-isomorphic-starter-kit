@@ -4,7 +4,6 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import debug from 'debug';
 import _ from 'lodash';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
@@ -17,7 +16,7 @@ import routes from '../routes/client';
 import store from '../store';
 import Layout from '../templates/Layout';
 
-const log = debug('app:ssr');
+const debug = require('debug')('app:ssr');
 
 /**
  * Express middleware for rendering React views to string based on the request
@@ -28,8 +27,6 @@ const log = debug('app:ssr');
  */
 export function renderWithContext() {
   return async (req, res) => {
-    log(`Rendering with context: ${req.path}`);
-
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
     const title = (matches.length > 0) && (matches[0].route).title;
@@ -39,8 +36,8 @@ export function renderWithContext() {
       const { route, match } = t;
       if (!route.component) continue;
       if ((route.component).fetchData === undefined) continue;
-      log(`Fetching data for route: ${match.url}`);
       await (route.component).fetchData(store);
+      debug(`Fetching data for route <${match.url}>...`, 'OK');
     }
 
     const context = {};
@@ -67,6 +64,8 @@ export function renderWithContext() {
       break;
     }
 
+    debug(`Rendering with context <${req.path}>...`, 'OK');
+
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout title={title} body={body} initialState={_.omit(store.getState(), 'i18n')} initialStyles={sheet.getStyleElement()}/>,
     )}`);
@@ -82,11 +81,11 @@ export function renderWithContext() {
  */
 export function renderWithoutContext() {
   return async (req, res) => {
-    log(`Rendering without context: ${req.path}`);
-
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
     const title = (matches.length > 0) && (matches[0].route).title;
+
+    debug(`Rendering without context <${req.path}>...`, 'OK');
 
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout title={title}/>,
