@@ -28,8 +28,6 @@ const debug = require('debug')('app:ssr');
  */
 export function renderWithContext(): RequestHandler {
   return async (req, res) => {
-    debug(`Rendering with context: ${req.path}`);
-
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
     const title = (matches.length > 0) && (matches[0].route as any).title;
@@ -40,7 +38,7 @@ export function renderWithContext(): RequestHandler {
       if (!route.component) continue;
       if ((route.component as any).fetchData === undefined) continue;
       await (route.component as any).fetchData(store);
-      debug(`Fetching data for route <${match.url}`>..., 'OK');
+      debug(`Fetching data for route <${match.url}>...`, 'OK');
     }
 
     const context: { [key: string]: any } = {};
@@ -67,6 +65,8 @@ export function renderWithContext(): RequestHandler {
       break;
     }
 
+    debug(`Rendering with context <${req.path}>...`, 'OK');
+
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout title={title} body={body} initialState={_.omit(store.getState(), 'i18n')} initialStyles={sheet.getStyleElement()}/>,
     )}`);
@@ -82,11 +82,11 @@ export function renderWithContext(): RequestHandler {
  */
 export function renderWithoutContext(): RequestHandler {
   return async (req, res) => {
-    debug(`Rendering without context <${req.path}>...`, 'OK');
-
     // Find and store all matching client routes based on the request URL.
     const matches = matchRoutes(routes, req.path);
     const title = (matches.length > 0) && (matches[0].route as any).title;
+
+    debug(`Rendering without context <${req.path}>...`, 'OK');
 
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout title={title}/>,
