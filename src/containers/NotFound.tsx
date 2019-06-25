@@ -8,26 +8,20 @@ import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
 interface StateProps {
-  ltxt: I18nState['ltxt'];
+  i18n: I18nState;
 }
 
-interface DispatchProps {
+interface DispatchProps {}
 
-}
-
-interface OwnProps {
-
-}
+interface OwnProps {}
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-export interface State {
-
-}
+export interface State {}
 
 class NotFound extends PureComponent<Props, State> {
   render() {
-    const { ltxt } = this.props;
+    const { i18n } = this.props;
 
     return (
       <Route render={(route: RouteComponentProps<any>) => {
@@ -37,7 +31,7 @@ class NotFound extends PureComponent<Props, State> {
 
         return (
           <StyledRoot>
-            <h1>{ltxt('not-found')}</h1>
+            <h1>{i18n.ltxt('not-found')}</h1>
           </StyledRoot>
         );
       }}/>
@@ -47,7 +41,7 @@ class NotFound extends PureComponent<Props, State> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    ltxt: state.i18n.ltxt,
+    i18n: state.i18n,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 

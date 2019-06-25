@@ -5,26 +5,22 @@ import styled from 'styled-components';
 import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
-import { fetchUsers, User } from '../store/users';
+import { fetchUsers, User, UsersState } from '../store/users';
 
 interface StateProps {
-  ltxt: I18nState['ltxt'];
-  users: ReadonlyArray<User>;
+  i18n: I18nState;
+  users: UsersState;
 }
 
 interface DispatchProps {
   fetchUsers(): void;
 }
 
-interface OwnProps {
-
-}
+interface OwnProps {}
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-export interface State {
-
-}
+export interface State {}
 
 class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {
@@ -36,13 +32,13 @@ class About extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ltxt, users } = this.props;
+    const { i18n, users } = this.props;
 
     return (
       <StyledRoot>
-        <h1>{ltxt('about-title')}</h1>
+        <h1>{i18n.ltxt('about-title')}</h1>
         {
-          users.map((user: User) => {
+          users.items.map((user: User) => {
             return (
               <div key={user.id} >
                 <span>{user.name}</span>
@@ -57,8 +53,8 @@ class About extends PureComponent<Props, State> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    ltxt: state.i18n.ltxt,
-    users: state.users.items,
+    i18n: state.i18n,
+    users: state.users,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,

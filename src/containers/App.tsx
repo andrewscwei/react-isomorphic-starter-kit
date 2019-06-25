@@ -2,7 +2,7 @@
  * @file Client app root.
  */
 
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -32,9 +32,7 @@ interface OwnProps {
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-export interface State {
-
-}
+export interface State {}
 
 class App extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -74,7 +72,7 @@ class App extends PureComponent<Props, State> {
 
     return (
       <ThemeProvider theme={theme}>
-        <StyledRoot>
+        <Fragment>
           <GlobalStyles/>
           <Header/>
           <StyledBody>
@@ -83,7 +81,7 @@ class App extends PureComponent<Props, State> {
             </CSSTransition>
           </StyledBody>
           <Footer/>
-        </StyledRoot>
+        </Fragment>
       </ThemeProvider>
     );
   }
@@ -102,12 +100,6 @@ export default (component => {
 
 const GlobalStyles = createGlobalStyle<any>`
   ${globalStyles}
-`;
-
-const StyledRoot = styled.div`
-  height: 100%;
-  position: absolute;
-  width: 100%;
 `;
 
 const StyledBody = styled(TransitionGroup)<any>`

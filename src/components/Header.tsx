@@ -8,8 +8,7 @@ import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
 interface StateProps {
-  ltxt: I18nState['ltxt'];
-  locale: string;
+  i18n: I18nState;
 }
 
 interface DispatchProps {}
@@ -20,17 +19,16 @@ interface OwnProps {
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const Header: SFC<Props> = ({ locale, ltxt }) => (
+const Header: SFC<Props> = ({ i18n }) => (
   <StyledRoot>
-    <Link to={getLocalizedPath('/', locale)}>{ltxt('home')}</Link>
-    <Link to={getLocalizedPath('/about', locale)}>{ltxt('about')}</Link>
+    <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>
+    <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('about')}</Link>
   </StyledRoot>
 );
 
 export default connect(
   (state: AppState): StateProps => ({
-    ltxt: state.i18n.ltxt,
-    locale: state.i18n.locale,
+    i18n: state.i18n,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 

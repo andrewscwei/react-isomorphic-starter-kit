@@ -8,33 +8,27 @@ import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
 interface StateProps {
-  ltxt: I18nState['ltxt'];
+  i18n: I18nState;
 }
 
-interface DispatchProps {
+interface DispatchProps {}
 
-}
-
-interface OwnProps {
-
-}
+interface OwnProps {}
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-export interface State {
-
-}
+export interface State {}
 
 class Home extends PureComponent<Props, State> {
   render() {
-    const { ltxt } = this.props;
+    const { i18n } = this.props;
 
     return (
       <StyledRoot>
         <StyledReactLogo/>
-        <h1>{ltxt('hello')}</h1>
+        <h1>{i18n.ltxt('hello')}</h1>
         <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
-        <p>{ltxt('description')}</p>
+        <p>{i18n.ltxt('description')}</p>
       </StyledRoot>
     );
   }
@@ -42,7 +36,7 @@ class Home extends PureComponent<Props, State> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    ltxt: state.i18n.ltxt,
+    i18n: state.i18n,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 

@@ -8,7 +8,7 @@ import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
 interface StateProps {
-  ltxt: I18nState['ltxt'];
+  i18n: I18nState;
 }
 
 interface DispatchProps {}
@@ -19,19 +19,19 @@ interface OwnProps {
 
 export interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const Footer: SFC<Props> = ({ ltxt }) => (
+const Footer: SFC<Props> = ({ i18n }) => (
   <StyledRoot>
     <nav>
       <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
     </nav>
-    <Link to={getLocalizedPath('/', 'en')}>{ltxt('en')}</Link>
-    <Link to={getLocalizedPath('/', 'ja')}>{ltxt('jp')}</Link>
+    <Link to={getLocalizedPath('/', 'en')}>{i18n.ltxt('en')}</Link>
+    <Link to={getLocalizedPath('/', 'ja')}>{i18n.ltxt('jp')}</Link>
   </StyledRoot>
 );
 
 export default connect(
   (state: AppState): StateProps => ({
-    ltxt: state.i18n.ltxt,
+    i18n: state.i18n,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
