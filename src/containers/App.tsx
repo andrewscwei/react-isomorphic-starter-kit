@@ -3,6 +3,7 @@
  */
 
 import React, { Fragment, PureComponent } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -87,10 +88,7 @@ class App extends PureComponent<Props, State> {
   }
 }
 
-export default (component => {
-  if (process.env.NODE_ENV === 'development') return require('react-hot-loader/root').hot(component);
-  return component;
-})(connect((state: AppState): StateProps => ({
+export default hot(connect((state: AppState): StateProps => ({
     locale: state.i18n.locale,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
