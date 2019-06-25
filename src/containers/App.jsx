@@ -3,7 +3,8 @@
  */
 
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -20,6 +21,7 @@ const debug = require('debug')('app');
 
 class App extends PureComponent {
   static propTypes = {
+    i18n: PropTypes.object.isRequired,
     changeLocale: PropTypes.func.isRequired,
     route: PropTypes.object.isRequired,
   };
@@ -32,16 +34,16 @@ class App extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if ((prevProps.locale !== this.props.locale) || (prevProps.route.location.pathname !== this.props.route.location.pathname)) {
+    if ((prevProps.i18n.locale !== this.props.i18n.locale) || (prevProps.route.location.pathname !== this.props.route.location.pathname)) {
       this.syncLocaleWithUrl();
     }
   }
 
   syncLocaleWithUrl = () => {
-    const { route, changeLocale, locale } = this.props;
+    const { route, changeLocale, i18n } = this.props;
     const newLocale = getLocaleFromPath(route.location.pathname);
 
-    if (newLocale === locale) {
+    if (newLocale === i18n.locale) {
       debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
       return;
     }
@@ -61,7 +63,7 @@ class App extends PureComponent {
 
     return (
       <ThemeProvider theme={theme}>
-        <StyledRoot>
+        <Fragment>
           <GlobalStyles/>
           <Header/>
           <StyledBody>
@@ -70,18 +72,15 @@ class App extends PureComponent {
             </CSSTransition>
           </StyledBody>
           <Footer/>
-        </StyledRoot>
+        </Fragment>
       </ThemeProvider>
     );
   }
 }
 
-export default (component => {
-  if (process.env.NODE_ENV === 'development') return require('react-hot-loader/root').hot(component);
-  return component;
-})(connect(
+export default hot(connect(
   (state) => ({
-    locale: state.i18n.locale,
+    i18n: state.i18n,
   }),
   (dispatch) => bindActionCreators({
     changeLocale,
@@ -90,12 +89,6 @@ export default (component => {
 
 const GlobalStyles = createGlobalStyle`
   ${globalStyles}
-`;
-
-const StyledRoot = styled.div`
-  height: 100%;
-  position: absolute;
-  width: 100%;
 `;
 
 const StyledBody = styled(TransitionGroup)`

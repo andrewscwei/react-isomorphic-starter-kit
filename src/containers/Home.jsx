@@ -8,7 +8,7 @@ import withPageTitle from '../decorators/withPageTitle';
 
 @connect(
   (state) => ({
-    ltxt: state.i18n.ltxt,
+    i18n: state.i18n,
   }),
   (dispatch) => bindActionCreators({
 
@@ -17,18 +17,18 @@ import withPageTitle from '../decorators/withPageTitle';
 @withPageTitle('home')
 export default class Home extends PureComponent {
   static propTypes = {
-    ltxt: PropTypes.func.isRequired,
+    i18n: PropTypes.object.isRequired,
   };
 
   render() {
-    const { ltxt } = this.props;
+    const { i18n } = this.props;
 
     return (
       <StyledRoot>
         <StyledReactLogo/>
-        <h1>{ltxt('hello')}</h1>
+        <h1>{i18n.ltxt('hello')}</h1>
         <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
-        <p>{ltxt('description')}</p>
+        <p>{i18n.ltxt('description')}</p>
       </StyledRoot>
     );
   }

@@ -8,7 +8,7 @@ import withPageTitle from '../decorators/withPageTitle';
 
 @connect(
   (state) => ({
-    ltxt: state.i18n.ltxt,
+    i18n: state.i18n,
   }),
   (dispatch) => bindActionCreators({
 
@@ -17,11 +17,11 @@ import withPageTitle from '../decorators/withPageTitle';
 @withPageTitle('not-found-title')
 export default class NotFound extends PureComponent {
   static propTypes = {
-    ltxt: PropTypes.func.isRequired,
+    i18n: PropTypes.object.isRequired,
   };
 
   render() {
-    const { ltxt } = this.props;
+    const { i18n } = this.props;
 
     return (
       <Route render={(route) => {
@@ -31,7 +31,7 @@ export default class NotFound extends PureComponent {
 
         return (
           <StyledRoot>
-            <h1>{ltxt('not-found')}</h1>
+            <h1>{i18n.ltxt('not-found')}</h1>
           </StyledRoot>
         );
       }}/>

@@ -8,12 +8,12 @@ export default function withPageTitle(locKey) {
   return (WrappedComponent) => {
     class WithPageTitle extends PureComponent {
       static propTypes = {
-        ltxt: PropTypes.func.isRequired,
+        i18n: PropTypes.object.isRequired,
       }
 
       constructor(props) {
         super(props);
-        if (typeof document !== 'undefined') document.title = this.props.ltxt(locKey);
+        if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt(locKey);
       }
 
       render() {
@@ -24,7 +24,7 @@ export default function withPageTitle(locKey) {
     }
 
     return connect(state => ({
-      ltxt: state.i18n.ltxt,
+      i18n: state.i18n,
     }), dispatch => bindActionCreators({
 
     }, dispatch),
