@@ -28,18 +28,11 @@ class App extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.syncLocaleWithUrl();
 
     debug('Initializing...', 'OK');
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if ((prevProps.i18n.locale !== this.props.i18n.locale) || (prevProps.route.location.pathname !== this.props.route.location.pathname)) {
-      this.syncLocaleWithUrl();
-    }
-  }
-
-  syncLocaleWithUrl = () => {
+  syncLocaleWithUrl() {
     const { route, changeLocale, i18n } = this.props;
     const newLocale = getLocaleFromPath(route.location.pathname);
 
@@ -51,11 +44,12 @@ class App extends PureComponent {
     changeLocale(newLocale);
   }
 
-  generateRoutes = () => {
-    return routes.map((route, index) => {
-      const { exact, path, component } = route;
-      return <Route exact={exact} path={path} component={component} key={index}/>;
-    });
+  generateRoutes() {
+    this.syncLocaleWithUrl();
+
+    return routes.map((route, index) => (
+      <Route exact={route.exact} path={route.path} component={route.component} key={`route-${index}`}/>
+    ));
   }
 
   render() {

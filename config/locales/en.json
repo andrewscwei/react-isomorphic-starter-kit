@@ -3,8 +3,8 @@
   "description": "This is an experimental React universal/isomorphic app starter kit.",
   "home": "Home",
   "about": "About",
-  "not-found": "This page does not exist",
-  "not-found-title": "404",
+  "not-found": "404",
+  "not-found-title": "This page does not exist",
   "about-title": "Just some random names fetched from the Internet",
   "en": "EN",
   "jp": "日"
