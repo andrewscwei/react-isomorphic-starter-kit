@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
-import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
@@ -11,17 +10,27 @@ interface StateProps {
   i18n: I18nState;
 }
 
-interface DispatchProps {}
+interface DispatchProps {
 
-interface OwnProps {}
+}
 
-export interface Props extends StateProps, DispatchProps, OwnProps {}
+interface OwnProps extends RouteComponentProps<{}> {
 
-export interface State {}
+}
+
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+interface State {
+
+}
 
 class NotFound extends PureComponent<Props, State> {
+  componentDidMount() {
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('not-found');
+  }
+
   render() {
-    const { i18n } = this.props;
+    const { ltxt } = this.props.i18n;
 
     return (
       <Route render={(route: RouteComponentProps<any>) => {
@@ -31,7 +40,7 @@ class NotFound extends PureComponent<Props, State> {
 
         return (
           <StyledRoot>
-            <h1>{i18n.ltxt('not-found')}</h1>
+            <h1>{ltxt('not-found-title')}</h1>
           </StyledRoot>
         );
       }}/>
@@ -46,7 +55,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
   }, dispatch),
-)(withPageTitle('not-found-title')(NotFound));
+)(NotFound);
 
 const StyledRoot = styled.div`
   align-items: center;

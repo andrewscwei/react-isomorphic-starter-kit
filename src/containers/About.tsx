@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { Action, bindActionCreators, Dispatch, Store } from 'redux';
 import styled from 'styled-components';
-import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 import { fetchUsers, User, UsersState } from '../store/users';
@@ -16,11 +16,15 @@ interface DispatchProps {
   fetchUsers(): void;
 }
 
-interface OwnProps {}
+interface OwnProps extends RouteComponentProps<{}> {
 
-export interface Props extends StateProps, DispatchProps, OwnProps {}
+}
 
-export interface State {}
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+interface State {
+
+}
 
 class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {
@@ -28,15 +32,17 @@ class About extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('about');
     this.props.fetchUsers();
   }
 
   render() {
-    const { i18n, users } = this.props;
+    const { users } = this.props;
+    const { ltxt } = this.props.i18n;
 
     return (
       <StyledRoot>
-        <h1>{i18n.ltxt('about-title')}</h1>
+        <h1>{ltxt('about-title')}</h1>
         {
           users.items.map((user: User) => {
             return (
@@ -59,7 +65,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,
   }, dispatch),
-)(withPageTitle('about')(About));
+)(About);
 
 const StyledRoot = styled.div`
   align-items: center;

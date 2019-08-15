@@ -13,47 +13,40 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import routes, { getLocaleFromPath } from '../routes/client';
 import { AppState } from '../store';
-import { changeLocale } from '../store/i18n';
+import { changeLocale, I18nState } from '../store/i18n';
 import globalStyles from '../styles/global';
 import theme from '../styles/theme';
 
 const debug = require('debug')('app');
 
 interface StateProps {
-  locale: string;
+  i18n: I18nState;
 }
 
 interface DispatchProps {
-  changeLocale(locale: string): void;
+  changeLocale: typeof changeLocale;
 }
 
 interface OwnProps {
-  route: RouteComponentProps<any>;
+  route: RouteComponentProps<{}>;
 }
 
-export interface Props extends StateProps, DispatchProps, OwnProps {}
+interface Props extends StateProps, DispatchProps, OwnProps {}
 
-export interface State {}
+interface State {}
 
 class App extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.syncLocaleWithUrl();
 
     debug('Initializing...', 'OK');
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if ((prevProps.locale !== this.props.locale) || (prevProps.route.location.pathname !== this.props.route.location.pathname)) {
-      this.syncLocaleWithUrl();
-    }
-  }
-
-  syncLocaleWithUrl = () => {
-    const { route, changeLocale, locale } = this.props;
+  syncLocaleWithUrl() {
+    const { route, changeLocale, i18n } = this.props;
     const newLocale = getLocaleFromPath(route.location.pathname);
 
-    if (newLocale === locale) {
+    if (newLocale === i18n.locale) {
       debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
       return;
     }
@@ -61,11 +54,12 @@ class App extends PureComponent<Props, State> {
     changeLocale(newLocale);
   }
 
-  generateRoutes = () => {
-    return routes.map((route, index) => {
-      const { exact, path, component } = route;
-      return <Route exact={exact} path={path} component={component} key={index}/>;
-    });
+  generateRoutes() {
+    this.syncLocaleWithUrl();
+
+    return routes.map((route, index) => (
+      <Route exact={route.exact} path={route.path} component={route.component} key={`route-${index}`}/>
+    ));
   }
 
   render() {
@@ -89,7 +83,7 @@ class App extends PureComponent<Props, State> {
 }
 
 export default hot(connect((state: AppState): StateProps => ({
-    locale: state.i18n.locale,
+    i18n: state.i18n,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     changeLocale,

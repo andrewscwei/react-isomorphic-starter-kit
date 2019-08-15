@@ -1,10 +1,9 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg';
-import React, { ReactNode, SFC } from 'react';
+import React, { PropsWithChildren, SFC } from 'react';
 import styled from 'styled-components';
 
-export interface Props {
+interface Props extends PropsWithChildren<{}> {
   className?: string;
-  children?: ReactNode;
 }
 
 const ReactLogo: SFC<Props> = ({ className }) => (

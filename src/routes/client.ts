@@ -56,6 +56,6 @@ export default [{
   component: About,
 }, {
   path: '*',
-  title: getPolyglotByLocale('en').t('not-found-title'),
+  title: getPolyglotByLocale('en').t('not-found'),
   component: NotFound,
 }];

@@ -1,9 +1,9 @@
 import React, { ComponentType, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
 import ReactLogo from '../components/ReactLogo';
-import withPageTitle from '../decorators/withPageTitle';
 import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
 
@@ -11,24 +11,34 @@ interface StateProps {
   i18n: I18nState;
 }
 
-interface DispatchProps {}
+interface DispatchProps {
 
-interface OwnProps {}
+}
 
-export interface Props extends StateProps, DispatchProps, OwnProps {}
+interface OwnProps extends RouteComponentProps<{}> {
 
-export interface State {}
+}
+
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+interface State {
+
+}
 
 class Home extends PureComponent<Props, State> {
+  componentDidMount() {
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('home');
+  }
+
   render() {
-    const { i18n } = this.props;
+    const { ltxt } = this.props.i18n;
 
     return (
       <StyledRoot>
         <StyledReactLogo/>
-        <h1>{i18n.ltxt('hello')}</h1>
+        <h1>{ltxt('hello')}</h1>
         <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
-        <p>{i18n.ltxt('description')}</p>
+        <p>{ltxt('description')}</p>
       </StyledRoot>
     );
   }
@@ -41,7 +51,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
   }, dispatch),
-)(withPageTitle('home')(Home));
+)(Home);
 
 const StyledRoot = styled.div`
   align-items: center;
