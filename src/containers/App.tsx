@@ -17,7 +17,7 @@ import { changeLocale, I18nState } from '../store/i18n';
 import globalStyles from '../styles/global';
 import theme from '../styles/theme';
 
-const debug = require('debug')('app');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 
 interface StateProps {
   i18n: I18nState;
@@ -71,7 +71,7 @@ class App extends PureComponent<Props, State> {
           <GlobalStyles/>
           <Header/>
           <StyledBody>
-            <CSSTransition key={route.location.key} timeout={300} classNames='fade'>
+            <CSSTransition key={route.location.key} timeout={300} classNames='route-transition'>
               <Switch location={route.location}>{this.generateRoutes()}</Switch>
             </CSSTransition>
           </StyledBody>
@@ -99,20 +99,20 @@ const StyledBody = styled(TransitionGroup)<any>`
   position: absolute;
   width: 100%;
 
-  .fade-enter {
+  .route-transition-enter {
     opacity: 0;
   }
 
-  .fade-enter.fade-enter-active {
+  .route-transition-enter.route-transition-enter-active {
     opacity: 1;
     transition: all .3s;
   }
 
-  .fade-exit {
+  .route-transition-exit {
     opacity: 1;
   }
 
-  .fade-exit.fade-exit-active {
+  .route-transition-exit.route-transition-exit-active {
     opacity: 0;
     transition: all .3s;
   }

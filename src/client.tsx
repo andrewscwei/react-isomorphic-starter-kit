@@ -2,7 +2,6 @@
  * @file Client entry file.
  */
 
-import 'isomorphic-fetch';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -15,11 +14,11 @@ if (process.env.NODE_ENV === 'development') {
   window.localStorage.debug = 'app*,worker*';
 }
 
-const debug = require('debug')('app');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 const worker = new Worker();
 
 worker.postMessage({ message: 'Hello, world!' });
-worker.addEventListener('message', event => {
+worker.addEventListener('message', (event) => {
   debug(event.data.message);
 });
 

@@ -20,7 +20,7 @@ export function getLocaleFromPath(path: string): string {
 }
 
 export function getLocalizedPath(path: string, locale: string = __I18N_CONFIG__.defaultLocale): string {
-  const t = path.split('/').filter(v => v);
+  const t = path.split('/').filter((v) => v);
 
   if (t.length > 0 && __I18N_CONFIG__.locales.indexOf(t[0]) >= 0) {
     t.shift();

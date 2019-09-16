@@ -105,7 +105,7 @@ http
   });
 
 // Handle unhandled rejections.
-process.on('unhandledRejection', reason => {
+process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Promise rejection:', reason); // tslint:disable-line no-console
   process.exit(1);
 });

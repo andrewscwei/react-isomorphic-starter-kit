@@ -4,7 +4,7 @@ import { Document } from 'prismic-javascript/d.ts/documents';
 import ResolvedApi from 'prismic-javascript/d.ts/ResolvedApi';
 import { getLocalizedPath } from '../routes';
 
-const debug = require('debug')('app:prismic');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app:prismic') : () => {};
 
 export function linkResolver(doc: Document): string {
   const locale = doc.lang ? localeResolver(doc.lang, true) : 'en';

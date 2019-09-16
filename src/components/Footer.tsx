@@ -46,7 +46,7 @@ const StyledRoot = styled.footer`
   bottom: 0;
   box-sizing: border-box;
   display: flex;
-  font-family: ${props => props.theme.font};
+  font-family: ${(props) => props.theme.font};
   height: 50px;
   justify-content: flex-start;
   left: 0;
@@ -73,10 +73,10 @@ const StyledRoot = styled.footer`
 
   > a {
     align-items: center;
-    background: ${props => props.theme.buttonColor};
+    background: ${(props) => props.theme.buttonColor};
     border: none;
     box-sizing: border-box;
-    color: ${props => props.theme.buttonTextColor};
+    color: ${(props) => props.theme.buttonTextColor};
     cursor: pointer;
     display: flex;
     font-size: .8em;
@@ -89,8 +89,8 @@ const StyledRoot = styled.footer`
     width: 22px;
 
     :hover {
-      background: ${props => props.theme.buttonHoverColor};
-      color: ${props => props.theme.buttonHoverTextColor};
+      background: ${(props) => props.theme.buttonHoverColor};
+      color: ${(props) => props.theme.buttonHoverTextColor};
     }
 
     :not(:last-child) {

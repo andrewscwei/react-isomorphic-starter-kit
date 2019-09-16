@@ -100,6 +100,8 @@ const Layout: SFC<Props> = ({ body, title, url, keywords, description, initialSt
         <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
       }
       <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
+      <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
+      <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
       <script type='application/javascript' src={resolveAssetPath('/bundle.js')}></script>
     </body>
   </html>

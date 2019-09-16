@@ -3,7 +3,7 @@
   "rules": {
     "adjacent-overload-signatures": true,
     "array-type": [true, "generic"],
-    "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-parens": [true],
     "arrow-return-shorthand": true,
     "class-name": true,
     "curly": [true, "ignore-same-line"],

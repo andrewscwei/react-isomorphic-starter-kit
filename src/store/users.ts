@@ -23,7 +23,7 @@ const initialState: UsersState = {
 export function fetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
     const res = await fetch('//jsonplaceholder.typicode.com/users')
-      .catch(err => {
+      .catch((err) => {
         if (err.name !== 'AbortError') throw err;
       });
 

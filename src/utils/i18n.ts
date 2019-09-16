@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-const debug = require('debug')('app:i18n');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app:i18n') : () => {};
 const locales = __I18N_CONFIG__.locales;
 const dict = __I18N_CONFIG__.dict;
 const polyglots: { [locale: string]: Polyglot } = {};
@@ -9,7 +9,7 @@ const polyglots: { [locale: string]: Polyglot } = {};
 // to Polyglot so that they can be watched by Webpack.
 if (__APP_ENV__ === 'client' && process.env.NODE_ENV === 'development') {
   const localeReq = require.context('../../config/locales', true, /^.*\.json$/);
-  localeReq.keys().forEach(path => {
+  localeReq.keys().forEach((path) => {
     const locale = path.replace('./', '').replace('.json', '');
     if (!~locales.indexOf(locale)) { return; }
     dict[locale] = localeReq(path) as TranslationData;

@@ -49,9 +49,9 @@ const StyledRoot = styled.header`
   z-index: 10;
 
   > a {
-    color: ${props => props.theme.linkColor};
+    color: ${(props) => props.theme.linkColor};
     cursor: pointer;
-    font-family: ${props => props.theme.font};
+    font-family: ${(props) => props.theme.font};
     font-size: .8em;
     font-weight: 400;
     letter-spacing: 1px;
