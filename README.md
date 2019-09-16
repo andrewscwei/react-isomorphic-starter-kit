@@ -1,4 +1,4 @@
-# react-isomorphic-starter-kit [![CircleCI](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit/tree/javascript.svg?style=svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit/tree/javascript)
+# React Isomorphic Starter Kit [![CircleCI](https://img.shields.io/circleci/build/github/andrewscwei/react-isomorphic-starter-kit.svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit)
 
 This is an **experimental** starter kit for a React universal/isomorphic app.
 

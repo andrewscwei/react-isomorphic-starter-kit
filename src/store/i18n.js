@@ -1,6 +1,6 @@
 import { getPolyglotByLocale } from '../utils/i18n';
 
-const debug = require('debug')('app:i18n');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app:i18n') : () => {};
 
 const I18nActionType = {
   LOCALE_CHANGED: 'locale-changed',

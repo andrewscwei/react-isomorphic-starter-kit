@@ -23,6 +23,7 @@ const config = {
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
       path.join(inputDir, 'client.jsx'),
     ],
+    polyfills: path.join(inputDir, 'polyfills.jsx'),
   },
   mode: isProduction ? 'production' : 'development',
   module: {
@@ -68,6 +69,18 @@ const config = {
         },
       }],
     }],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        common: {
+          test: /node_modules/,
+          chunks: 'all',
+          name: 'common',
+          enforce: true,
+        },
+      },
+    },
   },
   output: {
     path: outputDir,

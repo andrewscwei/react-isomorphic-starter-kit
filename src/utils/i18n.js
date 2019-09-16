@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-const debug = require('debug')('app:i18n');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('app:i18n') : () => {};
 const locales = __I18N_CONFIG__.locales;
 const dict = __I18N_CONFIG__.dict;
 const polyglots = {};

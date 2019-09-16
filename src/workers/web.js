@@ -2,7 +2,7 @@
  * @file Default web worker.
  */
 
-const debug = require('debug')('worker:web');
+const debug = process.env.NODE_ENV === 'development' ? require('debug')('worker:web') : () => {};
 const ctx = self;
 
 debug.enabled = process.env.NODE_ENV === 'development';
