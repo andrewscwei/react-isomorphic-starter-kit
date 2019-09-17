@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
-import { getLocalizedPath } from '../routes/client';
+import { getLocalizedPath } from '../utils/i18n';
 
 const Footer = ({ i18n }) => (
   <StyledRoot>

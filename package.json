@@ -1,6 +1,6 @@
 {
   "name": "react-isomorphic-starter-kit",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Experimental React universal/isomorphic app starter kit",
   "private": true,
   "license": "MIT",

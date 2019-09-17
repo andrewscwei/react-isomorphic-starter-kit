@@ -12,10 +12,11 @@ import { bindActionCreators } from 'redux';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import routes, { getLocaleFromPath } from '../routes/client';
+import routes from '../routes/client';
 import { changeLocale } from '../store/i18n';
 import globalStyles from '../styles/global';
 import theme from '../styles/theme';
+import { getLocaleFromPath } from '../utils/i18n';
 
 const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 
