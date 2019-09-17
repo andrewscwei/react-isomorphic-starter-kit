@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
 import styled from 'styled-components';
-import { getLocalizedPath } from '../routes/client';
 import { AppState } from '../store';
 import { I18nState } from '../store/i18n';
+import { getLocalizedPath } from '../utils/i18n';
 
 interface StateProps {
   i18n: I18nState;
