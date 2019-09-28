@@ -5,7 +5,7 @@
 
 import path from 'path';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import serialize from 'serialize-javascript';
 
 /**
@@ -79,7 +79,10 @@ const Layout = ({ body, title, url, keywords, description, initialState, initial
       <meta name='msapplication-navbutton-color' content='#000000'/>
 
       { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.ga &&
-        <script dangerouslySetInnerHTML={{ __html: `(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','${__BUILD_CONFIG__.ga}','auto');ga('send','pageview');` }}/>
+        <Fragment>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${__BUILD_CONFIG__.ga}`}/>
+          <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${__BUILD_CONFIG__.ga}');` }}/>
+        </Fragment>
       }
 
       { initialStyles }
