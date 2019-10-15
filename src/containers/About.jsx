@@ -57,7 +57,7 @@ const StyledRoot = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  font-family: ${props => props.theme.font};
+  font-family: ${props => props.theme.fonts.body};
   height: 100%;
   justify-content: center;
   padding: 10% 5%;
@@ -65,7 +65,7 @@ const StyledRoot = styled.div`
   width: 100%;
 
   h1 {
-    color: ${props => props.theme.titleColor};
+    color: ${props => props.theme.colors.title};
     font-size: 2.4em;
     font-weight: 700;
     letter-spacing: 3px;
@@ -76,7 +76,7 @@ const StyledRoot = styled.div`
   }
 
   span {
-    color: ${props => props.theme.textColor};
+    color: ${props => props.theme.colors.text};
     font-weight: 400;
     letter-spacing: .6px;
     line-height: 1.4em;

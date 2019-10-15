@@ -3,8 +3,8 @@
   "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
   "home": "ホーム",
   "about": "アバウト",
-  "not-found": "ページが表示できません",
-  "not-found-title": "404",
+  "not-found": "404",
+  "not-found-title": "ページが表示できません",
   "about-title": "ただインターネットから取り出されたランダムな名前",
   "en": "EN",
   "jp": "日"
