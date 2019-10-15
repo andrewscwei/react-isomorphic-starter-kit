@@ -5,7 +5,7 @@ export interface User {
 }
 
 export enum UsersActionType {
-  USERS_LOADED = 'users-loaded',
+  LOADED = 'users/LOADED',
 }
 
 export interface UsersAction extends Action<UsersActionType> {
@@ -31,7 +31,7 @@ export function fetchUsers() {
 
     const items = await res.json();
     const action: UsersAction = {
-      type: UsersActionType.USERS_LOADED,
+      type: UsersActionType.LOADED,
       payload: {
         items,
       },
@@ -43,7 +43,7 @@ export function fetchUsers() {
 
 export default function reducer(state = initialState, action: UsersAction): UsersState {
   switch (action.type) {
-  case UsersActionType.USERS_LOADED:
+  case UsersActionType.LOADED:
     return {
       ...state,
       ...action.payload,
