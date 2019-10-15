@@ -1,11 +1,14 @@
-export default {
-  backgroundColor: '#0f0e13',
-  buttonColor: '#666',
-  buttonHoverColor: '#fff',
-  buttonHoverTextColor: '#111',
-  buttonTextColor: '#fff',
-  font: 'Roboto, sans-serif',
-  linkColor: '#fff',
-  textColor: '#666',
-  titleColor: '#fff',
+export const colors = {
+  background: '#0f0e13',
+  button: '#666',
+  buttonHover: '#fff',
+  buttonHoverText: '#111',
+  buttonText: '#fff',
+  link: '#fff',
+  text: '#666',
+  title: '#fff',
+};
+
+export const fonts = {
+  body: 'Roboto, sans-serif',
 };

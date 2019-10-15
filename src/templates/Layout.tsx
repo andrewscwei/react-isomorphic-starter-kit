@@ -6,6 +6,7 @@
 import path from 'path';
 import React, { Fragment, ReactElement, SFC } from 'react';
 import serialize from 'serialize-javascript';
+import { css } from 'styled-components';
 
 interface Props {
   body?: string;
@@ -86,6 +87,31 @@ const Layout: SFC<Props> = ({ body, title, url, keywords, description, initialSt
       <meta name='msapplication-TileColor' content='#000000'/>
       <meta name='msapplication-config' content={resolveAssetPath('/browserconfig.xml')}/>
       <meta name='msapplication-navbutton-color' content='#000000'/>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @font-face {
+            font-family: 'Roboto';
+            src: url('${resolveAssetPath('/fonts/Roboto-Bold.ttf')}') format('truetype');
+            font-style: normal;
+            font-weight: 700;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('${resolveAssetPath('/fonts/Roboto-Regular.ttf')}') format('truetype');
+            font-style: normal;
+            font-weight: 400;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('${resolveAssetPath('/fonts/Roboto-Light.ttf')}') format('truetype');
+            font-style: normal;
+            font-weight: 300;
+          }
+        `,
+      }}/>
 
       { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.ga &&
         <Fragment>
