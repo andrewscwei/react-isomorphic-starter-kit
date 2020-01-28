@@ -14,10 +14,10 @@ export default {
   buildNumber: process.env.BUILD_NUMBER || 0,
 
   // Google Analytics ID (i.e. UA-XXXXXXXX-1)
-  ga: 'asdf',
+  ga: undefined,
 
   // Google Tag Manager ID (i.e. GTM-XXXXXXX)
-  gtag: 'asdf',
+  gtag: undefined,
 
   // HTML metadata.
   meta: {
