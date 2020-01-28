@@ -16,6 +16,9 @@ export default {
   // Google Analytics ID (i.e. UA-XXXXXXXX-1)
   ga: undefined,
 
+  // Google Tag Manager ID (i.e. GTM-XXXXXXX)
+  gtag: undefined,
+
   // HTML metadata.
   meta: {
     // Title of the app.

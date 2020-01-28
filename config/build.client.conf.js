@@ -41,6 +41,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
@@ -55,6 +56,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
@@ -64,6 +66,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
@@ -93,7 +96,7 @@ const config = {
     hints: isProduction ? 'warning' : false,
   },
   plugins: [
-    new CopyPlugin([{ from: path.join(inputDir, 'static'), ignore: ['.*'], to: outputDir }]),
+    new CopyPlugin([{ from: path.join(inputDir, 'static'), to: outputDir }]),
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('client'),

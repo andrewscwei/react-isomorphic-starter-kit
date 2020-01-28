@@ -37,6 +37,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           emitFile: false,
           name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
@@ -52,6 +53,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           emitFile: false,
           name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
@@ -62,6 +64,7 @@ const config = {
       use: [{
         loader: 'url-loader',
         options: {
+          esModule: false,
           limit: 8192,
           emitFile: false,
           name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
