@@ -1,4 +1,4 @@
-# React Isomorphic Starter Kit [![CircleCI](https://img.shields.io/circleci/build/github/andrewscwei/react-isomorphic-starter-kit.svg)](https://circleci.com/gh/andrewscwei/react-isomorphic-starter-kit)
+# React Isomorphic Starter Kit [![CI](https://github.com/andrewscwei/react-isomorphic-starter-kit/workflows/CI/badge.svg)](https://github.com/andrewscwei/react-isomorphic-starter-kit/actions?query=workflow%3ACI) [![CD](https://github.com/andrewscwei/react-isomorphic-starter-kit/workflows/CD/badge.svg)](https://github.com/andrewscwei/react-isomorphic-starter-kit/actions?query=workflow%3ACD)
 
 This is an **experimental** starter kit for a React universal/isomorphic app.
 
@@ -15,7 +15,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 9. [nodemon](https://github.com/remy/nodemon)
 10. [Docker](https://docker.com) config
 11. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
-12. [CircleCI](https://circleci.com) setup to deploy to [Heroku](https://heroku.com) container registry
+12. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage
 

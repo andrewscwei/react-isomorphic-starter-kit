@@ -9,14 +9,14 @@ const initialState = {
 
 export function fetchUsers() {
   return async dispatch => {
-    const res = await fetch('//jsonplaceholder.typicode.com/users')
+    const res = await fetch('https://reqres.in/api/users')
       .catch(err => {
         if (err.name !== 'AbortError') throw err;
       });
 
     if (!res) return;
 
-    const items = await res.json();
+    const { data: items } = await res.json();
     const action = {
       type: UsersActionType.LOADED,
       payload: {
