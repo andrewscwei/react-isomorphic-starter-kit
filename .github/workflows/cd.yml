@@ -1,0 +1,87 @@
+name: CD
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: node:13.12.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-modules-
+      - name: Install Node modules
+        run: npm install
+      - name: Build
+        run: BUILD_NUMBER=$GITHUB_SHA npm run build
+      - name: Pack
+        run: .github/workflows/pack.sh
+      - name: Persist package
+        uses: actions/upload-artifact@v1
+        with:
+          name: package
+          path: package/
+      - name: Persist build dir
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build/
+  test:
+    name: Test
+    needs: [build]
+    runs-on: ubuntu-latest
+    container: node:13.12.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-modules-
+      - name: Install NPM dependencies
+        run: npm install
+      - name: Restore build dir
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+      - name: Test
+        run: npm test
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    container: node:13.12.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore build dir
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+      # - name: Deploy to NPM
+      #   run: .github/workflows/deploy_to_npm.sh
+      #   env:
+      #     NPM_AUTH: ${{ secrets.NPM_AUTH }}
+      # - name: Deploy to GitHub pages
+      #   run: .github/workflows/deploy_to_gh_pages.sh
+      # - name: Deploy to Netlify
+      #   run: .github/workflows/deploy_to_netlify.sh
+      #   env:
+      #     NETLIFY_KEY: ${{ secrets.NETLIFY_KEY }}
+      # - name: Deploy to Heroku
+      #   run: .github/workflows/deploy_to_heroku.sh
+      #   env:
+      #     HEROKU_USER: ${{ secrets.HEROKU_USER }}
+      #     HEROKU_KEY: ${{ secrets.HEROKU_KEY }}
