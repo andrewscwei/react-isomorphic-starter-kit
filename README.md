@@ -26,7 +26,6 @@ $ npm install
 # Run in dev
 $ npm run dev
 
-
 # Run in prod
 $ npm run build && npm start
 ```
