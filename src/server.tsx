@@ -15,8 +15,8 @@ import appConf from './app.conf';
 import { generateSitemap } from './middleware/sitemap';
 import { renderWithContext, renderWithoutContext } from './middleware/ssr';
 import routes from './routes';
+import debug from './utils/debug';
 
-const debug = require('debug')('app');
 const app = express();
 
 app.use(compression());

@@ -16,9 +16,8 @@ import { AppState } from '../store';
 import { changeLocale, I18nState } from '../store/i18n';
 import globalStyles from '../styles/global';
 import * as theme from '../styles/theme';
+import debug from '../utils/debug';
 import { getLocaleFromPath } from '../utils/i18n';
-
-const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 
 interface StateProps {
   i18n: I18nState;
@@ -37,30 +36,22 @@ interface Props extends StateProps, DispatchProps, OwnProps {}
 interface State {}
 
 class App extends PureComponent<Props, State> {
+  unlistenHistory?: () => any = undefined;
+
   constructor(props: Props) {
     super(props);
+
+    this.syncLocaleWithUrl(this.props.route.location.pathname);
 
     debug('Initializing...', 'OK');
   }
 
-  syncLocaleWithUrl() {
-    const { route, changeLocale, i18n } = this.props;
-    const newLocale = getLocaleFromPath(route.location.pathname);
-
-    if (newLocale === i18n.locale) {
-      debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
-      return;
-    }
-
-    changeLocale(newLocale);
+  componentDidMount() {
+    this.unlistenHistory = this.props.route.history.listen((location) => this.syncLocaleWithUrl(location.pathname));
   }
 
-  generateRoutes() {
-    this.syncLocaleWithUrl();
-
-    return routes.map((route, index) => (
-      <Route exact={route.exact} path={route.path} component={route.component} key={`route-${index}`}/>
-    ));
+  componentWillUnmount() {
+    this.unlistenHistory?.();
   }
 
   render() {
@@ -80,6 +71,26 @@ class App extends PureComponent<Props, State> {
         </Fragment>
       </ThemeProvider>
     );
+  }
+
+  private syncLocaleWithUrl(url: string) {
+    const { route, changeLocale, i18n } = this.props;
+    const newLocale = getLocaleFromPath(url);
+
+    if (newLocale === i18n.locale) {
+      debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
+      return;
+    }
+
+    debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'OK');
+
+    changeLocale(newLocale);
+  }
+
+  private generateRoutes() {
+    return routes.map((route, index) => (
+      <Route exact={route.exact} path={route.path} key={`route-${index}`} component={route.component}/>
+    ));
   }
 }
 

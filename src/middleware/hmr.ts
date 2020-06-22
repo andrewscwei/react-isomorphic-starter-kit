@@ -10,8 +10,8 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import buildConfig from '../../config/build.client.conf';
+import debug from '../utils/debug';
 
-const debug = require('debug')('app:hmr');
 const compiler = webpack(buildConfig);
 
 /**
