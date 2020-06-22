@@ -9,12 +9,12 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Worker from 'worker-loader!./workers/web';
 import App from './containers/App';
 import store from './store';
+import debug from './utils/debug';
 
 if (process.env.NODE_ENV === 'development') {
   window.localStorage.debug = 'app*,worker*';
 }
 
-const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 const worker = new Worker();
 
 worker.postMessage({ message: 'Hello, world!' });

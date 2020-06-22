@@ -96,7 +96,12 @@ const config = {
     hints: isProduction ? 'warning' : false,
   },
   plugins: [
-    new CopyPlugin([{ from: path.join(inputDir, 'static'), to: outputDir }]),
+    new CopyPlugin({
+      patterns: [{
+        from: path.join(inputDir, 'static'),
+        to: outputDir,
+      }],
+    }),
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __APP_ENV__: JSON.stringify('client'),

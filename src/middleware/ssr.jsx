@@ -15,8 +15,7 @@ import App from '../containers/App';
 import routes from '../routes/client';
 import store from '../store';
 import Layout from '../templates/Layout';
-
-const debug = require('debug')('app:ssr');
+import debug from '../utils/debug';
 
 /**
  * Express middleware for rendering React views to string based on the request

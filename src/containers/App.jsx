@@ -16,9 +16,8 @@ import routes from '../routes/client';
 import { changeLocale } from '../store/i18n';
 import globalStyles from '../styles/global';
 import * as theme from '../styles/theme';
+import debug from '../utils/debug';
 import { getLocaleFromPath } from '../utils/i18n';
-
-const debug = process.env.NODE_ENV === 'development' ? require('debug')('app') : () => {};
 
 class App extends PureComponent {
   static propTypes = {
@@ -27,30 +26,22 @@ class App extends PureComponent {
     route: PropTypes.object.isRequired,
   };
 
+  unlistenHistory = undefined;
+
   constructor(props) {
     super(props);
+
+    this.syncLocaleWithUrl(this.props.route.location.pathname);
 
     debug('Initializing...', 'OK');
   }
 
-  syncLocaleWithUrl() {
-    const { route, changeLocale, i18n } = this.props;
-    const newLocale = getLocaleFromPath(route.location.pathname);
-
-    if (newLocale === i18n.locale) {
-      debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
-      return;
-    }
-
-    changeLocale(newLocale);
+  componentDidMount() {
+    this.unlistenHistory = this.props.route.history.listen((location) => this.syncLocaleWithUrl(location.pathname));
   }
 
-  generateRoutes() {
-    this.syncLocaleWithUrl();
-
-    return routes.map((route, index) => (
-      <Route exact={route.exact} path={route.path} component={route.component} key={`route-${index}`}/>
-    ));
+  componentWillUnmount() {
+    this.unlistenHistory?.();
   }
 
   render() {
@@ -70,6 +61,26 @@ class App extends PureComponent {
         </Fragment>
       </ThemeProvider>
     );
+  }
+
+  syncLocaleWithUrl(url) {
+    const { route, changeLocale, i18n } = this.props;
+    const newLocale = getLocaleFromPath(url);
+
+    if (newLocale === i18n.locale) {
+      debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'SKIPPED');
+      return;
+    }
+
+    debug(`Syncing locale with URL path "${route.location.pathname}"...`, 'OK');
+
+    changeLocale(newLocale);
+  }
+
+  generateRoutes() {
+    return routes.map((route, index) => (
+      <Route exact={route.exact} path={route.path} key={`route-${index}`} component={route.component}/>
+    ));
   }
 }
 
