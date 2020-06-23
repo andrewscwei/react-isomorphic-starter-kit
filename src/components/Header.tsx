@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, SFC } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Action, bindActionCreators, Dispatch } from 'redux';
@@ -15,18 +15,20 @@ interface DispatchProps {
 
 }
 
-interface OwnProps extends PropsWithChildren<{}> {
+type OwnProps = PropsWithChildren<{
 
-}
+}>;
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
-const Header: SFC<Props> = ({ i18n }) => (
-  <StyledRoot>
-    <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>
-    <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('about')}</Link>
-  </StyledRoot>
-);
+function Header({ i18n }: Props): ReactElement {
+  return (
+    <StyledRoot>
+      <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>
+      <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('about')}</Link>
+    </StyledRoot>
+  );
+}
 
 export default connect(
   (state: AppState): StateProps => ({

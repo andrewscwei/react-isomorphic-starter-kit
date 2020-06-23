@@ -15,7 +15,7 @@ router.get('/version', (req, res, next) => {
   }
 });
 
-router.get('/health', (req, res, next) => {
+router.get('/health', (req, res) => {
   res.sendStatus(200);
 });
 

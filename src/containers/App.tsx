@@ -28,7 +28,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  route: RouteComponentProps<{}>;
+  route: RouteComponentProps;
 }
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
@@ -95,12 +95,10 @@ class App extends PureComponent<Props, State> {
 }
 
 export default hot(connect((state: AppState): StateProps => ({
-    i18n: state.i18n,
-  }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-    changeLocale,
-  }, dispatch),
-)(App));
+  i18n: state.i18n,
+}), (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
+  changeLocale,
+}, dispatch))(App));
 
 const GlobalStyles = createGlobalStyle<any>`
   ${globalStyles}

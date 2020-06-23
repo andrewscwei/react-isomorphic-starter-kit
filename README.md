@@ -14,7 +14,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 8. [React Transition Group](http://reactcommunity.org/react-transition-group/)
 9. [nodemon](https://github.com/remy/nodemon)
 10. [Docker](https://docker.com) config
-11. [TSLint](https://palantir.github.io/tslint/) and [StyleLint](https://stylelint.io/) config
+11. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
 12. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage

@@ -1,14 +1,16 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg';
-import React, { PropsWithChildren, SFC } from 'react';
+import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-interface Props extends PropsWithChildren<{}> {
+type Props = PropsWithChildren<{
   className?: string;
-}
+}>;
 
-const ReactLogo: SFC<Props> = ({ className }) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
-);
+function ReactLogo({ className }: Props) {
+  return (
+    <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
+  );
+}
 
 export default ReactLogo;
 

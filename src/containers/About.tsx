@@ -16,9 +16,9 @@ interface DispatchProps {
   fetchUsers(): void;
 }
 
-interface OwnProps extends RouteComponentProps<{}> {
+type OwnProps = RouteComponentProps<{
 
-}
+}>;
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
@@ -28,7 +28,7 @@ interface State {
 
 class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {
-    return store.dispatch(fetchUsers() as any); // TODO: Fix this
+    return store.dispatch(fetchUsers() as any);
   }
 
   componentDidMount() {
@@ -44,13 +44,11 @@ class About extends PureComponent<Props, State> {
       <StyledRoot>
         <h1>{ltxt('about-title')}</h1>
         {
-          users.items.map((user: User) => {
-            return (
-              <div key={user.id} >
-                <span>{user.first_name} {user.last_name}</span>
-              </div>
-            );
-          })
+          users.items.map((user: User) => (
+            <div key={user.id}>
+              <span>{user.first_name} {user.last_name}</span>
+            </div>
+          ))
         }
       </StyledRoot>
     );

@@ -9,5 +9,5 @@ ctx.postMessage({ message: 'Hello, world!' });
 
 // Respond to message from parent thread
 ctx.addEventListener('message', (event) => {
-  console.log('Worker:', event.data.message);
+  console.log('Worker:', event.data.message); // eslint-disable-line no-console
 });

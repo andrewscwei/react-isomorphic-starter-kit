@@ -21,7 +21,7 @@ const compiler = webpack(buildConfig);
  */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
-    publicPath: buildConfig.output!.publicPath!,
+    publicPath: buildConfig.output?.publicPath ?? '/',
     stats: { colors: true },
   });
 }
