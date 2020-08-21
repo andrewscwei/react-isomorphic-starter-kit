@@ -19,9 +19,12 @@ import debug from './utils/debug';
 
 const app = express();
 
-app.use(compression());
-app.use(helmet());
 app.use(morgan('dev'));
+
+if (process.env.NODE_ENV !== 'development') {
+  app.use(compression());
+  app.use(helmet());
+}
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
