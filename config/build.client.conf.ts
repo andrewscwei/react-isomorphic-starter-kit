@@ -23,7 +23,7 @@ const config: Configuration = {
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
       path.join(inputDir, 'client.tsx'),
     ],
-    polyfills: path.join(inputDir, 'polyfills.tsx'),
+    polyfills: path.join(inputDir, 'polyfills.ts'),
   },
   mode: isProduction ? 'production' : 'development',
   module: {

@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore as _createStore } from 'redux'
 import thunk from 'redux-thunk'
 import i18n, { I18nState } from './i18n'
 import users, { UsersState } from './users'
@@ -15,4 +15,6 @@ export const reducer = combineReducers({
   users,
 })
 
-export default createStore(reducer, process.env.APP_ENV === 'client' && window.__INITIAL_STATE__ || {}, composeEnhancers(applyMiddleware(thunk)))
+export function createStore(initialState: Partial<AppState> = {}) {
+  return _createStore(reducer, process.env.APP_ENV === 'client' && window.__INITIAL_STATE__ || initialState, composeEnhancers(applyMiddleware(thunk)))
+}

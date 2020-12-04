@@ -5,9 +5,9 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "node build/server",
+    "start": "node build",
     "clean": "rimraf build",
-    "dev": "npm run clean && NODE_ENV=development npm run build:server && NODE_ENV=development DEBUG=app* nodemon --exec \"node -r dotenv/config\" --watch ./build --inspect=5858 build/server & NODE_ENV=development npm run build:server -- --watch",
+    "dev": "npm run clean && NODE_ENV=development npm run build:server && NODE_ENV=development DEBUG=app* nodemon --exec \"node -r dotenv/config\" --watch ./build --inspect=5858 build & NODE_ENV=development npm run build:server -- --watch",
     "build": "npm run clean && NODE_ENV=production npm run build:client && NODE_ENV=production npm run build:server",
     "build:server": "webpack --config config/build.server.conf.ts",
     "build:client": "webpack --config config/build.client.conf.ts",

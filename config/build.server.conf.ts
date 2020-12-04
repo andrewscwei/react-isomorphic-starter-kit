@@ -18,7 +18,7 @@ const useBundleAnalyzer = isProduction && buildConf.build.analyzer
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
-    server: path.join(inputDir, 'server.tsx'),
+    index: path.join(inputDir, 'index.ts'),
   },
   externals: [nodeExternals()],
   mode: isProduction ? 'production' : 'development',
