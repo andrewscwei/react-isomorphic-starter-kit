@@ -3,7 +3,7 @@
  */
 
 import path from 'path';
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, Plugin, WatchIgnorePlugin } from 'webpack';
+import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 import buildConf from './build.conf';
@@ -53,9 +53,9 @@ const config: Configuration = {
       use: [{
         loader: 'url-loader',
         options: {
+          emitFile: false,
           esModule: false,
           limit: 8192,
-          emitFile: false,
           name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
       }],
@@ -64,9 +64,9 @@ const config: Configuration = {
       use: [{
         loader: 'url-loader',
         options: {
+          emitFile: false,
           esModule: false,
           limit: 8192,
-          emitFile: false,
           name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
       }],
@@ -78,19 +78,19 @@ const config: Configuration = {
   },
   output: {
     filename: '[name].js',
+    libraryTarget: 'commonjs2',
     path: outputDir,
     publicPath: buildConf.build.publicPath,
     sourceMapFilename: '[name].js.map',
-    libraryTarget: 'commonjs2',
-    globalObject: 'this', // https://github.com/webpack/webpack/issues/6642#issuecomment-371087342
   },
   performance: {
     hints: isProduction ? 'warning' : false,
+    maxEntrypointSize: 1 * 1024 * 1024,
+    maxAssetSize: 1 * 1024 * 1024,
   },
   plugins: [
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
-      __APP_ENV__: JSON.stringify('server'),
       __ASSET_MANIFEST__: JSON.stringify((() => {
         let t;
 
@@ -107,15 +107,21 @@ const config: Configuration = {
         dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
       }),
     }),
-    new EnvironmentPlugin(['NODE_ENV']),
+    new EnvironmentPlugin({
+      NODE_ENV: 'development',
+      APP_ENV: 'server',
+    }),
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
     ...isProduction ? [] : [
-      new WatchIgnorePlugin([
-        /containers/,
-        /components/,
-      ]),
+      new WatchIgnorePlugin({
+        paths: [
+          /bundles/,
+          /containers/,
+          /components/,
+        ],
+      }),
     ],
     ...!buildConf.build.sourceMap ? [] : [
       new BannerPlugin({
@@ -124,7 +130,7 @@ const config: Configuration = {
         entryOnly: false,
       }),
     ],
-  ] as Array<Plugin>,
+  ],
   resolve: {
     alias: {
       ...isProduction ? {} : {
@@ -135,9 +141,13 @@ const config: Configuration = {
   },
   stats: {
     colors: true,
+    errors: true,
     errorDetails: true,
     modules: true,
+    moduleTrace: true,
+    publicPath: true,
     reasons: true,
+    timings: true,
   },
   target: 'node',
 };

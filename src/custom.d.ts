@@ -1,7 +1,6 @@
 declare module 'sitemap';
 
 declare const __BUILD_CONFIG__: { [key: string]: any };
-declare const __APP_ENV__: string;
 declare const __ASSET_MANIFEST__: AssetManifest;
 declare const __I18N_CONFIG__: Readonly<{
   defaultLocale: string;

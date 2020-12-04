@@ -1,7 +1,7 @@
 # This is a Dockerfile with multi-stage builds.
 
 # Builds the app with dev dependencies included.
-FROM node:13.12.0 as build-dev
+FROM node:14.13.1 as build-dev
 
 ARG BUILD_NUMBER
 ARG GOOGLE_ANALYTICS_ID
@@ -33,7 +33,7 @@ RUN npm prune --production
 
 
 # Final production build.
-FROM node:13.12.0-alpine
+FROM node:14.13.1-alpine
 
 ARG BUILD_NUMBER
 

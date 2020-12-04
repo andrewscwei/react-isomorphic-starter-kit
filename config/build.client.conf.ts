@@ -4,7 +4,7 @@
 
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin, NamedModulesPlugin, Plugin } from 'webpack';
+import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import buildConf from './build.conf';
@@ -17,7 +17,7 @@ const outputDir = path.join(cwd, 'build/static');
 const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
 
 const config: Configuration = {
-  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'cheap-eval-source-map',
+  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
     bundle: [
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
@@ -86,11 +86,11 @@ const config: Configuration = {
     },
   },
   output: {
+    chunkFilename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     path: outputDir,
     publicPath: buildConf.build.publicPath,
     sourceMapFilename: '[file].map',
-    globalObject: 'this', // https://github.com/webpack/webpack/issues/6642#issuecomment-371087342
   },
   performance: {
     hints: isProduction ? 'warning' : false,
@@ -106,7 +106,6 @@ const config: Configuration = {
     }),
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
-      __APP_ENV__: JSON.stringify('client'),
       __I18N_CONFIG__: JSON.stringify({
         defaultLocale: buildConf.locales[0],
         locales: buildConf.locales,
@@ -115,18 +114,20 @@ const config: Configuration = {
     }),
     new EnvironmentPlugin({
       NODE_ENV: 'development',
+      APP_ENV: 'client',
     }),
     ...isProduction ? [
-      new IgnorePlugin(/^.*\/config\/.*$/),
-      new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+      new IgnorePlugin({
+        resourceRegExp: /^.*\/config\/.*$/,
+      }),
+      new ManifestPlugin({ fileName: 'asset-manifest.json' }) as any,
     ] : [
       new HotModuleReplacementPlugin(),
-      new NamedModulesPlugin(),
     ],
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
-  ] as Array<Plugin>,
+  ],
   resolve: {
     alias: {
       ...isProduction ? {} : {
@@ -137,9 +138,13 @@ const config: Configuration = {
   },
   stats: {
     colors: true,
+    errors: true,
     errorDetails: true,
     modules: true,
+    moduleTrace: true,
+    publicPath: true,
     reasons: true,
+    timings: true,
   },
   target: 'web',
 };

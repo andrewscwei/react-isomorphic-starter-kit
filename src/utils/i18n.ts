@@ -7,7 +7,7 @@ const polyglots: { [locale: string]: Polyglot } = {};
 
 // In development, require context for all locale translation files and add them
 // to Polyglot so that they can be watched by Webpack.
-if (__APP_ENV__ === 'client' && process.env.NODE_ENV === 'development') {
+if (process.env.APP_ENV === 'client' && process.env.NODE_ENV === 'development') {
   const localeReq = require.context('../../config/locales', true, /^.*\.json$/);
   localeReq.keys().forEach((path) => {
     const locale = path.replace('./', '').replace('.json', '');
