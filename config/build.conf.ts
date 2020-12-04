@@ -2,9 +2,9 @@
  * @file Buildtime configuration for both client and server environments.
  */
 
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 export default {
   // Version number.
@@ -52,4 +52,4 @@ export default {
     // of the build process.
     analyzer: process.env.ANALYZE_BUNDLE === 'true' ? true : false,
   },
-};
+}

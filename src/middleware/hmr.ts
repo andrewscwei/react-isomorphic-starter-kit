@@ -6,13 +6,13 @@
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
 
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import buildConfig from '../../config/build.client.conf';
-import debug from '../utils/debug';
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import buildConfig from '../../config/build.client.conf'
+import debug from '../utils/debug'
 
-const compiler = webpack(buildConfig);
+const compiler = webpack(buildConfig)
 
 /**
  * Export configured dev middleware.
@@ -22,7 +22,7 @@ const compiler = webpack(buildConfig);
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
     publicPath: buildConfig.output?.publicPath ?? '/',
-  });
+  })
 }
 
 /**
@@ -34,5 +34,5 @@ export function hotMiddleware() {
   return webpackHotMiddleware(compiler, {
     log: debug,
     heartbeat: 2000,
-  });
+  })
 }

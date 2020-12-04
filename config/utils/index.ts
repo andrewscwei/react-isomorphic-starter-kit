@@ -3,10 +3,10 @@
  * @file Utility functions for the build process.
  */
 
-import fs from 'fs';
-import path from 'path';
-import requireDir from 'require-dir';
-import buildConf from '../build.conf';
+import fs from 'fs'
+import path from 'path'
+import requireDir from 'require-dir'
+import buildConf from '../build.conf'
 
 /**
  * Returns a list of all supported locales by inferring from the translations
@@ -17,20 +17,20 @@ import buildConf from '../build.conf';
  * @return List of all supported locales.
  */
 export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
-  const defaultLocale = buildConf.locales[0];
-  const whitelistedLocales = buildConf.locales;
+  const defaultLocale = buildConf.locales[0]
+  const whitelistedLocales = buildConf.locales
   const t = fs
     .readdirSync(dir)
     .filter((val: string) => !(/(^|\/)\.[^/.]/g).test(val))
     .map((val: string) => path.basename(val, '.json'))
-    .filter((val: string) => whitelistedLocales ? ~whitelistedLocales.indexOf(val) : true);
+    .filter((val: string) => whitelistedLocales ? ~whitelistedLocales.indexOf(val) : true)
 
   if (defaultLocale && ~t.indexOf(defaultLocale)) {
-    t.splice(t.indexOf(defaultLocale), 1);
-    t.unshift(defaultLocale);
+    t.splice(t.indexOf(defaultLocale), 1)
+    t.unshift(defaultLocale)
   }
 
-  return t;
+  return t
 }
 
 /**
@@ -41,15 +41,15 @@ export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
  * @return Dictionary object of all translations.
  */
 export function getTranslationDataDictFromDir(dir: string): Readonly<TranslationDataDict> {
-  const dict: TranslationDataDict = {};
-  const locales = getLocalesFromDir(dir);
-  const t: { [key: string]: any } = requireDir(path.resolve(dir));
+  const dict: TranslationDataDict = {}
+  const locales = getLocalesFromDir(dir)
+  const t: { [key: string]: any } = requireDir(path.resolve(dir))
 
   for (const locale in t) {
     if (~locales.indexOf(locale)) {
-      dict[locale] = t[locale];
+      dict[locale] = t[locale]
     }
   }
 
-  return dict;
+  return dict
 }

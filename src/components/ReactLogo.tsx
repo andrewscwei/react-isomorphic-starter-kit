@@ -1,18 +1,18 @@
-import $$Logo from '!!raw-loader!../assets/images/react-logo.svg';
-import React, { PropsWithChildren } from 'react';
-import styled from 'styled-components';
+import $$Logo from '!!raw-loader!../assets/images/react-logo.svg'
+import React, { PropsWithChildren } from 'react'
+import styled from 'styled-components'
 
 type Props = PropsWithChildren<{
-  className?: string;
-}>;
+  className?: string
+}>
 
 function ReactLogo({ className }: Props) {
   return (
     <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
-  );
+  )
 }
 
-export default ReactLogo;
+export default ReactLogo
 
 const StyledRoot = styled.figure`
   animation: rotate 5s linear infinite;
@@ -30,4 +30,4 @@ const StyledRoot = styled.figure`
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
-`;
+`

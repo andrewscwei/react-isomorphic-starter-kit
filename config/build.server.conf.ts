@@ -2,18 +2,18 @@
  * @file Webpack config for compiling the app server.
  */
 
-import path from 'path';
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import nodeExternals from 'webpack-node-externals';
-import buildConf from './build.conf';
-import { getTranslationDataDictFromDir } from './utils';
+import path from 'path'
+import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import nodeExternals from 'webpack-node-externals'
+import buildConf from './build.conf'
+import { getTranslationDataDictFromDir } from './utils'
 
-const isProduction = process.env.NODE_ENV === 'production';
-const cwd = path.join(__dirname, '../');
-const inputDir = path.join(cwd, 'src');
-const outputDir = path.join(cwd, 'build');
-const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
+const isProduction = process.env.NODE_ENV === 'production'
+const cwd = path.join(__dirname, '../')
+const inputDir = path.join(cwd, 'src')
+const outputDir = path.join(cwd, 'build')
+const useBundleAnalyzer = isProduction && buildConf.build.analyzer
 
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
@@ -46,7 +46,7 @@ const config: Configuration = {
         loader: 'image-webpack-loader',
         options: {
           disable: !isProduction,
-         },
+        },
       }],
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
@@ -92,14 +92,14 @@ const config: Configuration = {
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __ASSET_MANIFEST__: JSON.stringify((() => {
-        let t;
+        let t
 
         if (process.env.NODE_ENV === 'production') {
-          try { t = require(path.join(__dirname, '../build/static/asset-manifest.json')); }
+          try { t = require(path.join(__dirname, '../build/static/asset-manifest.json')) }
           catch (err) { /* Do nothing */ }
         }
 
-        return t;
+        return t
       })()),
       __I18N_CONFIG__: JSON.stringify({
         defaultLocale: buildConf.locales[0],
@@ -150,6 +150,6 @@ const config: Configuration = {
     timings: true,
   },
   target: 'node',
-};
+}
 
-export default config;
+export default config

@@ -2,10 +2,10 @@
  * @file Route definitions for React router.
  */
 
-import About from '../containers/About';
-import Home from '../containers/Home';
-import NotFound from '../containers/NotFound';
-import { getPolyglotByLocale } from '../utils/i18n';
+import About from '../containers/About'
+import Home from '../containers/Home'
+import NotFound from '../containers/NotFound'
+import { getPolyglotByLocale } from '../utils/i18n'
 
 export default [{
   path: '/',
@@ -31,4 +31,4 @@ export default [{
   path: '*',
   title: getPolyglotByLocale('en').t('not-found'),
   component: NotFound,
-}];
+}]

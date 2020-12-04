@@ -1,24 +1,24 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Action, bindActionCreators, Dispatch, Store } from 'redux';
-import styled from 'styled-components';
-import { AppState } from '../store';
-import { I18nState } from '../store/i18n';
-import { fetchUsers, User, UsersState } from '../store/users';
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { RouteComponentProps } from 'react-router'
+import { Action, bindActionCreators, Dispatch, Store } from 'redux'
+import styled from 'styled-components'
+import { AppState } from '../store'
+import { I18nState } from '../store/i18n'
+import { fetchUsers, User, UsersState } from '../store/users'
 
 interface StateProps {
-  i18n: I18nState;
-  users: UsersState;
+  i18n: I18nState
+  users: UsersState
 }
 
 interface DispatchProps {
-  fetchUsers(): void;
+  fetchUsers(): void
 }
 
 type OwnProps = RouteComponentProps<{
 
-}>;
+}>
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
@@ -28,17 +28,17 @@ interface State {
 
 class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {
-    return store.dispatch(fetchUsers() as any);
+    return store.dispatch(fetchUsers() as any)
   }
 
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('about');
-    this.props.fetchUsers();
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('about')
+    this.props.fetchUsers()
   }
 
   render() {
-    const { users } = this.props;
-    const { ltxt } = this.props.i18n;
+    const { users } = this.props
+    const { ltxt } = this.props.i18n
 
     return (
       <StyledRoot>
@@ -51,7 +51,7 @@ class About extends PureComponent<Props, State> {
           ))
         }
       </StyledRoot>
-    );
+    )
   }
 }
 
@@ -63,7 +63,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,
   }, dispatch),
-)(About);
+)(About)
 
 const StyledRoot = styled.div`
   align-items: center;
@@ -71,7 +71,7 @@ const StyledRoot = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  font-family: ${(props) => props.theme.fonts.body};
+  font-family: ${props => props.theme.fonts.body};
   height: 100%;
   justify-content: center;
   padding: 10% 5%;
@@ -79,7 +79,7 @@ const StyledRoot = styled.div`
   width: 100%;
 
   h1 {
-    color: ${(props) => props.theme.colors.title};
+    color: ${props => props.theme.colors.title};
     font-size: 2.4em;
     font-weight: 700;
     letter-spacing: 3px;
@@ -90,10 +90,10 @@ const StyledRoot = styled.div`
   }
 
   span {
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     font-weight: 400;
     letter-spacing: .6px;
     line-height: 1.4em;
     text-align: center;
   }
-`;
+`

@@ -1,16 +1,16 @@
 declare module 'sitemap';
 
-declare const __BUILD_CONFIG__: { [key: string]: any };
-declare const __ASSET_MANIFEST__: AssetManifest;
+declare const __BUILD_CONFIG__: { [key: string]: any }
+declare const __ASSET_MANIFEST__: AssetManifest
 declare const __I18N_CONFIG__: Readonly<{
-  defaultLocale: string;
-  locales: string;
-  dict: TranslationDataDict;
-}>;
+  defaultLocale: string
+  locales: string
+  dict: TranslationDataDict
+}>
 
 declare module '*.svg' {
-  const content: any;
-  export default content;
+  const content: any
+  export default content
 }
 
 declare module 'worker-loader!*' {
@@ -18,32 +18,32 @@ declare module 'worker-loader!*' {
     constructor();
   }
 
-  export default WebpackWorker;
+  export default WebpackWorker
 }
 
 interface TranslationData {
-  [key: string]: string;
+  [key: string]: string
 }
 
 interface TranslationDataDict {
-  [locale: string]: TranslationData;
+  [locale: string]: TranslationData
 }
 
 interface RouteData {
-  component: string;
-  exact?: boolean;
-  path: string;
+  component: string
+  exact?: boolean
+  path: string
 }
 
 interface AssetManifest {
-  [key: string]: any;
+  [key: string]: any
 }
 
 interface Window {
-  __INITIAL_STATE__: any;
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+  __INITIAL_STATE__: any
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 }
 
 interface Error {
-  status?: number;
+  status?: number
 }

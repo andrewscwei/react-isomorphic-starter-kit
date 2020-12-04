@@ -9,4 +9,4 @@ export default {
 
   // Determines whether SSR is enabled.
   ssrEnabled: process.env.NODE_ENV !== 'development',
-};
+}

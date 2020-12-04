@@ -1,2 +1,2 @@
-import 'core-js/stable';
-import 'isomorphic-fetch';
+import 'core-js/stable'
+import 'isomorphic-fetch'

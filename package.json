@@ -17,7 +17,7 @@
     "test": "NODE_ENV=test DEBUG=test* mocha --require ts-node/register --timeout 10000 --reporter spec --full-trace --colors --recursive --bail --exit \"tests/**/*.ts\"",
     "lint": "npm run lint:ts && npm run lint:css",
     "lint:fix": "npm run lint:ts:fix && npm run lint:css:fix",
-    "lint:ts": "eslint --ext .ts --ext .tsx src",
+    "lint:ts": "eslint --ext .ts --ext .tsx src config",
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "lint:css": "stylelint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint:css:fix": "npm run lint:css -- --fix"

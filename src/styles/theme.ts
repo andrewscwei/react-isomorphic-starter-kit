@@ -7,8 +7,8 @@ export const colors = {
   link: '#fff',
   text: '#666',
   title: '#fff',
-};
+}
 
 export const fonts = {
   body: 'Roboto, sans-serif',
-};
+}

@@ -2,18 +2,18 @@
  * @file Base HTML template for all containers.
  */
 
-import path from 'path';
-import React, { Fragment, ReactElement } from 'react';
-import serialize from 'serialize-javascript';
+import path from 'path'
+import React, { Fragment, ReactElement } from 'react'
+import serialize from 'serialize-javascript'
 
 interface Props {
-  body?: string;
-  title?: string;
-  url?: string;
-  keywords?: string;
-  description?: string;
-  initialState?: any;
-  initialStyles?: Array<ReactElement<unknown>>;
+  body?: string
+  title?: string
+  url?: string
+  keywords?: string
+  description?: string
+  initialState?: any
+  initialStyles?: Array<ReactElement<unknown>>
 }
 
 /**
@@ -25,21 +25,21 @@ interface Props {
  * @return The resolved path.
  */
 function resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASSET_MANIFEST__): string {
-  const normalizedPath: string = path.join.apply(null, pathToResolve.split('/'));
-  const publicPath = __BUILD_CONFIG__.build.publicPath;
+  const normalizedPath: string = path.join.apply(null, pathToResolve.split('/'))
+  const publicPath = __BUILD_CONFIG__.build.publicPath
 
-  let out = normalizedPath;
+  let out = normalizedPath
 
   if (manifest && manifest.hasOwnProperty(normalizedPath)) {
-    out = manifest[normalizedPath];
+    out = manifest[normalizedPath]
   }
   else if (manifest && manifest.hasOwnProperty(`${publicPath}${normalizedPath}`)) {
-    out = manifest[`${publicPath}${normalizedPath}`];
+    out = manifest[`${publicPath}${normalizedPath}`]
   }
 
-  if (!out.startsWith(publicPath)) out = `${publicPath}${out}`;
+  if (!out.startsWith(publicPath)) out = `${publicPath}${out}`
 
-  return out;
+  return out
 }
 
 function Layout({ body, title, url, keywords, description, initialState, initialStyles }: Props): ReactElement {
@@ -145,7 +145,7 @@ function Layout({ body, title, url, keywords, description, initialState, initial
         }
       </body>
     </html>
-  );
+  )
 }
 
-export default Layout;
+export default Layout

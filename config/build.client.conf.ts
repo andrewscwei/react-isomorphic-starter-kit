@@ -2,19 +2,19 @@
  * @file Webpack config for compiling the app client.
  */
 
-import CopyPlugin from 'copy-webpack-plugin';
-import path from 'path';
-import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import ManifestPlugin from 'webpack-manifest-plugin';
-import buildConf from './build.conf';
-import { getTranslationDataDictFromDir } from './utils';
+import CopyPlugin from 'copy-webpack-plugin'
+import path from 'path'
+import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import ManifestPlugin from 'webpack-manifest-plugin'
+import buildConf from './build.conf'
+import { getTranslationDataDictFromDir } from './utils'
 
-const isProduction = process.env.NODE_ENV === 'production';
-const cwd = path.join(__dirname, '../');
-const inputDir = path.join(cwd, 'src');
-const outputDir = path.join(cwd, 'build/static');
-const useBundleAnalyzer = isProduction && buildConf.build.analyzer;
+const isProduction = process.env.NODE_ENV === 'production'
+const cwd = path.join(__dirname, '../')
+const inputDir = path.join(cwd, 'src')
+const outputDir = path.join(cwd, 'build/static')
+const useBundleAnalyzer = isProduction && buildConf.build.analyzer
 
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
@@ -147,6 +147,6 @@ const config: Configuration = {
     timings: true,
   },
   target: 'web',
-};
+}
 
-export default config;
+export default config

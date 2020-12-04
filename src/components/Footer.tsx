@@ -1,14 +1,14 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Action, bindActionCreators, Dispatch } from 'redux';
-import styled from 'styled-components';
-import { AppState } from '../store';
-import { I18nState } from '../store/i18n';
-import { getLocalizedPath } from '../utils/i18n';
+import React, { PropsWithChildren, ReactElement } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Action, bindActionCreators, Dispatch } from 'redux'
+import styled from 'styled-components'
+import { AppState } from '../store'
+import { I18nState } from '../store/i18n'
+import { getLocalizedPath } from '../utils/i18n'
 
 interface StateProps {
-  i18n: I18nState;
+  i18n: I18nState
 }
 
 interface DispatchProps {
@@ -17,7 +17,7 @@ interface DispatchProps {
 
 type OwnProps = PropsWithChildren<{
 
-}>;
+}>
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
@@ -30,7 +30,7 @@ function Footer({ i18n }: Props): ReactElement {
       <Link to={getLocalizedPath('/', 'en')}>{i18n.ltxt('en')}</Link>
       <Link to={getLocalizedPath('/', 'ja')}>{i18n.ltxt('jp')}</Link>
     </StyledRoot>
-  );
+  )
 }
 
 export default connect(
@@ -40,7 +40,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
   }, dispatch),
-)(Footer);
+)(Footer)
 
 const StyledRoot = styled.footer`
   align-items: center;
@@ -48,7 +48,7 @@ const StyledRoot = styled.footer`
   bottom: 0;
   box-sizing: border-box;
   display: flex;
-  font-family: ${(props) => props.theme.fonts.body};
+  font-family: ${props => props.theme.fonts.body};
   height: 50px;
   justify-content: flex-start;
   left: 0;
@@ -75,10 +75,10 @@ const StyledRoot = styled.footer`
 
   > a {
     align-items: center;
-    background: ${(props) => props.theme.colors.button};
+    background: ${props => props.theme.colors.button};
     border: none;
     box-sizing: border-box;
-    color: ${(props) => props.theme.colors.buttonText};
+    color: ${props => props.theme.colors.buttonText};
     cursor: pointer;
     display: flex;
     font-size: .8em;
@@ -91,12 +91,12 @@ const StyledRoot = styled.footer`
     width: 22px;
 
     :hover {
-      background: ${(props) => props.theme.colors.buttonHover};
-      color: ${(props) => props.theme.colors.buttonHoverText};
+      background: ${props => props.theme.colors.buttonHover};
+      color: ${props => props.theme.colors.buttonHoverText};
     }
 
     :not(:last-child) {
       margin-right: 10px;
     }
   }
-`;
+`

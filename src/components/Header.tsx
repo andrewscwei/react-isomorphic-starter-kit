@@ -1,14 +1,14 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Action, bindActionCreators, Dispatch } from 'redux';
-import styled from 'styled-components';
-import { AppState } from '../store';
-import { I18nState } from '../store/i18n';
-import { getLocalizedPath } from '../utils/i18n';
+import React, { PropsWithChildren, ReactElement } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Action, bindActionCreators, Dispatch } from 'redux'
+import styled from 'styled-components'
+import { AppState } from '../store'
+import { I18nState } from '../store/i18n'
+import { getLocalizedPath } from '../utils/i18n'
 
 interface StateProps {
-  i18n: I18nState;
+  i18n: I18nState
 }
 
 interface DispatchProps {
@@ -17,7 +17,7 @@ interface DispatchProps {
 
 type OwnProps = PropsWithChildren<{
 
-}>;
+}>
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
@@ -27,7 +27,7 @@ function Header({ i18n }: Props): ReactElement {
       <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>
       <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('about')}</Link>
     </StyledRoot>
-  );
+  )
 }
 
 export default connect(
@@ -37,7 +37,7 @@ export default connect(
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
 
   }, dispatch),
-)(Header);
+)(Header)
 
 const StyledRoot = styled.header`
   align-items: center;
@@ -51,9 +51,9 @@ const StyledRoot = styled.header`
   z-index: 10;
 
   > a {
-    color: ${(props) => props.theme.colors.link};
+    color: ${props => props.theme.colors.link};
     cursor: pointer;
-    font-family: ${(props) => props.theme.fonts.body};
+    font-family: ${props => props.theme.fonts.body};
     font-size: .8em;
     font-weight: 400;
     letter-spacing: 1px;
@@ -69,4 +69,4 @@ const StyledRoot = styled.header`
       margin-right: 20px;
     }
   }
-`;
+`
