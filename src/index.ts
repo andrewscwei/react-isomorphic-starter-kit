@@ -13,18 +13,17 @@ import morgan from 'morgan'
 import path from 'path'
 import appConf from './app.conf'
 import { generateSitemap } from './middleware/sitemap'
-import { renderWithContext, renderWithoutContext } from './middleware/ssr'
-import routes from './routes.conf'
+import routes from './routes'
 import debug from './utils/debug'
 
 const app = express()
 
 app.use(morgan('dev'))
 
-if (process.env.NODE_ENV !== 'development') {
-  app.use(compression())
-  app.use(helmet())
-}
+app.use(compression())
+app.use(helmet({
+  contentSecurityPolicy: false,
+}))
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module
@@ -58,11 +57,6 @@ app.use('/sitemap.xml', generateSitemap())
  * Handle server routes.
  */
 app.use('/', routes)
-
-/**
- * Server-side rendering setup.
- */
-app.use(appConf.ssrEnabled ? renderWithContext() : renderWithoutContext())
 
 /**
  * Server 404 error, when the requested URI is not found.

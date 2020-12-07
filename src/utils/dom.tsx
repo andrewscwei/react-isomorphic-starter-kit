@@ -5,24 +5,43 @@
 import React, { ComponentType } from 'react';
 import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, RouteComponentProps } from 'react-router-dom';
+import { StaticRouterProps } from 'react-router';
+import { BrowserRouter, BrowserRouterProps, Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
+import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
-import { createStore } from '../store';
+import { AppAction, AppState, createStore } from '../store';
 import * as theme from '../styles/theme';
 
+type MarkupOptions = {
+  store?: Store<AppState, AppAction>
+  staticRouter?: StaticRouterProps
+  browserRouter?: BrowserRouterProps
+}
+
 /**
- * Factory function for generating base React app markup.
+ * Factory function for generating base React app markup. Defaults to targetting a `BrowserRouter`.
  *
- * @param Component - The React component to wrap.
+ * @param Component - The React component to wrap around.
+ * @param options - @see MarkupOptions
  *
  * @returns The JSX markup.
  */
-export function markup(Component: ComponentType<{ route: RouteComponentProps }>) {
-  return (
-    <Provider store={createStore()}>
+export function markup(Component: ComponentType<{ route: RouteComponentProps }>, { store = createStore(), staticRouter, browserRouter }: MarkupOptions = {}): JSX.Element {
+  return staticRouter ? (
+    <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Route render={(route: RouteComponentProps) => (
+        <StaticRouter {...staticRouter}>
+          <Route render={route => (
+            <Component route={route}/>
+          )}/>
+        </StaticRouter>
+      </ThemeProvider>
+    </Provider>
+  ) : (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter {...browserRouter}>
+          <Route render={route => (
             <Component route={route}/>
           )}/>
         </BrowserRouter>

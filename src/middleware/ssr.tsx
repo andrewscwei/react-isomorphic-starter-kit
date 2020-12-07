@@ -6,31 +6,52 @@
 
 import { RequestHandler } from 'express'
 import _ from 'lodash'
-import React from 'react'
+import React, { ComponentType } from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
-import { Provider } from 'react-redux'
 import { matchRoutes } from 'react-router-config'
-import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+import appConf from '../app.conf'
 import App from '../containers/App'
 import routesConf from '../routes.conf'
 import { createStore } from '../store'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
+import { markup } from '../utils/dom'
+import { getLocaleFromPath, getPolyglotByLocale } from '../utils/i18n'
+
+interface RenderOptions {
+  /**
+   * The Webpack generated bundle ID.
+   */
+  bundleId?: string
+
+  /**
+   * The browser window title ID (for localization) of the rendered page. If provided, this title will take precedence.
+   */
+  titleId?: string
+}
+
+export function render<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, options: RenderOptions = {}): RequestHandler {
+  return appConf.ssrEnabled ? renderWithMarkup(Component, options) : renderWithoutMarkup(options)
+}
 
 /**
- * Express middleware for rendering React views to string based on the request
- * path and sending the string as a response.  This method renders the view with
- * body context.
+ * Renders a React component to string with body markup.
+ *
+ * @param Compnent - The React component to render.
+ * @param options - @see RenderOptions
  *
  * @return Express middleware.
  */
-export function renderWithContext(): RequestHandler {
+export function renderWithMarkup<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, { bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    // Find and store all matching client routes based on the request URL.
-    const matches = matchRoutes(routesConf, req.path)
-    const title = (matches.length > 0) && (matches[0].route as any).title
     const store = createStore(res.locals.store)
+    const sheet = new ServerStyleSheet()
+    const matches = matchRoutes(routesConf, req.path)
+    const locale = getLocaleFromPath(req.path)
+    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
+    const context: { [key: string]: any } = {}
 
     // For each matching route, fetch async data if required.
     for (const t of matches) {
@@ -41,19 +62,16 @@ export function renderWithContext(): RequestHandler {
       debug(`Fetching data for route <${match.url}>...`, 'OK')
     }
 
-    const context: { [key: string]: any } = {}
-    const sheet = new ServerStyleSheet()
-
     const body = renderToString(
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <Route render={(route: RouteComponentProps<any>) => (
-            <StyleSheetManager sheet={sheet.instance}>
-              <App route={route}/>
-            </StyleSheetManager>
-          )}/>
-        </StaticRouter>
-      </Provider>,
+      <StyleSheetManager sheet={sheet.instance}>
+        {markup(App, {
+          store,
+          staticRouter: {
+            location: req.url,
+            context,
+          },
+        })}
+      </StyleSheetManager>
     )
 
     switch (context['statusCode']) {
@@ -68,28 +86,40 @@ export function renderWithContext(): RequestHandler {
     debug(`Rendering with context <${req.path}>...`, 'OK')
 
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout title={title} body={body} initialState={_.omit(store.getState(), 'i18n')} initialStyles={sheet.getStyleElement()}/>,
+      <Layout
+        body={body}
+        bundleId={bundleId}
+        initialStyles={sheet.getStyleElement()}
+        initialState={_.omit(store.getState(), 'i18n')}
+        title={title}
+      />,
     )}`)
   }
 }
 
 /**
- * Express middleware for rendering React view to string based on the request
- * path and sending the resulting string as a response. This method renders the
- * view without body context.
+ * Renders a React component to string without body markup.
+ *
+ * @param Component - The React component to render.
+ * @param options - @see RenderOptions
  *
  * @return Express middleware.
  */
-export function renderWithoutContext(): RequestHandler {
+export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    // Find and store all matching client routes based on the request URL.
+    const store = createStore(res.locals.store)
     const matches = matchRoutes(routesConf, req.path)
-    const title = (matches.length > 0) && (matches[0].route as any).title
+    const locale = getLocaleFromPath(req.path)
+    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
 
-    debug(`Rendering without context <${req.path}>...`, 'OK')
+    debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)
 
     res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout title={title}/>,
+      <Layout
+        bundleId={bundleId}
+        initialState={_.omit(store.getState(), 'i18n')}
+        title={title}
+      />,
     )}`)
   }
 }

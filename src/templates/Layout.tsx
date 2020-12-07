@@ -5,15 +5,17 @@
 import path from 'path'
 import React, { Fragment, ReactElement } from 'react'
 import serialize from 'serialize-javascript'
+import { AppState } from '../store'
 
 interface Props {
   body?: string
+  bundleId?: string
+  description?: string
+  initialState?: Omit<AppState, 'i18n'>
+  initialStyles?: Array<ReactElement<unknown>>
+  keywords?: string
   title?: string
   url?: string
-  keywords?: string
-  description?: string
-  initialState?: any
-  initialStyles?: Array<ReactElement<unknown>>
 }
 
 /**
@@ -42,7 +44,16 @@ function resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASS
   return out
 }
 
-function Layout({ body, title, url, keywords, description, initialState, initialStyles }: Props): ReactElement {
+function Layout({
+  body,
+  bundleId,
+  description,
+  initialState,
+  initialStyles,
+  keywords,
+  title,
+  url,
+}: Props): ReactElement {
   return (
     <html>
       { process.env.NODE_ENV !== 'development' &&
@@ -136,7 +147,7 @@ function Layout({ body, title, url, keywords, description, initialState, initial
         <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
         <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
         <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
-        <script type='application/javascript' src={resolveAssetPath('/bundle.js')}></script>
+        <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'bundle'}.js`)}></script>
 
         { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
           <Fragment>

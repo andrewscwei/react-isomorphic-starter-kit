@@ -1,4 +1,6 @@
 import { Router } from 'express'
+import App from '../containers/App'
+import { render } from '../middleware/ssr'
 
 const router = Router()
 
@@ -18,5 +20,7 @@ router.get('/version', (req, res, next) => {
 router.get('/health', (req, res) => {
   res.sendStatus(200)
 })
+
+router.use(render(App))
 
 export default router

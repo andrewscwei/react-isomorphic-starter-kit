@@ -1,14 +1,13 @@
 import { applyMiddleware, combineReducers, compose, createStore as _createStore } from 'redux'
 import thunk from 'redux-thunk'
-import i18n, { I18nState } from './i18n'
-import users, { UsersState } from './users'
+import i18n from './i18n'
+import users from './users'
 
 const composeEnhancers = process.env.NODE_ENV === 'development' && process.env.APP_ENV === 'client' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export interface AppState {
-  i18n: I18nState
-  users: UsersState
-}
+export type AppState = NonNullable<Parameters<typeof reducer>[0]>
+
+export type AppAction = NonNullable<Parameters<typeof reducer>[1]>
 
 export const reducer = combineReducers({
   i18n,
