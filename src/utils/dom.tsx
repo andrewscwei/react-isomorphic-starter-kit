@@ -2,15 +2,15 @@
  * @file Utility functions for DOM-related operations.
  */
 
-import React, { ComponentType } from 'react';
-import { hydrate, render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { StaticRouterProps } from 'react-router';
-import { BrowserRouter, BrowserRouterProps, Route, RouteComponentProps, StaticRouter } from 'react-router-dom';
-import { Store } from 'redux';
-import { ThemeProvider } from 'styled-components';
-import { AppAction, AppState, createStore } from '../store';
-import * as theme from '../styles/theme';
+import React, { ComponentType } from 'react'
+import { hydrate, render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { StaticRouterProps } from 'react-router'
+import { BrowserRouter, BrowserRouterProps, Route, RouteComponentProps, StaticRouter } from 'react-router-dom'
+import { Store } from 'redux'
+import { ThemeProvider } from 'styled-components'
+import { AppAction, AppState, createStore } from '../store'
+import * as theme from '../styles/theme'
 
 type MarkupOptions = {
   store?: Store<AppState, AppAction>
@@ -47,7 +47,7 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
-  );
+  )
 }
 
 /**
@@ -57,12 +57,12 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
  * @param elementId - The ID of the DOM element to mount the React component to.
  */
 export function mount(Component: ComponentType<{ route: RouteComponentProps }>, elementId = 'app') {
-  if (process.env.APP_ENV !== 'client') return;
+  if (process.env.APP_ENV !== 'client') return
 
   if (process.env.NODE_ENV === 'development') {
-    render(markup(Component), document.getElementById(elementId));
+    render(markup(Component), document.getElementById(elementId))
   }
   else {
-    hydrate(markup(Component), document.getElementById(elementId));
+    hydrate(markup(Component), document.getElementById(elementId))
   }
 }

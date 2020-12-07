@@ -1,7 +1,6 @@
 import React, { ComponentType, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
-import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled from 'styled-components'
 import ReactLogo from '../components/ReactLogo'
 import { AppState } from '../store'
@@ -11,13 +10,9 @@ type StateProps = {
   i18n: I18nState
 }
 
-type DispatchProps = {}
+type Props = StateProps & RouteComponentProps
 
-type Props = StateProps & DispatchProps & RouteComponentProps<{}>
-
-type State = {}
-
-class Home extends PureComponent<Props, State> {
+class Home extends PureComponent<Props> {
   componentDidMount() {
     if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('home')
   }
@@ -40,9 +35,6 @@ export default connect(
   (state: AppState): StateProps => ({
     i18n: state.i18n,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-  }, dispatch),
 )(Home)
 
 const StyledRoot = styled.div`

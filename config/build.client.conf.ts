@@ -6,7 +6,7 @@ import CopyPlugin from 'copy-webpack-plugin'
 import path from 'path'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import { WebpackManifestPlugin as ManifestPlugin} from 'webpack-manifest-plugin'
+import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import buildConf from './build.conf'
 import { getTranslationDataDictFromDir } from './utils'
 

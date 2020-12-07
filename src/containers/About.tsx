@@ -16,11 +16,9 @@ type DispatchProps = {
   fetchUsers(): void
 }
 
-type Props = StateProps & DispatchProps & RouteComponentProps<{}>
+type Props = StateProps & DispatchProps & RouteComponentProps
 
-type State = {}
-
-class About extends PureComponent<Props, State> {
+class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
     return store.dispatch(fetchUsers() as any)
   }

@@ -30,9 +30,7 @@ type Props = StateProps & DispatchProps & {
   route: RouteComponentProps
 }
 
-type State = {}
-
-class App extends PureComponent<Props, State> {
+class App extends PureComponent<Props> {
   private unlistenHistory?: () => any = undefined
 
   constructor(props: Props) {

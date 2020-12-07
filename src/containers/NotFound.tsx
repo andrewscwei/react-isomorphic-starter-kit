@@ -10,13 +10,9 @@ type StateProps = {
   i18n: I18nState
 }
 
-type DispatchProps = {}
+type Props = StateProps & RouteComponentProps
 
-type Props = StateProps & DispatchProps & RouteComponentProps<{}>
-
-type State = {}
-
-class NotFound extends PureComponent<Props, State> {
+class NotFound extends PureComponent<Props> {
   componentDidMount() {
     if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('not-found')
   }

@@ -6,11 +6,9 @@ type Props = PropsWithChildren<{
   className?: string
 }>
 
-const ReactLogo: FunctionComponent<Props> = ({ className }: Props) => {
-  return (
-    <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
-  )
-}
+const ReactLogo: FunctionComponent<Props> = ({ className }: Props) => (
+  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
+)
 
 export default ReactLogo
 

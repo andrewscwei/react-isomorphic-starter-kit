@@ -1,7 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled from 'styled-components'
 import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
@@ -11,29 +10,22 @@ type StateProps = {
   i18n: I18nState
 }
 
-type DispatchProps = {}
+type Props = PropsWithChildren<StateProps>
 
-type Props = StateProps & DispatchProps & PropsWithChildren<{}>
-
-const Footer: FunctionComponent<Props> = ({ i18n }: Props) => {
-  return (
-    <StyledRoot>
-      <nav>
-        <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
-      </nav>
-      <Link to={getLocalizedPath('/', 'en')}>{i18n.ltxt('en')}</Link>
-      <Link to={getLocalizedPath('/', 'ja')}>{i18n.ltxt('jp')}</Link>
-    </StyledRoot>
-  )
-}
+const Footer: FunctionComponent<Props> = ({ i18n }: Props) => (
+  <StyledRoot>
+    <nav>
+      <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
+    </nav>
+    <Link to={getLocalizedPath('/', 'en')}>{i18n.ltxt('en')}</Link>
+    <Link to={getLocalizedPath('/', 'ja')}>{i18n.ltxt('jp')}</Link>
+  </StyledRoot>
+)
 
 export default connect(
   (state: AppState): StateProps => ({
     i18n: state.i18n,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-  }, dispatch),
 )(Footer)
 
 const StyledRoot = styled.footer`
