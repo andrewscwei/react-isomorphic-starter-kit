@@ -19,11 +19,11 @@ const useBundleAnalyzer = isProduction && buildConf.build.analyzer
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
-    bundle: [
+    main: [
       ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
-      path.join(inputDir, 'client.tsx'),
+      path.join(inputDir, 'bundles/main.ts'),
     ],
-    polyfills: path.join(inputDir, 'polyfills.ts'),
+    polyfills: path.join(inputDir, 'bundles/polyfills.ts'),
   },
   mode: isProduction ? 'production' : 'development',
   module: {

@@ -5,6 +5,7 @@
 import path from 'path'
 import React, { Fragment, ReactElement } from 'react'
 import serialize from 'serialize-javascript'
+import { css } from 'styled-components'
 import { AppState } from '../store'
 
 interface Props {
@@ -99,7 +100,7 @@ function Layout({
         <meta name='msapplication-navbutton-color' content='#000000'/>
 
         <style dangerouslySetInnerHTML={{
-          __html: `
+          __html: css`
             @font-face {
               font-family: 'Roboto';
               src: url('${resolveAssetPath('/fonts/Roboto-Bold.ttf')}') format('truetype');
@@ -120,7 +121,7 @@ function Layout({
               font-style: normal;
               font-weight: 300;
             }
-          `,
+          `.toString(),
         }}/>
 
         { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
@@ -147,7 +148,7 @@ function Layout({
         <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
         <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
         <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
-        <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'bundle'}.js`)}></script>
+        <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'main'}.js`)}></script>
 
         { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
           <Fragment>
