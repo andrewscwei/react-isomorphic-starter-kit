@@ -14,7 +14,7 @@ import path from 'path'
 import appConf from './app.conf'
 import { generateSitemap } from './middleware/sitemap'
 import { renderWithContext, renderWithoutContext } from './middleware/ssr'
-import routes from './routes'
+import routes from './routes.conf'
 import debug from './utils/debug'
 
 const app = express()

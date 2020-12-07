@@ -11,7 +11,7 @@ import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import routes from '../routes/client'
+import routesConf from '../routes.conf'
 import { AppState } from '../store'
 import { changeLocale, I18nState } from '../store/i18n'
 import globalStyles from '../styles/global'
@@ -35,7 +35,7 @@ interface Props extends StateProps, DispatchProps, OwnProps {}
 interface State {}
 
 class App extends PureComponent<Props, State> {
-  unlistenHistory?: () => any = undefined
+  private unlistenHistory?: () => any = undefined
 
   constructor(props: Props) {
     super(props)
@@ -85,7 +85,7 @@ class App extends PureComponent<Props, State> {
   }
 
   private generateRoutes() {
-    return routes.map((route, index) => (
+    return routesConf.map((route, index) => (
       <Route exact={route.exact} path={route.path} key={`route-${index}`} component={route.component}/>
     ))
   }
@@ -99,7 +99,7 @@ export default hot(connect((state: AppState): StateProps => ({
 
 const GlobalStyles = createGlobalStyle`${globalStyles}`
 
-const StyledBody = styled(TransitionGroup)<any>`
+const StyledBody = styled(TransitionGroup)`
   height: 100%;
   position: absolute;
   width: 100%;

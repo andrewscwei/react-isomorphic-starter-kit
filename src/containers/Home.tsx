@@ -11,9 +11,7 @@ interface StateProps {
   i18n: I18nState
 }
 
-interface DispatchProps {
-
-}
+interface DispatchProps {}
 
 type OwnProps = RouteComponentProps<{
 
@@ -21,9 +19,7 @@ type OwnProps = RouteComponentProps<{
 
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
-interface State {
-
-}
+interface State {}
 
 class Home extends PureComponent<Props, State> {
   componentDidMount() {

@@ -13,8 +13,8 @@ import { matchRoutes } from 'react-router-config'
 import { Route, RouteComponentProps, StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import App from '../containers/App'
-import routes from '../routes/client'
-import store from '../store'
+import routesConf from '../routes.conf'
+import { createStore } from '../store'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
 
@@ -28,8 +28,9 @@ import debug from '../utils/debug'
 export function renderWithContext(): RequestHandler {
   return async (req, res) => {
     // Find and store all matching client routes based on the request URL.
-    const matches = matchRoutes(routes, req.path)
+    const matches = matchRoutes(routesConf, req.path)
     const title = (matches.length > 0) && (matches[0].route as any).title
+    const store = createStore(res.locals.store)
 
     // For each matching route, fetch async data if required.
     for (const t of matches) {
@@ -82,7 +83,7 @@ export function renderWithContext(): RequestHandler {
 export function renderWithoutContext(): RequestHandler {
   return async (req, res) => {
     // Find and store all matching client routes based on the request URL.
-    const matches = matchRoutes(routes, req.path)
+    const matches = matchRoutes(routesConf, req.path)
     const title = (matches.length > 0) && (matches[0].route as any).title
 
     debug(`Rendering without context <${req.path}>...`, 'OK')

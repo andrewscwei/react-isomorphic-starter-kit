@@ -1,4 +1,6 @@
-declare module 'sitemap';
+declare module 'sitemap'
+
+declare module 'webpack-manifest-plugin'
 
 declare const __BUILD_CONFIG__: { [key: string]: any }
 declare const __ASSET_MANIFEST__: AssetManifest
@@ -15,7 +17,7 @@ declare module '*.svg' {
 
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
-    constructor();
+    constructor()
   }
 
   export default WebpackWorker
