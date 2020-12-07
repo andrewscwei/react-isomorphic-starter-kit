@@ -7,19 +7,15 @@ import ReactLogo from '../components/ReactLogo'
 import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
 
-interface StateProps {
+type StateProps = {
   i18n: I18nState
 }
 
-interface DispatchProps {}
+type DispatchProps = {}
 
-type OwnProps = RouteComponentProps<{
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>
 
-}>
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-interface State {}
+type State = {}
 
 class Home extends PureComponent<Props, State> {
   componentDidMount() {

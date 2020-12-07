@@ -3,7 +3,7 @@
  */
 
 import path from 'path'
-import React, { Fragment, ReactElement } from 'react'
+import React, { Fragment, FunctionComponent, ReactElement } from 'react'
 import serialize from 'serialize-javascript'
 import { css } from 'styled-components'
 import { AppState } from '../store'
@@ -45,7 +45,7 @@ function resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASS
   return out
 }
 
-function Layout({
+const Layout: FunctionComponent<Props> = ({
   body,
   bundleId,
   description,
@@ -54,7 +54,7 @@ function Layout({
   keywords,
   title,
   url,
-}: Props): ReactElement {
+}: Props) => {
   return (
     <html>
       { process.env.NODE_ENV !== 'development' &&

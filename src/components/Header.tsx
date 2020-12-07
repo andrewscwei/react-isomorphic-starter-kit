@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Action, bindActionCreators, Dispatch } from 'redux'
@@ -7,21 +7,15 @@ import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
 import { getLocalizedPath } from '../utils/i18n'
 
-interface StateProps {
+type StateProps = {
   i18n: I18nState
 }
 
-interface DispatchProps {
+type DispatchProps = {}
 
-}
+type Props = StateProps & DispatchProps & PropsWithChildren<{}>
 
-type OwnProps = PropsWithChildren<{
-
-}>
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-function Header({ i18n }: Props): ReactElement {
+const Header: FunctionComponent<Props> = ({ i18n }: Props) => {
   return (
     <StyledRoot>
       <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>

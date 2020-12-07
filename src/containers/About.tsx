@@ -7,24 +7,18 @@ import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
 import { fetchUsers, User, UsersState } from '../store/users'
 
-interface StateProps {
+type StateProps = {
   i18n: I18nState
   users: UsersState
 }
 
-interface DispatchProps {
+type DispatchProps = {
   fetchUsers(): void
 }
 
-type OwnProps = RouteComponentProps<{
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>
 
-}>
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-interface State {
-
-}
+type State = {}
 
 class About extends PureComponent<Props, State> {
   static fetchData(store: Store<AppState>) {

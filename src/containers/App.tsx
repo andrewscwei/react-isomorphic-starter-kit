@@ -18,21 +18,19 @@ import globalStyles from '../styles/global'
 import debug from '../utils/debug'
 import { getLocaleFromPath } from '../utils/i18n'
 
-interface StateProps {
+type StateProps = {
   i18n: I18nState
 }
 
-interface DispatchProps {
+type DispatchProps = {
   changeLocale: typeof changeLocale
 }
 
-interface OwnProps {
+type Props = StateProps & DispatchProps & {
   route: RouteComponentProps
 }
 
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-interface State {}
+type State = {}
 
 class App extends PureComponent<Props, State> {
   private unlistenHistory?: () => any = undefined

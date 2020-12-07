@@ -6,23 +6,15 @@ import styled from 'styled-components'
 import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
 
-interface StateProps {
+type StateProps = {
   i18n: I18nState
 }
 
-interface DispatchProps {
+type DispatchProps = {}
 
-}
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>
 
-type OwnProps = RouteComponentProps<{
-
-}>
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
-
-interface State {
-
-}
+type State = {}
 
 class NotFound extends PureComponent<Props, State> {
   componentDidMount() {
