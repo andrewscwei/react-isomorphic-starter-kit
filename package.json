@@ -1,6 +1,6 @@
 {
   "name": "react-isomorphic-starter-kit",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "description": "Experimental React universal/isomorphic app starter kit",
   "private": true,
   "license": "MIT",
@@ -14,10 +14,10 @@
     "ship:clean": "./scripts/clean.sh",
     "ship:build": "./scripts/build.sh",
     "ship:run": "./scripts/run.sh",
-    "test": "export NODE_ENV=test DEBUG=test* mocha --require ts-node/register --timeout 10000 --reporter spec --full-trace --colors --recursive --bail --exit \"tests/**/*.ts\"",
+    "test": "export NODE_ENV=test DEBUG=test* && mocha --require ts-node/register --timeout 10000 --reporter spec --full-trace --colors --recursive --bail --exit \"tests/**/*.ts\"",
     "lint": "npm run lint:ts && npm run lint:css",
     "lint:fix": "npm run lint:ts:fix && npm run lint:css:fix",
-    "lint:ts": "eslint --ext .ts --ext .tsx src config",
+    "lint:ts": "eslint --ext .ts --ext .tsx src config tests",
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "lint:css": "stylelint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint:css:fix": "npm run lint:css -- --fix"
