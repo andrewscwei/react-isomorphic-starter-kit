@@ -2,12 +2,13 @@
  * @file Route definitions for React router.
  */
 
+import { RouteConfig } from 'react-router-config'
 import About from './containers/About'
 import Home from './containers/Home'
 import NotFound from './containers/NotFound'
 import { getPolyglotByLocale } from './utils/i18n'
 
-export default [{
+const config: Array<RouteConfig> = [{
   path: '/',
   title: getPolyglotByLocale('en').t('home'),
   exact: true,
@@ -32,3 +33,5 @@ export default [{
   title: getPolyglotByLocale('en').t('not-found'),
   component: NotFound,
 }]
+
+export default config

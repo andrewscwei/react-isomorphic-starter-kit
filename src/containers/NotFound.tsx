@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps } from 'react-router-dom'
-import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled from 'styled-components'
 import { AppState } from '../store'
 import { I18nState } from '../store/i18n'
@@ -40,9 +39,6 @@ export default connect(
   (state: AppState): StateProps => ({
     i18n: state.i18n,
   }),
-  (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
-
-  }, dispatch),
 )(NotFound)
 
 const StyledRoot = styled.div`
