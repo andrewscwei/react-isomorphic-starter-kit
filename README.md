@@ -1,5 +1,7 @@
 # React Isomorphic Starter Kit [![CI](https://github.com/andrewscwei/react-isomorphic-starter-kit/workflows/CI/badge.svg)](https://github.com/andrewscwei/react-isomorphic-starter-kit/actions?query=workflow%3ACI) [![CD](https://github.com/andrewscwei/react-isomorphic-starter-kit/workflows/CD/badge.svg)](https://github.com/andrewscwei/react-isomorphic-starter-kit/actions?query=workflow%3ACD)
 
+> **DEPRECATED** This branch is now deprecated. Only the master branch (TypeScript) is maintained.
+
 This is an **experimental** starter kit for a React universal/isomorphic app.
 
 ## Features
