@@ -8,7 +8,7 @@ import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlu
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import buildConf from './build.conf'
-import { getTranslationDataDictFromDir } from './utils'
+import { getBundlesFromDir, getTranslationDataDictFromDir } from './utils'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const cwd = path.join(__dirname, '../')
@@ -18,13 +18,17 @@ const useBundleAnalyzer = isProduction && buildConf.build.analyzer
 
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
-  entry: {
-    main: [
-      ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
-      path.join(inputDir, 'bundles/main.ts'),
-    ],
-    polyfills: path.join(inputDir, 'bundles/polyfills.ts'),
-  },
+  entry: getBundlesFromDir(path.join(inputDir, 'bundles')).reduce((out, curr) => {
+    const bundleName = curr.replace('.ts', '')
+    const bundlePath = path.join(inputDir, 'bundles', curr)
+
+    out[bundleName] = [
+      ...(process.env.NODE_ENV === 'production') ? [] : ['webpack-hot-middleware/client?reload=true'],
+      bundlePath,
+    ]
+
+    return out
+  }, {} as any ),
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
