@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import App from '../containers/App'
-import { render } from '../middleware/ssr'
+import { render } from '../middleware/render'
 
 const router = Router()
 

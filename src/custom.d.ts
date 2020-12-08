@@ -1,19 +1,14 @@
-declare module 'sitemap'
-
 declare module 'webpack-manifest-plugin'
+declare module 'sitemap'
+declare module '*.svg'
 
-declare const __BUILD_CONFIG__: { [key: string]: any }
+declare const __BUILD_CONFIG__: Record<string, any>
 declare const __ASSET_MANIFEST__: AssetManifest
 declare const __I18N_CONFIG__: Readonly<{
   defaultLocale: string
   locales: string
   dict: TranslationDataDict
 }>
-
-declare module '*.svg' {
-  const content: any
-  export default content
-}
 
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
@@ -23,27 +18,16 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-interface TranslationData {
-  [key: string]: string
-}
-
-interface TranslationDataDict {
-  [locale: string]: TranslationData
-}
-
-interface RouteData {
-  component: string
-  exact?: boolean
-  path: string
-}
-
-interface AssetManifest {
-  [key: string]: any
-}
+type TranslationData = { [key: string]: string | TranslationData }
+type TranslationDataDict = Record<string, TranslationData>
+type AssetManifest = Record<string, any>
 
 interface Window {
-  __INITIAL_STATE__: any
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: () => void
+  __BUILD_NUMBER__: string
+  __INITIAL_STATE__: Record<string, any>
+  __LOCALS__: Record<string, any>
+  __VERSION__: string
 }
 
 interface Error {

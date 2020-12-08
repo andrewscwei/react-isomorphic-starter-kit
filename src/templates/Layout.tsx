@@ -15,6 +15,7 @@ interface Props {
   initialState?: Omit<AppState, 'i18n'>
   initialStyles?: Array<ReactElement<unknown>>
   keywords?: string
+  locals?: Record<string, any>
   title?: string
   url?: string
 }
@@ -52,6 +53,7 @@ const Layout: FunctionComponent<Props> = ({
   initialState,
   initialStyles,
   keywords,
+  locals,
   title,
   url,
 }: Props) => (
@@ -141,8 +143,9 @@ const Layout: FunctionComponent<Props> = ({
     <body>
       <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__='${__BUILD_CONFIG__.version}';` }}/>
       <script dangerouslySetInnerHTML={{ __html: `window.__BUILD_NUMBER__='${__BUILD_CONFIG__.buildNumber}';` }}/>
+      <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__ = ${serialize(locals)}` }}/>
       { initialState &&
-          <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(initialState)};` }}/>
+          <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(initialState)};` }}/>
       }
       <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
       <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>

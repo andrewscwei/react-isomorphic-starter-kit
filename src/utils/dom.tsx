@@ -19,7 +19,7 @@ type MarkupOptions = {
 }
 
 /**
- * Factory function for generating base React app markup. Defaults to targetting a `BrowserRouter`.
+ * Factory function for generating base React app markup. Defaults to targeting a `BrowserRouter`.
  *
  * @param Component - The React component to wrap around.
  * @param options - @see MarkupOptions

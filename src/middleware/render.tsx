@@ -89,8 +89,9 @@ export function renderWithMarkup<P extends { route: RouteComponentProps }>(Compo
       <Layout
         body={body}
         bundleId={bundleId}
-        initialStyles={sheet.getStyleElement()}
         initialState={_.omit(store.getState(), 'i18n')}
+        initialStyles={sheet.getStyleElement()}
+        locals={_.omit(res.locals, 'store')}
         title={title}
       />,
     )}`)
@@ -118,6 +119,7 @@ export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): 
       <Layout
         bundleId={bundleId}
         initialState={_.omit(store.getState(), 'i18n')}
+        locals={_.omit(res.locals, 'store')}
         title={title}
       />,
     )}`)
