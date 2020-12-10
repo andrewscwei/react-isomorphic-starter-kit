@@ -22,10 +22,9 @@ const config: Configuration = {
   entry: getBundlesFromDir(path.join(inputDir, 'bundles')).reduce((out, curr) => {
     const bundleName = curr.replace('.ts', '')
     const bundlePath = path.join(inputDir, 'bundles', curr)
-    const bundlesExcludedFromHotReload = ['polyfills']
 
     out[bundleName] = [
-      ...(isProduction || (bundlesExcludedFromHotReload.indexOf(bundleName) > -1)) ? [] : ['webpack-hot-middleware/client?reload=true'],
+      ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
       bundlePath,
     ]
 
