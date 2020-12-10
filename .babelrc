@@ -3,7 +3,6 @@
     "development": {
       "plugins": [
         "babel-plugin-styled-components",
-        "react-hot-loader/babel"
       ]
     }
   },

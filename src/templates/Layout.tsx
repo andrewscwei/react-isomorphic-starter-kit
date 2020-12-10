@@ -148,7 +148,9 @@ const Layout: FunctionComponent<Props> = ({
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(initialState)};` }}/>
       }
       <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
-      <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
+      { process.env.NODE_ENV === 'production' &&
+        <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
+      }
       <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
       <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'main'}.js`)}></script>
 

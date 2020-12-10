@@ -13,7 +13,7 @@ type StateProps = {
 }
 
 type DispatchProps = {
-  fetchUsers(): void
+  fetchUsers: typeof fetchUsers
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps

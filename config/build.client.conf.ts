@@ -2,6 +2,7 @@
  * @file Webpack config for compiling the app client.
  */
 
+import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import path from 'path'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
@@ -21,14 +22,15 @@ const config: Configuration = {
   entry: getBundlesFromDir(path.join(inputDir, 'bundles')).reduce((out, curr) => {
     const bundleName = curr.replace('.ts', '')
     const bundlePath = path.join(inputDir, 'bundles', curr)
+    const bundlesExcludedFromHotReload = ['polyfills']
 
     out[bundleName] = [
-      ...(process.env.NODE_ENV === 'production') ? [] : ['webpack-hot-middleware/client?reload=true'],
+      ...(isProduction || (bundlesExcludedFromHotReload.indexOf(bundleName) > -1)) ? [] : ['webpack-hot-middleware/client?reload=true'],
       bundlePath,
     ]
 
     return out
-  }, {} as any ),
+  }, {} as any),
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
@@ -38,6 +40,9 @@ const config: Configuration = {
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
+          ...isProduction ? {} : {
+            plugins: [require.resolve('react-refresh/babel')],
+          },
         },
       }],
     }, {
@@ -127,17 +132,13 @@ const config: Configuration = {
       new ManifestPlugin({ fileName: 'asset-manifest.json' }) as any,
     ] : [
       new HotModuleReplacementPlugin(),
+      new ReactRefreshPlugin(),
     ],
     ...!useBundleAnalyzer ? [] : [
       new BundleAnalyzerPlugin(),
     ],
   ],
   resolve: {
-    alias: {
-      ...isProduction ? {} : {
-        'react-dom': '@hot-loader/react-dom',
-      },
-    },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   stats: {

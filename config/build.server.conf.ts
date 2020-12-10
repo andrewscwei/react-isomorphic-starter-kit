@@ -132,11 +132,6 @@ const config: Configuration = {
     ],
   ],
   resolve: {
-    alias: {
-      ...isProduction ? {} : {
-        'react-dom': '@hot-loader/react-dom',
-      },
-    },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   stats: {
