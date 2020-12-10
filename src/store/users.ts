@@ -1,24 +1,18 @@
 import { Action, Dispatch } from 'redux'
 
-export interface User {
-  [key: string]: any
-}
+export type User = Record<string, any>
 
 export enum UsersActionType {
   LOADED = 'users/LOADED',
 }
 
 export interface UsersAction extends Action<UsersActionType> {
-  payload: Partial<UsersState>
+  users: ReadonlyArray<User>
 }
 
-export interface UsersState {
-  items: ReadonlyArray<User>
-}
+export type UsersState = ReadonlyArray<User>
 
-const initialState: UsersState = {
-  items: [],
-}
+const initialState: UsersState = []
 
 export function fetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
@@ -29,12 +23,10 @@ export function fetchUsers() {
 
     if (!res) return
 
-    const { data: items } = await res.json()
+    const { data } = await res.json()
     const action: UsersAction = {
       type: UsersActionType.LOADED,
-      payload: {
-        items,
-      },
+      users: data,
     }
 
     dispatch(action)
@@ -44,10 +36,7 @@ export function fetchUsers() {
 export default function reducer(state = initialState, action: UsersAction): UsersState {
   switch (action.type) {
   case UsersActionType.LOADED:
-    return {
-      ...state,
-      ...action.payload,
-    }
+    return action.users
   default:
     return state
   }

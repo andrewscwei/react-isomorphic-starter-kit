@@ -1,11 +1,11 @@
 {
+  "page-title-home": "ホーム",
+  "page-title-about": "アバウト",
+  "page-title-not-found": "404",
   "hello": "こんにちは、世界！",
   "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
-  "home": "ホーム",
-  "about": "アバウト",
-  "not-found": "404",
   "not-found-title": "ページが表示できません",
-  "about-title": "ただインターネットから取り出されたランダムな名前",
+  "page-title-about-title": "ただインターネットから取り出されたランダムな名前",
   "en": "EN",
   "jp": "日"
 }

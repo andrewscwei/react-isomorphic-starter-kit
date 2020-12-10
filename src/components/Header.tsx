@@ -14,8 +14,8 @@ type Props = PropsWithChildren<StateProps>
 
 const Header: FunctionComponent<Props> = ({ i18n }: Props) => (
   <StyledRoot>
-    <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('home')}</Link>
-    <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('about')}</Link>
+    <Link to={getLocalizedPath('/', i18n.locale)}>{i18n.ltxt('page-title-home')}</Link>
+    <Link to={getLocalizedPath('/about', i18n.locale)}>{i18n.ltxt('page-title-about')}</Link>
   </StyledRoot>
 )
 

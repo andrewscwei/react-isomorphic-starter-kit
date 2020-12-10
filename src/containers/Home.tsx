@@ -14,7 +14,7 @@ type Props = StateProps & RouteComponentProps
 
 class Home extends PureComponent<Props> {
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('home')
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('page-title-home')
   }
 
   render() {

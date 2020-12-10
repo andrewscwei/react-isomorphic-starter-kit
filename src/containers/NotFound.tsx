@@ -13,7 +13,7 @@ type Props = StateProps & RouteComponentProps
 
 class NotFound extends PureComponent<Props> {
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('not-found')
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('page-title-not-found')
   }
 
   render() {

@@ -24,7 +24,7 @@ class About extends PureComponent<Props> {
   }
 
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('about')
+    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('page-title-about')
     this.props.fetchUsers()
   }
 
@@ -34,9 +34,9 @@ class About extends PureComponent<Props> {
 
     return (
       <StyledRoot>
-        <h1>{ltxt('about-title')}</h1>
+        <h1>{ltxt('page-title-about-title')}</h1>
         {
-          users.items.map((user: User) => (
+          users.map((user: User) => (
             <div key={user.id}>
               <span>{user.first_name} {user.last_name}</span>
             </div>
