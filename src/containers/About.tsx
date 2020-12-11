@@ -4,11 +4,10 @@ import { RouteComponentProps } from 'react-router'
 import { Action, bindActionCreators, Dispatch, Store } from 'redux'
 import styled from 'styled-components'
 import { AppState } from '../store'
-import { I18nState } from '../store/i18n'
 import { fetchUsers, User, UsersState } from '../store/users'
+import { I18nComponentProps, withI18n } from '../utils/i18n'
 
 type StateProps = {
-  i18n: I18nState
   users: UsersState
 }
 
@@ -16,7 +15,7 @@ type DispatchProps = {
   fetchUsers: typeof fetchUsers
 }
 
-type Props = StateProps & DispatchProps & RouteComponentProps
+type Props = StateProps & DispatchProps & RouteComponentProps & I18nComponentProps
 
 class About extends PureComponent<Props> {
   static fetchData(store: Store<AppState>) {
@@ -24,13 +23,12 @@ class About extends PureComponent<Props> {
   }
 
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('page-title-about')
+    if (typeof document !== 'undefined') document.title = this.props.ltxt('page-title-about')
     this.props.fetchUsers()
   }
 
   render() {
-    const { users } = this.props
-    const { ltxt } = this.props.i18n
+    const { ltxt, users } = this.props
 
     return (
       <StyledRoot>
@@ -49,13 +47,12 @@ class About extends PureComponent<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    i18n: state.i18n,
     users: state.users,
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,
   }, dispatch),
-)(About)
+)(withI18n(About))
 
 const StyledRoot = styled.div`
   align-items: center;

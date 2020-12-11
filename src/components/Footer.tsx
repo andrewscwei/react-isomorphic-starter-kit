@@ -1,32 +1,21 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
-import { connect } from 'react-redux'
+import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { AppState } from '../store'
-import { I18nState } from '../store/i18n'
-import { getLocalizedPath } from '../utils/i18n'
+import { getLocalizedPath, ltxt } from '../utils/i18n'
 
-type StateProps = {
-  i18n: I18nState
-}
+type Props = {}
 
-type Props = PropsWithChildren<StateProps>
-
-const Footer: FunctionComponent<Props> = ({ i18n }: Props) => (
+const Footer: FunctionComponent<Props> = () => (
   <StyledRoot>
     <nav>
       <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
     </nav>
-    <Link to={getLocalizedPath('/', 'en')}>{i18n.ltxt('en')}</Link>
-    <Link to={getLocalizedPath('/', 'ja')}>{i18n.ltxt('jp')}</Link>
+    <Link to={getLocalizedPath('/', 'en')}>{ltxt('en')}</Link>
+    <Link to={getLocalizedPath('/', 'ja')}>{ltxt('jp')}</Link>
   </StyledRoot>
 )
 
-export default connect(
-  (state: AppState): StateProps => ({
-    i18n: state.i18n,
-  }),
-)(Footer)
+export default Footer
 
 const StyledRoot = styled.footer`
   align-items: center;

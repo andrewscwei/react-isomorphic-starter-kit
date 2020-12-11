@@ -1,23 +1,17 @@
 import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
-import { AppState } from '../store'
-import { I18nState } from '../store/i18n'
+import { I18nComponentProps, withI18n } from '../utils/i18n'
 
-type StateProps = {
-  i18n: I18nState
-}
-
-type Props = StateProps & RouteComponentProps
+type Props = RouteComponentProps & I18nComponentProps
 
 class NotFound extends PureComponent<Props> {
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.i18n.ltxt('page-title-not-found')
+    if (typeof document !== 'undefined') document.title = this.props.ltxt('page-title-not-found')
   }
 
   render() {
-    const { ltxt } = this.props.i18n
+    const { ltxt } = this.props
 
     return (
       <Route render={(route: RouteComponentProps<any>) => {
@@ -35,11 +29,7 @@ class NotFound extends PureComponent<Props> {
   }
 }
 
-export default connect(
-  (state: AppState): StateProps => ({
-    i18n: state.i18n,
-  }),
-)(NotFound)
+export default withI18n(NotFound)
 
 const StyledRoot = styled.div`
   align-items: center;

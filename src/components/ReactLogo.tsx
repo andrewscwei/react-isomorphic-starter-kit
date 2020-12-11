@@ -1,10 +1,10 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg'
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
-type Props = PropsWithChildren<{
+type Props = {
   className?: string
-}>
+}
 
 const ReactLogo: FunctionComponent<Props> = ({ className }: Props) => (
   <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>

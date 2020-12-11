@@ -23,9 +23,9 @@ type TranslationDataDict = Record<string, TranslationData>
 type AssetManifest = Record<string, any>
 
 interface Window {
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: () => void
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: () => void
   __BUILD_NUMBER__: string
-  __INITIAL_STATE__: Record<string, any>
+  __INITIAL_STATE__?: Record<string, any>
   __LOCALS__: Record<string, any>
   __VERSION__: string
 }

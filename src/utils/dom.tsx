@@ -11,6 +11,7 @@ import { Store } from 'redux'
 import { ThemeProvider } from 'styled-components'
 import { AppAction, AppState, createStore } from '../store'
 import * as theme from '../styles/theme'
+import { I18nRouterProvider } from './i18n'
 
 type MarkupOptions = {
   store?: Store<AppState, AppAction>
@@ -32,7 +33,9 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
       <ThemeProvider theme={theme}>
         <StaticRouter {...staticRouter}>
           <Route render={route => (
-            <Component route={route}/>
+            <I18nRouterProvider route={route}>
+              <Component route={route}/>
+            </I18nRouterProvider>
           )}/>
         </StaticRouter>
       </ThemeProvider>
@@ -42,7 +45,9 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
       <ThemeProvider theme={theme}>
         <BrowserRouter {...browserRouter}>
           <Route render={route => (
-            <Component route={route}/>
+            <I18nRouterProvider route={route}>
+              <Component route={route}/>
+            </I18nRouterProvider>
           )}/>
         </BrowserRouter>
       </ThemeProvider>
