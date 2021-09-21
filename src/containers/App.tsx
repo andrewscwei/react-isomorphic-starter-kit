@@ -42,7 +42,9 @@ class App extends PureComponent<Props> {
 
 export default App
 
-const GlobalStyles = createGlobalStyle`${globalStyles}`
+const GlobalStyles = createGlobalStyle`
+  ${globalStyles}
+`
 
 const StyledBody = styled(TransitionGroup)`
   height: 100%;

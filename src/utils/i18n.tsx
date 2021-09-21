@@ -164,7 +164,7 @@ export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({
     <I18nContext.Provider value={{
       state: {
         ...state,
-        locale: locale,
+        locale,
         ltxt: (...args) => getPolyglotByLocale(locale).t(...args),
       },
       dispatch,

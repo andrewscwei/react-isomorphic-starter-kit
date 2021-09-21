@@ -14,13 +14,14 @@ const cwd = path.join(__dirname, '../')
 const inputDir = path.join(cwd, 'src')
 const outputDir = path.join(cwd, 'build')
 const useBundleAnalyzer = isProduction && buildConf.build.analyzer
+const useSpeedMeasurer = buildConf.build.speed
 
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
   entry: {
     index: path.join(inputDir, 'index.ts'),
   },
-  externals: [nodeExternals()],
+  externals: [nodeExternals() as any],
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
@@ -112,7 +113,9 @@ const config: Configuration = {
       APP_ENV: 'server',
     }),
     ...!useBundleAnalyzer ? [] : [
-      new BundleAnalyzerPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+      }),
     ],
     ...isProduction ? [] : [
       new WatchIgnorePlugin({
@@ -147,4 +150,4 @@ const config: Configuration = {
   target: 'node',
 }
 
-export default config
+export default useSpeedMeasurer ? (new (require('speed-measure-webpack-plugin'))()).wrap(config) : config

@@ -16,6 +16,7 @@ const cwd = path.join(__dirname, '../')
 const inputDir = path.join(cwd, 'src')
 const outputDir = path.join(cwd, 'build/static')
 const useBundleAnalyzer = isProduction && buildConf.build.analyzer
+const useSpeedMeasurer = buildConf.build.speed
 
 const config: Configuration = {
   devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
@@ -134,7 +135,9 @@ const config: Configuration = {
       new ReactRefreshPlugin(),
     ],
     ...!useBundleAnalyzer ? [] : [
-      new BundleAnalyzerPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+      }),
     ],
   ],
   resolve: {
@@ -153,4 +156,4 @@ const config: Configuration = {
   target: 'web',
 }
 
-export default config
+export default useSpeedMeasurer ? (new (require('speed-measure-webpack-plugin'))()).wrap(config) : config

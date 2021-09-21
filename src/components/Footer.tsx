@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { getLocalizedPath, ltxt } from '../utils/i18n'
 
-type Props = {}
-
-const Footer: FunctionComponent<Props> = () => (
+const Footer: FunctionComponent = () => (
   <StyledRoot>
     <nav>
       <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>

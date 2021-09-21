@@ -50,6 +50,9 @@ export default {
 
     // Specifies whether a bundle analyzer report should be generated at the end
     // of the build process.
-    analyzer: process.env.ANALYZE_BUNDLE === 'true' ? true : false,
+    analyzer: process.env.npm_config_analyze === 'true' ? true : false,
+
+    // Specifies whether the build process should be measured for speed.
+    speed: process.env.npm_config_speed === 'true' ? true : false,
   },
 }
