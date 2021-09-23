@@ -2,6 +2,7 @@
  * @file Webpack config for compiling the app server.
  */
 
+import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
 import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -90,6 +91,7 @@ const config: Configuration = {
     maxAssetSize: 1 * 1024 * 1024,
   },
   plugins: [
+    new ForkTSCheckerPlugin(),
     new DefinePlugin({
       __BUILD_CONFIG__: JSON.stringify(buildConf),
       __ASSET_MANIFEST__: JSON.stringify((() => {

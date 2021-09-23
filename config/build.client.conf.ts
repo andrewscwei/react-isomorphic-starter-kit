@@ -4,6 +4,7 @@
 
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
+import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -107,6 +108,7 @@ const config: Configuration = {
     maxAssetSize: 512 * 1024,
   },
   plugins: [
+    new ForkTSCheckerPlugin(),
     new CopyPlugin({
       patterns: [{
         from: path.join(inputDir, 'static'),

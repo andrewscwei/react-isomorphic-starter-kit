@@ -93,6 +93,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.25.3",
     "file-loader": "^6.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.3.3",
     "image-webpack-loader": "^7.0.1",
     "mocha": "^9.1.1",
     "nodemon": "^2.0.12",

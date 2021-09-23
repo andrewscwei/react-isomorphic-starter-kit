@@ -14,7 +14,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import appConf from '../app.conf'
 import App from '../containers/App'
 import routesConf from '../routes.conf'
-import { createStore } from '../store'
+import { createStore, PartialAppState } from '../store'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
 import { markup } from '../utils/dom'
@@ -30,6 +30,11 @@ interface RenderOptions {
    * The browser window title ID (for localization) of the rendered page. If provided, this title will take precedence.
    */
   titleId?: string
+
+  /**
+   * The initial state of the rendered page, which will be merged with `res.locals.store`.
+   */
+   initialState?: PartialAppState
 }
 
 export function render<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, options: RenderOptions = {}): RequestHandler {
@@ -44,9 +49,9 @@ export function render<P extends { route: RouteComponentProps }>(Component: Comp
  *
  * @return Express middleware.
  */
-export function renderWithMarkup<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, { bundleId, titleId }: RenderOptions = {}): RequestHandler {
+export function renderWithMarkup<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, { bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const store = createStore(res.locals.store)
+    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const sheet = new ServerStyleSheet()
     const matches = matchRoutes(routesConf, req.path)
     const locale = getLocaleFromPath(req.path)
@@ -106,9 +111,9 @@ export function renderWithMarkup<P extends { route: RouteComponentProps }>(Compo
  *
  * @return Express middleware.
  */
-export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): RequestHandler {
+export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const store = createStore(res.locals.store)
+    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const matches = matchRoutes(routesConf, req.path)
     const locale = getLocaleFromPath(req.path)
     const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
