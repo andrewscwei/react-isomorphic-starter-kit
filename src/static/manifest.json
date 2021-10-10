@@ -1,11 +1,6 @@
 {
-  "name": "Sybl",
-  "categories": [
-    "broadcast",
-    "alerts",
-    "notifications"
-  ],
-  "description": "Sybl is the fastest way to notify people around you.",
+  "name": "React Isomorphic Starter Kit",
+  "description": "Experimental React universal/isomorphic app starter kit.",
   "display": "standalone",
   "icons": [
     {
@@ -31,10 +26,6 @@
       "type": "image/png"
     }
   ],
-  "short_name": "Sybl",
-  "start_url": "https://sybl.io",
   "theme_color": "#000000",
-  "scope": "/",
-  "android_package_name": "io.sybl.android",
   "orientation": "portrait"
 }
