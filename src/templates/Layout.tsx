@@ -64,41 +64,36 @@ const Layout: FunctionComponent<Props> = ({
     <head>
       <meta charSet='utf-8'/>
       <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
-      <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'/>
-      <link rel='icon' href={resolveAssetPath('/favicon.png')}/>
+      <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'/>
+      <meta name='theme-color' content='#000000'/>
+      <link rel='canonical' href={__BUILD_CONFIG__.meta.url}/>
+      <link rel='mask-icon' href={resolveAssetPath('/favicon.svg')} sizes='any' color='#111111'/>
+      <link rel='icon' href={resolveAssetPath('/favicon.svg')} sizes='192x192'/>
 
       <title>{title || __BUILD_CONFIG__.meta.title}</title>
       <meta name='description' content={description || __BUILD_CONFIG__.meta.description}/>
-      <meta name='keywords' content={keywords || __BUILD_CONFIG__.meta.keywords}/>
 
-      <meta property='og:url' content={url || __BUILD_CONFIG__.meta.url}/>
-      <meta property='og:image' content={resolveAssetPath('/og-image.png')}/>
       <meta property='og:title' content={__BUILD_CONFIG__.meta.title}/>
+      <meta property='og:site_name' content={__BUILD_CONFIG__.meta.title}/>
       <meta property='og:description' content={description || __BUILD_CONFIG__.meta.description}/>
+      <meta property='og:image' content={resolveAssetPath('/icon-1680.png')}/>
+      <meta property='og:url' content={url || __BUILD_CONFIG__.meta.url}/>
+      <meta property='og:type' content='website'/>
+      <meta property='og:image:width' content='1680' />
+      <meta property='og:image:height' content='1680' />
 
-      <link rel='' href={resolveAssetPath('/manifest.json')}/>
-      <meta name='theme-color' content='#000000'/>
+      <meta name='twitter:title' content={__BUILD_CONFIG__.meta.title}/>
+      <meta name='twitter:description' content={description || __BUILD_CONFIG__.meta.description}/>
+      <meta name='twitter:image' content={resolveAssetPath('/icon-1680.png')}/>
+      <meta name='twitter:card' content='summary'/>
+
       <meta name='mobile-web-app-capable' content='yes'/>
-      <meta name='application-name' content={__BUILD_CONFIG__.meta.title}/>
-
       <meta name='apple-mobile-web-app-capable' content='yes'/>
       <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
       <meta name='apple-mobile-web-app-title' content={__BUILD_CONFIG__.meta.title}/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-180x180-precomposed.png')} sizes='180x180'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-152x152-precomposed.png')} sizes='152x152'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-144x144-precomposed.png')} sizes='144x144'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-120x120-precomposed.png')} sizes='120x120'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-114x114-precomposed.png')} sizes='114x114'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-76x76-precomposed.png')} sizes='76x76'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-72x72-precomposed.png')} sizes='72x72'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-60x60-precomposed.png')} sizes='60x60'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-57x57-precomposed.png')} sizes='57x57'/>
-      <link rel='apple-touch-icon' href={resolveAssetPath('/apple-touch-icon-precomposed.png')}/>
+      <link rel='apple-touch-icon' href={resolveAssetPath('/icon-1024.png')} sizes='192x192'/>
 
-      <meta name='msapplication-TileImage' content={resolveAssetPath('/apple-touch-icon-144x144-precomposed.png')}/>
-      <meta name='msapplication-TileColor' content='#000000'/>
-      <meta name='msapplication-config' content={resolveAssetPath('/browserconfig.xml')}/>
-      <meta name='msapplication-navbutton-color' content='#000000'/>
+      <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
       <style dangerouslySetInnerHTML={{
         __html: css`
