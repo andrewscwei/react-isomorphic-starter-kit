@@ -3,7 +3,8 @@ import normalize from 'styled-normalize'
 import * as theme from './theme'
 
 export default css`
-  ${normalize} /* stylelint-disable-line max-empty-lines */
+  /* stylelint-disable-next-line max-empty-lines, value-keyword-case */
+  ${normalize}
 
   html,
   body {

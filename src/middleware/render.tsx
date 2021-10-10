@@ -27,14 +27,15 @@ interface RenderOptions {
   bundleId?: string
 
   /**
-   * The browser window title ID (for localization) of the rendered page. If provided, this title will take precedence.
+   * The browser window title ID (for localization) of the rendered page. If provided, this title
+   * will take precedence.
    */
   titleId?: string
 
   /**
    * The initial state of the rendered page, which will be merged with `res.locals.store`.
    */
-   initialState?: PartialAppState
+  initialState?: PartialAppState
 }
 
 export function render<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, options: RenderOptions = {}): RequestHandler {

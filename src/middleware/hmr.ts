@@ -1,6 +1,5 @@
 /**
- * @file Express middleware for development using Webpack dev server HMR
- *       features.
+ * @file Express middleware for development using Webpack dev server HMR features.
  *
  * @see {@link https://www.npmjs.com/package/webpack-dev-middleware}
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}

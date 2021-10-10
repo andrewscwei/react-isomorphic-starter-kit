@@ -51,8 +51,8 @@ const reducer = (state: I18nState = initialState, action: I18nAction): I18nState
   }
 }
 
-// In development, require context for all locale translation files and add them
-// to Polyglot so that they can be watched by Webpack.
+// In development, require context for all locale translation files and add them to Polyglot so that
+// they can be watched by Webpack.
 if (process.env.APP_ENV === 'client' && process.env.NODE_ENV === 'development') {
   const localeReq = require.context('../../config/locales', true, /^.*\.json$/)
   localeReq.keys().forEach(path => {

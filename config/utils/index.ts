@@ -9,9 +9,8 @@ import requireDir from 'require-dir'
 import buildConf from '../build.conf'
 
 /**
- * Scans a directory and returns an array of file paths (extensions included)
- * relative to that directory, with each path supposedly corresponding to a
- * bundle entry file.
+ * Scans a directory and returns an array of file paths (extensions included) relative to that
+ * directory, with each path supposedly corresponding to a bundle entry file.
  *
  * @param dir - The directory to scan.
  * @param baseDir - The directory to resolve relative paths against.
@@ -38,8 +37,7 @@ export function getBundlesFromDir(dir: string, baseDir: string = dir): ReadonlyA
 }
 
 /**
- * Returns a list of all supported locales by inferring from the translations
- * directory.
+ * Returns a list of all supported locales by inferring from the translations directory.
  *
  * @param dir Directory to infer locales from.
  *

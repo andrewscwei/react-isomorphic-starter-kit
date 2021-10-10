@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# This script builds the Docker container for this project. It supports 3
-# environments: development, staging and production. This environment directly
-# reflects the runtime environment of the app. Note that if the environment is
-# set to production, dev dependencies will not be installed.
+# This script builds the Docker container for this project. It supports 3 environments: development,
+# staging and production. This environment directly reflects the runtime environment of the app.
+# Note that if the environment is set to production, dev dependencies will not be installed.
 
 set -e
 

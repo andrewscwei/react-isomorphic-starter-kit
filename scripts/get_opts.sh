@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This script processes all the input arguments supported by the other build
-# scripts.
+# This script processes all the input arguments supported by the other build scripts.
 
 # Get the base path (repo root).
 BASE_DIR=$(cd $(dirname $0); cd ../; pwd -P)
@@ -21,12 +20,11 @@ IMAGE_TAG_SUFFIX=""
 # App version.
 IMAGE_VERSION=$(cat $BASE_DIR/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[:space:]')
 
-# Target environment for the Docker image to be built, can be overridden (only
-# used during build script).
+# Target environment for the Docker image to be built, can be overridden (only used during build
+# script).
 ENVIRONMENT="production"
 
-# Target network to connect the container, can be overridden (only used during
-# run script).
+# Target network to connect the container, can be overridden (only used during run script).
 NET="bridge"
 
 # Port to use when running the container.

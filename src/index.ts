@@ -26,8 +26,7 @@ app.use(helmet({
 }))
 
 /**
- * Serve assets from Webpack dev server in development to enable hot module
- * reloading.
+ * Serve assets from Webpack dev server in development to enable hot module reloading.
  */
 if (process.env.NODE_ENV === 'development') {
   app.use(require('./middleware/hmr').devMiddleware())
@@ -68,11 +67,10 @@ app.use((req, _, next) => {
 })
 
 /**
- * Final point of error handling. Any error that was previously thrown will
- * skip all intermediate middleware and go straight to here, where the server
- * will first render an error view if the request accepts html, or respond with
- * the error info in a JSON payload. If the error that ends up here does not
- * have a status code, it will default to 500.
+ * Final point of error handling. Any error that was previously thrown will skip all intermediate
+ * middleware and go straight to here, where the server will first render an error view if the
+ * request accepts html, or respond with the error info in a JSON payload. If the error that ends up
+ * here does not have a status code, it will default to 500.
  */
 app.use((err: Error, _: express.Request, res: express.Response) => {
   res.status(err.status || 500).send(err)

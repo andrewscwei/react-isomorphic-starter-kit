@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# This script removes all Docker containers/images related to the project. It
-# also removes all unnamed containers/images.
+# This script removes all Docker containers/images related to the project. It also removes all
+# unnamed containers/images.
 
 set -e
 

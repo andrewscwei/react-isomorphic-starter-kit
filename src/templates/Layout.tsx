@@ -21,8 +21,8 @@ interface Props {
 }
 
 /**
- * Resolves a raw asset path with the fingerprinted equivalent. This only works
- * if a manifest object is provided globally.
+ * Resolves a raw asset path with the fingerprinted equivalent. This only works if a manifest object
+ * is provided globally.
  *
  * @param pathToResolve The asset path to resolveAssetPath.
  *

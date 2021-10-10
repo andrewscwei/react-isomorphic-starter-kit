@@ -39,7 +39,7 @@ In any of the `build` or `build:*` scripts, you can add the following arguments 
 # Analyzes the size the generated bundle(s) and displays a visual report in the default browser
 $ npm run build --analyze
 
-# Measures the speed of the build pipeline and outputs a repot to console
+# Measures the speed of the build pipeline and outputs a report to console
 $ npm run build --speed
 ```
 

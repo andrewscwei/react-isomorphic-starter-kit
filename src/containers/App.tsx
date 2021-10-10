@@ -43,6 +43,7 @@ class App extends PureComponent<Props> {
 export default App
 
 const GlobalStyles = createGlobalStyle`
+  /* stylelint-disable-next-line value-keyword-case */
   ${globalStyles}
 `
 
