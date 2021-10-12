@@ -70,16 +70,6 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build
-      # - name: Deploy to NPM
-      #   run: .github/workflows/deploy_to_npm.sh
-      #   env:
-      #     NPM_AUTH: ${{ secrets.NPM_AUTH }}
-      # - name: Deploy to GitHub pages
-      #   run: .github/workflows/deploy_to_gh_pages.sh
-      # - name: Deploy to Netlify
-      #   run: .github/workflows/deploy_to_netlify.sh
-      #   env:
-      #     NETLIFY_KEY: ${{ secrets.NETLIFY_KEY }}
       - name: Deploy to Heroku
         run: .github/workflows/deploy_to_heroku.sh
         env:
