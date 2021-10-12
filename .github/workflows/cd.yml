@@ -80,8 +80,8 @@ jobs:
       #   run: .github/workflows/deploy_to_netlify.sh
       #   env:
       #     NETLIFY_KEY: ${{ secrets.NETLIFY_KEY }}
-      # - name: Deploy to Heroku
-      #   run: .github/workflows/deploy_to_heroku.sh
-      #   env:
-      #     HEROKU_USER: ${{ secrets.HEROKU_USER }}
-      #     HEROKU_KEY: ${{ secrets.HEROKU_KEY }}
+      - name: Deploy to Heroku
+        run: .github/workflows/deploy_to_heroku.sh
+        env:
+          HEROKU_USER: ${{ secrets.HEROKU_USER }}
+          HEROKU_KEY: ${{ secrets.HEROKU_KEY }}
