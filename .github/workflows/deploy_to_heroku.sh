@@ -9,7 +9,7 @@ set -e
 BASE_DIR=$(cd $(dirname $0); cd ../../; pwd -P)
 APP_NAME=$(cat $BASE_DIR/package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[:space:]')
 
-wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+# wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 # In order to log into the Heroku Container Registry, you need a long-lived user authorization key.
 # To create one, run `heroku authorizations:create` and set the key to the environment variable

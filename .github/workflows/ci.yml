@@ -61,7 +61,6 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     environment: production
-    container: node:16.3.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
