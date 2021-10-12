@@ -1,7 +1,7 @@
 # This is a Dockerfile with multi-stage builds.
 
 # Builds the app with dev dependencies included.
-FROM node:14.13.1 as build-dev
+FROM node:16.3.0 as build-dev
 
 ARG BUILD_NUMBER
 ARG PUBLIC_PATH
@@ -32,7 +32,7 @@ RUN npm prune --production
 
 
 # Final production build.
-FROM node:14.13.1-alpine
+FROM node:16.3.0-alpine
 
 ARG BUILD_NUMBER
 
