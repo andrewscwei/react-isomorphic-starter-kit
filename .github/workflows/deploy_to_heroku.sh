@@ -1,31 +1,23 @@
 #!/bin/bash
 
 # Required environment variables:
-# - HEROKU_USER: Heroku username (email)
-# - HEROKU_KEY: Heroku API key
-# = PUBLIC_PATH: Optional public path to prefix all loaded assets in the app.
+# - HEROKU_API_KEY: Heroku long-lived user authorization key
+# - PUBLIC_PATH: Optional public path to prefix all loaded assets in the app.
 
 set -e
 
-APP_NAME=$(cat package.json | jq -r ".name")
+BASE_DIR=$(cd $(dirname $0); cd ../../; pwd -P)
+APP_NAME=$(cat $BASE_DIR/package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[:space:]')
 
 wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
-cat > ~/.netrc << EOF
-machine api.heroku.com
-  login $HEROKU_USER
-  password $HEROKU_KEY
-machine git.heroku.com
-  login $HEROKU_USER
-  password $HEROKU_KEY
-EOF
-
-docker login -u "$HEROKU_USER" -p "$HEROKU_KEY" registry.heroku.com
-docker build --rm=false --build-arg NODE_ENV=production --build-arg BUILD_NUMBER=$GITHUB_SHA --build-arg PUBLIC_PATH=$PUBLIC_PATH -t registry.heroku.com/$APP_NAME/web:latest .
-docker push registry.heroku.com/$APP_NAME/web:latest
+# In order to log into the Heroku Container Registry, you need a long-lived user authorization key.
+# To create one, run `heroku authorizations:create` and set the key to the environment variable
+# `HEROKU_API_KEY`, which will be automatically picked up by the Heroku CLI.
 
 heroku container:login
-heroku container:release web --app=$APP_NAME
+heroku container:push --arg NODE_ENV=production,BUILD_NUMBER=$GITHUB_SHA,PUBLIC_PATH=$PUBLIC_PATH -a $APP_NAME web
+heroku container:release -a $APP_NAME web
 
 echo
 echo "Successfuly deployed to Heroku"

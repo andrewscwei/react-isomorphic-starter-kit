@@ -56,3 +56,20 @@ jobs:
           name: build
       - name: Test
         run: npm test
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    environment: production
+    container: node:16.3.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore build dir
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+      - name: Deploy to Heroku
+        run: .github/workflows/deploy_to_heroku.sh
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
