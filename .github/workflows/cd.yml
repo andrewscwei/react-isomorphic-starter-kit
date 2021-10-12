@@ -63,7 +63,6 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     environment: production
-    container: node:16.3.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -74,4 +73,5 @@ jobs:
       - name: Deploy to Heroku
         run: .github/workflows/deploy_to_heroku.sh
         env:
+          PUBLIC_PATH: ${{ secrets.PUBLIC_PATH }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
