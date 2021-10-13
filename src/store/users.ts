@@ -7,10 +7,10 @@ export enum UsersActionType {
 }
 
 export interface UsersAction extends Action<UsersActionType> {
-  users: ReadonlyArray<User>
+  users: readonly User[]
 }
 
-export type UsersState = ReadonlyArray<User>
+export type UsersState = readonly User[]
 
 const initialState: UsersState = []
 

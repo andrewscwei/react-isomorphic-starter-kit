@@ -17,7 +17,7 @@ import buildConf from '../build.conf'
  *
  * @returns An array of file paths.
  */
-export function getBundlesFromDir(dir: string, baseDir: string = dir): ReadonlyArray<string> {
+export function getBundlesFromDir(dir: string, baseDir: string = dir): readonly string[] {
   const files = fs.readdirSync(dir)
   const bundles = []
 
@@ -43,7 +43,7 @@ export function getBundlesFromDir(dir: string, baseDir: string = dir): ReadonlyA
  *
  * @return List of all supported locales.
  */
-export function getLocalesFromDir(dir: string): ReadonlyArray<string> {
+export function getLocalesFromDir(dir: string): readonly string[] {
   const defaultLocale = buildConf.locales[0]
   const whitelistedLocales = buildConf.locales
   const t = fs

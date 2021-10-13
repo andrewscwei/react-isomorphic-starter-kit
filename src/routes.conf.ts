@@ -8,7 +8,7 @@ import Home from './containers/Home'
 import NotFound from './containers/NotFound'
 import { getPolyglotByLocale } from './utils/i18n'
 
-const config: Array<RouteConfig> = [{
+const config: RouteConfig[] = [{
   path: '/',
   title: getPolyglotByLocale('en').t('page-title-home'),
   exact: true,

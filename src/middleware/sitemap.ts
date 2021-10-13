@@ -8,7 +8,7 @@ export function generateSitemap(): RequestHandler {
       const sm = sitemap.createSitemap({
         hostname: __BUILD_CONFIG__.meta.url,
         cacheTime: 600000,
-        urls: routesConf.reduce((out: Array<any>, curr: { [key: string]: any }) => {
+        urls: routesConf.reduce((out: any[], curr: { [key: string]: any }) => {
           if (curr.path === '*') return out
 
           return [

@@ -13,7 +13,7 @@ interface Props {
   bundleId?: string
   description?: string
   initialState?: Omit<AppState, 'i18n'>
-  initialStyles?: Array<ReactElement<unknown>>
+  initialStyles?: ReactElement<unknown>[]
   keywords?: string
   locals?: Record<string, any>
   title?: string
