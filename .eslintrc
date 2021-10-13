@@ -17,8 +17,8 @@
   },
   "env": {
     "browser": true,
-    "es6": true,
-    "node": true
+    "es6": false,
+    "node": false
   },
   "rules": {
     "@typescript-eslint/adjacent-overload-signatures": "error",
@@ -79,7 +79,7 @@
       "error",
       {
         "multiline": {
-          "delimiter": "none",
+          "delimiter": "none"
         },
         "singleline": {
           "delimiter": "semi",

@@ -42,6 +42,12 @@
       }
     ],
     "rule-empty-line-before": null,
-    "string-quotes": "single"
+    "string-quotes": "single",
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreKeywords": ["dummyValue"]
+      }
+    ]
   }
 }
