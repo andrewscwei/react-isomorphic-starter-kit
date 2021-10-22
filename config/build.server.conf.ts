@@ -22,7 +22,7 @@ const config: Configuration = {
   entry: {
     index: path.join(inputDir, 'index.ts'),
   },
-  externals: [nodeExternals() as any],
+  externals: [nodeExternals()],
   mode: isProduction ? 'production' : 'development',
   module: {
     rules: [{
