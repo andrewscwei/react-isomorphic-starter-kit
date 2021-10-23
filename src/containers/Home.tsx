@@ -7,8 +7,9 @@ import { I18nComponentProps, withI18n } from '../utils/i18n'
 type Props = RouteComponentProps & I18nComponentProps
 
 class Home extends PureComponent<Props> {
+
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.ltxt('page-title-home')
+    if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-home')
   }
 
   render() {
@@ -18,7 +19,7 @@ class Home extends PureComponent<Props> {
       <StyledRoot>
         <StyledReactLogo/>
         <h1>{ltxt('hello')}</h1>
-        <p>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</p>
+        <pre>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</pre>
         <p>{ltxt('description')}</p>
       </StyledRoot>
     )
@@ -28,36 +29,36 @@ class Home extends PureComponent<Props> {
 export default withI18n(Home)
 
 const StyledRoot = styled.div`
+  ${props => props.theme.layout.ph}
   align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  font-family: ${props => props.theme.fonts.body};
   height: 100%;
   justify-content: center;
-  padding: 10% 5%;
   position: absolute;
   width: 100%;
 
   h1 {
-    color: ${props => props.theme.colors.title};
-    font-size: 5em;
-    font-weight: 700;
-    letter-spacing: 3px;
+    ${props => props.theme.texts.h1}
+    color: ${props => props.theme.colors.white};
     margin: 0;
     max-width: 550px;
     text-align: center;
-    text-transform: uppercase;
+  }
+
+  pre {
+    ${props => props.theme.texts.m1}
+    color: ${props => props.theme.colors.grey};
+    text-align: center;
   }
 
   p {
-    color: ${props => props.theme.colors.text};
-    font-weight: 400;
-    letter-spacing: .6px;
-    line-height: 1.6em;
-    max-width: 400px;
+    ${props => props.theme.texts.p1}
+    color: ${props => props.theme.colors.grey};
     margin: 0;
+    max-width: 400px;
     text-align: center;
   }
 `

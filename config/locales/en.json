@@ -1,11 +1,11 @@
 {
-  "page-title-home": "Home",
-  "page-title-about": "About",
-  "page-title-not-found": "404",
+  "window-title-home": "Home",
+  "window-title-about": "About",
+  "window-title-not-found": "404",
   "hello": "Hello, world!",
   "description": "This is an experimental React universal/isomorphic app starter kit.",
   "not-found-title": "This page does not exist",
-  "page-title-about-title": "Just some random names fetched from the Internet",
+  "window-title-about-title": "Just some random names fetched from the Internet",
   "en": "EN",
   "jp": "日"
 }

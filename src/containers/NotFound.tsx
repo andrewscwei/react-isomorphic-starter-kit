@@ -6,8 +6,9 @@ import { I18nComponentProps, withI18n } from '../utils/i18n'
 type Props = RouteComponentProps & I18nComponentProps
 
 class NotFound extends PureComponent<Props> {
+
   componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.ltxt('page-title-not-found')
+    if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-not-found')
   }
 
   render() {
@@ -32,26 +33,22 @@ class NotFound extends PureComponent<Props> {
 export default withI18n(NotFound)
 
 const StyledRoot = styled.div`
+  ${props => props.theme.layout.ph}
   align-items: center;
   box-sizing: border-box;
   display: flex;
-  font-family: ${props => props.theme.fonts.body};
   flex-direction: column;
   flex-wrap: nowrap;
   height: 100%;
   justify-content: center;
-  padding: 10% 5%;
   position: absolute;
   width: 100%;
 
   h1 {
-    color: ${props => props.theme.colors.title};
-    font-size: 2.4em;
-    font-weight: 700;
-    letter-spacing: 3px;
+    ${props => props.theme.texts.h2}
+    color: ${props => props.theme.colors.white};
     margin: 0;
     max-width: 550px;
     text-align: center;
-    text-transform: uppercase;
   }
 `

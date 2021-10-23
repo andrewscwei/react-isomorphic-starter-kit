@@ -10,27 +10,27 @@ import { getPolyglotByLocale } from './utils/i18n'
 
 const config: RouteConfig[] = [{
   path: '/',
-  title: getPolyglotByLocale('en').t('page-title-home'),
+  title: getPolyglotByLocale('en').t('window-title-home'),
   exact: true,
   component: Home,
 }, {
   path: '/about',
-  title: getPolyglotByLocale('en').t('page-title-about'),
+  title: getPolyglotByLocale('en').t('window-title-about'),
   exact: true,
   component: About,
 }, {
   path: '/ja',
-  title: getPolyglotByLocale('ja').t('page-title-home'),
+  title: getPolyglotByLocale('ja').t('window-title-home'),
   exact: true,
   component: Home,
 }, {
   path: '/ja/about',
-  title: getPolyglotByLocale('ja').t('page-title-about'),
+  title: getPolyglotByLocale('ja').t('window-title-about'),
   exact: true,
   component: About,
 }, {
   path: '*',
-  title: getPolyglotByLocale('en').t('page-title-not-found'),
+  title: getPolyglotByLocale('en').t('window-title-not-found'),
   component: NotFound,
 }]
 

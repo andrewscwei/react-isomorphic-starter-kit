@@ -64,3 +64,20 @@ $ npm run ship:build
 # Build and run the image with required environment variables
 $ npm run ship:run
 ```
+
+## Repository Template
+
+When creating a new repository using `react-isomorphic-starter-kit` as a template, follow the steps below to remove the original branding:
+
+1. In `/package.json`, edit the fields: `name`, `version`, `description`, `private` and `license`
+2. Remove `/LICENSE` file
+3. Edit `/README.md` to suit your project
+4. In `/resources/`, edit the app icon and favicon regenerate the sources
+  1. In `/src/static/`, replace the app icon and favicon sources
+  2. Update `/src/static/manifest.json`
+5. In `/src/app.conf.ts`, edit `meta.title` and `locales` fields
+  1. Edit translation files in `/config/locales/` to reflect locale changes
+  2. Edit `/src/routes.conf.ts` to reflect locale changes
+6. In `/src/components/Footer.tsx`, remove reference to this repository's URL
+
+In terms of configuration and metadata, those were it. The remaining changes are in the individual pages in `/src/containers/` and the assets, components and state containers that they use.

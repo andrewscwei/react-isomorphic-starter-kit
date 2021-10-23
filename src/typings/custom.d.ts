@@ -1,6 +1,8 @@
 declare module 'webpack-manifest-plugin'
 declare module 'sitemap'
 declare module '*.svg'
+declare module '*.jpg'
+declare module '*.png'
 
 declare const __BUILD_CONFIG__: Record<string, any>
 declare const __ASSET_MANIFEST__: AssetManifest
