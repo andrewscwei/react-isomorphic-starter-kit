@@ -1,9 +1,10 @@
 {
-  "processors": ["stylelint-processor-styled-components"],
+  "customSyntax": "@stylelint/postcss-css-in-js",
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-styled-components"
   ],
+  "processors": ["stylelint-processor-styled-components"],
   "rules": {
     "at-rule-empty-line-before": [
       "always",

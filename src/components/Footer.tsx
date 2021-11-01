@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import $$GitHubIcon from '../assets/images/github-icon.svg'
