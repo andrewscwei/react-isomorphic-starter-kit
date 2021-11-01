@@ -18,7 +18,7 @@ import { createStore, PartialAppState } from '../store'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
 import { markup } from '../utils/dom'
-import { getLocaleFromPath, getPolyglotByLocale } from '../utils/i18n'
+import { getDefaultLocale, getLocaleFromPath, getPolyglotByLocale } from '../utils/i18n'
 
 interface RenderOptions {
   /**
@@ -55,7 +55,7 @@ export function renderWithMarkup<P extends { route: RouteComponentProps }>(Compo
     const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const sheet = new ServerStyleSheet()
     const matches = matchRoutes(routesConf, req.path)
-    const locale = getLocaleFromPath(req.path)
+    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
     const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
     const context: { [key: string]: any } = {}
 
@@ -116,7 +116,7 @@ export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderO
   return async (req, res) => {
     const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const matches = matchRoutes(routesConf, req.path)
-    const locale = getLocaleFromPath(req.path)
+    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
     const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
 
     debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)

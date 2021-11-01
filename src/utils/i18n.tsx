@@ -75,21 +75,31 @@ for (const locale in dict) {
 debug('Initializing locale translations...', 'OK', locales)
 
 /**
+ * Gets the default locale of this app.
+ *
+ * @returns The default locale.
+ */
+ export function getDefaultLocale(): string {
+  return defaultLocale
+}
+
+/**
  * Infers the current locale from a URL.
  *
  * @param path - The URL path.
  *
- * @returns The inferred locale or the default locale if inferrence is not possible.
+ * @returns The inferred locale if it exists.
  */
-export function getLocaleFromPath(path: string): string {
+export function getLocaleFromPath(path: string): string | null {
   const locales = __I18N_CONFIG__.locales
-  const possibleLocale = path.split('/')[1]
+  const normalizedPath = path.replace(/\/*$/, '') + '/'
+  const possibleLocale = normalizedPath.split('/')[1]
 
   if (~locales.indexOf(possibleLocale)) {
     return possibleLocale
   }
   else {
-    return locales[0]
+    return null
   }
 }
 
@@ -101,7 +111,7 @@ export function getLocaleFromPath(path: string): string {
  *
  * @returns The localized URL.
  */
-export function getLocalizedPath(path: string, locale: string = __I18N_CONFIG__.defaultLocale): string {
+export function getLocalizedPath(path: string, locale: string = defaultLocale): string {
   const t = path.split('/').filter(v => v)
 
   if (t.length > 0 && __I18N_CONFIG__.locales.indexOf(t[0]) >= 0) {
@@ -109,10 +119,28 @@ export function getLocalizedPath(path: string, locale: string = __I18N_CONFIG__.
   }
 
   switch (locale) {
-  case __I18N_CONFIG__.defaultLocale:
+  case defaultLocale:
     return `/${t.join('/')}`
   default:
     return `/${locale}/${t.join('/')}`
+  }
+}
+
+/**
+ * Returns the unlocalized version of a URL.
+ *
+ * @param path - The URL path.
+ *
+ * @returns The unlocalized path.
+ */
+export function getUnlocalizedPath(path: string): string {
+  const locale = getLocaleFromPath(path)
+
+  if (locale) {
+    return path.replace(new RegExp(`^\\/${locale}\\b`, 'i'), '/')
+  }
+  else {
+    return path
   }
 }
 
@@ -158,7 +186,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
  */
 export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({ route, children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const locale = getLocaleFromPath(route.location.pathname)
+  const locale = getLocaleFromPath(route.location.pathname) ?? locales[0]
 
   return (
     <I18nContext.Provider value={{
