@@ -79,7 +79,7 @@ debug('Initializing locale translations...', 'OK', locales)
  *
  * @returns The default locale.
  */
- export function getDefaultLocale(): string {
+export function getDefaultLocale(): string {
   return defaultLocale
 }
 
