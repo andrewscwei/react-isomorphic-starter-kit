@@ -50,6 +50,8 @@ const reducer = (state: I18nState = initialState, action: I18nAction): I18nState
       locale: action.locale,
       ltxt: (...args) => getPolyglotByLocale(action.locale).t(...args),
     }
+  default:
+    return state
   }
 }
 
