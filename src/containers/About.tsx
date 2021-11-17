@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Action, bindActionCreators, Dispatch, Store } from 'redux'
 import styled from 'styled-components'
+import getUsers from '../selectors/getUsers'
 import { AppState } from '../store'
 import { fetchUsers, User, UsersState } from '../store/users'
 import { I18nComponentProps, withI18n } from '../utils/i18n'
@@ -47,7 +48,7 @@ class About extends PureComponent<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    users: state.users,
+    users: getUsers(state),
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,
