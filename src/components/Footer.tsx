@@ -21,7 +21,7 @@ const Footer: FunctionComponent<Props> = ({ className }) => (
 export default Footer
 
 const StyledRoot = styled.footer`
-  ${props => props.theme.layout.ph}
+  ${props => props.theme.layout.hp}
   align-items: center;
   bottom: 0;
   box-sizing: border-box;

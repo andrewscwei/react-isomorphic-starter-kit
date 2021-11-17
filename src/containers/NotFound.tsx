@@ -19,7 +19,7 @@ const NotFound: FunctionComponent<Props> = ({ ltxt }) => {
 export default withI18n(NotFound)
 
 const StyledRoot = styled.div`
-  ${props => props.theme.layout.ph}
+  ${props => props.theme.layout.hp}
   align-items: center;
   box-sizing: border-box;
   display: flex;

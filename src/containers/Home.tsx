@@ -28,7 +28,7 @@ class Home extends PureComponent<Props> {
 export default withI18n(Home)
 
 const StyledRoot = styled.div`
-  ${props => props.theme.layout.ph}
+  ${props => props.theme.layout.hp}
   align-items: center;
   box-sizing: border-box;
   display: flex;

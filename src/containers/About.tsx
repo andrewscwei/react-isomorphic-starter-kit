@@ -55,7 +55,7 @@ export default connect(
 )(withI18n(About))
 
 const StyledRoot = styled.div`
-  ${props => props.theme.layout.ph}
+  ${props => props.theme.layout.hp}
   align-items: center;
   box-sizing: border-box;
   display: flex;

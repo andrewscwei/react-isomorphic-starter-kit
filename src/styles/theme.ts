@@ -14,7 +14,7 @@ export const fonts = {
 }
 
 export const layout = {
-  ph: css`
+  hp: css`
     padding-left: 5%;
     padding-right: 5%;
   `,
