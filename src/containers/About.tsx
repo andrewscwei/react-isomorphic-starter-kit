@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { RouteComponentProps } from 'react-router'
 import { Action, bindActionCreators, Dispatch, Store } from 'redux'
 import styled from 'styled-components'
 import { AppState } from '../store'
@@ -15,7 +14,7 @@ type DispatchProps = {
   fetchUsers: typeof fetchUsers
 }
 
-type Props = StateProps & DispatchProps & RouteComponentProps & I18nComponentProps
+type Props = StateProps & DispatchProps & I18nComponentProps
 
 class About extends PureComponent<Props> {
 

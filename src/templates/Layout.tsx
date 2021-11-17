@@ -5,7 +5,6 @@
 import path from 'path'
 import React, { Fragment, FunctionComponent, ReactElement } from 'react'
 import serialize from 'serialize-javascript'
-import { css } from 'styled-components'
 import { AppState } from '../store'
 
 interface Props {
@@ -34,11 +33,13 @@ function resolveAssetPath(pathToResolve: string, manifest: AssetManifest = __ASS
 
   let out = normalizedPath
 
-  if (manifest && manifest.hasOwnProperty(normalizedPath)) {
-    out = manifest[normalizedPath]
-  }
-  else if (manifest && manifest.hasOwnProperty(`${publicPath}${normalizedPath}`)) {
-    out = manifest[`${publicPath}${normalizedPath}`]
+  if (manifest) {
+    if (manifest.hasOwnProperty(normalizedPath)) {
+      out = manifest[normalizedPath]
+    }
+    else if (manifest.hasOwnProperty(`${publicPath}${normalizedPath}`)) {
+      out = manifest[`${publicPath}${normalizedPath}`]
+    }
   }
 
   if (!out.startsWith(publicPath)) out = `${publicPath}${out}`
@@ -96,7 +97,7 @@ const Layout: FunctionComponent<Props> = ({
       <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
       <style dangerouslySetInnerHTML={{
-        __html: css`
+        __html: `
             @font-face {
               font-family: 'Roboto';
               src: url('${resolveAssetPath('/fonts/Roboto-Bold.ttf')}') format('truetype');
@@ -117,7 +118,7 @@ const Layout: FunctionComponent<Props> = ({
               font-style: normal;
               font-weight: 300;
             }
-          `.toString(),
+          `,
       }}/>
 
       { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&

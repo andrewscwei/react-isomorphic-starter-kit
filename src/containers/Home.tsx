@@ -1,10 +1,9 @@
 import React, { ComponentType, PureComponent } from 'react'
-import { RouteComponentProps } from 'react-router'
 import styled from 'styled-components'
 import ReactLogo from '../components/ReactLogo'
 import { I18nComponentProps, withI18n } from '../utils/i18n'
 
-type Props = RouteComponentProps & I18nComponentProps
+type Props = I18nComponentProps
 
 class Home extends PureComponent<Props> {
 

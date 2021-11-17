@@ -1,33 +1,19 @@
-import React, { PureComponent } from 'react'
-import { Route, RouteComponentProps } from 'react-router-dom'
+import React, { FunctionComponent, useEffect } from 'react'
 import styled from 'styled-components'
 import { I18nComponentProps, withI18n } from '../utils/i18n'
 
-type Props = RouteComponentProps & I18nComponentProps
+type Props = I18nComponentProps
 
-class NotFound extends PureComponent<Props> {
+const NotFound: FunctionComponent<Props> = ({ ltxt }) => {
+  useEffect(() => {
+    if (typeof document !== 'undefined') document.title = ltxt('window-title-not-found')
+  }, [])
 
-  componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-not-found')
-  }
-
-  render() {
-    const { ltxt } = this.props
-
-    return (
-      <Route render={(route: RouteComponentProps<any>) => {
-        if (route.staticContext) {
-          route.staticContext.statusCode = 404
-        }
-
-        return (
-          <StyledRoot>
-            <h1>{ltxt('not-found-title')}</h1>
-          </StyledRoot>
-        )
-      }}/>
-    )
-  }
+  return (
+    <StyledRoot>
+      <h1>{ltxt('not-found-title')}</h1>
+    </StyledRoot>
+  )
 }
 
 export default withI18n(NotFound)

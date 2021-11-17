@@ -8,8 +8,7 @@ import { RequestHandler } from 'express'
 import _ from 'lodash'
 import React, { ComponentType } from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
-import { matchRoutes } from 'react-router-config'
-import { RouteComponentProps } from 'react-router-dom'
+import { matchPath } from 'react-router'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import appConf from '../app.conf'
 import App from '../containers/App'
@@ -38,7 +37,7 @@ interface RenderOptions {
   initialState?: PartialAppState
 }
 
-export function render<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, options: RenderOptions = {}): RequestHandler {
+export function render(Component: ComponentType, options: RenderOptions = {}): RequestHandler {
   return appConf.ssrEnabled ? renderWithMarkup(Component, options) : renderWithoutMarkup(options)
 }
 
@@ -50,22 +49,20 @@ export function render<P extends { route: RouteComponentProps }>(Component: Comp
  *
  * @return Express middleware.
  */
-export function renderWithMarkup<P extends { route: RouteComponentProps }>(Component: ComponentType<P>, { bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
+export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
     const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const sheet = new ServerStyleSheet()
-    const matches = matchRoutes(routesConf, req.path)
+    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
     const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
-    const context: { [key: string]: any } = {}
+    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
 
     // For each matching route, fetch async data if required.
-    for (const t of matches) {
-      const { route, match } = t
-      if (!route.component) continue
-      if ((route.component as any).fetchData === undefined) continue
-      await (route.component as any).fetchData(store)
-      debug(`Fetching data for route <${match.url}>...`, 'OK')
+    for (const match of matches) {
+      const { component, path } = match
+      if (!component.hasOwnProperty('fetchData')) continue
+      await (component as any).fetchData(store)
+      debug(`Fetching data for route <${path}>...`, 'OK')
     }
 
     const body = renderToString(
@@ -74,22 +71,12 @@ export function renderWithMarkup<P extends { route: RouteComponentProps }>(Compo
           store,
           staticRouter: {
             location: req.url,
-            context,
           },
         })}
       </StyleSheetManager>
     )
 
-    switch (context['statusCode']) {
-    case 302:
-      res.redirect(302, context['url'])
-      return
-    case 404:
-      res.status(404)
-      break
-    }
-
-    debug(`Rendering with context <${req.path}>...`, 'OK')
+    debug(`Rendering <${req.path}> with markup...`, 'OK')
 
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout
@@ -115,9 +102,9 @@ export function renderWithMarkup<P extends { route: RouteComponentProps }>(Compo
 export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
     const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
-    const matches = matchRoutes(routesConf, req.path)
+    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
     const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : ((matches.length > 0) && (matches[0].route as any).title)
+    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
 
     debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)
 

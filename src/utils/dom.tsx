@@ -5,8 +5,8 @@
 import React, { ComponentType } from 'react'
 import { hydrate, render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { StaticRouterProps } from 'react-router'
-import { BrowserRouter, BrowserRouterProps, Route, RouteComponentProps, StaticRouter } from 'react-router-dom'
+import { BrowserRouter, BrowserRouterProps } from 'react-router-dom'
+import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
 import { Store } from 'redux'
 import { ThemeProvider } from 'styled-components'
 import { AppAction, AppState, createStore } from '../store'
@@ -27,16 +27,14 @@ type MarkupOptions = {
  *
  * @returns The JSX markup.
  */
-export function markup(Component: ComponentType<{ route: RouteComponentProps }>, { store = createStore(), staticRouter, browserRouter }: MarkupOptions = {}): JSX.Element {
+export function markup(Component: ComponentType, { store = createStore(), staticRouter, browserRouter }: MarkupOptions = {}): JSX.Element {
   return staticRouter ? (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <StaticRouter {...staticRouter}>
-          <Route render={route => (
-            <I18nRouterProvider route={route}>
-              <Component route={route}/>
-            </I18nRouterProvider>
-          )}/>
+          <I18nRouterProvider>
+            <Component/>
+          </I18nRouterProvider>
         </StaticRouter>
       </ThemeProvider>
     </Provider>
@@ -44,11 +42,9 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter {...browserRouter}>
-          <Route render={route => (
-            <I18nRouterProvider route={route}>
-              <Component route={route}/>
-            </I18nRouterProvider>
-          )}/>
+          <I18nRouterProvider>
+            <Component/>
+          </I18nRouterProvider>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
@@ -61,7 +57,7 @@ export function markup(Component: ComponentType<{ route: RouteComponentProps }>,
  * @param Component - The React component to mount.
  * @param elementId - The ID of the DOM element to mount the React component to.
  */
-export function mount(Component: ComponentType<{ route: RouteComponentProps }>, elementId = 'app') {
+export function mount(Component: ComponentType, elementId = 'app') {
   if (process.env.APP_ENV !== 'client') return
 
   if (process.env.NODE_ENV === 'development') {

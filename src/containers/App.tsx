@@ -2,8 +2,9 @@
  * @file Client app root.
  */
 
-import React, { Fragment, PureComponent } from 'react'
-import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import React, { Fragment, FunctionComponent } from 'react'
+import { Routes, useLocation } from 'react-router'
+import { Route } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled, { createGlobalStyle } from 'styled-components'
 import Footer from '../components/Footer'
@@ -11,33 +12,25 @@ import Header from '../components/Header'
 import routesConf from '../routes.conf'
 import globalStyles from '../styles/global'
 
-type Props = {
-  route: RouteComponentProps
-}
+const App: FunctionComponent = () => {
+  const location = useLocation()
 
-class App extends PureComponent<Props> {
-  render() {
-    const { route } = this.props
-
-    return (
-      <Fragment>
-        <GlobalStyles/>
-        <Header/>
-        <StyledBody>
-          <CSSTransition key={route.location.key} timeout={300} classNames='route-transition'>
-            <Switch location={route.location}>{this.generateRoutes()}</Switch>
-          </CSSTransition>
-        </StyledBody>
-        <Footer/>
-      </Fragment>
-    )
-  }
-
-  private generateRoutes() {
-    return routesConf.map((route, index) => (
-      <Route exact={route.exact} path={route.path} key={`route-${index}`} component={route.component}/>
-    ))
-  }
+  return (
+    <Fragment>
+      <GlobalStyles/>
+      <Header/>
+      <StyledBody>
+        <CSSTransition key={location.key} timeout={300} classNames='route-transition'>
+          <Routes>
+            {routesConf.map((route, index) => (
+              <Route path={route.path} key={`route-${index}`} element={<route.component/>}/>
+            ))}
+          </Routes>
+        </CSSTransition>
+      </StyledBody>
+      <Footer/>
+    </Fragment>
+  )
 }
 
 export default App

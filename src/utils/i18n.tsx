@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot'
 import React, { ComponentType, createContext, Dispatch, Fragment, FunctionComponent, PropsWithChildren, useReducer } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { useLocation } from 'react-router'
 import debug from './debug'
 
 export type I18nState = {
@@ -24,9 +24,11 @@ export type I18nContextProps = {
 
 export type I18nComponentProps = I18nState
 
-export type I18nProviderProps<P = Record<string, never>> = PropsWithChildren<P>
+export type I18nProviderProps = PropsWithChildren<{
 
-export type I18nRouterProviderProps = I18nProviderProps<{ route: RouteComponentProps }>
+}>
+
+export type I18nRouterProviderProps = I18nProviderProps
 
 export const I18nContext = createContext({} as I18nContextProps)
 
@@ -166,12 +168,12 @@ export function getPolyglotByLocale(locale: string): Polyglot {
  *
  * @returns The provider.
  */
-export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
+export const I18nProvider: FunctionComponent<I18nProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <I18nContext.Provider value={{ state, dispatch }}>
-      {props.children}
+      {children}
     </I18nContext.Provider>
   )
 }
@@ -184,9 +186,10 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
  *
  * @returns The provider.
  */
-export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({ route, children }) => {
+export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const locale = getLocaleFromPath(route.location.pathname) ?? locales[0]
+  const location = useLocation()
+  const locale = getLocaleFromPath(location.pathname) ?? locales[0]
 
   return (
     <I18nContext.Provider value={{
