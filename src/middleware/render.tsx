@@ -57,14 +57,6 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, 
     const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
     const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
 
-    // For each matching route, fetch async data if required.
-    for (const match of matches) {
-      const { component, path } = match
-      if (!component.hasOwnProperty('fetchData')) continue
-      await (component as any).fetchData(store)
-      debug(`Fetching data for route <${path}>...`, 'OK')
-    }
-
     const body = renderToString(
       <StyleSheetManager sheet={sheet.instance}>
         {markup(App, {

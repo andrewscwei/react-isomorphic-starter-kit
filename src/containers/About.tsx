@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Action, bindActionCreators, Dispatch, Store } from 'redux'
+import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled from 'styled-components'
 import getUsers from '../selectors/getUsers'
 import { AppState } from '../store'
@@ -18,10 +18,6 @@ type DispatchProps = {
 type Props = StateProps & DispatchProps & I18nComponentProps
 
 class About extends PureComponent<Props> {
-
-  static fetchData(store: Store<AppState>) {
-    return store.dispatch(fetchUsers() as any)
-  }
 
   componentDidMount() {
     if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-about')
