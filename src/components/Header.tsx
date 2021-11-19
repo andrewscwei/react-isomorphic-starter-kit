@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { I18nComponentProps, useLpath, useLtxt } from '../utils/i18n'
+import { useLpath, useLtxt } from '../utils/i18n'
 
 type Props = {
   className?: string
