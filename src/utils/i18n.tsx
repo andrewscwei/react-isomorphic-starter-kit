@@ -271,5 +271,6 @@ export function useLtxt() {
  * @returns The path localizing function.
  */
 export function useLpath() {
-  return (path: string, locale?: string) => getLocalizedPath(path, locale ?? useContext(I18nContext).state.locale)
+  const currentLocale = useContext(I18nContext).state.locale
+  return (path: string, locale?: string) => getLocalizedPath(path, locale ?? currentLocale)
 }
