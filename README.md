@@ -11,11 +11,10 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 5. [Redux](https://redux.js.org/introduction)
 6. [Polyglot](http://airbnb.io/polyglot.js/)
 7. [Styled Components](https://www.styled-components.com/)
-8. [React Transition Group](http://reactcommunity.org/react-transition-group/)
-9. [nodemon](https://github.com/remy/nodemon)
-10. [Docker](https://docker.com) config
-11. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
-12. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
+8. [nodemon](https://github.com/remy/nodemon)
+9. [Docker](https://docker.com) config
+10. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
+11. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage
 

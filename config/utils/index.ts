@@ -1,4 +1,4 @@
-/// <reference path='../../src/typings/custom.d.ts' />
+/// <reference path='../../src/custom.d.ts' />
 /**
  * @file Utility functions for the build process.
  */

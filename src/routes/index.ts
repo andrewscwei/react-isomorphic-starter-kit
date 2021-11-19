@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import App from '../containers/App'
+import App from '../App'
 import { render } from '../middleware/render'
 
 const router = Router()

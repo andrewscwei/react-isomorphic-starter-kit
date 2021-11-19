@@ -1,16 +1,16 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg'
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
   className?: string
 }
 
-const ReactLogo: FunctionComponent<Props> = ({ className }: Props) => (
-  <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
-)
-
-export default ReactLogo
+export default function ReactLogo({ className }: Props) {
+  return (
+    <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
+  )
+}
 
 const StyledRoot = styled.figure`
   animation: rotate 5s linear infinite;

@@ -1,7 +1,6 @@
 import Polyglot from 'node-polyglot'
-import React, { ComponentType, createContext, Dispatch, Fragment, FunctionComponent, PropsWithChildren, useReducer } from 'react'
-import { useLocation } from 'react-router-dom'
-import debug from './debug'
+import React, { ComponentType, createContext, Dispatch, PropsWithChildren, useContext, useReducer } from 'react'
+import { useLocation } from 'react-router'
 
 export type I18nState = {
   locale: string
@@ -14,7 +13,7 @@ export enum I18nActionType {
 
 export type I18nAction = {
   type: I18nActionType
-  locale: I18nState['locale']
+  payload: Partial<I18nState>
 }
 
 export type I18nContextProps = {
@@ -42,13 +41,22 @@ const initialState: I18nState = {
   ltxt: (...args) => getPolyglotByLocale(defaultLocale).t(...args),
 }
 
+export function changeLocale(locale: string): I18nAction {
+  return {
+    type: I18nActionType.CHANGE_LOCALE,
+    payload: {
+      locale,
+      ltxt: (...args) => getPolyglotByLocale(locale).t(...args),
+    },
+  }
+}
+
 const reducer = (state: I18nState = initialState, action: I18nAction): I18nState => {
   switch (action.type) {
   case I18nActionType.CHANGE_LOCALE:
     return {
       ...state,
-      locale: action.locale,
-      ltxt: (...args) => getPolyglotByLocale(action.locale).t(...args),
+      ...action.payload,
     }
   default:
     return state
@@ -75,8 +83,6 @@ for (const locale in dict) {
     phrases: dict[locale],
   })
 }
-
-debug('Initializing locale translations...', 'OK', locales)
 
 /**
  * Gets the default locale of this app.
@@ -170,7 +176,7 @@ export function getPolyglotByLocale(locale: string): Polyglot {
  *
  * @returns The provider.
  */
-export const I18nProvider: FunctionComponent<I18nProviderProps> = ({ children }) => {
+export function I18nProvider({ children }: I18nProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
@@ -188,7 +194,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({ children })
  *
  * @returns The provider.
  */
-export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({ children }) => {
+export function I18nRouterProvider({ children }: I18nRouterProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const location = useLocation()
   const locale = getLocaleFromPath(location.pathname) ?? locales[0]
@@ -214,31 +220,56 @@ export const I18nRouterProvider: FunctionComponent<I18nRouterProviderProps> = ({
  *
  * @returns The wrapper component.
  */
-export function withI18n<P>(Component: ComponentType<P & I18nComponentProps>): FunctionComponent<P> {
-  const WithI18n: FunctionComponent<P> = props => (
-    <I18nContext.Consumer>
-      {({ state, dispatch }) => (
-        <Component locale={state.locale} ltxt={state.ltxt} {...props}/>
-      )}
-    </I18nContext.Consumer>
-  )
+export function withI18n<P>(Component: ComponentType<P & I18nComponentProps>) {
+  function WithI18n(props: P) {
+    return (
+      <I18nContext.Consumer>
+        {({ state, dispatch }) => (
+          <Component locale={state.locale} ltxt={state.ltxt} {...props}/>
+        )}
+      </I18nContext.Consumer>
+    )
+  }
 
   return WithI18n
 }
 
 /**
- * Renders a localized string in place.
+ * Hook for retrieving the change locale function.
  *
- * @param args @see Polyglot.prototype.t
- *
- * @returns The rendered element.
+ * @returns The change locale function.
  */
-export function ltxt(...args: Parameters<typeof Polyglot.prototype.t>): JSX.Element {
-  return (
-    <I18nContext.Consumer>
-      {({ state }) => (
-        <Fragment>{state.ltxt(...args)}</Fragment>
-      )}
-    </I18nContext.Consumer>
-  )
+export function useChangeLocale() {
+  const dispatch = useContext(I18nContext).dispatch
+
+  return (locale: string) => {
+    dispatch(changeLocale(locale))
+  }
+}
+
+/**
+ * Hook for retrieving the current locale.
+ *
+ * @returns Current locale.
+ */
+export function useLocale() {
+  return useContext(I18nContext).state.locale
+}
+
+/**
+ * Hook for retrieving the string localizing function for the current locale.
+ *
+ * @returns The string localizing function.
+ */
+export function useLtxt() {
+  return useContext(I18nContext).state.ltxt
+}
+
+/**
+ * Hook for retrieving the path localizing function for the current locale.
+ *
+ * @returns The path localizing function.
+ */
+export function useLpath() {
+  return (path: string, locale?: string) => getLocalizedPath(path, locale ?? useContext(I18nContext).state.locale)
 }

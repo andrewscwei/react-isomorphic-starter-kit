@@ -1,31 +1,24 @@
-import React, { ComponentType, PureComponent } from 'react'
+import React, { ComponentType, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactLogo from '../components/ReactLogo'
-import { I18nComponentProps, withI18n } from '../utils/i18n'
+import { useLtxt } from '../utils/i18n'
 
-type Props = I18nComponentProps
+export default function Home() {
+  const ltxt = useLtxt()
 
-class Home extends PureComponent<Props> {
+  useEffect(() => {
+    if (typeof document !== 'undefined') document.title = ltxt('window-title-home')
+  }, [])
 
-  componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-home')
-  }
-
-  render() {
-    const { ltxt } = this.props
-
-    return (
-      <StyledRoot>
-        <StyledReactLogo/>
-        <h1>{ltxt('hello')}</h1>
-        <pre>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</pre>
-        <p>{ltxt('description')}</p>
-      </StyledRoot>
-    )
-  }
+  return (
+    <StyledRoot>
+      <StyledReactLogo/>
+      <h1>{ltxt('hello')}</h1>
+      <pre>v{__BUILD_CONFIG__.version} ({__BUILD_CONFIG__.buildNumber})</pre>
+      <p>{ltxt('description')}</p>
+    </StyledRoot>
+  )
 }
-
-export default withI18n(Home)
 
 const StyledRoot = styled.div`
   ${props => props.theme.layout.hp}

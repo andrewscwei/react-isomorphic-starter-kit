@@ -1,5 +1,5 @@
 import Worker from 'worker-loader!../workers/web'
-import App from '../containers/App'
+import App from '../App'
 import debug from '../utils/debug'
 import { mount } from '../utils/dom'
 

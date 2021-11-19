@@ -4,7 +4,7 @@ declare module '*.jpg'
 declare module '*.png'
 
 // Supports typing for build config.
-declare const __BUILD_CONFIG__: typeof import('../../config/build.conf').default
+declare const __BUILD_CONFIG__: typeof import('../config/build.conf').default
 
 // Supports web workers.
 declare module 'worker-loader!*' {

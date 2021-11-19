@@ -8,8 +8,9 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, BrowserRouterProps } from 'react-router-dom'
 import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
 import { Store } from 'redux'
-import { ThemeProvider } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { AppAction, AppState, createStore } from '../store'
+import globalStyle from '../styles/global'
 import * as theme from '../styles/theme'
 import { I18nRouterProvider } from './i18n'
 
@@ -27,27 +28,37 @@ type MarkupOptions = {
  *
  * @returns The JSX markup.
  */
-export function markup(Component: ComponentType, { store = createStore(), staticRouter, browserRouter }: MarkupOptions = {}): JSX.Element {
+export function markup(Component: ComponentType, { store = createStore(), staticRouter, browserRouter }: MarkupOptions = {}) {
+  const GlobalStyle = createGlobalStyle`
+    ${globalStyle}
+  `
+
   return staticRouter ? (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <StaticRouter {...staticRouter}>
-          <I18nRouterProvider>
-            <Component/>
-          </I18nRouterProvider>
-        </StaticRouter>
-      </ThemeProvider>
-    </Provider>
+    <>
+      <GlobalStyle/>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <StaticRouter {...staticRouter}>
+            <I18nRouterProvider>
+              <Component/>
+            </I18nRouterProvider>
+          </StaticRouter>
+        </ThemeProvider>
+      </Provider>
+    </>
   ) : (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter {...browserRouter}>
-          <I18nRouterProvider>
-            <Component/>
-          </I18nRouterProvider>
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
+    <>
+      <GlobalStyle/>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter {...browserRouter}>
+            <I18nRouterProvider>
+              <Component/>
+            </I18nRouterProvider>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </>
   )
 }
 

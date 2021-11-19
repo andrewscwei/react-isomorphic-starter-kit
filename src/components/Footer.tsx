@@ -1,24 +1,27 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import $$GitHubIcon from '../assets/images/github-icon.svg'
-import { getLocalizedPath, ltxt } from '../utils/i18n'
+import { useLpath, useLtxt } from '../utils/i18n'
 
 type Props = {
   className?: string
 }
 
-const Footer: FunctionComponent<Props> = ({ className }) => (
-  <StyledRoot className={className}>
-    <nav>
-      <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
-    </nav>
-    <Link to={getLocalizedPath('/', 'en')}>{ltxt('en')}</Link>
-    <Link to={getLocalizedPath('/', 'ja')}>{ltxt('jp')}</Link>
-  </StyledRoot>
-)
+export default function Footer({ className }: Props) {
+  const ltxt = useLtxt()
+  const lpath = useLpath()
 
-export default Footer
+  return (
+    <StyledRoot className={className}>
+      <nav>
+        <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
+      </nav>
+      <Link to={lpath('/', 'en')}>{ltxt('en')}</Link>
+      <Link to={lpath('/', 'ja')}>{ltxt('jp')}</Link>
+    </StyledRoot>
+  )
+}
 
 const StyledRoot = styled.footer`
   ${props => props.theme.layout.hp}

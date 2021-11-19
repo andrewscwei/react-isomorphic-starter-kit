@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Action, bindActionCreators, Dispatch } from 'redux'
 import styled from 'styled-components'
-import getUsers from '../selectors/getUsers'
+import selectUsers from '../selectors/selectUsers'
 import { AppState } from '../store'
 import { fetchUsers, User, UsersState } from '../store/users'
-import { I18nComponentProps, withI18n } from '../utils/i18n'
+import { I18nComponentProps, useLtxt, withI18n } from '../utils/i18n'
 
 type StateProps = {
   users: UsersState
@@ -17,34 +17,31 @@ type DispatchProps = {
 
 type Props = StateProps & DispatchProps & I18nComponentProps
 
-class About extends PureComponent<Props> {
+function About({ fetchUsers, users }: Props) {
+  const ltxt = useLtxt()
 
-  componentDidMount() {
-    if (typeof document !== 'undefined') document.title = this.props.ltxt('window-title-about')
-    this.props.fetchUsers()
-  }
+  useEffect(() => {
+    if (typeof document !== 'undefined') document.title = ltxt('window-title-about')
+    fetchUsers()
+  }, [])
 
-  render() {
-    const { ltxt, users } = this.props
-
-    return (
-      <StyledRoot>
-        <h1>{ltxt('window-title-about-title')}</h1>
-        {
-          users.map((user: User) => (
-            <div key={user.id}>
-              <span>{user.first_name} {user.last_name}</span>
-            </div>
-          ))
-        }
-      </StyledRoot>
-    )
-  }
+  return (
+    <StyledRoot>
+      <h1>{ltxt('window-title-about-title')}</h1>
+      {
+        users.map((user: User) => (
+          <div key={user.id}>
+            <span>{user.first_name} {user.last_name}</span>
+          </div>
+        ))
+      }
+    </StyledRoot>
+  )
 }
 
 export default connect(
   (state: AppState): StateProps => ({
-    users: getUsers(state),
+    users: selectUsers(state),
   }),
   (dispatch: Dispatch<Action>): DispatchProps => bindActionCreators({
     fetchUsers,

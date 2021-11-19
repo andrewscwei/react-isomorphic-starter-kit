@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { I18nComponentProps, withI18n } from '../utils/i18n'
+import { useLtxt } from '../utils/i18n'
 
-type Props = I18nComponentProps
+export default function NotFound() {
+  const ltxt = useLtxt()
 
-const NotFound: FunctionComponent<Props> = ({ ltxt }) => {
   useEffect(() => {
     if (typeof document !== 'undefined') document.title = ltxt('window-title-not-found')
   }, [])
@@ -15,8 +15,6 @@ const NotFound: FunctionComponent<Props> = ({ ltxt }) => {
     </StyledRoot>
   )
 }
-
-export default withI18n(NotFound)
 
 const StyledRoot = styled.div`
   ${props => props.theme.layout.hp}

@@ -1,20 +1,23 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { getLocalizedPath, I18nComponentProps, withI18n } from '../utils/i18n'
+import { I18nComponentProps, useLpath, useLtxt } from '../utils/i18n'
 
-type Props = I18nComponentProps & {
+type Props = {
   className?: string
 }
 
-const Header: FunctionComponent<Props> = ({ className, ltxt, locale }) => (
-  <StyledRoot className={className}>
-    <Link to={getLocalizedPath('/', locale)}>{ltxt('window-title-home') }</Link>
-    <Link to={getLocalizedPath('/about', locale)}>{ltxt('window-title-about') }</Link>
-  </StyledRoot>
-)
+export default function Header({ className }: Props) {
+  const ltxt = useLtxt()
+  const lpath = useLpath()
 
-export default withI18n(Header)
+  return (
+    <StyledRoot className={className}>
+      <Link to={lpath('/')}>{ltxt('window-title-home') }</Link>
+      <Link to={lpath('/about')}>{ltxt('window-title-about') }</Link>
+    </StyledRoot>
+  )
+}
 
 const StyledRoot = styled.header`
   align-items: center;
