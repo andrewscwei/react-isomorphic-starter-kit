@@ -55,11 +55,6 @@ const config: Configuration = {
           limit: 8192,
           name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
         },
-      }, {
-        loader: 'image-webpack-loader',
-        options: {
-          disable: !isProduction,
-        },
       }],
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,

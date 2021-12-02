@@ -1,14 +1,12 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg'
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
-type Props = {
-  className?: string
-}
+type Props = HTMLAttributes<HTMLDivElement>
 
-export default function ReactLogo({ className }: Props) {
+export default function ReactLogo({ ...props }: Props) {
   return (
-    <StyledRoot className={className} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
+    <StyledRoot {...props} dangerouslySetInnerHTML={{ __html: $$Logo }}/>
   )
 }
 

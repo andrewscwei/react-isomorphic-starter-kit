@@ -1,19 +1,17 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import $$GitHubIcon from '../assets/images/github-icon.svg'
 import { useLpath, useLtxt } from '../utils/i18n'
 
-type Props = {
-  className?: string
-}
+type Props = HTMLAttributes<HTMLDivElement>
 
-export default function Footer({ className }: Props) {
+export default function Footer({ ...props }: Props) {
   const ltxt = useLtxt()
   const lpath = useLpath()
 
   return (
-    <StyledRoot className={className}>
+    <StyledRoot {...props}>
       <nav>
         <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
       </nav>

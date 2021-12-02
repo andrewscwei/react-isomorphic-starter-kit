@@ -1,5 +1,5 @@
 import Polyglot from 'node-polyglot'
-import React, { ComponentType, createContext, Dispatch, PropsWithChildren, useContext, useReducer } from 'react'
+import React, { ComponentType, createContext, Dispatch, ProviderProps, useContext, useReducer } from 'react'
 import { useLocation } from 'react-router'
 
 export type I18nState = {
@@ -23,9 +23,7 @@ export type I18nContextProps = {
 
 export type I18nComponentProps = I18nState
 
-export type I18nProviderProps = PropsWithChildren<{
-
-}>
+export type I18nProviderProps = Pick<ProviderProps<never>, 'children'>
 
 export type I18nRouterProviderProps = I18nProviderProps
 

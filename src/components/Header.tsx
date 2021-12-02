@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLpath, useLtxt } from '../utils/i18n'
 
-type Props = {
-  className?: string
-}
+type Props = HTMLAttributes<HTMLDivElement>
 
-export default function Header({ className }: Props) {
+export default function Header({ ...props }: Props) {
   const ltxt = useLtxt()
   const lpath = useLpath()
 
   return (
-    <StyledRoot className={className}>
+    <StyledRoot {...props}>
       <Link to={lpath('/')}>{ltxt('window-title-home') }</Link>
       <Link to={lpath('/about')}>{ltxt('window-title-about') }</Link>
     </StyledRoot>
