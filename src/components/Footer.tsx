@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import $$GitHubIcon from '../assets/images/github-icon.svg'
 import { useLpath, useLtxt } from '../utils/i18n'
 
-type Props = HTMLAttributes<HTMLDivElement>
+type Props = HTMLAttributes<HTMLElement>
 
 export default function Footer({ ...props }: Props) {
   const ltxt = useLtxt()

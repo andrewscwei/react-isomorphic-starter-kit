@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLpath, useLtxt } from '../utils/i18n'
 
-type Props = HTMLAttributes<HTMLDivElement>
+type Props = HTMLAttributes<HTMLElement>
 
 export default function Header({ ...props }: Props) {
   const ltxt = useLtxt()
