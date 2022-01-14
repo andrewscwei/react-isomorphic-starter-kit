@@ -1,6 +1,6 @@
 import $$Logo from '!!raw-loader!../assets/images/react-logo.svg'
 import React, { HTMLAttributes } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 type Props = HTMLAttributes<HTMLElement>
 
@@ -10,8 +10,13 @@ export default function ReactLogo({ ...props }: Props) {
   )
 }
 
+const KeyframesRoot = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`
+
 const StyledRoot = styled.figure`
-  animation: rotate 5s linear infinite;
+  animation: ${KeyframesRoot} 5s linear infinite;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -20,10 +25,5 @@ const StyledRoot = styled.figure`
   > svg {
     height: 100%;
     width: auto;
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 `

@@ -109,31 +109,6 @@ export default function Layout({
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
-        <style dangerouslySetInnerHTML={{
-          __html: `
-              @font-face {
-                font-family: 'Roboto';
-                src: url('${resolveAssetPath('/fonts/Roboto-Bold.ttf')}') format('truetype');
-                font-style: normal;
-                font-weight: 700;
-              }
-
-              @font-face {
-                font-family: 'Roboto';
-                src: url('${resolveAssetPath('/fonts/Roboto-Regular.ttf')}') format('truetype');
-                font-style: normal;
-                font-weight: 400;
-              }
-
-              @font-face {
-                font-family: 'Roboto';
-                src: url('${resolveAssetPath('/fonts/Roboto-Light.ttf')}') format('truetype');
-                font-style: normal;
-                font-weight: 300;
-              }
-            `,
-        }}/>
-
         { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
             <>
               <script dangerouslySetInnerHTML={{ __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','${__BUILD_CONFIG__.gtag}');` }}/>
