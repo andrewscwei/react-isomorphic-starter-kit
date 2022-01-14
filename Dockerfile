@@ -1,7 +1,7 @@
 # This is a Dockerfile with multi-stage builds.
 
 # Builds the app with dev dependencies included.
-FROM node:16.3.0 as build-dev
+FROM node:16.3.0 AS build-dev
 
 ARG BUILD_NUMBER
 ARG PUBLIC_PATH
@@ -21,18 +21,18 @@ RUN NODE_ENV=production npm run build
 
 
 # Rebuilds the app with unit tests included.
-FROM build-dev as test
+FROM build-dev AS test
 
 COPY tests ./tests
 
 # Strips dev dependencies from the dev build.
-FROM build-dev as build-prod
+FROM build-dev AS build-prod
 
 RUN npm prune --production
 
 
 # Final production build.
-FROM node:16.3.0-alpine
+FROM node:16.3.0-alpine AS release
 
 ARG BUILD_NUMBER
 
