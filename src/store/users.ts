@@ -5,7 +5,7 @@ export type User = {
 }
 
 export enum UsersActionType {
-  UPDATED = 'users/UPDATED',
+  UPDATE = 'users/UPDATE',
 }
 
 export type UsersAction = Action<UsersActionType> & {
@@ -16,7 +16,7 @@ export type UsersState = User[]
 
 const initialState: UsersState = []
 
-export function fetchUsers() {
+export function actionFetchUsers() {
   return async (dispatch: Dispatch<Action>) => {
     const res = await fetch('https://reqres.in/api/users')
       .catch(err => {
@@ -27,7 +27,7 @@ export function fetchUsers() {
 
     const { data: users } = await res.json()
     const action: UsersAction = {
-      type: UsersActionType.UPDATED,
+      type: UsersActionType.UPDATE,
       newState: users,
     }
 
@@ -37,7 +37,7 @@ export function fetchUsers() {
 
 export default function reducer(state = initialState, action: UsersAction): UsersState {
   switch (action.type) {
-  case UsersActionType.UPDATED:
+  case UsersActionType.UPDATE:
     return action.newState
   default:
     return state

@@ -1,6 +1,8 @@
 {
-  "window-title-home": "Home",
+  "window-title-home": "React Isomorphic Starter Kit",
   "window-title-about": "About",
+  "nav-title-home": "Home",
+  "nav-title-about": "About",
   "window-title-not-found": "404",
   "hello": "Hello, world!",
   "description": "This is an experimental React universal/isomorphic app starter kit.",

@@ -1,7 +1,9 @@
 {
-  "window-title-home": "ホーム",
+  "window-title-home": "React Isomorphic Starter Kit",
   "window-title-about": "アバウト",
   "window-title-not-found": "404",
+  "nav-title-home": "ホーム",
+  "nav-title-about": "アバウト",
   "hello": "こんにちは、世界！",
   "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
   "not-found-title": "ページが表示できません",
