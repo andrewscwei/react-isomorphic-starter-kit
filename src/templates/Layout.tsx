@@ -76,24 +76,36 @@ export default function Layout({
         <meta name='description' content={description || __BUILD_CONFIG__.meta.description}/>
 
         <meta property='og:title' content={__BUILD_CONFIG__.meta.title}/>
-        <meta property='og:site_name' content={__BUILD_CONFIG__.meta.title}/>
         <meta property='og:description' content={description || __BUILD_CONFIG__.meta.description}/>
-        <meta property='og:image' content={resolveAssetPath('/icon-1680.png')}/>
+        <meta property='og:image' content={`${__BUILD_CONFIG__.meta.title}/${resolveAssetPath('/og-image-3600.png')}`}/>
         <meta property='og:url' content={url || __BUILD_CONFIG__.meta.url}/>
         <meta property='og:type' content='website'/>
-        <meta property='og:image:width' content='1680' />
-        <meta property='og:image:height' content='1680' />
+        <meta property='og:image:width' content='3600'/>
+        <meta property='og:image:height' content='1890'/>
 
         <meta name='twitter:title' content={__BUILD_CONFIG__.meta.title}/>
         <meta name='twitter:description' content={description || __BUILD_CONFIG__.meta.description}/>
-        <meta name='twitter:image' content={resolveAssetPath('/icon-1680.png')}/>
-        <meta name='twitter:card' content='summary'/>
+        <meta name='twitter:image' content={`${__BUILD_CONFIG__.meta.title}/${resolveAssetPath('/twitter-card-4096.png')}`}/>
+        <meta name='twitter:card' content='summary_large_image'/>
 
         <meta name='mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
         <meta name='apple-mobile-web-app-title' content={__BUILD_CONFIG__.meta.title}/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/icon-1024.png')} sizes='192x192'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-72.png')} sizes='72x72'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-76.png')} sizes='76x76'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-114.png')} sizes='114x114'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-120.png')} sizes='120x120'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-144.png')} sizes='144x144'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-152.png')} sizes='152x152'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-180.png')} sizes='180x180'/>
+        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
+        <link rel='icon' href={resolveAssetPath('/app-icon-16.png')} type='image/png' sizes='16x16'/>
+        <link rel='icon' href={resolveAssetPath('/app-icon-32.png')} type='image/png' sizes='32x32'/>
+        <link rel='icon' href={resolveAssetPath('/app-icon-96.png')} type='image/png' sizes='96x96'/>
+        <link rel='icon' href={resolveAssetPath('/app-icon-192.png')} type='image/png' sizes='192x192'/>
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 

@@ -2,6 +2,7 @@
   "name": "react-isomorphic-starter-kit",
   "version": "8.1.1",
   "description": "Experimental React universal/isomorphic app starter kit",
+  "homepage": "https://react-isomorphic-starter-kit.herokuapp.com",
   "private": true,
   "license": "MIT",
   "scripts": {
