@@ -39,7 +39,7 @@ const initialState: I18nState = {
   ltxt: (...args) => getPolyglotByLocale(defaultLocale).t(...args),
 }
 
-export function changeLocale(locale: string): I18nAction {
+export function actionChangeLocale(locale: string): I18nAction {
   return {
     type: I18nActionType.CHANGE_LOCALE,
     payload: {
@@ -241,7 +241,7 @@ export function useChangeLocale() {
   const dispatch = useContext(I18nContext).dispatch
 
   return (locale: string) => {
-    dispatch(changeLocale(locale))
+    dispatch(actionChangeLocale(locale))
   }
 }
 
