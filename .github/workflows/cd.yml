@@ -24,13 +24,6 @@ jobs:
         run: npm install
       - name: Build
         run: BUILD_NUMBER=$(echo ${{ github.sha }} | head -c7) npm run build
-      - name: Pack
-        run: .github/workflows/pack.sh
-      - name: Persist package
-        uses: actions/upload-artifact@v1
-        with:
-          name: package
-          path: package/
       - name: Persist build dir
         uses: actions/upload-artifact@v1
         with:

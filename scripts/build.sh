@@ -13,7 +13,7 @@ echo -e "Building $(cyan ${IMAGE_NAME}:${IMAGE_TAG}) in $(cyan ${ENVIRONMENT})..
 npm run build
 
 docker build \
-  --build-arg BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse HEAD)} \
+  --build-arg BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD)} \
   --build-arg NODE_ENV=${ENVIRONMENT} \
   --build-arg PUBLIC_PATH=${PUBLIC_PATH:-/static/} \
   --rm=false \

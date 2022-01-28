@@ -13,12 +13,6 @@ export default {
   // Build number.
   buildNumber: process.env.BUILD_NUMBER || 0,
 
-  // Google Analytics ID (i.e. UA-XXXXXXXX-1)
-  ga: undefined,
-
-  // Google Tag Manager ID (i.e. GTM-XXXXXXX)
-  gtag: undefined,
-
   // HTML metadata.
   meta: {
     // Fallback default window title (the window title should be set by individual routes for

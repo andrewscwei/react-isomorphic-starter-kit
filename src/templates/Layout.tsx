@@ -109,19 +109,6 @@ export default function Layout({
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
-        { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
-            <>
-              <script dangerouslySetInnerHTML={{ __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','${__BUILD_CONFIG__.gtag}');` }}/>
-            </>
-        }
-
-        { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.ga &&
-            <>
-              <script async src={`https://www.googletagmanager.com/gtag/js?id=${__BUILD_CONFIG__.ga}`}/>
-              <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${__BUILD_CONFIG__.ga}');` }}/>
-            </>
-        }
-
         { initialStyles }
       </head>
       <body>
@@ -137,12 +124,6 @@ export default function Layout({
         }
         <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'main'}.js`)}></script>
-
-        { process.env.NODE_ENV === 'production' && __BUILD_CONFIG__.gtag &&
-            <>
-              <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${__BUILD_CONFIG__.gtag}`} height='0' width='0' style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
-            </>
-        }
       </body>
     </html>
   )

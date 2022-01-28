@@ -14,7 +14,7 @@ APP_NAME=$(cat $BASE_DIR/package.json | grep name | head -1 | awk -F: '{ print $
 # `HEROKU_API_KEY`, which will be automatically picked up by the Heroku CLI.
 
 heroku container:login
-heroku container:push --arg NODE_ENV=production,BUILD_NUMBER=$GITHUB_SHA,PUBLIC_PATH=$PUBLIC_PATH -a $APP_NAME web
+heroku container:push --arg NODE_ENV=production,BUILD_NUMBER=$(echo $GITHUB_SHA | head -c7),PUBLIC_PATH=$PUBLIC_PATH -a $APP_NAME web
 heroku container:release -a $APP_NAME web
 
 echo
