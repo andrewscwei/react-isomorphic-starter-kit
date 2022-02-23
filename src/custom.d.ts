@@ -1,12 +1,12 @@
-// Suports importing assets.
+// Suport importing assets.
 declare module '*.svg'
 declare module '*.jpg'
 declare module '*.png'
 
-// Supports typing for build config.
+// Support typing for build config.
 declare const __BUILD_CONFIG__: typeof import('../config/build.conf').default
 
-// Supports web workers.
+// Support web workers.
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
     constructor()
@@ -15,7 +15,7 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-// Supports I18n.
+// Support I18n.
 interface TranslationData { [key: string]: TranslationData | string }
 type TranslationDataDict = Record<string, TranslationData>
 
@@ -25,17 +25,17 @@ declare const __I18N_CONFIG__: Readonly<{
   dict: TranslationDataDict
 }>
 
-// Supports asset manifest file.
+// Support asset manifest file.
 declare module 'webpack-manifest-plugin'
 
 type AssetManifest = Record<string, any>
 
 declare const __ASSET_MANIFEST__: AssetManifest
 
-// Supports sitemap generation.
+// Support sitemap generation.
 declare module 'sitemap'
 
-// Supports custom error with status code.
+// Support custom error with status code.
 interface Error {
   status?: number
 }

@@ -13,8 +13,9 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 7. [Styled Components](https://www.styled-components.com/)
 8. [nodemon](https://github.com/remy/nodemon)
 9. [Docker](https://docker.com) config
-10. [ESLint](https://eslint.org/) and [StyleLint](https://stylelint.io/) config
-11. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
+10. [Jest](https://jestjs.io/) config
+11. [ESLint](https://eslint.org/)
+12. [GitHub Actions](https://github.com/features/actions) setup to deploy to [Heroku](https://heroku.com) container registry
 
 ## Usage
 
@@ -27,6 +28,12 @@ $ npm run dev
 
 # Build for production
 $ npm run build
+
+# Run production tests
+$ npm test
+
+# Run unit tests
+$ npm run test:ts
 
 # Run in production (after successful build)
 $ npm start

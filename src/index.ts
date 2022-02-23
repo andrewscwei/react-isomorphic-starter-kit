@@ -76,28 +76,30 @@ app.use((err: Error, _: express.Request, res: express.Response) => {
   res.status(err.status || 500).send(err)
 })
 
-http
-  .createServer(app)
-  .listen(appConf.port)
-  .on('error', (error: NodeJS.ErrnoException) => {
-    if (error.syscall !== 'listen') throw error
+if (process.env.SKIP_LISTEN !== 'true') {
+  http
+    .createServer(app)
+    .listen(appConf.port)
+    .on('error', (error: NodeJS.ErrnoException) => {
+      if (error.syscall !== 'listen') throw error
 
-    switch (error.code) {
-    case 'EACCES':
-      debug(`Port ${appConf.port} requires elevated privileges`)
-      process.exit(1)
-      break
-    case 'EADDRINUSE':
-      debug(`Port ${appConf.port} is already in use`)
-      process.exit(1)
-      break
-    default:
-      throw error
-    }
-  })
-  .on('listening', () => {
-    debug(`App is listening on ${ip.address()}:${appConf.port}`)
-  })
+      switch (error.code) {
+      case 'EACCES':
+        debug(`Port ${appConf.port} requires elevated privileges`)
+        process.exit(1)
+        break
+      case 'EADDRINUSE':
+        debug(`Port ${appConf.port} is already in use`)
+        process.exit(1)
+        break
+      default:
+        throw error
+      }
+    })
+    .on('listening', () => {
+      debug(`App is listening on ${ip.address()}:${appConf.port}`)
+    })
+}
 
 // Handle unhandled rejections.
 process.on('unhandledRejection', reason => {

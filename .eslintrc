@@ -89,6 +89,7 @@
     "@typescript-eslint/no-misused-new": "error",
     "@typescript-eslint/no-namespace": "error",
     "@typescript-eslint/no-parameter-properties": "off",
+    "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unused-expressions": "off",
     "@typescript-eslint/no-unused-vars": [
@@ -227,11 +228,12 @@
     "no-invalid-this": "off",
     "no-lonely-if": "error",
     "no-mixed-spaces-and-tabs": "error",
+    "no-multi-spaces": "error",
     "no-multiple-empty-lines": "error",
     "no-nested-ternary": "off",
     "no-new-func": "error",
     "no-new-wrappers": "error",
-    "no-redeclare": "error",
+    "no-redeclare": "off",
     "no-return-await": "error",
     "no-sequences": "error",
     "no-shadow": [
