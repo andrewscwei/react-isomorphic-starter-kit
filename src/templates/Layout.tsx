@@ -5,15 +5,12 @@
 import path from 'path'
 import React, { ReactElement } from 'react'
 import serialize from 'serialize-javascript'
-import { AppState } from '../store'
 
 interface Props {
   body?: string
   bundleId?: string
   description?: string
-  initialState?: Omit<AppState, 'i18n'>
   initialStyles?: ReactElement<unknown>[]
-  keywords?: string
   locals?: Record<string, any>
   title?: string
   url?: string
@@ -51,9 +48,7 @@ export default function Layout({
   body,
   bundleId,
   description,
-  initialState,
   initialStyles,
-  keywords,
   locals,
   title,
   url,
@@ -115,9 +110,6 @@ export default function Layout({
         <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__='${__BUILD_CONFIG__.version}';` }}/>
         <script dangerouslySetInnerHTML={{ __html: `window.__BUILD_NUMBER__='${__BUILD_CONFIG__.buildNumber}';` }}/>
         <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__ = ${serialize(locals)}` }}/>
-        { initialState &&
-            <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(initialState)};` }}/>
-        }
         <div id='app' dangerouslySetInnerHTML={{ __html: body || '' }}/>
         { process.env.NODE_ENV === 'production' &&
           <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>

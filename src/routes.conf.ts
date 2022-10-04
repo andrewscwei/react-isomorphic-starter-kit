@@ -3,7 +3,7 @@
  */
 
 import { ComponentType } from 'react'
-import About from './containers/About'
+import Quote from './containers/Quote'
 import Home from './containers/Home'
 import NotFound from './containers/NotFound'
 import { getPolyglotByLocale } from './utils/i18n'
@@ -19,17 +19,17 @@ const config: RouteConfig[] = [{
   path: '/',
   title: getPolyglotByLocale('en').t('window-title-home'),
 }, {
-  component: About,
-  path: '/about',
-  title: getPolyglotByLocale('en').t('window-title-about'),
+  component: Quote,
+  path: '/quote',
+  title: getPolyglotByLocale('en').t('window-title-quote'),
 }, {
   component: Home,
   path: '/ja',
   title: getPolyglotByLocale('ja').t('window-title-home'),
 }, {
-  component: About,
-  path: '/ja/about',
-  title: getPolyglotByLocale('ja').t('window-title-about'),
+  component: Quote,
+  path: '/ja/quote',
+  title: getPolyglotByLocale('ja').t('window-title-quote'),
 }, {
   component: NotFound,
   path: '*',

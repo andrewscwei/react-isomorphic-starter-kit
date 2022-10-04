@@ -12,7 +12,7 @@ export default function Header({ ...props }: Props) {
   return (
     <StyledRoot {...props}>
       <Link to={lpath('/')}>{ltxt('nav-title-home') }</Link>
-      <Link to={lpath('/about')}>{ltxt('nav-title-about') }</Link>
+      <Link to={lpath('/quote')}>{ltxt('nav-title-quote') }</Link>
     </StyledRoot>
   )
 }

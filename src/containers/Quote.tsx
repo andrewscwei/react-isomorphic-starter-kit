@@ -1,31 +1,25 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import selectUsers from '../selectors/selectUsers'
-import { AppState } from '../store'
-import { actionFetchUsers, User } from '../store/users'
+import useFetch from '../hooks/useFetch'
+import useWindowTitle from '../hooks/useWindowTitle'
+import GetQuote from '../interactors/useCases/GetQuote'
 import { useLtxt } from '../utils/i18n'
 
-export default function About() {
+export default function Quote() {
   const ltxt = useLtxt()
-  const users = useSelector((state: AppState) => selectUsers(state))
-  const dispatch = useDispatch()
+  const { interact: getQuote, value: quote } = useFetch(GetQuote)
+
+  useWindowTitle(ltxt('window-title-quote'))
 
   useEffect(() => {
-    if (typeof document !== 'undefined') document.title = ltxt('window-title-about')
-    dispatch(actionFetchUsers())
+    getQuote()
   }, [])
 
   return (
     <StyledRoot>
-      <h1>{ltxt('window-title-about-title')}</h1>
-      {
-        users.map((user: User) => (
-          <div key={user.id}>
-            <span>{user.first_name} {user.last_name}</span>
-          </div>
-        ))
-      }
+      <h1>{ltxt('quote-title')}</h1>
+      {quote?.text && <span>{ltxt('quote-text', { text: quote.text })}</span>}
+      {quote?.author && <span>{ltxt('quote-author', { author: quote.author })}</span>}
     </StyledRoot>
   )
 }

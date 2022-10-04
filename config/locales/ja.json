@@ -1,13 +1,15 @@
 {
-  "window-title-home": "React Isomorphic Starter Kit",
-  "window-title-about": "アバウト",
+  "window-title-home": "React Static Starter Kit",
+  "window-title-quote": "引用",
   "window-title-not-found": "404",
   "nav-title-home": "ホーム",
-  "nav-title-about": "アバウト",
+  "nav-title-quote": "引用",
   "hello": "こんにちは、世界！",
-  "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
+  "description": "実験的なReactスタティックアプリケーションのスターターキット。",
   "not-found-title": "ページが表示できません",
-  "window-title-about-title": "ただインターネットから取り出されたランダムな名前",
+  "quote-title": "誰からの引用…",
+  "quote-text": "\"%{text}\"",
+  "quote-author": "~ %{author}",
   "en": "EN",
   "jp": "日"
 }

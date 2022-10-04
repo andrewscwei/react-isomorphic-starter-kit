@@ -1,13 +1,15 @@
 {
-  "window-title-home": "React Isomorphic Starter Kit",
-  "window-title-about": "About",
-  "nav-title-home": "Home",
-  "nav-title-about": "About",
+  "window-title-home": "React Static Starter Kit",
+  "window-title-quote": "Quote",
   "window-title-not-found": "404",
+  "nav-title-home": "Home",
+  "nav-title-quote": "Quote",
   "hello": "Hello, world!",
-  "description": "This is an experimental React universal/isomorphic app starter kit.",
+  "description": "This is an experimental React static app starter kit.",
   "not-found-title": "This page does not exist",
-  "window-title-about-title": "Just some random names fetched from the Internet",
+  "quote-title": "A quote from someone...",
+  "quote-text": "\"%{text}\"",
+  "quote-author": "~ %{author}",
   "en": "EN",
   "jp": "日"
 }

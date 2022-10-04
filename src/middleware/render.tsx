@@ -11,9 +11,7 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import appConf from '../app.conf'
-import App from '../App'
 import routesConf from '../routes.conf'
-import { createStore, PartialAppState } from '../store'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
 import { markup } from '../utils/dom'
@@ -30,11 +28,6 @@ interface RenderOptions {
    * will take precedence.
    */
   titleId?: string
-
-  /**
-   * The initial state of the rendered page, which will be merged with `res.locals.store`.
-   */
-  initialState?: PartialAppState
 }
 
 export function render(Component: ComponentType, options: RenderOptions = {}): RequestHandler {
@@ -49,9 +42,8 @@ export function render(Component: ComponentType, options: RenderOptions = {}): R
  *
  * @return Express middleware.
  */
-export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
+export function renderWithMarkup(Component: ComponentType, { bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const sheet = new ServerStyleSheet()
     const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
     const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
@@ -59,8 +51,7 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, 
 
     const body = renderToString(
       <StyleSheetManager sheet={sheet.instance}>
-        {markup(App, {
-          store,
+        {markup(Component, {
           staticRouter: {
             location: req.url,
           },
@@ -74,9 +65,8 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, 
       <Layout
         body={body}
         bundleId={bundleId}
-        initialState={_.omit(store.getState(), 'i18n')}
         initialStyles={sheet.getStyleElement()}
-        locals={_.omit(res.locals, 'store')}
+        locals={res.locals}
         title={title}
       />,
     )}`)
@@ -86,14 +76,12 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, 
 /**
  * Renders a React component to string without body markup.
  *
- * @param Component - The React component to render.
  * @param options - @see RenderOptions
  *
  * @return Express middleware.
  */
-export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
+export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
     const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
     const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
     const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
@@ -103,8 +91,7 @@ export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderO
     res.send(`<!doctype html>${renderToStaticMarkup(
       <Layout
         bundleId={bundleId}
-        initialState={_.omit(store.getState(), 'i18n')}
-        locals={_.omit(res.locals, 'store')}
+        locals={res.locals}
         title={title}
       />,
     )}`)
