@@ -15,10 +15,10 @@ export default function Footer({
   return (
     <footer {...props} className={classNames(className, style.root)}>
       <nav className={style.nav}>
-        <a href='https://github.com/andrewscwei/react-static-starter-kit'/>
+        <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'/>
       </nav>
       <button className={style.button} onClick={() => changeLocale('en')}>{ltxt('en')}</button>
-      <button className={style.button} onClick={() => changeLocale('jp')}>{ltxt('jp')}</button>
+      <button className={style.button} onClick={() => changeLocale('ja')}>{ltxt('ja')}</button>
     </footer>
   )
 }

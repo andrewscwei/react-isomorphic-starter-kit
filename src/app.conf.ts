@@ -16,7 +16,7 @@ export default {
   defaultLocale: 'en',
 
   // Supported locales.
-  locales: ['en', 'jp'],
+  locales: ['en', 'ja'],
 
   // HTML metadata.
   meta: {

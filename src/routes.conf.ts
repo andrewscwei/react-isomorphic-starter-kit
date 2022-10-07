@@ -21,10 +21,10 @@ const config: RouteConfig[] = [{
   path: '/quote',
 }, {
   component: Home,
-  path: '/jp',
+  path: '/ja',
 }, {
   component: Quote,
-  path: '/jp/quote',
+  path: '/ja/quote',
 }, {
   component: NotFound,
   path: '*',
