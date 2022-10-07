@@ -6,8 +6,6 @@ type Quote = {
 }
 
 export default class GetQuote extends FetchUseCase<never, Quote> {
-  get ttl(): number { return 0 }
-
   getEndpoint() { return 'https://type.fit/api/quotes' }
 
   transformResult(payload: any): Quote {

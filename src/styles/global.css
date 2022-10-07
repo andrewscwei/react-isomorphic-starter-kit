@@ -1,0 +1,101 @@
+@import 'normalize.css';
+
+:root {
+  --color-background: #0f0e13;
+  --color-white: #fff;
+  --color-grey: #666;
+  --color-black: #111;
+  --font-header: 'Roboto', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+  --font-mono: monospace;
+  --z-huds: 10;
+}
+
+:global(.n1) {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: .1rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/Roboto-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../assets/fonts/Roboto-Light.ttf') format('truetype');
+}
+
+html {
+  background: var(--color-background);
+  font-size: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  color: var(--color-white);
+  height: 100%;
+  width: 100%;
+}
+
+main {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  justify-content: center;
+  padding: 0 5%;
+  position: absolute;
+  width: 100%;
+}
+
+h1 {
+  font-family: var(--font-header);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  margin: 0;
+  text-transform: uppercase;
+
+  @media (min-width: 600px) {
+    font-size: 3rem;
+  }
+}
+
+a,
+button,
+li,
+p,
+span {
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: .1rem;
+  line-height: 130%;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 130%;
+}

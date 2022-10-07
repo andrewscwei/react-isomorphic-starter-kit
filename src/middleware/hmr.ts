@@ -9,7 +9,7 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import buildConfig from '../../config/build.client.conf'
-import debug from '../utils/debug'
+import useDebug from '../utils/useDebug'
 
 const compiler = webpack(buildConfig)
 
@@ -31,7 +31,7 @@ export function devMiddleware() {
  */
 export function hotMiddleware() {
   return webpackHotMiddleware(compiler as any /* TODO: Fix this when the @types/webpack-hot-middleware is updated */, {
-    log: debug,
+    log: useDebug(),
     heartbeat: 2000,
   })
 }

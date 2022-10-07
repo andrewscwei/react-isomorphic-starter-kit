@@ -1,45 +1,22 @@
+import classNames from 'classnames'
 import React, { HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import { useLpath, useLtxt } from '../utils/i18n'
+import { useLocalizedPath, useLocalizedString } from '../providers/i18n'
+import style from './Header.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
 
-export default function Header({ ...props }: Props) {
-  const ltxt = useLtxt()
-  const lpath = useLpath()
+export default function Header({
+  className,
+  ...props
+}: Props) {
+  const ltxt = useLocalizedString()
+  const lpath = useLocalizedPath()
 
   return (
-    <StyledRoot {...props}>
-      <Link to={lpath('/')}>{ltxt('nav-title-home') }</Link>
-      <Link to={lpath('/quote')}>{ltxt('nav-title-quote') }</Link>
-    </StyledRoot>
+    <header {...props} className={classNames(className, style.root)}>
+      <Link className={style.link} to={lpath('/')}>{ltxt('nav-title-home') }</Link>
+      <Link className={style.link} to={lpath('/quote')}>{ltxt('nav-title-quote') }</Link>
+    </header>
   )
 }
-
-const StyledRoot = styled.header`
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  height: 70px;
-  justify-content: flex-end;
-  padding: 0 5%;
-  position: fixed;
-  width: 100%;
-  z-index: 10;
-
-  > a {
-    ${props => props.theme.texts.n1};
-    color: ${props => props.theme.colors.white};
-    cursor: pointer;
-    transition: all .2s ease-out;
-
-    :hover {
-      opacity: .6;
-    }
-
-    :not(:last-child) {
-      margin-right: 20px;
-    }
-  }
-`

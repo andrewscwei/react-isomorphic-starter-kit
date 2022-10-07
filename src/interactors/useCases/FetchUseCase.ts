@@ -1,12 +1,8 @@
 import objectHash from 'object-hash'
+import useCache from '../../utils/useCache'
 import UseCase from '../UseCase'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
-
-type CachedResult<Result> = {
-  value: Result
-  timestamp: number
-}
 
 type RunOptions = {
   /**
@@ -30,6 +26,8 @@ export namespace FetchUseCaseError {
 export default abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, never> {
   protected abortController: AbortController | undefined
 
+  private cache = useCache({ defaultTTL: this.ttl })
+
   private timer: NodeJS.Timeout | undefined
 
   /**
@@ -41,7 +39,7 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
    * Time to live (TTL) in seconds for the cached result of this use case. If `NaN` or <= 0, caching
    * is disabled.
    */
-  get ttl(): number { return 0 }
+  get ttl(): number { return 300 }
 
   /**
    * Optional headers to be passed to the request.
@@ -101,7 +99,7 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
     const cacheKey = this.ttl > 0 ? this.createCacheKey(params) : undefined
 
     if (!skipCache && cacheKey) {
-      const cachedResult = this.getCachedResult(cacheKey)
+      const cachedResult = this.cache.getValue<Result>(cacheKey)
       if (cachedResult) return cachedResult
     }
 
@@ -142,7 +140,7 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
       const transformedResult = this.transformResult(payload)
 
       if (cacheKey) {
-        this.setCachedResult(cacheKey, transformedResult)
+        this.cache.setValue(transformedResult, cacheKey)
       }
 
       return transformedResult
@@ -188,40 +186,6 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
       unorderedSets: true,
       unorderedObjects: true,
     })
-  }
-
-  private getCachedResult(key: string): Result | undefined {
-    const value = window.sessionStorage.getItem(key)
-    if (!value) return undefined
-
-    const cachedResult = JSON.parse(value) as CachedResult<Result>
-    if (!cachedResult) return undefined
-
-    const { value: result, timestamp } = cachedResult
-    const isStale = (Date.now() - timestamp) / 1000 >= this.ttl
-
-    if (isStale) {
-      this.invalidateCache(key)
-
-      return undefined
-    }
-
-    return result
-  }
-
-  private setCachedResult(key: string, result: Result): CachedResult<Result> {
-    const cachedResult = {
-      value: result,
-      timestamp: Date.now(),
-    }
-
-    window.sessionStorage.setItem(key, JSON.stringify(cachedResult))
-
-    return cachedResult
-  }
-
-  private invalidateCache(key: string) {
-    window.sessionStorage.removeItem(key)
   }
 
   /**

@@ -1,14 +1,15 @@
 import { RequestHandler } from 'express'
 import sitemap from 'sitemap'
+import appConf from '../app.conf'
 import routesConf from '../routes.conf'
 
 export function generateSitemap(): RequestHandler {
   return async (req, res, next) => {
     try {
       const sm = sitemap.createSitemap({
-        hostname: __BUILD_CONFIG__.meta.url,
+        hostname: appConf.meta.url,
         cacheTime: 600000,
-        urls: routesConf.reduce((out: any[], curr: { [key: string]: any }) => {
+        urls: routesConf.reduce((out: any[], curr: Record<string, any>) => {
           if (curr.path === '*') return out
 
           return [

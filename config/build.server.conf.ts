@@ -3,31 +3,24 @@
  */
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
+import { BannerPlugin, Configuration, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import buildConf from './build.conf'
-import { getTranslationDataDictFromDir } from './utils'
-
-const isProduction = process.env.NODE_ENV === 'production'
-const cwd = path.join(__dirname, '../')
-const inputDir = path.join(cwd, 'src')
-const outputDir = path.join(cwd, 'build')
-const useBundleAnalyzer = isProduction && buildConf.build.analyzer
-const useSpeedMeasurer = buildConf.build.speed
 
 const config: Configuration = {
-  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
+  devtool: buildConf.isDev ? 'source-map' : false,
   entry: {
-    index: path.join(inputDir, 'index.ts'),
+    index: path.join(buildConf.inputDir, 'index.ts'),
   },
   externals: [nodeExternals()],
-  mode: isProduction ? 'production' : 'development',
+  mode: buildConf.isDev ? 'development' : 'production',
   module: {
     rules: [{
       exclude: /node_modules/,
-      test: /\.tsx?$/,
+      test: /\.[jt]sx?$/,
       use: [{
         loader: 'babel-loader',
         options: {
@@ -35,38 +28,55 @@ const config: Configuration = {
         },
       }],
     }, {
-      test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
+      test: /\.css$/,
       use: [{
-        loader: 'url-loader',
+        loader: 'css-loader',
         options: {
-          esModule: false,
-          limit: 8192,
-          emitFile: false,
-          name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
+          importLoaders: 1,
+          modules: {
+            exportOnlyLocals: true,
+          },
+          sourceMap: buildConf.isDev,
+        },
+      }, {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: buildConf.isDev,
+          postcssOptions: {
+            plugins: [
+              ['postcss-preset-env', {
+                features: {
+                  'nesting-rules': true,
+                },
+              }],
+              !buildConf.skipOptimizations && 'cssnano',
+            ].filter(Boolean),
+          },
         },
       }],
+    }, {
+      test: /\.svg$/,
+      include: /assets\/svgs/,
+      type: 'asset/source',
+    }, {
+      test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
+      exclude: /assets\/svgs/,
+      type: 'asset',
+      generator: {
+        filename: `assets/images/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          emitFile: false,
-          esModule: false,
-          limit: 8192,
-          name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        },
-      }],
+      type: 'asset',
+      generator: {
+        filename: `assets/media/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          emitFile: false,
-          esModule: false,
-          limit: 8192,
-          name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        },
-      }],
+      type: 'asset',
+      generator: {
+        filename: `assets/fonts/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }],
   },
   node: {
@@ -76,58 +86,42 @@ const config: Configuration = {
   output: {
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    path: outputDir,
-    publicPath: buildConf.build.publicPath,
-    sourceMapFilename: '[name].js.map',
+    path: buildConf.outputDir,
+    publicPath: process.env.PUBLIC_PATH ?? '/static/',
+    sourceMapFilename: '[file].map',
   },
   performance: {
-    hints: isProduction ? 'warning' : false,
-    maxEntrypointSize: 1 * 1024 * 1024,
-    maxAssetSize: 1 * 1024 * 1024,
+    hints: buildConf.isDev ? false : 'warning',
+    maxAssetSize: 512 * 1024,
+    maxEntrypointSize: 512 * 1024,
   },
   plugins: [
+    new MiniCSSExtractPlugin({
+      chunkFilename: buildConf.skipOptimizations ? '[id].css' : '[chunkhash].css',
+      filename: buildConf.skipOptimizations ? '[name].css' : '[chunkhash].css',
+    }),
     new ForkTSCheckerPlugin(),
-    new DefinePlugin({
-      __BUILD_CONFIG__: JSON.stringify(buildConf),
-      __ASSET_MANIFEST__: JSON.stringify((() => {
-        let t
-
-        if (process.env.NODE_ENV === 'production') {
-          try { t = require(path.join(__dirname, '../build/static/asset-manifest.json')) }
-          catch (err) { /* Do nothing */ }
-        }
-
-        return t
-      })()),
-      __I18N_CONFIG__: JSON.stringify({
-        defaultLocale: buildConf.locales[0],
-        locales: buildConf.locales,
-        dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
-      }),
-    }),
     new EnvironmentPlugin({
-      NODE_ENV: 'development',
-      APP_ENV: 'server',
+      'NODE_ENV': 'production',
+      'APP_ENV': 'server',
     }),
-    ...!useBundleAnalyzer ? [] : [
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
+    ...!buildConf.isDev ? [] : [
+      new BannerPlugin({
+        banner: 'require(\'source-map-support\').install();',
+        raw: true,
+        entryOnly: false,
       }),
-    ],
-    ...isProduction ? [] : [
       new WatchIgnorePlugin({
         paths: [
           /bundles/,
-          /containers/,
+          /pages/,
           /components/,
         ],
       }),
     ],
-    ...!buildConf.build.sourceMap ? [] : [
-      new BannerPlugin({
-        banner: "require('source-map-support').install();",
-        raw: true,
-        entryOnly: false,
+    ...!buildConf.useBundleAnalyzer ? [] : [
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
       }),
     ],
   ],
@@ -136,15 +130,11 @@ const config: Configuration = {
   },
   stats: {
     colors: true,
-    errors: true,
     errorDetails: true,
     modules: true,
-    moduleTrace: true,
-    publicPath: true,
     reasons: true,
-    timings: true,
   },
   target: 'node',
 }
 
-export default useSpeedMeasurer ? (new (require('speed-measure-webpack-plugin'))()).wrap(config) : config
+export default config

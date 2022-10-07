@@ -1,12 +1,24 @@
-// Suport importing assets.
-declare module '*.svg'
 declare module '*.jpg'
+declare module '*.jpeg'
 declare module '*.png'
+declare module '*.gif'
+declare module '*.svg'
+declare module '*.mp4'
+declare module '*.webm'
+declare module '*.ogg'
+declare module '*.mp3'
+declare module '*.wav'
+declare module '*.flac'
+declare module '*.aac'
+declare module '*.woff'
+declare module '*.woff2'
+declare module '*.eot'
+declare module '*.ttf'
+declare module '*.otf'
+declare module '*.module.css'
 
-// Support typing for build config.
-declare const __BUILD_CONFIG__: typeof import('../config/build.conf').default
+declare const __CONFIG__: typeof import('./app.conf').default
 
-// Support web workers.
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
     constructor()
@@ -15,34 +27,18 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-// Support I18n.
-interface TranslationData { [key: string]: TranslationData | string }
-type TranslationDataDict = Record<string, TranslationData>
-
-declare const __I18N_CONFIG__: Readonly<{
-  defaultLocale: string
-  locales: string
-  dict: TranslationDataDict
-}>
-
-// Support asset manifest file.
 declare module 'webpack-manifest-plugin'
 
 type AssetManifest = Record<string, any>
 
 declare const __ASSET_MANIFEST__: AssetManifest
 
-// Support sitemap generation.
 declare module 'sitemap'
 
-// Support custom error with status code.
 interface Error {
   status?: number
 }
 
-// Custom window properties.
 interface Window {
-  __BUILD_NUMBER__: string
   __LOCALS__: Record<string, any>
-  __VERSION__: string
 }

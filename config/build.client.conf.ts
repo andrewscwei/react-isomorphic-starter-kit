@@ -5,152 +5,155 @@
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
+import appConf from '../src/app.conf'
 import buildConf from './build.conf'
-import { getBundlesFromDir, getTranslationDataDictFromDir } from './utils'
-
-const isProduction = process.env.NODE_ENV === 'production'
-const cwd = path.join(__dirname, '../')
-const inputDir = path.join(cwd, 'src')
-const outputDir = path.join(cwd, 'build/static')
-const useBundleAnalyzer = isProduction && buildConf.build.analyzer
-const useSpeedMeasurer = buildConf.build.speed
+import { getBundlesFromDir } from './utils'
 
 const config: Configuration = {
-  devtool: isProduction ? (buildConf.build.sourceMap ? 'source-map' : false) : 'source-map',
-  entry: getBundlesFromDir(path.join(inputDir, 'bundles')).reduce((out, curr) => {
+  devtool: buildConf.isDev ? 'source-map' : false,
+  entry: getBundlesFromDir(path.join(buildConf.inputDir, 'bundles')).reduce<Record<string, any>>((out, curr) => {
     const bundleName = curr.replace('.ts', '')
-    const bundlePath = path.join(inputDir, 'bundles', curr)
+    const bundlePath = path.join(buildConf.inputDir, 'bundles', curr)
 
-    out[bundleName] = [
-      ...isProduction ? [] : ['webpack-hot-middleware/client?reload=true'],
-      bundlePath,
-    ]
-
-    return out
-  }, {} as any),
-  mode: isProduction ? 'production' : 'development',
+    return {
+      ...out,
+      [bundleName]: [buildConf.isDev && 'webpack-hot-middleware/client?reload=true', bundlePath].filter(Boolean),
+    }
+  }, {}),
+  mode: buildConf.isDev ? 'development' : 'production',
   module: {
     rules: [{
       exclude: /node_modules/,
-      test: /\.tsx?$/,
+      test: /\.[jt]sx?$/,
       use: [{
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          ...isProduction ? {} : {
-            plugins: [require.resolve('react-refresh/babel')],
+          plugins: [
+            buildConf.isDev && require.resolve('react-refresh/babel'),
+          ].filter(Boolean),
+        },
+      }],
+    }, {
+      test: /\.css$/,
+      use: [{
+        loader: buildConf.isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
+      }, {
+        loader: 'css-loader',
+        options: {
+          importLoaders: 1,
+          modules: true,
+          sourceMap: buildConf.isDev,
+        },
+      }, {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: buildConf.isDev,
+          postcssOptions: {
+            plugins: [
+              ['postcss-preset-env', {
+                features: {
+                  'nesting-rules': true,
+                },
+              }],
+              !buildConf.skipOptimizations && 'cssnano',
+            ].filter(Boolean),
           },
         },
       }],
     }, {
+      test: /\.svg$/,
+      include: /assets\/svgs/,
+      type: 'asset/source',
+    }, {
       test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          esModule: false,
-          limit: 8192,
-          name: `assets/images/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        },
-      }],
+      exclude: /assets\/svgs/,
+      type: 'asset',
+      generator: {
+        filename: `assets/images/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          esModule: false,
-          limit: 8192,
-          name: `assets/media/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        },
-      }],
+      type: 'asset',
+      generator: {
+        filename: `assets/media/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          esModule: false,
-          limit: 8192,
-          name: `assets/fonts/[name]${isProduction ? '.[hash:6]' : ''}.[ext]`,
-        },
-      }],
+      type: 'asset',
+      generator: {
+        filename: `assets/fonts/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+      },
     }],
   },
   optimization: {
+    minimize: !buildConf.skipOptimizations,
     splitChunks: {
       cacheGroups: {
         common: {
-          test: /node_modules/,
           chunks: 'all',
-          name: 'common',
           enforce: true,
+          name: 'common',
+          test: /node_modules/,
         },
       },
     },
   },
   output: {
-    chunkFilename: isProduction ? '[name].[chunkhash].js' : '[name].js',
-    filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
-    path: outputDir,
-    publicPath: buildConf.build.publicPath,
+    filename: buildConf.skipOptimizations ? '[name].js' : '[chunkhash].js',
+    path: buildConf.outputDir,
+    publicPath: process.env.PUBLIC_PATH ?? '/static/',
     sourceMapFilename: '[file].map',
   },
   performance: {
-    hints: isProduction ? 'warning' : false,
-    maxEntrypointSize: 512 * 1024,
+    hints: buildConf.isDev ? false : 'warning',
     maxAssetSize: 512 * 1024,
+    maxEntrypointSize: 512 * 1024,
   },
   plugins: [
+    new MiniCSSExtractPlugin({
+      chunkFilename: buildConf.skipOptimizations ? '[id].css' : '[chunkhash].css',
+      filename: buildConf.skipOptimizations ? '[name].css' : '[chunkhash].css',
+    }),
     new ForkTSCheckerPlugin(),
+    ...buildConf.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    })] : [],
+    new EnvironmentPlugin({
+      'NODE_ENV': 'production',
+      'APP_ENV': 'client',
+    }),
     new CopyPlugin({
       patterns: [{
-        from: path.join(inputDir, 'static'),
-        to: outputDir,
+        from: path.join(buildConf.inputDir, 'static'),
+        to: buildConf.outputDir,
       }],
     }),
     new DefinePlugin({
-      __BUILD_CONFIG__: JSON.stringify(buildConf),
-      __I18N_CONFIG__: JSON.stringify({
-        defaultLocale: buildConf.locales[0],
-        locales: buildConf.locales,
-        dict: getTranslationDataDictFromDir(path.join(cwd, 'config/locales')),
-      }),
+      __CONFIG__: JSON.stringify(appConf),
     }),
-    new EnvironmentPlugin({
-      NODE_ENV: 'development',
-      APP_ENV: 'client',
+    !buildConf.isDev && new IgnorePlugin({
+      resourceRegExp: /^.*\/config\/.*$/,
     }),
-    ...isProduction ? [
-      new IgnorePlugin({
-        resourceRegExp: /^.*\/config\/.*$/,
-      }),
-      new ManifestPlugin({ fileName: 'asset-manifest.json' }) as any,
-    ] : [
-      new HotModuleReplacementPlugin(),
-      new ReactRefreshPlugin(),
-    ],
-    ...!useBundleAnalyzer ? [] : [
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-      }),
-    ],
-  ],
+    !buildConf.isDev && new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+    buildConf.isDev && new HotModuleReplacementPlugin(),
+    buildConf.isDev && new ReactRefreshPlugin(),
+  ].filter(Boolean),
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   stats: {
     colors: true,
-    errors: true,
     errorDetails: true,
     modules: true,
-    moduleTrace: true,
-    publicPath: true,
     reasons: true,
-    timings: true,
   },
   target: 'web',
 }
 
-export default useSpeedMeasurer ? (new (require('speed-measure-webpack-plugin'))()).wrap(config) : config
+export default config

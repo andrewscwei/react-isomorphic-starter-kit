@@ -1,19 +1,22 @@
 import { Router } from 'express'
 import App from '../App'
+import appConf from '../app.conf'
 import { render } from '../middleware/render'
 
 const router = Router()
 
 router.get('/version', (req, res, next) => {
   switch (req.accepts(['html', 'json'])) {
-  case 'html':
-    next()
-    return
-  case 'json':
-    res.status(200).send({ version: __BUILD_CONFIG__.version, build: __BUILD_CONFIG__.buildNumber })
-    return
-  default:
-    next(new Error('Bad request'))
+    case 'html':
+      next()
+
+      return
+    case 'json':
+      res.status(200).send({ version: appConf.version, build: appConf.buildNumber })
+
+      return
+    default:
+      next(new Error('Bad request'))
   }
 })
 

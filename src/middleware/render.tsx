@@ -6,16 +6,15 @@
 
 import { RequestHandler } from 'express'
 import _ from 'lodash'
+import path from 'path'
 import React, { ComponentType } from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
-import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 import appConf from '../app.conf'
 import routesConf from '../routes.conf'
 import Layout from '../templates/Layout'
 import debug from '../utils/debug'
 import { markup } from '../utils/dom'
-import { getDefaultLocale, getLocaleFromPath, getPolyglotByLocale } from '../utils/i18n'
 
 interface RenderOptions {
   /**
@@ -30,6 +29,33 @@ interface RenderOptions {
   titleId?: string
 }
 
+/**
+ * Resolves an asset path with the fingerprinted equivalent. This only works if an asset manifest
+ * file is present.
+ *
+ * @param pathToResolve - The asset path to resolveAssetPath.
+ *
+ * @return The resolved path.
+ */
+function resolveAssetPath(pathToResolve: string): string {
+  const { publicPath } = appConf
+  let out = pathToResolve
+
+  try {
+    const outputDir = path.join(__dirname, '../../', 'build')
+    const assetManifestFile = 'asset-manifest.json'
+    const manifest = require(path.join(outputDir, 'static', assetManifestFile))
+    const normalizedPath: string = path.join(...pathToResolve.split('/').filter(Boolean))
+
+    out = manifest[normalizedPath] ?? manifest[`${publicPath}${normalizedPath}`] ?? normalizedPath
+  }
+  catch (err) {}
+
+  if (!out.startsWith(publicPath)) out = `${publicPath}${out}`
+
+  return out
+}
+
 export function render(Component: ComponentType, options: RenderOptions = {}): RequestHandler {
   return appConf.ssrEnabled ? renderWithMarkup(Component, options) : renderWithoutMarkup(options)
 }
@@ -37,37 +63,29 @@ export function render(Component: ComponentType, options: RenderOptions = {}): R
 /**
  * Renders a React component to string with body markup.
  *
- * @param Compnent - The React component to render.
+ * @param Component - The React component to render.
  * @param options - @see RenderOptions
  *
  * @return Express middleware.
  */
 export function renderWithMarkup(Component: ComponentType, { bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const sheet = new ServerStyleSheet()
-    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
-    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
+    const matches = _.compact(routesConf.map(config => matchPath(req.path, config.path) ? config : undefined))
 
-    const body = renderToString(
-      <StyleSheetManager sheet={sheet.instance}>
-        {markup(Component, {
-          staticRouter: {
-            location: req.url,
-          },
-        })}
-      </StyleSheetManager>
-    )
+    const body = renderToString(markup(Component, {
+      staticRouter: {
+        location: req.url,
+      },
+    }))
 
     debug(`Rendering <${req.path}> with markup...`, 'OK')
 
-    res.send(`<!doctype html>${renderToStaticMarkup(
+    res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         body={body}
         bundleId={bundleId}
-        initialStyles={sheet.getStyleElement()}
         locals={res.locals}
-        title={title}
+        resolveAssetPath={resolveAssetPath}
       />,
     )}`)
   }
@@ -82,17 +100,15 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId }
  */
 export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
-    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
+    const matches = _.compact(routesConf.map(config => matchPath(req.path, config.path) ? config : undefined))
 
     debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)
 
-    res.send(`<!doctype html>${renderToStaticMarkup(
+    res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         bundleId={bundleId}
         locals={res.locals}
-        title={title}
+        resolveAssetPath={resolveAssetPath}
       />,
     )}`)
   }
