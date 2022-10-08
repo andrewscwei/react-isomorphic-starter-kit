@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import appConf from '../app.conf'
 import { render } from '../middleware/render'
-import App from '../ui/App'
 
 const router = Router()
 
@@ -24,6 +23,6 @@ router.get('/health', (req, res) => {
   res.sendStatus(200)
 })
 
-router.use(render(App))
+router.use(render())
 
 export default router

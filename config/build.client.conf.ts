@@ -119,9 +119,6 @@ const config: Configuration = {
       filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
-    ...buildArgs.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-    })] : [],
     new DefinePlugin({
       '__BUILD_ARGS__': JSON.stringify(buildArgs),
     }),
@@ -135,13 +132,17 @@ const config: Configuration = {
         to: buildArgs.outputDir,
       }],
     }),
-    !isDev && new IgnorePlugin({
-      resourceRegExp: /^.*\/config\/.*$/,
-    }),
-    !isDev && new ManifestPlugin({ fileName: 'asset-manifest.json' }),
-    isDev && new HotModuleReplacementPlugin(),
-    isDev && new ReactRefreshPlugin(),
-  ].filter(Boolean),
+    ...isDev ? [
+      new HotModuleReplacementPlugin(),
+      new ReactRefreshPlugin(),
+    ] : [
+      new IgnorePlugin({ resourceRegExp: /^.*\/config\/.*$/ }),
+      new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+    ],
+    ...buildArgs.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    })] : [],
+  ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },

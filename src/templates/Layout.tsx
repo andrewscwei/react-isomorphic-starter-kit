@@ -6,14 +6,14 @@ import React from 'react'
 
 interface Props {
   body?: string
-  bundleId?: string
+  helmetContext?: Record<string, any>
   locals?: Record<string, any>
   resolveAssetPath?: (path: string) => string
 }
 
 export default function Layout({
   body = '',
-  bundleId = 'main',
+  helmetContext,
   locals = {},
   resolveAssetPath = t => t,
 }: Props) {
@@ -26,13 +26,21 @@ export default function Layout({
         <meta charSet='utf-8'/>
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
         <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'/>
+
+        {helmetContext?.helmet.title.toComponent()}
+        {helmetContext?.helmet.priority.toComponent()}
+
         <meta name='theme-color' content='#000'/>
 
-        <meta name='twitter:card' content='summary_large_image'/>
+        {helmetContext?.helmet.meta.toComponent()}
 
+        <meta name='twitter:card' content='summary_large_image'/>
         <meta name='mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+
+        {helmetContext?.helmet.link.toComponent()}
+
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-72.png')} sizes='72x72'/>
@@ -45,10 +53,12 @@ export default function Layout({
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
+        {helmetContext?.helmet.script.toComponent()}
+
         {__BUILD_ARGS__.env !== 'development' && (
           <>
             <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>
-            <link rel='stylesheet' href={resolveAssetPath(`/${bundleId}.css`)}/>
+            <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>
           </>
         )}
       </head>
@@ -59,7 +69,7 @@ export default function Layout({
           <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
         )}
         <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
-        <script type='application/javascript' src={resolveAssetPath(`/${bundleId ?? 'main'}.js`)}></script>
+        <script type='application/javascript' src={resolveAssetPath('/main.js')}></script>
       </body>
     </html>
   )
