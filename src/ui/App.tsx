@@ -5,11 +5,11 @@
 import React from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { Route, Routes } from 'react-router'
+import translations from '../locales'
+import routesConf from '../routes.conf'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import translations from './locales'
 import { I18nRouterProvider } from './providers/i18n'
-import routesConf from './routes.conf'
 import './styles/global.css'
 
 export default function App() {

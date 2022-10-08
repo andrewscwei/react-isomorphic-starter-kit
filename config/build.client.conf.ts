@@ -11,21 +11,18 @@ import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlu
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import * as buildArgs from './build.args'
-import { getBundlesFromDir } from './utils'
 
 const isDev = buildArgs.env === 'development'
 
 const config: Configuration = {
   devtool: isDev ? 'source-map' : false,
-  entry: getBundlesFromDir(path.join(buildArgs.inputDir, 'bundles')).reduce<Record<string, any>>((out, curr) => {
-    const bundleName = curr.replace('.ts', '')
-    const bundlePath = path.join(buildArgs.inputDir, 'bundles', curr)
-
-    return {
-      ...out,
-      [bundleName]: [isDev && 'webpack-hot-middleware/client?reload=true', bundlePath].filter(Boolean),
-    }
-  }, {}),
+  entry: {
+    polyfills: path.join(buildArgs.inputDir, 'ui', 'polyfills.ts'),
+    main: [
+      ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
+      path.join(buildArgs.inputDir, 'ui', 'index.tsx'),
+    ],
+  },
   mode: isDev ? 'development' : 'production',
   module: {
     rules: [{
@@ -134,7 +131,7 @@ const config: Configuration = {
     }),
     new CopyPlugin({
       patterns: [{
-        from: path.join(buildArgs.inputDir, 'static'),
+        from: path.join(buildArgs.inputDir, 'ui', 'static'),
         to: buildArgs.outputDir,
       }],
     }),

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import useDebug from '../../utils/useDebug'
+import useDebug from '../../../utils/useDebug'
 import FetchUseCase, { FetchUseCaseError } from '../base/FetchUseCase'
 import Interactor from '../base/Interactor'
 

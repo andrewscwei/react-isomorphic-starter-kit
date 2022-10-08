@@ -3,9 +3,9 @@
  */
 
 import { ComponentType } from 'react'
-import Home from './pages/Home'
-import NotFound from './pages/NotFound'
-import Quote from './pages/Quote'
+import Home from './ui/pages/Home'
+import NotFound from './ui/pages/NotFound'
+import Quote from './ui/pages/Quote'
 
 export type RouteConfig = {
   component: ComponentType<any>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
-import appConf from '../app.conf'
+import appConf from '../../app.conf'
 import * as assets from '../assets'
 import { useLocale } from '../providers/i18n'
 
