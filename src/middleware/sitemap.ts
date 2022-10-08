@@ -5,17 +5,17 @@ import appConf from '../app.conf'
 import translations from '../locales'
 import routesConf from '../routes.conf'
 
-let sitemap: any | undefined
+let cached: any | undefined
 
-export default function generateSitemap(): RequestHandler {
+export default function sitemap(): RequestHandler {
   const { defaultLocale, url: hostname } = appConf
   const supportedLocales = Object.keys(translations)
 
   return async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
-    res.header('COntent-Encoding', 'gzip')
+    res.header('Content-Encoding', 'gzip')
 
-    if (sitemap) return res.status(200).send(sitemap)
+    if (cached) return res.send(cached)
 
     try {
       const smStream = new SitemapStream({ hostname })
@@ -31,9 +31,9 @@ export default function generateSitemap(): RequestHandler {
         })
       })
 
-      streamToPromise(pipeline).then((sm: any) => sitemap = sm)
+      streamToPromise(pipeline).then(sm => cached = sm)
       smStream.end()
-      pipeline.pipe(res).on('error', (err: unknown) => { throw err })
+      pipeline.pipe(res).on('error', err => { throw err })
     }
     catch (err) {
       next(err)

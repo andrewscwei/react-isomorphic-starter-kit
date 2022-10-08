@@ -11,7 +11,7 @@ import ip from 'ip'
 import morgan from 'morgan'
 import path from 'path'
 import appConf from './app.conf'
-import generateSitemap from './middleware/generateSItemap'
+import generateSitemap from './middleware/sitemap'
 import routes from './routes'
 import useDebug from './utils/useDebug'
 
@@ -20,9 +20,7 @@ const debug = useDebug(undefined, 'server')
 const app = express()
 app.use(morgan('dev'))
 app.use(compression())
-app.use(helmet({
-  contentSecurityPolicy: false,
-}))
+app.use(helmet({ contentSecurityPolicy: false }))
 
 /**
  * Serve assets from Webpack dev server in development to enable hot module reloading.
