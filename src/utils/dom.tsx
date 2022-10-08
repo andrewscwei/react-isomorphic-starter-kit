@@ -3,7 +3,7 @@
  */
 
 import React, { ComponentType } from 'react'
-import { hydrate, render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter, BrowserRouterProps } from 'react-router-dom'
 import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
 
@@ -41,10 +41,7 @@ export function markup(Component: ComponentType, { staticRouter, browserRouter }
 export function mount(Component: ComponentType, elementId = 'app') {
   if (process.env.APP_ENV !== 'client') return
 
-  if (process.env.NODE_ENV === 'development') {
-    render(markup(Component), document.getElementById(elementId))
-  }
-  else {
-    hydrate(markup(Component), document.getElementById(elementId))
-  }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const app = createRoot(document.getElementById(elementId)!)
+  app.render(markup(Component))
 }

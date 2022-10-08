@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Interactor from '../interactors/Interactor'
-import FetchUseCase, { FetchUseCaseError } from '../interactors/useCases/FetchUseCase'
-import useDebug from '../utils/useDebug'
+import useDebug from '../../utils/useDebug'
+import FetchUseCase, { FetchUseCaseError } from '../base/FetchUseCase'
+import Interactor from '../base/Interactor'
 
 const debug = useDebug('fetch')
 

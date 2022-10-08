@@ -8,7 +8,6 @@ import fs from 'fs'
 import helmet from 'helmet'
 import http from 'http'
 import ip from 'ip'
-import 'isomorphic-fetch'
 import morgan from 'morgan'
 import path from 'path'
 import appConf from './app.conf'
@@ -16,12 +15,10 @@ import { generateSitemap } from './middleware/sitemap'
 import routes from './routes'
 import useDebug from './utils/useDebug'
 
-const debug = useDebug()
+const debug = useDebug(undefined, 'server')
 
 const app = express()
-
 app.use(morgan('dev'))
-
 app.use(compression())
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -31,16 +28,16 @@ app.use(helmet({
  * Serve assets from Webpack dev server in development to enable hot module reloading.
  */
 if (process.env.NODE_ENV === 'development') {
-  app.use(require('./middleware/hmr').devMiddleware())
-  app.use(require('./middleware/hmr').hotMiddleware())
+  app.use(require('./middleware/hmr').devMiddleware()) // eslint-disable-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  app.use(require('./middleware/hmr').hotMiddleware()) // eslint-disable-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 }
 
 /**
  * Serve static files and add expire headers.
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, appConf.publicPath))) {
-  app.use(appConf.publicPath, express.static(path.join(__dirname, appConf.publicPath), {
+if (process.env.NODE_ENV !== 'development' && fs.existsSync(path.join(__dirname, __BUILD_ARGS__.publicPath))) {
+  app.use(__BUILD_ARGS__.publicPath, express.static(path.join(__dirname, __BUILD_ARGS__.publicPath), {
     setHeaders(res) {
       const duration = 1000 * 60 * 60 * 24 * 365 * 10
       res.setHeader('Expires', new Date(Date.now() + duration).toUTCString())

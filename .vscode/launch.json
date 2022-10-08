@@ -2,8 +2,11 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Dev",
-      "configurations": ["Server", "Client"]
+      "name": "Debug",
+      "configurations": [
+        "Server",
+        "Client"
+      ]
     }
   ],
   "configurations": [
@@ -11,27 +14,26 @@
       "name": "Client",
       "type": "chrome",
       "request": "launch",
-      "reAttach": true,
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}",
       "sourceMapPathOverrides": {
-        "meteor://💻app/*": "${workspaceFolder}/*",
-        "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
-        "webpack://?:*/*": "${workspaceFolder}/*"
+        "webpack:///./~/*": "${webRoot}/node_modules/*",
+        "webpack://?:*/*": "${webRoot}/*"
       }
     },
     {
       "name": "Server",
+      "type": "node",
       "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run-script",
         "dev"
       ],
-      "runtimeExecutable": "npm",
       "skipFiles": [
         "<node_internals>/**"
-      ],
-      "type": "pwa-node"
+      ]
     }
   ]
 }

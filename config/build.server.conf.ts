@@ -5,18 +5,20 @@
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
-import { BannerPlugin, Configuration, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
+import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
-import buildConf from './build.conf'
+import * as buildArgs from './build.args'
+
+const isDev = buildArgs.env === 'development'
 
 const config: Configuration = {
-  devtool: buildConf.isDev ? 'source-map' : false,
+  devtool: isDev ? 'source-map' : false,
   entry: {
-    index: path.join(buildConf.inputDir, 'index.ts'),
+    index: path.join(buildArgs.inputDir, 'index.ts'),
   },
   externals: [nodeExternals()],
-  mode: buildConf.isDev ? 'development' : 'production',
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [{
       exclude: /node_modules/,
@@ -36,12 +38,12 @@ const config: Configuration = {
           modules: {
             exportOnlyLocals: true,
           },
-          sourceMap: buildConf.isDev,
+          sourceMap: isDev,
         },
       }, {
         loader: 'postcss-loader',
         options: {
-          sourceMap: buildConf.isDev,
+          sourceMap: isDev,
           postcssOptions: {
             plugins: [
               ['postcss-preset-env', {
@@ -49,7 +51,7 @@ const config: Configuration = {
                   'nesting-rules': true,
                 },
               }],
-              !buildConf.skipOptimizations && 'cssnano',
+              !buildArgs.skipOptimizations && 'cssnano',
             ].filter(Boolean),
           },
         },
@@ -63,19 +65,19 @@ const config: Configuration = {
       exclude: /assets\/svgs/,
       type: 'asset',
       generator: {
-        filename: `assets/images/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/images/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/media/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/media/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/fonts/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/fonts/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }],
   },
@@ -86,26 +88,29 @@ const config: Configuration = {
   output: {
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    path: buildConf.outputDir,
-    publicPath: process.env.PUBLIC_PATH ?? '/static/',
+    path: buildArgs.outputDir,
+    publicPath: buildArgs.publicPath,
     sourceMapFilename: '[file].map',
   },
   performance: {
-    hints: buildConf.isDev ? false : 'warning',
+    hints: isDev ? false : 'warning',
     maxAssetSize: 512 * 1024,
     maxEntrypointSize: 512 * 1024,
   },
   plugins: [
     new MiniCSSExtractPlugin({
-      chunkFilename: buildConf.skipOptimizations ? '[id].css' : '[chunkhash].css',
-      filename: buildConf.skipOptimizations ? '[name].css' : '[chunkhash].css',
+      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[chunkhash].css',
+      filename: buildArgs.skipOptimizations ? '[name].css' : '[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
+    new DefinePlugin({
+      '__BUILD_ARGS__': JSON.stringify(buildArgs),
+    }),
     new EnvironmentPlugin({
       'NODE_ENV': 'production',
       'APP_ENV': 'server',
     }),
-    ...!buildConf.isDev ? [] : [
+    ...isDev ? [
       new BannerPlugin({
         banner: 'require(\'source-map-support\').install();',
         raw: true,
@@ -118,12 +123,12 @@ const config: Configuration = {
           /components/,
         ],
       }),
-    ],
-    ...!buildConf.useBundleAnalyzer ? [] : [
+    ] : [],
+    ...buildArgs.useBundleAnalyzer ? [
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
       }),
-    ],
+    ] : [],
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

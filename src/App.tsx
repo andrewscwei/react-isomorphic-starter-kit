@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import { Route, Routes } from 'react-router'
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -14,15 +15,17 @@ import './styles/global.css'
 export default function App() {
   return (
     <>
-      <I18nRouterProvider defaultLocale={'en'} translations={translations}>
-        <Header/>
-        <Routes>
-          {routesConf.map((route, index) => (
-            <Route path={route.path} key={`route-${index}`} element={<route.component/>}/>
-          ))}
-        </Routes>
-        <Footer/>
-      </I18nRouterProvider>
+      <HelmetProvider>
+        <I18nRouterProvider defaultLocale={'en'} translations={translations}>
+          <Header/>
+          <Routes>
+            {routesConf.map((route, index) => (
+              <Route path={route.path} key={`route-${index}`} element={<route.component/>}/>
+            ))}
+          </Routes>
+          <Footer/>
+        </I18nRouterProvider>
+      </HelmetProvider>
     </>
   )
 }

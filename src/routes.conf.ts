@@ -10,7 +10,6 @@ import Quote from './pages/Quote'
 export type RouteConfig = {
   component: ComponentType<any>
   path: string
-  title?: string
 }
 
 const config: RouteConfig[] = [{

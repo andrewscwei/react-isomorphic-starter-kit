@@ -10,22 +10,23 @@ import path from 'path'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
-import appConf from '../src/app.conf'
-import buildConf from './build.conf'
+import * as buildArgs from './build.args'
 import { getBundlesFromDir } from './utils'
 
+const isDev = buildArgs.env === 'development'
+
 const config: Configuration = {
-  devtool: buildConf.isDev ? 'source-map' : false,
-  entry: getBundlesFromDir(path.join(buildConf.inputDir, 'bundles')).reduce<Record<string, any>>((out, curr) => {
+  devtool: isDev ? 'source-map' : false,
+  entry: getBundlesFromDir(path.join(buildArgs.inputDir, 'bundles')).reduce<Record<string, any>>((out, curr) => {
     const bundleName = curr.replace('.ts', '')
-    const bundlePath = path.join(buildConf.inputDir, 'bundles', curr)
+    const bundlePath = path.join(buildArgs.inputDir, 'bundles', curr)
 
     return {
       ...out,
-      [bundleName]: [buildConf.isDev && 'webpack-hot-middleware/client?reload=true', bundlePath].filter(Boolean),
+      [bundleName]: [isDev && 'webpack-hot-middleware/client?reload=true', bundlePath].filter(Boolean),
     }
   }, {}),
-  mode: buildConf.isDev ? 'development' : 'production',
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [{
       exclude: /node_modules/,
@@ -35,25 +36,25 @@ const config: Configuration = {
         options: {
           cacheDirectory: true,
           plugins: [
-            buildConf.isDev && require.resolve('react-refresh/babel'),
+            isDev && require.resolve('react-refresh/babel'),
           ].filter(Boolean),
         },
       }],
     }, {
       test: /\.css$/,
       use: [{
-        loader: buildConf.isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
+        loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
       }, {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
           modules: true,
-          sourceMap: buildConf.isDev,
+          sourceMap: isDev,
         },
       }, {
         loader: 'postcss-loader',
         options: {
-          sourceMap: buildConf.isDev,
+          sourceMap: isDev,
           postcssOptions: {
             plugins: [
               ['postcss-preset-env', {
@@ -61,7 +62,7 @@ const config: Configuration = {
                   'nesting-rules': true,
                 },
               }],
-              !buildConf.skipOptimizations && 'cssnano',
+              !buildArgs.skipOptimizations && 'cssnano',
             ].filter(Boolean),
           },
         },
@@ -75,24 +76,24 @@ const config: Configuration = {
       exclude: /assets\/svgs/,
       type: 'asset',
       generator: {
-        filename: `assets/images/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/images/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/media/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/media/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/fonts/${buildConf.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/fonts/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
       },
     }],
   },
   optimization: {
-    minimize: !buildConf.skipOptimizations,
+    minimize: !buildArgs.skipOptimizations,
     splitChunks: {
       cacheGroups: {
         common: {
@@ -105,44 +106,44 @@ const config: Configuration = {
     },
   },
   output: {
-    filename: buildConf.skipOptimizations ? '[name].js' : '[chunkhash].js',
-    path: buildConf.outputDir,
-    publicPath: process.env.PUBLIC_PATH ?? '/static/',
+    filename: buildArgs.skipOptimizations ? '[name].js' : '[chunkhash].js',
+    path: buildArgs.outputDir,
+    publicPath: buildArgs.publicPath,
     sourceMapFilename: '[file].map',
   },
   performance: {
-    hints: buildConf.isDev ? false : 'warning',
+    hints: isDev ? false : 'warning',
     maxAssetSize: 512 * 1024,
     maxEntrypointSize: 512 * 1024,
   },
   plugins: [
     new MiniCSSExtractPlugin({
-      chunkFilename: buildConf.skipOptimizations ? '[id].css' : '[chunkhash].css',
-      filename: buildConf.skipOptimizations ? '[name].css' : '[chunkhash].css',
+      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[chunkhash].css',
+      filename: buildArgs.skipOptimizations ? '[name].css' : '[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
-    ...buildConf.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
+    ...buildArgs.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
       analyzerMode: 'static',
     })] : [],
+    new DefinePlugin({
+      '__BUILD_ARGS__': JSON.stringify(buildArgs),
+    }),
     new EnvironmentPlugin({
       'NODE_ENV': 'production',
       'APP_ENV': 'client',
     }),
     new CopyPlugin({
       patterns: [{
-        from: path.join(buildConf.inputDir, 'static'),
-        to: buildConf.outputDir,
+        from: path.join(buildArgs.inputDir, 'static'),
+        to: buildArgs.outputDir,
       }],
     }),
-    new DefinePlugin({
-      __CONFIG__: JSON.stringify(appConf),
-    }),
-    !buildConf.isDev && new IgnorePlugin({
+    !isDev && new IgnorePlugin({
       resourceRegExp: /^.*\/config\/.*$/,
     }),
-    !buildConf.isDev && new ManifestPlugin({ fileName: 'asset-manifest.json' }),
-    buildConf.isDev && new HotModuleReplacementPlugin(),
-    buildConf.isDev && new ReactRefreshPlugin(),
+    !isDev && new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+    isDev && new HotModuleReplacementPlugin(),
+    isDev && new ReactRefreshPlugin(),
   ].filter(Boolean),
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

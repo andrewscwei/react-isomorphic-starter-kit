@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
-import useFetch from '../hooks/useFetch'
-import GetQuote from '../interactors/useCases/GetQuote'
+import Head from '../components/Head'
+import { GetQuote } from '../interactors'
+import useFetch from '../interactors/hooks/useFetch'
 import { useLocalizedString } from '../providers/i18n'
 import style from './Quote.module.css'
 
@@ -14,6 +15,7 @@ export default function About() {
 
   return (
     <>
+      <Head title={ltxt('window-title-quote')}/>
       <main>
         {quote && <span className={style.title}>{ltxt('quote-title')}</span>}
         {quote?.text && <span className={style.quote}>{ltxt('quote-text', { text: quote.text })}</span>}

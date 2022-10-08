@@ -16,9 +16,8 @@ declare module '*.eot'
 declare module '*.ttf'
 declare module '*.otf'
 declare module '*.module.css'
-
-declare const __CONFIG__: typeof import('./app.conf').default
-
+declare module 'sitemap'
+declare module 'webpack-manifest-plugin'
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
     constructor()
@@ -27,18 +26,17 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-declare module 'webpack-manifest-plugin'
-
 type AssetManifest = Record<string, any>
 
-declare const __ASSET_MANIFEST__: AssetManifest
+type Locals = Record<string, any>
 
-declare module 'sitemap'
+declare const __BUILD_ARGS__: typeof import('../config/build.args')
 
 interface Error {
   status?: number
 }
 
 interface Window {
-  __LOCALS__: Record<string, any>
+  __LOCALS__: Locals
+  __VERSION__: string
 }

@@ -12,7 +12,7 @@ router.get('/version', (req, res, next) => {
 
       return
     case 'json':
-      res.status(200).send({ version: appConf.version, build: appConf.buildNumber })
+      res.status(200).send({ version: appConf.version })
 
       return
     default:

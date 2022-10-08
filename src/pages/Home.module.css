@@ -1,6 +1,7 @@
 .logo {
   height: 15rem;
   margin: 0 3rem 0 0;
+  width: 15rem;
 
   @media (min-height: 600px) {
     height: 20rem;

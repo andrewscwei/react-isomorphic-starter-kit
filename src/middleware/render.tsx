@@ -5,28 +5,22 @@
  */
 
 import { RequestHandler } from 'express'
-import _ from 'lodash'
+import fs from 'fs'
 import path from 'path'
 import React, { ComponentType } from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
-import { matchPath } from 'react-router'
 import appConf from '../app.conf'
-import routesConf from '../routes.conf'
 import Layout from '../templates/Layout'
-import debug from '../utils/debug'
 import { markup } from '../utils/dom'
+import useDebug from '../utils/useDebug'
+
+const debug = useDebug()
 
 interface RenderOptions {
   /**
    * The Webpack generated bundle ID.
    */
   bundleId?: string
-
-  /**
-   * The browser window title ID (for localization) of the rendered page. If provided, this title
-   * will take precedence.
-   */
-  titleId?: string
 }
 
 /**
@@ -38,20 +32,19 @@ interface RenderOptions {
  * @return The resolved path.
  */
 function resolveAssetPath(pathToResolve: string): string {
-  const { publicPath } = appConf
+  const { publicPath } = __BUILD_ARGS__
   let out = pathToResolve
 
   try {
-    const outputDir = path.join(__dirname, '../../', 'build')
-    const assetManifestFile = 'asset-manifest.json'
-    const manifest = require(path.join(outputDir, 'static', assetManifestFile))
-    const normalizedPath: string = path.join(...pathToResolve.split('/').filter(Boolean))
+    const assetManifestFile = fs.readFileSync(path.join(publicPath, 'asset-manifest.json'), 'utf-8')
+    const manifest = JSON.parse(assetManifestFile)
+    const normalizedPath: string = path.join(...pathToResolve.split('/'))
 
-    out = manifest[normalizedPath] ?? manifest[`${publicPath}${normalizedPath}`] ?? normalizedPath
+    out = manifest[normalizedPath] ?? manifest[path.join(publicPath, normalizedPath)] ?? normalizedPath
   }
   catch (err) {}
 
-  if (!out.startsWith(publicPath)) out = `${publicPath}${out}`
+  if (!out.startsWith(publicPath)) out = path.join(publicPath, out)
 
   return out
 }
@@ -68,10 +61,8 @@ export function render(Component: ComponentType, options: RenderOptions = {}): R
  *
  * @return Express middleware.
  */
-export function renderWithMarkup(Component: ComponentType, { bundleId, titleId }: RenderOptions = {}): RequestHandler {
+export function renderWithMarkup(Component: ComponentType, { bundleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const matches = _.compact(routesConf.map(config => matchPath(req.path, config.path) ? config : undefined))
-
     const body = renderToString(markup(Component, {
       staticRouter: {
         location: req.url,
@@ -98,10 +89,8 @@ export function renderWithMarkup(Component: ComponentType, { bundleId, titleId }
  *
  * @return Express middleware.
  */
-export function renderWithoutMarkup({ bundleId, titleId }: RenderOptions = {}): RequestHandler {
+export function renderWithoutMarkup({ bundleId }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const matches = _.compact(routesConf.map(config => matchPath(req.path, config.path) ? config : undefined))
-
     debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)
 
     res.send(`<!DOCTYPE html>${renderToStaticMarkup(

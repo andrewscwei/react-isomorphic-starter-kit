@@ -7,7 +7,7 @@ export function generateSitemap(): RequestHandler {
   return async (req, res, next) => {
     try {
       const sm = sitemap.createSitemap({
-        hostname: appConf.meta.url,
+        hostname: appConf.url,
         cacheTime: 600000,
         urls: routesConf.reduce((out: any[], curr: Record<string, any>) => {
           if (curr.path === '*') return out

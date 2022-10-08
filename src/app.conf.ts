@@ -1,16 +1,10 @@
 /**
- * @file Default global config of the entire app. Most of these config are derived from environment
- *       variables.
+ * @file Runtime server config, passed to the client as a global variable named `__APP_CINFOG__`.
  */
 
-import { description, homepage, version } from '../package.json'
-
 export default {
-  // Version number.
-  version: `${version}${process.env.NODE_ENV !== 'development' ? '' : `-${(process.env.NODE_ENV ?? 'development').substring(0, 3)}`}`,
-
-  // Build number.
-  buildNumber: process.env.BUILD_NUMBER ?? 'local',
+  // Full version string.
+  version: `v${__BUILD_ARGS__.version}${!__BUILD_ARGS__.env || __BUILD_ARGS__.env === 'production' ? '' : `-${__BUILD_ARGS__.env.substring(0, 3)}`} (${__BUILD_ARGS__.buildNumber})`,
 
   // Default locale.
   defaultLocale: 'en',
@@ -18,24 +12,18 @@ export default {
   // Supported locales.
   locales: ['en', 'ja'],
 
-  // HTML metadata.
-  meta: {
-    // Fallback default window title.
-    title: 'React Isomorphic Starter Kit',
+  // Fallback window title.
+  title: 'React Isomorphic Starter Kit',
 
-    // Short description of the app.
-    description,
+  // Fallback app description.
+  description: __BUILD_ARGS__.packageDescription,
 
-    // App URL.
-    url: homepage,
-  },
+  // Fallback app URL.
+  url: __BUILD_ARGS__.packageHomepage,
 
   // Port.
-  port: process.env.PORT || 8080,
+  port: Number(typeof process !== 'undefined' && process.env.PORT || 8080),
 
   // Determines whether SSR is enabled.
-  ssrEnabled: process.env.NODE_ENV !== 'development',
-
-  // Public path of all loaded assets.
-  publicPath: process.env.PUBLIC_PATH || '/static/',
+  ssrEnabled: __BUILD_ARGS__.env !== 'development',
 }

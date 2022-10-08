@@ -1,6 +1,6 @@
 import objectHash from 'object-hash'
 import useCache from '../../utils/useCache'
-import UseCase from '../UseCase'
+import UseCase from './UseCase'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
