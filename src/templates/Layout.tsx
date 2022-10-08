@@ -13,7 +13,7 @@ interface Props {
 
 export default function Layout({
   body = '',
-  helmetContext,
+  helmetContext = {},
   locals = {},
   resolveAssetPath = t => t,
 }: Props) {
@@ -27,19 +27,19 @@ export default function Layout({
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
         <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'/>
 
-        {helmetContext?.helmet.title.toComponent()}
-        {helmetContext?.helmet.priority.toComponent()}
+        {helmetContext.helmet?.title.toComponent()}
+        {helmetContext.helmet?.priority.toComponent()}
 
         <meta name='theme-color' content='#000'/>
 
-        {helmetContext?.helmet.meta.toComponent()}
+        {helmetContext.helmet?.meta.toComponent()}
 
         <meta name='twitter:card' content='summary_large_image'/>
         <meta name='mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
 
-        {helmetContext?.helmet.link.toComponent()}
+        {helmetContext.helmet?.link.toComponent()}
 
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
@@ -53,7 +53,7 @@ export default function Layout({
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
-        {helmetContext?.helmet.script.toComponent()}
+        {helmetContext.helmet?.script.toComponent()}
 
         {__BUILD_ARGS__.env !== 'development' && (
           <>

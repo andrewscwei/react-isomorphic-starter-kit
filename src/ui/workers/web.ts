@@ -1,13 +1,15 @@
-/**
- * @file Default web worker.
- */
+import useDebug from '../../utils/useDebug'
 
-const ctx: Worker = self as any
+const debug = useDebug('', 'worker')
 
-// Post data to parent thread
-ctx.postMessage({ message: 'Hello, world!' })
+self.addEventListener('message', event => {
+  const message = event.data.message
+  debug('Receiving message from app...', 'OK', message)
 
-// Respond to message from parent thread
-ctx.addEventListener('message', event => {
-  console.log('Worker:', event.data.message) // eslint-disable-line no-console
+  switch (message) {
+    case 'Marco':
+      self.postMessage({ message: 'Polo' })
+    default:
+      break
+  }
 })
