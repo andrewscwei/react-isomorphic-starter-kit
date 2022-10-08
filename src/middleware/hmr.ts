@@ -8,30 +8,16 @@
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import buildConfig from '../../config/build.client.conf'
-import useDebug from '../utils/useDebug'
+import clientBuildConfig from '../../config/build.client.conf'
 
-const compiler = webpack(buildConfig)
+const compiler = webpack(clientBuildConfig)
 
-/**
- * Export configured dev middleware.
- *
- * @return Express middleware.
- */
 export function devMiddleware() {
   return webpackDevMiddleware(compiler, {
-    publicPath: buildConfig.output?.publicPath?.toString() ?? '/',
+    publicPath: __BUILD_ARGS__.publicPath,
   })
 }
 
-/**
- * Export configured hot middleware.
- *
- * @return Express middleware.
- */
 export function hotMiddleware() {
-  return webpackHotMiddleware(compiler, {
-    log: useDebug(),
-    heartbeat: 2000,
-  })
+  return webpackHotMiddleware(compiler)
 }

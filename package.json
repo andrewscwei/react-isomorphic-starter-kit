@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node build",
     "clean": "rimraf build",
-    "dev": "npm run clean && cross-env NODE_ENV=development DEBUG=server* concurrently \"npm run build:server -- --watch\" \"wait-on build/index.js && nodemon --quiet --exec 'node -r dotenv/config' --watch build --inspect=5858 build\"",
+    "dev": "npm run clean && cross-env NODE_ENV=development concurrently \"npm run build:server -- --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --quiet --exec 'node -r dotenv/config' --watch build --inspect=5858 build\"",
     "build": "cross-env-shell NODE_ENV=production \"npm run clean && npm run build:client && npm run build:server\"",
     "build:server": "webpack --config config/build.server.conf.ts",
     "build:client": "webpack --config config/build.client.conf.ts",
