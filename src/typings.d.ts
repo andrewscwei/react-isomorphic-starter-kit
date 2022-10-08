@@ -16,7 +16,6 @@ declare module '*.eot'
 declare module '*.ttf'
 declare module '*.otf'
 declare module '*.module.css'
-declare module 'sitemap'
 declare module 'webpack-manifest-plugin'
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {

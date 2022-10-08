@@ -75,7 +75,7 @@
         "SwitchCase": 1
       }
     ],
-    "@typescript-eslint/init-declarations": "error",
+    "@typescript-eslint/init-declarations": "off",
     "@typescript-eslint/lines-between-class-members": "error",
     "@typescript-eslint/member-delimiter-style": [
       "error",

@@ -31,7 +31,7 @@ function resolveAssetPath(pathToResolve: string): string {
   return out
 }
 
-export function render(): RequestHandler {
+export default function render(): RequestHandler {
   return async (req, res) => {
     const helmetContext = {}
     const body = !appConf.ssrEnabled ? undefined : renderToString(

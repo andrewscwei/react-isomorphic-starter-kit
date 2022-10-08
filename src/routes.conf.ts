@@ -8,22 +8,18 @@ import NotFound from './ui/pages/NotFound'
 import Quote from './ui/pages/Quote'
 
 export type RouteConfig = {
-  component: ComponentType<any>
+  component: ComponentType
   path: string
+  index?: boolean
 }
 
 const config: RouteConfig[] = [{
   component: Home,
   path: '/',
+  index: true,
 }, {
   component: Quote,
   path: '/quote',
-}, {
-  component: Home,
-  path: '/ja',
-}, {
-  component: Quote,
-  path: '/ja/quote',
 }, {
   component: NotFound,
   path: '*',

@@ -9,9 +9,6 @@ export default {
   // Default locale.
   defaultLocale: 'en',
 
-  // Supported locales.
-  locales: ['en', 'ja'],
-
   // Fallback window title.
   title: 'React Isomorphic Starter Kit',
 

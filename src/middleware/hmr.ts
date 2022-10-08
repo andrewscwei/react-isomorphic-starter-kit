@@ -30,7 +30,7 @@ export function devMiddleware() {
  * @return Express middleware.
  */
 export function hotMiddleware() {
-  return webpackHotMiddleware(compiler as any /* TODO: Fix this when the @types/webpack-hot-middleware is updated */, {
+  return webpackHotMiddleware(compiler, {
     log: useDebug(),
     heartbeat: 2000,
   })

@@ -11,7 +11,7 @@ import ip from 'ip'
 import morgan from 'morgan'
 import path from 'path'
 import appConf from './app.conf'
-import { generateSitemap } from './middleware/sitemap'
+import generateSitemap from './middleware/generateSItemap'
 import routes from './routes'
 import useDebug from './utils/useDebug'
 
