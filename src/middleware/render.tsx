@@ -36,13 +36,15 @@ function resolveAssetPath(pathToResolve: string): string {
   let out = pathToResolve
 
   try {
-    const assetManifestFile = fs.readFileSync(path.join(publicPath, 'asset-manifest.json'), 'utf-8')
+    const assetManifestFile = fs.readFileSync(path.join(__dirname, publicPath, 'asset-manifest.json'), 'utf-8')
     const manifest = JSON.parse(assetManifestFile)
     const normalizedPath: string = path.join(...pathToResolve.split('/'))
 
     out = manifest[normalizedPath] ?? manifest[path.join(publicPath, normalizedPath)] ?? normalizedPath
   }
-  catch (err) {}
+  catch (err) {
+    debug(`Resolving asset path <${pathToResolve}>...`, 'ERR', err)
+  }
 
   if (!out.startsWith(publicPath)) out = path.join(publicPath, out)
 

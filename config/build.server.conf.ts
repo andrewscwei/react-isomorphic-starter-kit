@@ -65,19 +65,19 @@ const config: Configuration = {
       exclude: /assets\/svgs/,
       type: 'asset',
       generator: {
-        filename: `assets/images/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/images/${buildArgs.skipOptimizations ? '[name]' : '[name].[hash:base64]'}[ext]`,
       },
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/media/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/media/${buildArgs.skipOptimizations ? '[name]' : '[name].[hash:base64]'}[ext]`,
       },
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       type: 'asset',
       generator: {
-        filename: `assets/fonts/${buildArgs.skipOptimizations ? '[name]' : '[hash:base64]'}.[ext]`,
+        filename: `assets/fonts/${buildArgs.skipOptimizations ? '[name]' : '[name].[hash:base64]'}[ext]`,
       },
     }],
   },
@@ -99,8 +99,8 @@ const config: Configuration = {
   },
   plugins: [
     new MiniCSSExtractPlugin({
-      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[chunkhash].css',
-      filename: buildArgs.skipOptimizations ? '[name].css' : '[chunkhash].css',
+      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[id].[chunkhash].css',
+      filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
