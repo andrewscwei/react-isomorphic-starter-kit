@@ -9,9 +9,12 @@ import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
-import appConf from '../app.conf'
 import Layout from '../templates/Layout'
 import App from '../ui/App'
+
+type RenderOptions = {
+  ssrEnabled?: boolean
+}
 
 function resolveAssetPath(pathToResolve: string): string {
   const { publicPath } = __BUILD_ARGS__
@@ -31,10 +34,10 @@ function resolveAssetPath(pathToResolve: string): string {
   return out
 }
 
-export default function render(): RequestHandler {
+export default function render({ ssrEnabled = false }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
     const helmetContext = {}
-    const body = !appConf.ssrEnabled ? undefined : renderToString(
+    const body = !ssrEnabled ? undefined : renderToString(
       <App
         helmetContext={helmetContext}
         routerType='static'

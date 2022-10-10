@@ -20,7 +20,4 @@ export default {
 
   // Port.
   port: Number(typeof process !== 'undefined' && process.env.PORT || 8080),
-
-  // Determines whether SSR is enabled.
-  ssrEnabled: __BUILD_ARGS__.env !== 'development',
 }

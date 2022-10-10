@@ -118,9 +118,7 @@ const config: Configuration = {
       }),
       new WatchIgnorePlugin({
         paths: [
-          /bundles/,
-          /pages/,
-          /components/,
+          /ui/,
         ],
       }),
     ] : [],

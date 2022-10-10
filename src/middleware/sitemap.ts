@@ -1,17 +1,21 @@
-import { RequestHandler } from 'express'
+import { Router } from 'express'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import { createGzip } from 'zlib'
 import appConf from '../app.conf'
-import translations from '../locales'
 import routesConf from '../routes.conf'
+import translations from '../ui/locales'
 
-let cached: any | undefined
-
-export default function sitemap(): RequestHandler {
+/**
+ * Sitemap generator.
+ */
+export default function sitemap() {
+  const router = Router()
   const { defaultLocale, url: hostname } = appConf
   const supportedLocales = Object.keys(translations)
 
-  return async (req, res, next) => {
+  let cached: any | undefined
+
+  router.use('/sitemap.xml', async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
     res.header('Content-Encoding', 'gzip')
 
@@ -38,5 +42,7 @@ export default function sitemap(): RequestHandler {
     catch (err) {
       next(err)
     }
-  }
+  })
+
+  return router
 }
