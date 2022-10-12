@@ -9,6 +9,8 @@ import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { matchPath } from 'react-router'
+import routesConf from '../routes.conf'
 import Layout from '../templates/Layout'
 import App from '../ui/App'
 
@@ -36,20 +38,22 @@ function resolveAssetPath(pathToResolve: string): string {
 
 export default function render({ ssrEnabled = false }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
+    const config = routesConf.find(t => matchPath(req.path, t.path))
+    const prefetched = await config?.prefetch?.()
     const helmetContext = {}
-    const body = !ssrEnabled ? undefined : renderToString(
+    const body = ssrEnabled ? renderToString(
       <App
         helmetContext={helmetContext}
+        locals={{ ...res.locals, prefetched }}
         routerType='static'
         routerProps={{ location: req.url }}
       />
-    )
+    ) : undefined
 
     res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         body={body}
         helmetContext={helmetContext}
-        locals={res.locals}
         resolveAssetPath={resolveAssetPath}
       />,
     )}`)

@@ -1,14 +1,11 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import Worker from 'worker-loader!./workers/web'
 import appConf from '../app.conf'
 import useDebug from '../utils/useDebug'
 import App from './App'
 
 const debug = useDebug()
-
-if (process.env.NODE_ENV === 'development') window.localStorage.debug = 'app*'
-window.__VERSION__ = appConf.version
 
 const worker = new Worker()
 worker.postMessage({ message: 'Marco' })
@@ -19,5 +16,13 @@ worker.addEventListener('message', event => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const app = createRoot(document.getElementById('app')!)
-app.render(<App/>)
+const container = document.getElementById('app')!
+
+if (process.env.NODE_ENV === 'development') {
+  window.localStorage.debug = 'app*'
+  createRoot(container).render(<App/>)
+}
+else {
+  window.__VERSION__ = appConf.version
+  hydrateRoot(container, <App/>)
+}

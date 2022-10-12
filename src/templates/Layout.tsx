@@ -4,24 +4,22 @@
 
 import React from 'react'
 
-interface Props {
+type Props = {
   body?: string
+  locals?: Locals
   helmetContext?: Record<string, any>
-  locals?: Record<string, any>
   resolveAssetPath?: (path: string) => string
 }
 
 export default function Layout({
   body = '',
-  helmetContext = {},
   locals = {},
+  helmetContext = {},
   resolveAssetPath = t => t,
 }: Props) {
   return (
     <html>
-      {process.env.NODE_ENV !== 'development' && (
-        <script dangerouslySetInnerHTML={{ __html: 'if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }' }}/>
-      )}
+      {process.env.NODE_ENV !== 'development' && <script dangerouslySetInnerHTML={{ __html: 'if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") { __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {}; }' }}/>}
       <head>
         <meta charSet='utf-8'/>
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
@@ -53,23 +51,17 @@ export default function Layout({
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
+        <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>
+        <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>
+
         {helmetContext.helmet?.script.toComponent()}
 
-        {__BUILD_ARGS__.env !== 'development' && (
-          <>
-            <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>
-            <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>
-          </>
-        )}
+        {process.env.NODE_ENV !== 'development' && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
+        <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
+        <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
       </head>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
         <div id='app' dangerouslySetInnerHTML={{ __html: body }}/>
-        {process.env.NODE_ENV === 'production' && (
-          <script type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>
-        )}
-        <script type='application/javascript' src={resolveAssetPath('/common.js')}></script>
-        <script type='application/javascript' src={resolveAssetPath('/main.js')}></script>
       </body>
     </html>
   )

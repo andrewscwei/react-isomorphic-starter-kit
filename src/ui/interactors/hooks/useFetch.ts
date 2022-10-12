@@ -7,6 +7,11 @@ const debug = useDebug('fetch')
 
 type Options<T> = {
   /**
+   * Specifies the default value.
+   */
+  defaultValue?: T
+
+  /**
    * Specifies if cache should be skipped.
    */
   skipCache?: boolean
@@ -47,6 +52,7 @@ type Options<T> = {
 export default function useFetch<Params extends Record<string, any>, Result>(
   UseCaseClass: new () => FetchUseCase<Params, Result>,
   {
+    defaultValue,
     skipCache,
     timeout,
     onCancel,
@@ -58,7 +64,7 @@ export default function useFetch<Params extends Record<string, any>, Result>(
   const runningCountRef = useRef(0)
   const [totalRunCount, setTotalRunCount] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
-  const [result, setResult] = useState<Result>()
+  const [result, setResult] = useState<Result | undefined>(defaultValue)
   const useCase = useMemo(() => new UseCaseClass(), [])
   const useCaseName = useCase.constructor.name
 

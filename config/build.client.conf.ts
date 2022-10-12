@@ -7,7 +7,7 @@ import CopyPlugin from 'copy-webpack-plugin'
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
-import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, IgnorePlugin } from 'webpack'
+import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import * as buildArgs from './build.args'
@@ -15,7 +15,7 @@ import * as buildArgs from './build.args'
 const isDev = buildArgs.env === 'development'
 
 const config: Configuration = {
-  devtool: isDev ? 'source-map' : false,
+  devtool: buildArgs.useSourceMaps ? 'source-map' : false,
   entry: {
     polyfills: path.join(buildArgs.inputDir, 'ui', 'polyfills.ts'),
     main: [
@@ -32,26 +32,24 @@ const config: Configuration = {
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          plugins: [
-            isDev && require.resolve('react-refresh/babel'),
-          ].filter(Boolean),
+          plugins: isDev ? [require.resolve('react-refresh/babel')] : [],
         },
       }],
     }, {
       test: /\.css$/,
       use: [{
-        loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
+        loader: MiniCSSExtractPlugin.loader,
       }, {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
           modules: true,
-          sourceMap: isDev,
+          sourceMap: buildArgs.useSourceMaps,
         },
       }, {
         loader: 'postcss-loader',
         options: {
-          sourceMap: isDev,
+          sourceMap: buildArgs.useSourceMaps,
           postcssOptions: {
             plugins: [
               ['postcss-preset-env', {
@@ -59,8 +57,8 @@ const config: Configuration = {
                   'nesting-rules': true,
                 },
               }],
-              !buildArgs.skipOptimizations && 'cssnano',
-            ].filter(Boolean),
+              ...buildArgs.skipOptimizations ? [] : ['cssnano'],
+            ],
           },
         },
       }],
@@ -120,11 +118,10 @@ const config: Configuration = {
     }),
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
-      '__BUILD_ARGS__': JSON.stringify(buildArgs),
+      __BUILD_ARGS__: JSON.stringify(buildArgs),
     }),
     new EnvironmentPlugin({
-      'NODE_ENV': 'production',
-      'APP_ENV': 'client',
+      NODE_ENV: 'production',
     }),
     new CopyPlugin({
       patterns: [{
@@ -136,7 +133,6 @@ const config: Configuration = {
       new HotModuleReplacementPlugin(),
       new ReactRefreshPlugin(),
     ] : [
-      new IgnorePlugin({ resourceRegExp: /^.*\/config\/.*$/ }),
       new ManifestPlugin({ fileName: 'asset-manifest.json' }),
     ],
     ...buildArgs.useBundleAnalyzer ? [new BundleAnalyzerPlugin({

@@ -3,7 +3,6 @@
  */
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
-import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
 import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -13,11 +12,13 @@ import * as buildArgs from './build.args'
 const isDev = buildArgs.env === 'development'
 
 const config: Configuration = {
-  devtool: isDev ? 'source-map' : false,
+  devtool: buildArgs.useSourceMaps ? 'source-map' : false,
   entry: {
     index: path.join(buildArgs.inputDir, 'index.ts'),
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+  ],
   mode: isDev ? 'development' : 'production',
   module: {
     rules: [{
@@ -34,25 +35,8 @@ const config: Configuration = {
       use: [{
         loader: 'css-loader',
         options: {
-          importLoaders: 1,
           modules: {
             exportOnlyLocals: true,
-          },
-          sourceMap: isDev,
-        },
-      }, {
-        loader: 'postcss-loader',
-        options: {
-          sourceMap: isDev,
-          postcssOptions: {
-            plugins: [
-              ['postcss-preset-env', {
-                features: {
-                  'nesting-rules': true,
-                },
-              }],
-              !buildArgs.skipOptimizations && 'cssnano',
-            ].filter(Boolean),
           },
         },
       }],
@@ -87,7 +71,6 @@ const config: Configuration = {
   },
   output: {
     filename: '[name].js',
-    libraryTarget: 'commonjs2',
     path: buildArgs.outputDir,
     publicPath: buildArgs.publicPath,
     sourceMapFilename: '[file].map',
@@ -98,33 +81,30 @@ const config: Configuration = {
     maxEntrypointSize: 512 * 1024,
   },
   plugins: [
-    new MiniCSSExtractPlugin({
-      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[id].[chunkhash].css',
-      filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
-    }),
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
       '__BUILD_ARGS__': JSON.stringify(buildArgs),
     }),
     new EnvironmentPlugin({
       'NODE_ENV': 'production',
-      'APP_ENV': 'server',
     }),
-    ...isDev ? [
+    ...buildArgs.useSourceMaps ? [
       new BannerPlugin({
         banner: 'require(\'source-map-support\').install();',
         raw: true,
         entryOnly: false,
       }),
-      new WatchIgnorePlugin({
-        paths: [
-          /ui/,
-        ],
-      }),
     ] : [],
     ...buildArgs.useBundleAnalyzer ? [
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
+      }),
+    ] : [],
+    ...isDev ? [
+      new WatchIgnorePlugin({
+        paths: [
+          /ui/,
+        ],
       }),
     ] : [],
   ],

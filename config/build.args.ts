@@ -39,6 +39,11 @@ export const inputDir = path.join(__dirname, '../', 'src')
 export const outputDir = path.join(__dirname, '../', 'build')
 
 /**
+ * Specifies whether source maps should be generated.
+ */
+export const useSourceMaps = env === 'development'
+
+/**
  * Specifies whether the bundle analyzer should be enabled while building.
  */
 export const useBundleAnalyzer = process.env.npm_config_analyze === 'true'

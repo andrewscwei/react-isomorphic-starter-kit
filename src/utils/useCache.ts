@@ -14,8 +14,10 @@ type CacheProxy = {
   setValue: <T>(value: T, key: string, ttl?: number) => T
 }
 
+const storage = typeof window !== 'undefined' ? window.sessionStorage : undefined
+
 function invalidate(key: string) {
-  window.sessionStorage.removeItem(key)
+  storage?.removeItem(key)
 }
 
 function isStale<T>(item: CacheItem<T>): boolean {
@@ -25,7 +27,7 @@ function isStale<T>(item: CacheItem<T>): boolean {
 }
 
 function getValue<T>(key: string): T | undefined {
-  const res = window.sessionStorage.getItem(key)
+  const res = storage?.getItem(key)
   if (!res) return undefined
 
   const item = JSON.parse(res) as CacheItem<T>
@@ -48,7 +50,7 @@ function setValue<T>(value: T, key: string, ttl: number): T {
     ttl,
   }
 
-  window.sessionStorage.setItem(key, JSON.stringify(item))
+  storage?.setItem(key, JSON.stringify(item))
 
   return value
 }
