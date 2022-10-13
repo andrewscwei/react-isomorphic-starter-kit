@@ -2,40 +2,75 @@
  * @file Server entry file.
  */
 
+import compression from 'compression'
+import express from 'express'
+import helmet from 'helmet'
 import http from 'http'
 import ip from 'ip'
-import app from './app'
+import morgan from 'morgan'
 import appConf from './app.conf'
+import dev from './middleware/dev'
+import localStaticFiles from './middleware/localStaticFiles'
+import render from './middleware/render'
+import sitemap from './middleware/sitemap'
 import useDebug from './utils/useDebug'
 
 const debug = useDebug(undefined, 'server')
 
-http
-  .createServer(app)
-  .listen(appConf.port)
-  .on('error', (error: NodeJS.ErrnoException) => {
-    if (error.syscall !== 'listen') throw error
+const app = express()
+app.use(morgan('dev'))
+app.use(compression())
+app.use(helmet({ contentSecurityPolicy: false }))
+if (process.env.NODE_ENV === 'development') app.use(dev())
+if (process.env.NODE_ENV !== 'development') app.use(localStaticFiles(__dirname))
+app.use(sitemap())
+app.use(render({ ssrEnabled: process.env.NODE_ENV !== 'development' }))
 
-    switch (error.code) {
-      case 'EACCES':
-        debug(`Port ${appConf.port} requires elevated privileges`)
-        process.exit(1)
-      case 'EADDRINUSE':
-        debug(`Port ${appConf.port} is already in use`)
-        process.exit(1)
-      default:
-        throw error
-    }
-  })
-  .on('listening', () => {
-    debug(`App is listening on ${ip.address()}:${appConf.port}`)
-  })
-
-process.on('unhandledRejection', reason => {
-  console.error('Unhandled Promise rejection:', reason) // eslint-disable-line no-console
-  process.exit(1)
+/**
+ * Server 404 error, when the requested URI is not found.
+ */
+app.use((req, res, next) => {
+  const err = Error(`${req.method} ${req.path} is not handled.`)
+  err.status = 404
+  next(err)
 })
 
-if (module['hot']) {
-  module['hot'].accept();
+/**
+ * Final point of error handling. Any error that was previously thrown will skip all intermediate
+ * middleware and go straight to here, where the server will first render an error view if the
+ * request accepts html, or respond with the error info in a JSON payload. If the error that ends up
+ * here does not have a status code, it will default to 500.
+ */
+app.use((err: Error, req: express.Request, res: express.Response) => {
+  res.status(err.status || 500).send(err)
+})
+
+if (!appConf.skipHTTP) {
+  http
+    .createServer(app)
+    .listen(appConf.port)
+    .on('error', (error: NodeJS.ErrnoException) => {
+      if (error.syscall !== 'listen') throw error
+
+      switch (error.code) {
+        case 'EACCES':
+          debug(`Port ${appConf.port} requires elevated privileges`)
+          process.exit(1)
+        case 'EADDRINUSE':
+          debug(`Port ${appConf.port} is already in use`)
+          process.exit(1)
+        default:
+          throw error
+      }
+    })
+    .on('listening', () => {
+      debug(`App is listening on ${ip.address()}:${appConf.port}`)
+    })
+
+  process.on('unhandledRejection', reason => {
+    console.error('Unhandled Promise rejection:', reason) // eslint-disable-line no-console
+    process.exit(1)
+  })
 }
+
+export default app

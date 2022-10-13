@@ -71,6 +71,7 @@ const config: Configuration = {
   },
   output: {
     filename: '[name].js',
+    libraryTarget: 'commonjs2',
     path: buildArgs.outputDir,
     publicPath: buildArgs.publicPath,
     sourceMapFilename: '[file].map',

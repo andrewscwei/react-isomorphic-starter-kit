@@ -20,4 +20,7 @@ export default {
 
   // Port.
   port: Number(typeof process !== 'undefined' && process.env.PORT || 8080),
+
+  // Skip HTTP server.
+  skipHTTP: typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false,
 }

@@ -5,7 +5,7 @@ import path from 'path'
 import request from 'supertest'
 
 const baseDir = path.join(__dirname, '../build')
-const app = require(path.join(baseDir, 'app')).default
+const app = require(path.join(baseDir, 'index')).default
 
 describe('app', () => {
   beforeAll(() => {
