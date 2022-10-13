@@ -3,7 +3,6 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import clientBuildConfig from '../../config/build.client.conf'
-import useDebug from '../utils/useDebug'
 
 /**
  * Middleware for development only, sets up Webpack dev server and HMR features.
@@ -20,7 +19,7 @@ export default function dev() {
   }))
 
   router.use(webpackHotMiddleware(compiler, {
-    log: useDebug(),
+    log: false,
     heartbeat: 2000,
   }))
 

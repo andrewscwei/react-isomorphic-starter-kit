@@ -41,10 +41,11 @@ export default function render({ ssrEnabled = false }: RenderOptions = {}): Requ
     const config = routesConf.find(t => matchPath(req.path, t.path))
     const prefetched = await config?.prefetch?.()
     const helmetContext = {}
+    const locals = { ...res.locals, prefetched }
     const body = ssrEnabled ? renderToString(
       <App
         helmetContext={helmetContext}
-        locals={{ ...res.locals, prefetched }}
+        locals={locals}
         routerType='static'
         routerProps={{ location: req.url }}
       />
@@ -53,6 +54,7 @@ export default function render({ ssrEnabled = false }: RenderOptions = {}): Requ
     res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         body={body}
+        locals={locals}
         helmetContext={helmetContext}
         resolveAssetPath={resolveAssetPath}
       />,

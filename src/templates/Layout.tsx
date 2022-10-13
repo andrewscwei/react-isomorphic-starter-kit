@@ -56,6 +56,8 @@ export default function Layout({
 
         {helmetContext.helmet?.script.toComponent()}
 
+        <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
+
         {process.env.NODE_ENV !== 'development' && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>

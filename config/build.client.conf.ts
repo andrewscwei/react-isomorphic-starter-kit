@@ -19,8 +19,8 @@ const config: Configuration = {
   entry: {
     polyfills: path.join(buildArgs.inputDir, 'ui', 'polyfills.ts'),
     main: [
-      ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
       path.join(buildArgs.inputDir, 'ui', 'index.tsx'),
+      ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
     ],
   },
   mode: isDev ? 'development' : 'production',

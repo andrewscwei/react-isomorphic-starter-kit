@@ -35,3 +35,7 @@ process.on('unhandledRejection', reason => {
   console.error('Unhandled Promise rejection:', reason) // eslint-disable-line no-console
   process.exit(1)
 })
+
+if (module['hot']) {
+  module['hot'].accept();
+}
