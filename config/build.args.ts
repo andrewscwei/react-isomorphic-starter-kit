@@ -26,7 +26,7 @@ export const version = packageVersion
 /**
  * Build number.
  */
-export const buildNumber = process.env.BUILD_NUMBER ?? 'local'
+export const buildNumber = process.env.BUILD_NUMBER || 'local'
 
 /**
  * Input directory of source files to compile.
@@ -56,4 +56,4 @@ export const skipOptimizations = env === 'development' || process.env.npm_config
 /**
  * Public path for static assets.
  */
-export const publicPath = process.env.PUBLIC_PATH ?? '/'
+export const publicPath = process.env.PUBLIC_PATH || '/'

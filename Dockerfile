@@ -1,10 +1,11 @@
-# This is a Dockerfile with multi-stage builds.
-
 # Builds the app with dev dependencies included.
-FROM node:18.8.0 AS build-dev
+FROM node:18.8.0 AS dev
 
 ARG BUILD_NUMBER
 ARG PUBLIC_PATH
+
+ENV BUILD_NUMBER=$BUILD_NUMBER
+ENV PUBLIC_PATH=$PUBLIC_PATH
 
 WORKDIR /var/app
 
@@ -17,16 +18,16 @@ COPY src ./src
 COPY ts*.json ./
 COPY .babelrc ./
 
-RUN NODE_ENV=production npm run build
+RUN npm run build
 
 
 # Rebuilds the app with unit tests included.
-FROM build-dev AS test
+FROM dev AS test
 
 COPY tests ./tests
 
 # Strips dev dependencies from the dev build.
-FROM build-dev AS build-prod
+FROM dev AS prod
 
 RUN npm prune --production
 
@@ -42,8 +43,8 @@ ENV BUILD_NUMBER=$BUILD_NUMBER
 WORKDIR /var/app
 
 COPY package*.json ./
-COPY --from=build-prod /var/app/build ./build
-COPY --from=build-prod /var/app/node_modules ./node_modules
+COPY --from=prod /var/app/build ./build
+COPY --from=prod /var/app/node_modules ./node_modules
 
 CMD npm start
 

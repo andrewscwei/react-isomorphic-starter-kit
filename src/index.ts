@@ -9,7 +9,6 @@ import http from 'http'
 import ip from 'ip'
 import morgan from 'morgan'
 import appConf from './app.conf'
-import dev from './middleware/dev'
 import localStaticFiles from './middleware/localStaticFiles'
 import render from './middleware/render'
 import sitemap from './middleware/sitemap'
@@ -21,7 +20,8 @@ const app = express()
 app.use(morgan('dev'))
 app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
-if (process.env.NODE_ENV === 'development') app.use(dev())
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+if (process.env.NODE_ENV === 'development') app.use(require('./middleware/dev').default())
 if (process.env.NODE_ENV !== 'development') app.use(localStaticFiles(__dirname))
 app.use(sitemap())
 app.use(render({ ssrEnabled: process.env.NODE_ENV !== 'development' }))
