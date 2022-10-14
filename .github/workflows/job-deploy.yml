@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+jobs:
+  default:
+    name: Deploy
+    runs-on: ubuntu-latest
+    container: node:18.8.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Restore build dir
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body_path: RELEASE.md
+          draft: false
+          prerelease: false
+      - name: Deploy to Heroku
+        run: .github/workflows/deploy_to_heroku.sh
+        env:
+          PUBLIC_PATH: ${{ secrets.PUBLIC_PATH }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
