@@ -27,8 +27,3 @@ jobs:
         run: BUILD_NUMBER=$(git rev-parse --short HEAD).$(git rev-list --count ${{ github.ref }}) npm run build
       - name: Run integration tests
         run: npm test
-      - name: Persist build dir
-        uses: actions/upload-artifact@v1
-        with:
-          name: build
-          path: build/

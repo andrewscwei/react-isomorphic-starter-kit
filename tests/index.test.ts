@@ -1,15 +1,14 @@
-/* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
-
 import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 
-const baseDir = path.join(__dirname, '../build')
-const app = require(path.join(baseDir, 'index')).default
-
 describe('app', () => {
-  beforeAll(() => {
+  let app: any
+
+  beforeAll(async () => {
+    const baseDir = path.join(__dirname, '../build')
     expect(fs.existsSync(baseDir)).toBeTruthy()
+    app = (await import(baseDir)).default
   })
 
   it('can ping /', async () => {

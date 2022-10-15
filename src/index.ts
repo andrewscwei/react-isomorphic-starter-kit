@@ -5,7 +5,6 @@
 import compression from 'compression'
 import express from 'express'
 import helmet from 'helmet'
-import http from 'http'
 import ip from 'ip'
 import morgan from 'morgan'
 import appConf from './app.conf'
@@ -46,9 +45,7 @@ app.use((err: Error, req: express.Request, res: express.Response) => {
 })
 
 if (!appConf.skipHTTP) {
-  http
-    .createServer(app)
-    .listen(appConf.port)
+  app.listen(appConf.port)
     .on('error', (error: NodeJS.ErrnoException) => {
       if (error.syscall !== 'listen') throw error
 
@@ -68,9 +65,11 @@ if (!appConf.skipHTTP) {
     })
 
   process.on('unhandledRejection', reason => {
-    console.error('Unhandled Promise rejection:', reason) // eslint-disable-line no-console
+    console.error('Unhandled Promise rejection:', reason)
     process.exit(1)
   })
 }
+
+export { appConf as config }
 
 export default app

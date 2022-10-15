@@ -17,12 +17,13 @@ worker.addEventListener('message', event => {
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('app')!
+const locals = window.__LOCALS__ ?? {}
 
 if (process.env.NODE_ENV === 'development') {
   window.localStorage.debug = 'app*'
-  createRoot(container).render(<App/>)
+  createRoot(container).render(<App locals={locals}/>)
 }
 else {
   window.__VERSION__ = appConf.version
-  hydrateRoot(container, <App/>)
+  hydrateRoot(container, <App locals={locals}/>)
 }

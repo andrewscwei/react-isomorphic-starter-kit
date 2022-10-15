@@ -9,14 +9,14 @@ jobs:
     name: Build
     uses: ./.github/workflows/job-build.yml
     secrets: inherit
-  deploy:
-    name: Deploy
-    uses: ./.github/workflows/job-deploy.yml
+  release:
+    name: Release
+    uses: ./.github/workflows/job-release.yml
     needs: [build]
     secrets: inherit
   notify:
     name: Notify
-    needs: [build, deploy]
+    needs: [build, release]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:

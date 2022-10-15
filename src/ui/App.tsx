@@ -28,32 +28,34 @@ type Props<T extends RouterType> = {
 
 export default function App<T extends RouterType = 'browser'>({
   helmetContext = {},
-  locals = {},
+  locals,
   routerProps,
   routerType,
 }: Props<T>) {
   const Router = routerType === 'static' ? StaticRouter : BrowserRouter
 
   return (
-    <LocalsProvider locals={locals}>
-      <Router {...routerProps ?? {} as any}>
-        <I18nRouterProvider defaultLocale={appConf.defaultLocale} translations={translations}>
-          <HelmetProvider context={helmetContext}>
-            <Header/>
-            <I18nRoutes>
-              {routesConf.map(config => {
-                const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
-                const isIndex = path === ''
+    <React.StrictMode>
+      <LocalsProvider locals={locals}>
+        <Router {...routerProps ?? {} as any}>
+          <I18nRouterProvider defaultLocale={appConf.defaultLocale} translations={translations}>
+            <HelmetProvider context={helmetContext}>
+              <Header/>
+              <I18nRoutes>
+                {routesConf.map(config => {
+                  const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
+                  const isIndex = path === ''
 
-                return (
-                  <Route key={path} index={isIndex} path={isIndex ? undefined : path} element={<config.component/>}/>
-                )
-              })}
-            </I18nRoutes>
-            <Footer/>
-          </HelmetProvider>
-        </I18nRouterProvider>
-      </Router>
-    </LocalsProvider>
+                  return (
+                    <Route key={path} index={isIndex} path={isIndex ? undefined : path} element={<config.component/>}/>
+                  )
+                })}
+              </I18nRoutes>
+              <Footer/>
+            </HelmetProvider>
+          </I18nRouterProvider>
+        </Router>
+      </LocalsProvider>
+    </React.StrictMode>
   )
 }
