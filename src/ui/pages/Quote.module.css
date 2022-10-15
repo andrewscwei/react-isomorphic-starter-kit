@@ -1,0 +1,28 @@
+.title {
+  color: var(--color-grey);
+  margin: 0 0 2rem;
+  max-width: 60rem;
+  text-align: center;
+}
+
+.quote {
+  font-family: var(--font-header);
+  font-size: 2.2rem;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: .1rem;
+  line-height: 130%;
+  max-width: 80rem;
+  text-align: center;
+
+  @media (min-width: 60rem) {
+    font-size: 3rem;
+  }
+}
+
+.author {
+  font-style: italic;
+  margin-top: 1rem;
+  max-width: 60rem;
+  text-align: center;
+}

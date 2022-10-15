@@ -1,0 +1,7 @@
+export { default as AltFaviconDark } from './favicon-dark.png'
+export { default as FaviconDark } from './favicon-dark.svg'
+export { default as AltFaviconLight } from './favicon-light.png'
+export { default as FaviconLight } from './favicon-light.svg'
+export { default as OGImage } from './og-image.png'
+export { default as PinnedIcon } from './pinned-icon.svg'
+export { default as TwitterCard } from './twitter-card.png'

@@ -1,12 +1,26 @@
 /**
- * @file Default global config of the entire app. Most of these config are derived from environment
- *       variables.
+ * @file Runtime server config, passed to the client as a global variable named `__APP_CINFOG__`.
  */
 
 export default {
-  // Port.
-  port: process.env.PORT || 8080,
+  // Full version string.
+  version: `v${__BUILD_ARGS__.version}${!__BUILD_ARGS__.env || __BUILD_ARGS__.env === 'production' ? '' : `-${__BUILD_ARGS__.env.substring(0, 3)}`} (${__BUILD_ARGS__.buildNumber})`,
 
-  // Determines whether SSR is enabled.
-  ssrEnabled: process.env.NODE_ENV !== 'development',
+  // Default locale.
+  defaultLocale: 'en',
+
+  // Fallback window title.
+  title: 'React Isomorphic Starter Kit',
+
+  // Fallback app description.
+  description: __BUILD_ARGS__.packageDescription,
+
+  // Fallback app URL.
+  url: __BUILD_ARGS__.packageHomepage,
+
+  // Port.
+  port: Number(typeof process !== 'undefined' && process.env.PORT || 8080),
+
+  // Skip HTTP server.
+  skipHTTP: typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false,
 }

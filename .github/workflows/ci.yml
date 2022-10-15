@@ -6,51 +6,16 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
-    container: node:17.5.0
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-cache-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install Node modules
-        run: npm install
-      - name: Build
-        run: BUILD_NUMBER=$(echo ${{ github.sha }} | head -c7) npm run build
-      - name: Persist build dir
-        uses: actions/upload-artifact@v1
-        with:
-          name: build
-          path: build/
-  test:
-    name: Test
+    uses: ./.github/workflows/job-build.yml
+    secrets: inherit
+  notify:
+    name: Notify
     needs: [build]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
-    container: node:17.5.0
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache Node modules
-        uses: actions/cache@v2
+      - uses: andrewscwei/telegram-action@v1.0.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-cache-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install NPM dependencies
-        run: npm install
-      - name: Restore build dir
-        uses: actions/download-artifact@v1
-        with:
-          name: build
-      - name: Test
-        run: npm run test:ts && npm test
+          success: ${{ needs.build.result == 'success' }}
+          bot-token: ${{ secrets.TELEGRAM_DEVOPS_BOT_TOKEN }}
+          chat-id: ${{ secrets.TELEGRAM_DEVOPS_CHAT_ID }}

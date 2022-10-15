@@ -1,31 +1,48 @@
-import { RequestHandler } from 'express'
-import sitemap from 'sitemap'
+import { Router } from 'express'
+import { SitemapStream, streamToPromise } from 'sitemap'
+import { createGzip } from 'zlib'
+import appConf from '../app.conf'
 import routesConf from '../routes.conf'
+import translations from '../ui/locales'
 
-export function generateSitemap(): RequestHandler {
-  return async (req, res, next) => {
+/**
+ * Sitemap generator.
+ */
+export default function sitemap() {
+  const router = Router()
+  const { defaultLocale, url: hostname } = appConf
+  const supportedLocales = Object.keys(translations)
+
+  let cached: any | undefined
+
+  router.use('/sitemap.xml', async (req, res, next) => {
+    res.header('Content-Type', 'application/xml')
+    res.header('Content-Encoding', 'gzip')
+
+    if (cached) return res.send(cached)
+
     try {
-      const sm = sitemap.createSitemap({
-        hostname: __BUILD_CONFIG__.meta.url,
-        cacheTime: 600000,
-        urls: routesConf.reduce((out: any[], curr: { [key: string]: any }) => {
-          if (curr.path === '*') return out
+      const smStream = new SitemapStream({ hostname })
+      const pipeline = smStream.pipe(createGzip())
 
-          return [
-            ...out,
-            {
-              url: curr.path,
-            },
-          ]
-        }, []),
+      routesConf.forEach(config => {
+        const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
+        if (path === '*') return
+
+        supportedLocales.forEach(locale => {
+          const url = locale === defaultLocale ? `/${path}` : `/${locale}/${path}`
+          smStream.write({ url })
+        })
       })
 
-      const xml = await sm.toXML()
-
-      res.header('Content-Type', 'application/xml').status(200).send(xml)
+      streamToPromise(pipeline).then(sm => cached = sm)
+      smStream.end()
+      pipeline.pipe(res).on('error', err => { throw err })
     }
     catch (err) {
       next(err)
     }
-  }
+  })
+
+  return router
 }

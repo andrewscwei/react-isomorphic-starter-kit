@@ -5,107 +5,58 @@
  */
 
 import { RequestHandler } from 'express'
-import _ from 'lodash'
-import React, { ComponentType } from 'react'
+import fs from 'fs'
+import path from 'path'
+import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
-import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
-import appConf from '../app.conf'
-import App from '../App'
 import routesConf from '../routes.conf'
-import { createStore, PartialAppState } from '../store'
 import Layout from '../templates/Layout'
-import debug from '../utils/debug'
-import { markup } from '../utils/dom'
-import { getDefaultLocale, getLocaleFromPath, getPolyglotByLocale } from '../utils/i18n'
+import App from '../ui/App'
 
-interface RenderOptions {
-  /**
-   * The Webpack generated bundle ID.
-   */
-  bundleId?: string
-
-  /**
-   * The browser window title ID (for localization) of the rendered page. If provided, this title
-   * will take precedence.
-   */
-  titleId?: string
-
-  /**
-   * The initial state of the rendered page, which will be merged with `res.locals.store`.
-   */
-  initialState?: PartialAppState
+type RenderOptions = {
+  ssrEnabled?: boolean
 }
 
-export function render(Component: ComponentType, options: RenderOptions = {}): RequestHandler {
-  return appConf.ssrEnabled ? renderWithMarkup(Component, options) : renderWithoutMarkup(options)
+function resolveAssetPath(pathToResolve: string): string {
+  const { publicPath } = __BUILD_ARGS__
+  let out = pathToResolve
+
+  try {
+    const assetManifestFile = fs.readFileSync(path.join(__dirname, publicPath, 'asset-manifest.json'), 'utf-8')
+    const manifest = JSON.parse(assetManifestFile)
+    const normalizedPath: string = path.join(...pathToResolve.split('/'))
+
+    out = manifest[normalizedPath] ?? manifest[path.join(publicPath, normalizedPath)] ?? normalizedPath
+  }
+  catch (err) {}
+
+  if (!out.startsWith(publicPath)) out = path.join(publicPath, out)
+
+  return out
 }
 
-/**
- * Renders a React component to string with body markup.
- *
- * @param Compnent - The React component to render.
- * @param options - @see RenderOptions
- *
- * @return Express middleware.
- */
-export function renderWithMarkup(Component: ComponentType, { bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
+export default function render({ ssrEnabled = false }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
-    const sheet = new ServerStyleSheet()
-    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
-    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
+    const config = routesConf.find(t => matchPath(req.path, t.path))
+    const prefetched = await config?.prefetch?.()
+    const helmetContext = {}
+    const locals = { ...res.locals, prefetched }
+    const body = ssrEnabled ? renderToString(
+      <App
+        helmetContext={helmetContext}
+        locals={locals}
+        routerType='static'
+        routerProps={{ location: req.url }}
+      />
+    ) : undefined
 
-    const body = renderToString(
-      <StyleSheetManager sheet={sheet.instance}>
-        {markup(App, {
-          store,
-          staticRouter: {
-            location: req.url,
-          },
-        })}
-      </StyleSheetManager>
-    )
-
-    debug(`Rendering <${req.path}> with markup...`, 'OK')
-
-    res.send(`<!doctype html>${renderToStaticMarkup(
+    res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         body={body}
-        bundleId={bundleId}
-        initialState={_.omit(store.getState(), 'i18n')}
-        initialStyles={sheet.getStyleElement()}
-        locals={_.omit(res.locals, 'store')}
-        title={title}
-      />,
-    )}`)
-  }
-}
-
-/**
- * Renders a React component to string without body markup.
- *
- * @param Component - The React component to render.
- * @param options - @see RenderOptions
- *
- * @return Express middleware.
- */
-export function renderWithoutMarkup({ bundleId, titleId, initialState }: RenderOptions = {}): RequestHandler {
-  return async (req, res) => {
-    const store = createStore(_.merge(initialState ?? {}, res.locals.store ?? {}))
-    const matches = _.compact(routesConf.map(config => !!matchPath(req.path, config.path) ? config : undefined))
-    const locale = getLocaleFromPath(req.path) ?? getDefaultLocale()
-    const title = titleId ? getPolyglotByLocale(locale).t(titleId) : matches[0]?.title
-
-    debug(`Rendering <${req.path}> without markup...`, 'OK', bundleId, req.query)
-
-    res.send(`<!doctype html>${renderToStaticMarkup(
-      <Layout
-        bundleId={bundleId}
-        initialState={_.omit(store.getState(), 'i18n')}
-        locals={_.omit(res.locals, 'store')}
-        title={title}
+        locals={locals}
+        helmetContext={helmetContext}
+        resolveAssetPath={resolveAssetPath}
       />,
     )}`)
   }

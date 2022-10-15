@@ -7,78 +7,21 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
-    container: node:17.5.0
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-cache-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install Node modules
-        run: npm install
-      - name: Build
-        run: BUILD_NUMBER=$(echo ${{ github.sha }} | head -c7) npm run build
-      - name: Persist build dir
-        uses: actions/upload-artifact@v1
-        with:
-          name: build
-          path: build/
-  test:
-    name: Test
+    uses: ./.github/workflows/job-build.yml
+    secrets: inherit
+  release:
+    name: Release
+    uses: ./.github/workflows/job-release.yml
     needs: [build]
+    secrets: inherit
+  notify:
+    name: Notify
+    needs: [build, release]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
-    container: node:17.5.0
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache Node modules
-        uses: actions/cache@v2
+      - uses: andrewscwei/telegram-action@v1.0.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-cache-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install NPM dependencies
-        run: npm install
-      - name: Restore build dir
-        uses: actions/download-artifact@v1
-        with:
-          name: build
-      - name: Test
-        run: npm run test:ts && npm test
-  deploy:
-    name: Deploy
-    needs: [test]
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Restore build dir
-        uses: actions/download-artifact@v1
-        with:
-          name: build
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body_path: RELEASE.md
-          draft: false
-          prerelease: false
-      - name: Deploy to Heroku
-        run: .github/workflows/deploy_to_heroku.sh
-        env:
-          PUBLIC_PATH: ${{ secrets.PUBLIC_PATH }}
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          success: ${{ needs.build.result == 'success' && needs.release.result == 'success' }}
+          bot-token: ${{ secrets.TELEGRAM_DEVOPS_BOT_TOKEN }}
+          chat-id: ${{ secrets.TELEGRAM_DEVOPS_CHAT_ID }}

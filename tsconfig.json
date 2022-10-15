@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": true,
     "jsx": "react",
-    "lib": ["es6", "dom"],
+    "lib": ["es6", "dom", "WebWorker"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,

@@ -3,37 +3,28 @@
  */
 
 import { ComponentType } from 'react'
-import About from './containers/About'
-import Home from './containers/Home'
-import NotFound from './containers/NotFound'
-import { getPolyglotByLocale } from './utils/i18n'
+import Home from './ui/pages/Home'
+import NotFound from './ui/pages/NotFound'
+import Quote, { prefetch as prefetchQuote } from './ui/pages/Quote'
 
 export type RouteConfig = {
-  component: ComponentType<any>
+  component: ComponentType
   path: string
-  title?: string
+  index?: boolean
+  prefetch?: () => Promise<any>
 }
 
 const config: RouteConfig[] = [{
   component: Home,
   path: '/',
-  title: getPolyglotByLocale('en').t('window-title-home'),
+  index: true,
 }, {
-  component: About,
-  path: '/about',
-  title: getPolyglotByLocale('en').t('window-title-about'),
-}, {
-  component: Home,
-  path: '/ja',
-  title: getPolyglotByLocale('ja').t('window-title-home'),
-}, {
-  component: About,
-  path: '/ja/about',
-  title: getPolyglotByLocale('ja').t('window-title-about'),
+  component: Quote,
+  path: '/quote',
+  prefetch: prefetchQuote,
 }, {
   component: NotFound,
   path: '*',
-  title: getPolyglotByLocale('en').t('window-title-not-found'),
 }]
 
 export default config

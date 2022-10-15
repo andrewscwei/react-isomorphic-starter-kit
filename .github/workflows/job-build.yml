@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+jobs:
+  default:
+    name: Build
+    runs-on: ubuntu-latest
+    container: node:18.8.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-npm-cache-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install Node modules
+        run: npm install
+      - name: Run unit tests
+        run: npm run test:ts
+      - name: Build
+        run: BUILD_NUMBER=$(git rev-parse --short HEAD).$(git rev-list --count ${{ github.ref }}) npm run build
+      - name: Run integration tests
+        run: npm test
