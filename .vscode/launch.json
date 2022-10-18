@@ -2,16 +2,30 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Debug",
+      "name": "Debug (Chrome)",
       "configurations": [
-        "Server",
-        "Client"
+        "Dev",
+        "Launch (Chrome)"
+      ]
+    },
+    {
+      "name": "Debug (Firefox)",
+      "configurations": [
+        "Dev",
+        "Launch (Firefox)"
+      ]
+    },
+    {
+      "name": "Debug (Edge)",
+      "configurations": [
+        "Dev",
+        "Launch (Edge)"
       ]
     }
   ],
   "configurations": [
     {
-      "name": "Client",
+      "name": "Launch (Chrome)",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:8080",
@@ -22,7 +36,27 @@
       }
     },
     {
-      "name": "Server",
+      "type": "firefox",
+      "request": "launch",
+      "name": "Launch (Firefox)",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}",
+      "pathMappings": [
+        {
+          "url": "webpack://${workspaceFolderBasename}",
+          "path": "${workspaceFolder}"
+        }
+      ]
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Launch (Edge)",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Dev",
       "type": "node",
       "request": "launch",
       "cwd": "${workspaceFolder}",
