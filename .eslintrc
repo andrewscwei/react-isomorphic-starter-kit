@@ -188,7 +188,7 @@
       "error",
       "never"
     ],
-    "@typescript-eslint/sort-type-union-intersection-members": "error",
+    "@typescript-eslint/sort-type-union-intersection-members": "off",
     "@typescript-eslint/space-before-blocks": [
       "error",
       "always"
@@ -259,7 +259,7 @@
         "allowSingleLine": true
       }
     ],
-    "capitalized-comments": "error",
+    "capitalized-comments": "warn",
     "comma-dangle": "off",
     "comma-spacing": "off",
     "comma-style": [
