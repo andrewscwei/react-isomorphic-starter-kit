@@ -57,3 +57,8 @@ export const skipOptimizations = env === 'development' || process.env.npm_config
  * Public path for static assets.
  */
 export const publicPath = process.env.PUBLIC_PATH || '/'
+
+/**
+ * File name of the generated asset manifest.
+ */
+export const assetManifestFile = 'asset-manifest.json'

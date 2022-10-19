@@ -23,7 +23,7 @@ function resolveAssetPath(pathToResolve: string): string {
   let out = pathToResolve
 
   try {
-    const assetManifestFile = fs.readFileSync(path.join(__dirname, publicPath, 'asset-manifest.json'), 'utf-8')
+    const assetManifestFile = fs.readFileSync(path.join(__dirname, publicPath, __BUILD_ARGS__.assetManifestFile), 'utf-8')
     const manifest = JSON.parse(assetManifestFile)
     const normalizedPath: string = path.join(...pathToResolve.split('/'))
 

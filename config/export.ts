@@ -4,6 +4,7 @@ import fs, { createReadStream } from 'fs'
 import path from 'path'
 import { parseSitemap } from 'sitemap'
 import request from 'supertest'
+import buildArgs from './build.args'
 
 const publicDir = path.join(__dirname, '../build')
 const { default: app, config } = require(publicDir)
@@ -37,7 +38,7 @@ async function generate404() {
 }
 
 async function reconcile() {
-  const files = ['asset-manifest.json', 'index.js']
+  const files = [buildArgs.assetManifestFile, 'index.js']
 
   for (const file of files) {
     fs.rmSync(path.join(publicDir, file))

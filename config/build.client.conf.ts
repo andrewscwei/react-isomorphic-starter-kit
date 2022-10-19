@@ -113,7 +113,6 @@ const config: Configuration = {
   },
   plugins: [
     new MiniCSSExtractPlugin({
-      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[id].[chunkhash].css',
       filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
@@ -133,7 +132,9 @@ const config: Configuration = {
       new HotModuleReplacementPlugin(),
       new ReactRefreshPlugin(),
     ] : [
-      new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+      new ManifestPlugin({
+        fileName: buildArgs.assetManifestFile,
+      }),
     ],
     ...buildArgs.useBundleAnalyzer ? [new BundleAnalyzerPlugin({
       analyzerMode: 'static',
