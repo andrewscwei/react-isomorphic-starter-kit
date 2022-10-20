@@ -35,15 +35,16 @@ const config: Configuration = {
           plugins: isDev ? [require.resolve('react-refresh/babel')] : [],
         },
       }],
-    }, {
+    }, ...[true, false].map(useCSSModules => ({
       test: /\.css$/,
+      ...useCSSModules ? { include: /\.module\.css$/ } : { exclude: /\.module\.css$/ },
       use: [{
         loader: MiniCSSExtractPlugin.loader,
       }, {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
-          modules: true,
+          modules: useCSSModules,
           sourceMap: buildArgs.useSourceMaps,
         },
       }, {
@@ -62,7 +63,7 @@ const config: Configuration = {
           },
         },
       }],
-    }, {
+    })), {
       test: /\.svg$/,
       include: /assets\/svgs/,
       type: 'asset/source',

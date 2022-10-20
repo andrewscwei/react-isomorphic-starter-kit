@@ -50,6 +50,7 @@ export default function Layout({
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
+        <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>
         <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>
 
         {helmetContext.helmet?.script.toComponent()}

@@ -4,7 +4,7 @@ import fs, { createReadStream } from 'fs'
 import path from 'path'
 import { parseSitemap } from 'sitemap'
 import request from 'supertest'
-import buildArgs from './build.args'
+import * as buildArgs from './build.args'
 
 const publicDir = path.join(__dirname, '../build')
 const { default: app, config } = require(publicDir)

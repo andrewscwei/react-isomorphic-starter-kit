@@ -11,7 +11,7 @@
   --z-huds: 10;
 }
 
-:global(.n1) {
+.n1 {
   font-family: var(--font-body);
   font-size: 1.2rem;
   font-weight: 400;
