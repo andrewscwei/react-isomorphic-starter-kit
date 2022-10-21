@@ -61,7 +61,7 @@ type LocalizedURLInfo = {
  *
  * @returns The parsed result.
  */
-export function parseURL(url: string): URLParts {
+function parseURL(url: string): URLParts {
   const regex = /((?:(.*):\/\/)?((?:[A-Za-z0-9-]+\.?)+)?(?::([0-9]+))?)([^?#]*)(?:\?([^#]*))?(?:#(.*))?/
   const parts = url.match(regex)
 
@@ -85,7 +85,7 @@ export function parseURL(url: string): URLParts {
  *
  * @returns The constructed URL.
  */
-export function constructURL(parts: URLParts): string {
+function constructURL(parts: URLParts): string {
   const protocol = parts.protocol?.concat('://') ?? ''
   const host = parts.host?.concat('/') ?? ''
   const port = parts.port ? `:${parts.port}` : ''
@@ -104,7 +104,7 @@ export function constructURL(parts: URLParts): string {
  *
  * @returns - The resolved locale.
  */
-export function resolveLocale(locale?: string, { defaultLocale, supportedLocales }: ResolveLocaleOptions = {}): string | undefined {
+function resolveLocale(locale?: string, { defaultLocale, supportedLocales }: ResolveLocaleOptions = {}): string | undefined {
   if (supportedLocales) {
     if (locale && supportedLocales.indexOf(locale) >= 0) return locale
     if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) return defaultLocale
@@ -245,4 +245,18 @@ export function getLocalizedURL(url: string, locale: string, { defaultLocale, lo
         return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t)].join('/') : undefined })
     }
   }
+}
+
+/**
+ * Returns all localized versions of a URL based on the specified `supportedLocales`.
+ *
+ * @param url - The URL.
+ * @param options - See {@link ResolveLocalizedURLOptions}.
+ *
+ * @returns The localized URLs.
+ */
+export function getLocalizedURLs(url: string, { defaultLocale, location = 'auto', resolver, supportedLocales }: ResolveLocalizedURLOptions = {}): string[] {
+  if (!supportedLocales) return []
+
+  return supportedLocales.map(locale => getLocalizedURL(url, locale, { defaultLocale, location, resolver, supportedLocales }))
 }
