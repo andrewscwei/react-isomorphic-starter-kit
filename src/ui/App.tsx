@@ -54,10 +54,10 @@ export default function App<T extends RouterType = 'browser'>({
 
   return (
     <React.StrictMode>
-      <LocalsProvider locals={locals}>
-        <Router {...routerProps ?? {} as any}>
-          <I18nProvider defaultLocale={appConf.defaultLocale} translations={translations} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
-            <HelmetProvider context={helmetContext}>
+      <HelmetProvider context={helmetContext}>
+        <LocalsProvider locals={locals}>
+          <Router {...routerProps ?? {} as any}>
+            <I18nProvider defaultLocale={appConf.defaultLocale} translations={translations} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
               <Header/>
               <I18nRoutes>
                 {routesConf.map(config => {
@@ -70,10 +70,10 @@ export default function App<T extends RouterType = 'browser'>({
                 })}
               </I18nRoutes>
               <Footer/>
-            </HelmetProvider>
-          </I18nProvider>
-        </Router>
-      </LocalsProvider>
+            </I18nProvider>
+          </Router>
+        </LocalsProvider>
+      </HelmetProvider>
     </React.StrictMode>
   )
 }

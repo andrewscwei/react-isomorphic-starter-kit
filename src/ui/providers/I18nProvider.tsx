@@ -21,7 +21,7 @@ type I18nContextValue = {
 
 type I18nProviderProps = PropsWithChildren<{
   changeLocaleStrategy?: I18nState['changeLocaleStrategy']
-  defaultLocale: I18nState['defaultLocale']
+  defaultLocale?: I18nState['defaultLocale']
   translations: Record<string, Translation>
 }>
 
@@ -59,7 +59,7 @@ export const I18nContext = createContext<I18nContextValue | undefined>(undefined
  */
 export default function I18nProvider({
   children,
-  defaultLocale,
+  defaultLocale = 'en',
   translations,
   changeLocaleStrategy = 'path',
 }: I18nProviderProps) {
