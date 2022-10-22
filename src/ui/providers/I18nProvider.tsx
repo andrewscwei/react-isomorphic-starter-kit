@@ -401,7 +401,7 @@ export function getLocaleFromURL(url: string, { defaultLocale, resolveStrategy =
  *
  * @returns The unlocalized URL.
  */
-export function getUnlocalizedURL(url: string, { resolveStrategy = 'auto', resolver, supportedLocales }: ResolveLocalizedURLOptions): string {
+export function getUnlocalizedURL(url: string, { resolveStrategy = 'auto', resolver, supportedLocales }: ResolveLocalizedURLOptions = {}): string {
   const currLocaleInfo = getLocaleFromURL(url, { resolveStrategy, resolver, supportedLocales })
   const parts = parseURL(url)
 

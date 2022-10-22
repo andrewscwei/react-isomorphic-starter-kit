@@ -15,7 +15,7 @@ export default function Home() {
         <div className={style.content}>
           <ReactLogo className={style.logo}/>
           <section>
-            <h1 className={style.title}>{ltxt('hellos')}</h1>
+            <h1 className={style.title}>{ltxt('hello')}</h1>
             <code className={style.version}>{appConf.version}</code>
             <span>{ltxt('description') }</span>
           </section>

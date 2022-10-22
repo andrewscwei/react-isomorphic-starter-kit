@@ -92,11 +92,18 @@ const config: Configuration = {
     minimize: !buildArgs.skipOptimizations,
     splitChunks: {
       cacheGroups: {
-        common: {
+        js: {
           chunks: 'all',
           enforce: true,
           name: 'common',
           test: /node_modules/,
+        },
+        css: {
+          chunks: 'all',
+          enforce: true,
+          minChunks: 2,
+          name: 'common',
+          test: /\.css$/,
         },
       },
     },

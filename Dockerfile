@@ -14,6 +14,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY config ./config
+COPY scripts ./scripts
 COPY src ./src
 COPY ts*.json ./
 COPY .babelrc ./
