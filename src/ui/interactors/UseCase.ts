@@ -1,25 +1,42 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import useDebug from '../../../utils/useDebug'
-import FetchUseCase, { FetchUseCaseError } from '../base/FetchUseCase'
-import Interactor from '../base/Interactor'
+import useDebug from '../../utils/useDebug'
 
-const debug = useDebug('fetch')
+const debug = useDebug('interactor')
 
-type Options<T> = {
+export type Interactor<Params, Result> = {
+  /**
+   * Indicates whether the use case is running.
+   */
+  isRunning: boolean
+
+  /**
+   * Indicates the total number of runs for this interactor.
+   */
+  runCount: number
+
+  /**
+   * The current result of the use case.
+   */
+  value?: Result
+
+  /**
+   * Runs the use case.
+   *
+   * @param params - The input parameters of the use case.
+   */
+  run: (params?: Partial<Params>) => Promise<void>
+
+  /**
+   * Resets the state of this interactor.
+   */
+  reset: () => void
+}
+
+export type InteractorOptions<Result> = {
   /**
    * Specifies the default value.
    */
-  defaultValue?: T
-
-  /**
-   * Specifies if cache should be skipped.
-   */
-  skipCache?: boolean
-
-  /**
-   * Specifies the number of seconds it takes for the use case to timeout.
-   */
-  timeout?: number
+  defaultValue?: Result
 
   /**
    * Handler invoked when the use case cancels running.
@@ -38,27 +55,25 @@ type Options<T> = {
    *
    * @param result - The result of the successful use case interaction.
    */
-  onSuccess?: (result: T) => void
+  onSuccess?: (result: Result) => void
 }
 
 /**
- * Hook for interacting with a {@link FetchUseCase}.
+ * Hook for interacting with a {@link UseCase}.
  *
- * @param UseCaseClass - The {@link FetchUseCase} class to interact with.
- * @param options - @see {@link Options}.
+ * @param UseCaseClass - The {@link UseCase} class to interact with.
+ * @param options - @see {@link InteractorOptions}.
  *
  * @returns The {@link Interactor}.
  */
-export default function useFetch<Params extends Record<string, any>, Result>(
-  UseCaseClass: new () => FetchUseCase<Params, Result>,
+export function useInteractor<Params, Result, Options>(
+  UseCaseClass: new () => UseCase<Params, Result, Options>,
   {
     defaultValue,
-    skipCache,
-    timeout,
     onCancel,
     onError,
     onSuccess,
-  }: Options<Result> = {}
+  }: InteractorOptions<Result> = {}
 ): Interactor<Params, Result> {
   const totalRunCountRef = useRef(0)
   const runningCountRef = useRef(0)
@@ -87,7 +102,7 @@ export default function useFetch<Params extends Record<string, any>, Result>(
     setResult(undefined)
   }
 
-  const interact = async (params: Partial<Params> = {}) => {
+  const run = async (params: Partial<Params> = {}, options?: Options) => {
     debug(`Interacting with use case <${useCaseName}>...`)
 
     setResult(undefined)
@@ -98,7 +113,7 @@ export default function useFetch<Params extends Record<string, any>, Result>(
     runningCountRef.current++
     invalidateIsRunning()
 
-    await useCase.run(params, { skipCache, timeout })
+    await useCase.run(params, options)
       .then(res => {
         debug(`Interacting with use case <${useCaseName}>...`, 'OK', res)
 
@@ -106,7 +121,7 @@ export default function useFetch<Params extends Record<string, any>, Result>(
         onSuccess?.(res)
       })
       .catch(err => {
-        if (err === FetchUseCaseError.ABORTED) {
+        if (err === UseCaseError.CANCELLED) {
           debug(`Interacting with use case <${useCaseName}>...`, 'CANCEL')
           onCancel?.()
         }
@@ -121,15 +136,41 @@ export default function useFetch<Params extends Record<string, any>, Result>(
       })
   }
 
-  useEffect(() => () => {
-    useCase.cancel()
-  }, [])
+  useEffect(() => () => useCase.cancel(), [])
 
   return {
     isRunning,
     runCount: totalRunCount,
     value: result,
-    interact,
+    run,
     reset,
   }
+}
+
+export namespace UseCaseError {
+  export const CANCELLED = Error('Use case cancelled')
+}
+
+export default interface UseCase<Params, Result, Options> {
+  /**
+   * Validates the input parameters of this use case.
+   *
+   * @throws If validation fails.
+   */
+  validateParams: (params: Partial<Params>) => asserts params is Params
+
+  /**
+   * Runs this use case.
+   *
+   * @param params - The input parameters for running this use case.
+   * @param options - Options for running this use case.
+   *
+   * @throws If validation fails for the input parameters.
+   */
+  run: (params: Partial<Params>, options?: Options) => Promise<Result>
+
+  /**
+   * Cancels the execution of this use case.
+   */
+  cancel: () => void
 }

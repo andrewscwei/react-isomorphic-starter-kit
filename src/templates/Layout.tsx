@@ -6,7 +6,7 @@ import React from 'react'
 
 type Props = {
   body?: string
-  locals?: Locals
+  locals?: Record<string, any>
   helmetContext?: Record<string, any>
   resolveAssetPath?: (path: string) => string
 }

@@ -18,6 +18,7 @@ const config: Config = {
   },
   passWithNoTests: true,
   rootDir: path.join(__dirname, '../'),
+  verbose: true,
 }
 
 export default config

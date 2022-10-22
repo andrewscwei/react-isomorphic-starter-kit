@@ -25,17 +25,20 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-type AssetManifest = Record<string, any>
-
-type Locals = Record<string, any>
-
 declare const __BUILD_ARGS__: typeof import('../config/build.args')
+
+type RouteConfig = {
+  component: typeof import('react').ComponentType
+  path: string
+  index?: boolean
+  prefetch?: () => Promise<any>
+}
 
 interface Error {
   status?: number
 }
 
 interface Window {
-  __LOCALS__: Locals
+  __LOCALS__: Record<string, any>
   __VERSION__: string
 }

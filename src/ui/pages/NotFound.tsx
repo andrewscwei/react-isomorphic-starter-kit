@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from '../components/Head'
-import { useLocalizedString } from '../providers/i18n'
+import { useLocalizedString } from '../providers/I18nProvider'
 import style from './NotFound.module.css'
 
 export default function NotFound() {

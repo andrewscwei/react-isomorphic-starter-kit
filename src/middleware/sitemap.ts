@@ -4,6 +4,7 @@ import { createGzip } from 'zlib'
 import appConf from '../app.conf'
 import routesConf from '../routes.conf'
 import translations from '../ui/locales'
+import { getLocalizedURLs } from '../ui/providers/I18nProvider'
 
 /**
  * Sitemap generator.
@@ -11,7 +12,6 @@ import translations from '../ui/locales'
 export default function sitemap() {
   const router = Router()
   const { defaultLocale, url: hostname } = appConf
-  const supportedLocales = Object.keys(translations)
 
   let cached: any | undefined
 
@@ -24,16 +24,13 @@ export default function sitemap() {
     try {
       const smStream = new SitemapStream({ hostname })
       const pipeline = smStream.pipe(createGzip())
+      const supportedLocales = Object.keys(translations)
+      const urls = routesConf.filter(config => config.path !== '*').reduce<string[]>((out, config) => [
+        ...out,
+        ...appConf.changeLocaleStrategy === 'path' ? getLocalizedURLs(config.path, { defaultLocale, supportedLocales }) : [config.path],
+      ], [])
 
-      routesConf.forEach(config => {
-        const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
-        if (path === '*') return
-
-        supportedLocales.forEach(locale => {
-          const url = locale === defaultLocale ? `/${path}` : `/${locale}/${path}`
-          smStream.write({ url })
-        })
-      })
+      urls.forEach(url => smStream.write({ url }))
 
       streamToPromise(pipeline).then(sm => cached = sm)
       smStream.end()

@@ -3,24 +3,43 @@
  */
 
 export default {
-  // Full version string.
+  /**
+   * Full version string.
+   */
   version: `v${__BUILD_ARGS__.version}${!__BUILD_ARGS__.env || __BUILD_ARGS__.env === 'production' ? '' : `-${__BUILD_ARGS__.env.substring(0, 3)}`} (${__BUILD_ARGS__.buildNumber})`,
 
-  // Default locale.
-  defaultLocale: 'en',
-
-  // Fallback window title.
+  /**
+   * Fallback window title.
+   */
   title: 'React Isomorphic Starter Kit',
 
-  // Fallback app description.
+  /**
+   * Fallback app description.
+   */
   description: __BUILD_ARGS__.packageDescription,
 
-  // Fallback app URL.
+  /**
+   * Fallback app URL.
+   */
   url: __BUILD_ARGS__.packageHomepage,
 
-  // Port.
+  /**
+   * Default locale.
+   */
+  defaultLocale: 'en',
+
+  /**
+   * Location in the URL to infer the current locale, available options are "path" and "query".
+   */
+  changeLocaleStrategy: 'path',
+
+  /**
+   * Port.
+   */
   port: Number(typeof process !== 'undefined' && process.env.PORT || 8080),
 
-  // Skip HTTP server.
+  /**
+   * Specifies whether the creation of the HTTP server should be skipped.
+   */
   skipHTTP: typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false,
 }

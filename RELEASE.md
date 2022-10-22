@@ -5,3 +5,5 @@
 - Updated how assets are imported
 - Relocated `locales` directory
 - Created reusable workflows for CI/CD
+- Added interactors
+- Added `I18nProvider`

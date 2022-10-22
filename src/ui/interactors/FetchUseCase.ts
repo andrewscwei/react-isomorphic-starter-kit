@@ -1,10 +1,10 @@
 import objectHash from 'object-hash'
-import useCache from '../../../utils/useCache'
-import UseCase from './UseCase'
+import useCache from '../../utils/useCache'
+import UseCase, { UseCaseError } from './UseCase'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
-type RunOptions = {
+type Options = {
   /**
    * Ignores the cached result when running this use case.
    */
@@ -16,14 +16,10 @@ type RunOptions = {
   timeout?: number
 }
 
-export namespace FetchUseCaseError {
-  export const ABORTED = Error('Request cancelled')
-}
-
 /**
  * A {@link UseCase} for fetching data from external API.
  */
-export default abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, never> {
+export default abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
   protected abortController: AbortController | undefined
 
   private cache = useCache({ defaultTTL: this.ttl })
@@ -85,12 +81,12 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
    * @returns The transformed error.
    */
   transformError(error: unknown): unknown {
-    if ((error as any).name === 'AbortError') return FetchUseCaseError.ABORTED
+    if ((error as any).name === 'AbortError') return UseCaseError.CANCELLED
 
     return error
   }
 
-  async run(params: Partial<Params> = {}, { skipCache = false, timeout = 5 }: RunOptions = {}): Promise<Result> {
+  async run(params: Partial<Params> = {}, { skipCache = false, timeout = 5 }: Options = {}): Promise<Result> {
     this.cancel()
     this.abortController = new AbortController()
 
@@ -152,9 +148,6 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
     }
   }
 
-  /**
-   * Cancels the execution of this use case.
-   */
   cancel() {
     if (this.abortController === undefined) return
 

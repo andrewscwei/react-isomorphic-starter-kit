@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
 import appConf from '../../app.conf'
 import * as assets from '../assets'
-import { useLocale } from '../providers/i18n'
+import { useLocale } from '../providers/I18nProvider'
 
 type Props = {
   description?: string

@@ -1,6 +1,6 @@
 import useDebug from '../../utils/useDebug'
 
-const debug = useDebug('', 'worker')
+const debug = useDebug(undefined, 'worker')
 
 self.addEventListener('message', event => {
   const message = event.data.message

@@ -1,4 +1,4 @@
-import FetchUseCase from './base/FetchUseCase'
+import FetchUseCase from '../FetchUseCase'
 
 type Quote = {
   author: string

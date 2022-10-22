@@ -17,7 +17,6 @@ export type RouteConfig = {
 const config: RouteConfig[] = [{
   component: Home,
   path: '/',
-  index: true,
 }, {
   component: Quote,
   path: '/quote',

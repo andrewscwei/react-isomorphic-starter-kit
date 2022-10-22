@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
 import Head from '../components/Head'
-import { GetQuote } from '../interactors'
-import useFetch from '../interactors/hooks/useFetch'
-import { useLocalizedString } from '../providers/i18n'
-import { useLocals } from '../providers/locals'
+import GetQuote from '../interactors/apis/GetQuote'
+import { useInteractor } from '../interactors/UseCase'
+import { useLocalizedString } from '../providers/I18nProvider'
+import { useLocals } from '../providers/LocalsProvider'
 import style from './Quote.module.css'
 
 export default function About() {
   const ltxt = useLocalizedString()
   const locals = useLocals()
 
-  const { interact: getQuote, value: quote } = useFetch(GetQuote, { defaultValue: locals.prefetched })
+  const { run: getQuote, value: quote } = useInteractor(GetQuote, { defaultValue: locals.prefetched })
 
   useEffect(() => {
     getQuote()

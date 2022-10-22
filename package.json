@@ -16,7 +16,7 @@
     "ship:build": "docker build --build-arg BUILD_NUMBER=${BUILD_NUMBER} --build-arg PUBLIC_PATH=${PUBLIC_PATH} -t ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest} .",
     "ship:run": "docker run -it --rm -p ${PORT:-8080}:8080 --name app ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest}",
     "test": "cross-env SKIP_HTTP=true jest --config=config/test.conf.ts tests/$npm_config_files",
-    "test:ts": "jest --testEnvironment=jsdom --config=config/test.conf.ts src/$npm_config_files",
+    "test:ts": "jest --silent --testEnvironment=jsdom --config=config/test.conf.ts src/$npm_config_files",
     "export": "ts-node ./config/export",
     "lint": "npm run lint:ts && npm run lint:css",
     "lint:fix": "npm run lint:ts:fix && npm run lint:css:fix",

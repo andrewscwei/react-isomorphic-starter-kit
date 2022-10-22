@@ -19,7 +19,7 @@ const config: Configuration = {
   entry: {
     polyfills: path.join(buildArgs.inputDir, 'ui', 'polyfills.ts'),
     main: [
-      path.join(buildArgs.inputDir, 'ui', 'index.tsx'),
+      path.join(buildArgs.inputDir, 'ui', 'index.ts'),
       ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
     ],
   },
