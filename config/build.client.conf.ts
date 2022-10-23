@@ -39,7 +39,7 @@ const config: Configuration = {
       test: /\.css$/,
       ...useCSSModules ? { include: /\.module\.css$/ } : { exclude: /\.module\.css$/ },
       use: [{
-        loader: MiniCSSExtractPlugin.loader,
+        loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
       }, {
         loader: 'css-loader',
         options: {

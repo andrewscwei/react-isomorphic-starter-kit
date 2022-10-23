@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import Head from '../components/Head'
-import GetQuote from '../interactors/apis/GetQuote'
-import { useInteractor } from '../interactors/UseCase'
-import { useLocalizedString } from '../providers/I18nProvider'
-import { useLocals } from '../providers/LocalsProvider'
-import style from './Quote.module.css'
+import Head from '../../components/Head'
+import GetQuote from '../../interactors/apis/GetQuote'
+import { useInteractor } from '../../interactors/UseCase'
+import { useLocalizedString } from '../../providers/I18nProvider'
+import { useLocals } from '../../providers/LocalsProvider'
+import style from './index.module.css'
 
 export default function About() {
   const ltxt = useLocalizedString()

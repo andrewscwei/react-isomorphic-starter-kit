@@ -1,7 +1,7 @@
 import React from 'react'
-import Head from '../components/Head'
-import { useLocalizedString } from '../providers/I18nProvider'
-import style from './NotFound.module.css'
+import Head from '../../components/Head'
+import { useLocalizedString } from '../../providers/I18nProvider'
+import style from './index.module.css'
 
 export default function NotFound() {
   const ltxt = useLocalizedString()

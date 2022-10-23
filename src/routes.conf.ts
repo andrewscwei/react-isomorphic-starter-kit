@@ -3,9 +3,9 @@
  */
 
 import { ComponentType } from 'react'
-import Home from './ui/pages/Home'
-import NotFound from './ui/pages/NotFound'
-import Quote, { prefetch as prefetchQuote } from './ui/pages/Quote'
+import Home from './ui/pages/home'
+import NotFound from './ui/pages/notFound'
+import Quote, { prefetch as prefetchQuote } from './ui/pages/quote'
 
 export type RouteConfig = {
   component: ComponentType
