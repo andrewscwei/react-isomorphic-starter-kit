@@ -1,18 +1,7 @@
 {
   "rules": {
     "annotation-no-unknown": true,
-    "at-rule-empty-line-before": [
-      "always",
-      {
-        "ignore": [
-          "first-nested"
-        ],
-        "ignoreAtRules": [
-          "extend",
-          "import"
-        ]
-      }
-    ],
+    "at-rule-empty-line-before": null,
     "at-rule-name-case": "lower",
     "at-rule-name-newline-after": null,
     "at-rule-name-space-after": "always-single-line",
@@ -20,8 +9,7 @@
       true,
       {
         "ignoreAtRules": [
-          "value",
-          "post"
+          "value"
         ]
       }
     ],

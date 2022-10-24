@@ -38,7 +38,7 @@ function resolveAssetPath(pathToResolve: string): string {
 
 export default function render({ ssrEnabled = false }: RenderOptions = {}): RequestHandler {
   return async (req, res) => {
-    const config = routesConf.find(t => matchPath(req.path, t.path))
+    const config = routesConf.find(t => matchPath(t.path, req.path))
     const prefetched = await config?.prefetch?.()
     const helmetContext = {}
     const locals = { ...res.locals, prefetched }
