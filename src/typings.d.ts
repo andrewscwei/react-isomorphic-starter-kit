@@ -27,13 +27,6 @@ declare module 'worker-loader!*' {
 
 declare const __BUILD_ARGS__: typeof import('../config/build.args')
 
-type RouteConfig = {
-  component: typeof import('react').ComponentType
-  path: string
-  index?: boolean
-  prefetch?: () => Promise<any>
-}
-
 interface Error {
   status?: number
 }

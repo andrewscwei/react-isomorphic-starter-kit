@@ -7,7 +7,7 @@ import Home from './ui/pages/home'
 import NotFound from './ui/pages/notFound'
 import Quote, { prefetch as prefetchQuote } from './ui/pages/quote'
 
-export type RouteConfig = {
+type RouteConfig = {
   component: ComponentType
   path: string
   index?: boolean
