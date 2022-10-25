@@ -4,9 +4,11 @@
 
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
+import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
+import TerserPlugin from 'terser-webpack-plugin'
 import { Configuration, DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
@@ -58,7 +60,6 @@ const config: Configuration = {
                   'nesting-rules': true,
                 },
               }],
-              ...buildArgs.skipOptimizations ? [] : ['cssnano'],
             ],
           },
         },
@@ -90,6 +91,10 @@ const config: Configuration = {
   },
   optimization: {
     minimize: !buildArgs.skipOptimizations,
+    minimizer: [
+      new CSSMinimizerPlugin(),
+      new TerserPlugin(),
+    ],
     splitChunks: {
       cacheGroups: {
         js: {
