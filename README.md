@@ -99,3 +99,15 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to d
 7. Edit `src/app.conf.ts`
 8. Edit translations in `src/ui/locales/`
 9. Edit files in `src/ui/components/` and `src/pages/`
+
+## Breaking Changes
+
+### `v10.0.0`
+
+- Removed styled-components in favor of CSS modules
+- Removed Redux in favor of Context API
+- Updated how assets are imported
+- Relocated `locales` directory
+- Created reusable workflows for CI/CD
+- Added interactors
+- Added `I18nProvider`

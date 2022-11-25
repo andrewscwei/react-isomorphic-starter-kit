@@ -4,17 +4,30 @@ jobs:
   default:
     name: Release
     runs-on: ubuntu-latest
-    container: node:18.8.0
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body_path: RELEASE.md
-          draft: false
-          prerelease: false
+          node-version-file: .nvmrc
+      - name: Create release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.github_token }}
+          script: |
+            const tag = process.env.GITHUB_REF.split('/').slice(-1)[0]
+            try {
+              await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                name: tag,
+                owner: context.repo.owner,
+                prerelease: false,
+                repo: context.repo.repo,
+                tag_name: tag,
+              })
+            }
+            catch (error) {
+              core.setFailed(error.message)
+            }
