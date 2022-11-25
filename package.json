@@ -1,6 +1,6 @@
 {
   "name": "react-isomorphic-starter-kit",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "React isomorphic app starter kit",
   "homepage": "https://react-isomorphic-starter-kit.netlify.app",
   "private": true,
