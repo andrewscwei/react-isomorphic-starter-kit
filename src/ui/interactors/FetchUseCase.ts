@@ -11,7 +11,8 @@ type Options = {
   skipCache?: boolean
 
   /**
-   * Timeout of the request in seconds. If `undefined` or <= 0, there is no timeout.
+   * Timeout of the request in seconds. If `undefined` or <= 0, there is no
+   * timeout.
    */
   timeout?: number
 }
@@ -32,8 +33,8 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
   get method(): RequestMethod { return 'GET' }
 
   /**
-   * Time to live (TTL) in seconds for the cached result of this use case. If `NaN` or <= 0, caching
-   * is disabled.
+   * Time to live (TTL) in seconds for the cached result of this use case. If
+   * `NaN` or <= 0, caching is disabled.
    */
   get ttl(): number { return 300 }
 
@@ -50,8 +51,8 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
   }
 
   /**
-   * Transforms the input parameters of this use case prior to passing them to the request query or
-   * body, depending on the request method.
+   * Transforms the input parameters of this use case prior to passing them to
+   * the request query or body, depending on the request method.
    *
    * @param params - The input parameters of this use case.
    *
@@ -62,8 +63,8 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
   }
 
   /**
-   * Transforms the payload of the response prior to returning it as a result of the execution of
-   * this use case.
+   * Transforms the payload of the response prior to returning it as a result of
+   * the execution of this use case.
    *
    * @param payload - The response payload.
    *
@@ -74,7 +75,8 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
   }
 
   /**
-   * Transforms any error encountered during the execution of this use case prior to emitting it.
+   * Transforms any error encountered during the execution of this use case
+   * prior to emitting it.
    *
    * @param error - The error.
    *

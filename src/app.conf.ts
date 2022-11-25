@@ -1,5 +1,6 @@
 /**
- * @file Runtime server config, passed to the client as a global variable named `__APP_CINFOG__`.
+ * @file Runtime server config, passed to the client as a global variable named
+ *       `__APP_CINFOG__`.
  */
 
 export default {
@@ -29,7 +30,8 @@ export default {
   defaultLocale: 'en',
 
   /**
-   * Location in the URL to infer the current locale, available options are "path" and "query".
+   * Location in the URL to infer the current locale, available options are
+   * "path" and "query".
    */
   changeLocaleStrategy: 'path',
 

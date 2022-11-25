@@ -46,12 +46,12 @@ const reducer = (state: I18nState, action: I18nChangeLocaleAction): I18nState =>
 export const I18nContext = createContext<I18nContextValue | undefined>(undefined)
 
 /**
- * Context provider whose value consists of the current i18n state. The method of modifying the
- * locale is specified by `changeLocaleStrategy`, as follows:
+ * Context provider whose value consists of the current i18n state. The method
+ * of modifying the locale is specified by `changeLocaleStrategy`, as follows:
  *   - If set to `action`, the locale can be modified by dispatching an action
  *   - If set to `path`, the locale is inferred from the current path name
- *   - If set to `query`, the locale is inferred from the search parameter `locale` in the current
- *     path
+ *   - If set to `query`, the locale is inferred from the search parameter
+ *     `locale` in the current path
  *
  * @param props - See {@link I18nProviderProps}.
  *
@@ -126,8 +126,8 @@ export default function I18nProvider({
 /** @namespace Components */
 
 /**
- * Custom {@link Routes} container that generates child {@link Route} components for all locales
- * supported by {@link I18nProvider}.
+ * Custom {@link Routes} container that generates child {@link Route} components
+ * for all locales supported by {@link I18nProvider}.
  */
 export function I18nRoutes({ children }: PropsWithChildren) {
   const context = useContext(I18nContext)
@@ -258,17 +258,17 @@ type ResolveLocaleOptions = {
   defaultLocale?: string
 
   /**
-   * An array of supported locales to validate the inferred locale against. If it doesn't exist in
-   * the list of supported locales, the default locale (if specified) or `undefined` will be
-   * returned.
+   * An array of supported locales to validate the inferred locale against. If
+   * it doesn't exist in the list of supported locales, the default locale (if
+   * specified) or `undefined` will be returned.
    */
   supportedLocales?: string[]
 }
 
 type ResolveLocalizedURLOptions = ResolveLocaleOptions & {
   /**
-   * Specifies where in the URL the locale should be matched. If `resolver` is provided, this option
-   * is ignored.
+   * Specifies where in the URL the locale should be matched. If `resolver` is
+   * provided, this option is ignored.
    */
   resolveStrategy?: 'auto' | 'domain' | 'path' | 'query'
 
@@ -340,7 +340,8 @@ function constructURL(parts: URLParts): string {
 }
 
 /**
- * Resolves the specified locale with the provided options. All parameters are optional.
+ * Resolves the specified locale with the provided options. All parameters are
+ * optional.
  *
  * @param locale - The locale to resolve.
  * @param options - See {@link ResolveLocaleOptions}.
@@ -359,9 +360,9 @@ export function resolveLocale(locale?: string, { defaultLocale, supportedLocales
 }
 
 /**
- * Retrieves the locale identifier from a URL. The default behavior of this function to look for the
- * locale identifier in the domain first followed by the first directory of the path. You can
- * provide a custom resolver.
+ * Retrieves the locale identifier from a URL. The default behavior of this
+ * function to look for the locale identifier in the domain first followed by
+ * the first directory of the path. You can provide a custom resolver.
  *
  * @param url - The URL, can be a full URL or a valid path.
  * @param options - See {@link ResolveLocalizedURLOptions}.
@@ -491,7 +492,8 @@ export function getLocalizedURL(url: string, locale: string, { defaultLocale, re
 }
 
 /**
- * Returns all localized versions of a URL based on the specified `supportedLocales`.
+ * Returns all localized versions of a URL based on the specified
+ * `supportedLocales`.
  *
  * @param url - The URL.
  * @param options - See {@link ResolveLocalizedURLOptions}.

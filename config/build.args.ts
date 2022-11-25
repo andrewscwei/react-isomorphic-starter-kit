@@ -49,7 +49,8 @@ export const useSourceMaps = env === 'development'
 export const useBundleAnalyzer = process.env.npm_config_analyze === 'true'
 
 /**
- * Specifies whether HTML/JS/CSS minifications should be disabled while building.
+ * Specifies whether HTML/JS/CSS minifications should be disabled while
+ * building.
  */
 export const skipOptimizations = env === 'development' || process.env.npm_config_raw === 'true'
 
