@@ -26,7 +26,7 @@ jobs:
       artifacts-path: ${{ needs.build.outputs.artifacts-path }}
       branch-name: gh-pages
       create-release: true
-      deploy-path: ${{ needs.build.outputs.artifacts-path }}
+      deploy-path: build
   notify:
     name: Notify
     needs: [build, deploy]
