@@ -10,8 +10,6 @@ import packageInfo from '../package.json'
 dotenv.config()
 
 export const packageVersion = packageInfo.version
-export const packageHomepage = packageInfo.homepage
-export const packageDescription = packageInfo.description
 
 /**
  * The `NODE_ENV` at buildtime.

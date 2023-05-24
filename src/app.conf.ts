@@ -17,12 +17,12 @@ export default {
   /**
    * Fallback app description.
    */
-  description: __BUILD_ARGS__.packageDescription,
+  description: 'React isomorphic app starter kit',
 
   /**
    * Fallback app URL.
    */
-  url: __BUILD_ARGS__.packageHomepage,
+  url: 'https://andrewscwei.github.io/react-isomorphic-starter-kit/',
 
   /**
    * Default locale.
