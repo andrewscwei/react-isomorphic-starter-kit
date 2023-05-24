@@ -4,6 +4,9 @@ on:
     tags: ["v*"]
   release:
     types: [published]
+concurrency:
+  group: deploy
+  cancel-in-progress: true
 jobs:
   build:
     name: Build
