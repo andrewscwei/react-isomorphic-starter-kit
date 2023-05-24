@@ -62,7 +62,7 @@ export default function Layout({
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
       </head>
       <body>
-        <div id='app' dangerouslySetInnerHTML={{ __html: body }}/>
+        <div id='root' dangerouslySetInnerHTML={{ __html: body }}/>
       </body>
     </html>
   )

@@ -6,8 +6,10 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/job-build.yml
+    uses: andrewscwei/workflows/.github/workflows/node-build.yml@master
     secrets: inherit
+    with:
+      test-command: npm run test:ts && npm test
   notify:
     name: Notify
     needs: [build]

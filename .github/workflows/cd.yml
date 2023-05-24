@@ -7,21 +7,31 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/job-build.yml
+    uses: andrewscwei/workflows/.github/workflows/node-build.yml@master
     secrets: inherit
-  release:
-    name: Release
-    uses: ./.github/workflows/job-release.yml
+    with:
+      artifacts-path: build/
+      build-command: PUBLIC_PATH=./ npm run build && npm run export
+      test-command: npm run test:ts
+  deploy:
+    name: Deploy
+    uses: andrewscwei/workflows/.github/workflows/gh-pages-deploy.yml@master
     needs: [build]
     secrets: inherit
+    with:
+      artifacts-name: ${{ needs.build.outputs.artifacts-name }}
+      artifacts-path: ${{ needs.build.outputs.artifacts-path }}
+      branch-name: gh-pages
+      create-release: true
+      deploy-path: ${{ needs.build.outputs.artifacts-path }}
   notify:
     name: Notify
-    needs: [build, release]
+    needs: [build, deploy]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - uses: andrewscwei/telegram-action@v1.0.0
         with:
-          success: ${{ needs.build.result == 'success' && needs.release.result == 'success' }}
+          success: ${{ needs.build.result == 'success' && needs.deploy.result == 'success' }}
           bot-token: ${{ secrets.TELEGRAM_DEVOPS_BOT_TOKEN }}
           chat-id: ${{ secrets.TELEGRAM_DEVOPS_CHAT_ID }}
