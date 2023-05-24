@@ -2,7 +2,7 @@
   "name": "react-isomorphic-starter-kit",
   "version": "11.0.0",
   "description": "React isomorphic app starter kit",
-  "homepage": "https://react-isomorphic-starter-kit.netlify.app",
+  "homepage": "https://andrewscwei.github.io/react-isomorphic-starter-kit/",
   "private": true,
   "license": "MIT",
   "scripts": {
