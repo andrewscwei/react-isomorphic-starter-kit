@@ -14,10 +14,10 @@ export default function Head({
   description,
   title,
 }: Props) {
-  const { title: baseTitle, description: baseDescription, url: baseUrl } = appConf
+  const { title: baseTitle, description: baseDescription, url: basePath } = appConf
   const pageTitle = title ?? baseTitle
   const pageDescription = description ?? baseDescription
-  const pageUrl = baseUrl + useLocation().pathname
+  const pageUrl = basePath + useLocation().pathname
   const locale = useLocale()
   const matchMedia = typeof window !== 'undefined' && typeof window.matchMedia !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
   const [isDarkMode, setIsDarkMode] = useState<boolean>(matchMedia?.matches === true)
@@ -46,12 +46,12 @@ export default function Head({
       <meta property='og:description' content={pageDescription}/>
       <meta property='og:locale' content={locale}/>
       <meta property='og:url' content={pageUrl}/>
-      <meta property='og:image' content={baseUrl + assets.meta.OGImage}/>
+      <meta property='og:image' content={basePath + assets.meta.OGImage}/>
       <meta property='og:image:alt' content={pageDescription}/>
 
       <meta name='twitter:title' content={pageTitle}/>
       <meta name='twitter:description' content={pageDescription}/>
-      <meta name='twitter:image' content={baseUrl + assets.meta.TwitterCard}/>
+      <meta name='twitter:image' content={basePath + assets.meta.TwitterCard}/>
 
       <meta name='apple-mobile-web-app-title' content={baseTitle}/>
     </Helmet>

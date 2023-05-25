@@ -22,7 +22,7 @@ function urlJoin(...args: string[]): string {
 
 async function generateSitemap() {
   try {
-    const { text: str } = await request(app).get(urlJoin(appConf.routerBasename, '/sitemap.xml'))
+    const { text: str } = await request(app).get(urlJoin(appConf.basePath, '/sitemap.xml'))
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
 
     console.log('Generating sitemap... OK')
@@ -41,7 +41,7 @@ async function generatePages() {
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(urlJoin(appConf.routerBasename, url))
+      const { text: html } = await request(app).get(urlJoin(appConf.basePath, url))
       const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -56,7 +56,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get(urlJoin(appConf.routerBasename, '/404'))
+  const { text: html } = await request(app).get(urlJoin(appConf.basePath, '/404'))
   const file = path.join(publicDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)

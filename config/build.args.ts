@@ -1,6 +1,7 @@
 /**
- * @file Build arguments computed at buildtime and passed to both server and client runtime
- *       environments as a global variable named `__BUILD_ARGS__`.
+ * @file Build arguments computed at buildtime and passed to both server and
+ *       client runtime environments as a global variable named
+ *       `__BUILD_ARGS__`.
  */
 
 import dotenv from 'dotenv'
@@ -58,9 +59,9 @@ export const skipOptimizations = env === 'development' || process.env.npm_config
 export const publicPath = process.env.PUBLIC_PATH || '/'
 
 /**
- * Basename for the router.
+ * Base path of the router (i.e. the `basename` property).
  */
-export const routerBasename = process.env.ROUTER_BASENAME || '/'
+export const basePath = process.env.BASE_PATH || '/'
 
 /**
  * File name of the generated asset manifest.

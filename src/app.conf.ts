@@ -1,6 +1,5 @@
 /**
- * @file Runtime server config, passed to the client as a global variable named
- *       `__APP_CINFOG__`.
+ * @file Runtime application config.
  */
 
 export default {
@@ -46,7 +45,7 @@ export default {
   skipHTTP: typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false,
 
   /**
-   * Basename for the router.
+   * Base path of the router (i.e. the `basename` property).
    */
-  routerBasename: __BUILD_ARGS__.routerBasename,
+  basePath: __BUILD_ARGS__.basePath,
 }
