@@ -8,7 +8,7 @@
     "clean": "rimraf build",
     "prebuild": "npm run lint",
     "dev": "npm run clean && cross-env NODE_ENV=development concurrently \"npm run build:server -- --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --quiet --exec 'node -r dotenv/config' --watch build build\"",
-    "build": "cross-env-shell BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD) \"npm run clean && npm run build:client && npm run build:server\"",
+    "build": "cross-env-shell BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD)} \"npm run clean && npm run build:client && npm run build:server\"",
     "build:server": "webpack --config config/build.server.conf.ts",
     "build:client": "webpack --config config/build.client.conf.ts",
     "ship:build": "docker build --build-arg BUILD_NUMBER=${BUILD_NUMBER} --build-arg PUBLIC_PATH=${PUBLIC_PATH} -t ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest} .",
