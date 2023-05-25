@@ -1,8 +1,8 @@
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
-import fs, { createReadStream } from 'fs'
+import { XMLParser } from 'fast-xml-parser'
+import fs from 'fs'
 import path from 'path'
-import { parseSitemap } from 'sitemap'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
 
@@ -15,16 +15,24 @@ async function generateSitemap() {
 }
 
 async function generatePages() {
-  const res = await parseSitemap(createReadStream(path.join(publicDir, 'sitemap.xml')))
-  const urls = res.map(t => t.url?.replace(config.url, '')).filter(Boolean)
+  const parser = new XMLParser()
+  const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
+  const sitemap = parser.parse(sitemapFile)
+  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(config.url, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
 
   for (const url of urls) {
-    const { text: html } = await request(app).get(url)
-    const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
-    fs.mkdirSync(path.dirname(file), { recursive: true })
-    fs.writeFileSync(file, html)
+    try {
+      const { text: html } = await request(app).get(url)
+      const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
+      fs.mkdirSync(path.dirname(file), { recursive: true })
+      fs.writeFileSync(file, html)
 
-    console.log(`Generating <${file}>... OK`)
+      console.log(`Generating ${url}... OK: ${file}`)
+    }
+    catch (err) {
+      console.log(`Generating ${url}... ERR: ${err}`)
+      throw err
+    }
   }
 }
 
@@ -37,7 +45,7 @@ async function generate404() {
   console.log(`Generating <${file}>... OK`)
 }
 
-async function reconcile() {
+async function cleanup() {
   const files = [buildArgs.assetManifestFile, 'index.js']
 
   for (const file of files) {
@@ -49,7 +57,7 @@ async function main() {
   await generateSitemap()
   await generatePages()
   await generate404()
-  await reconcile()
+  await cleanup()
 
   process.exit()
 }
