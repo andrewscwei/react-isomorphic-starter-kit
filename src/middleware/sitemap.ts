@@ -25,7 +25,7 @@ export default function sitemap() {
 
   let cached: any | undefined
 
-  router.use('/sitemap.xml', async (req, res, next) => {
+  router.use(urlJoin(appConf.routerBasename, '/sitemap.xml'), async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     if (cached) return res.send(cached)

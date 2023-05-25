@@ -58,6 +58,11 @@ export const skipOptimizations = env === 'development' || process.env.npm_config
 export const publicPath = process.env.PUBLIC_PATH || '/'
 
 /**
+ * Basename for the router.
+ */
+export const routerBasename = process.env.ROUTER_BASENAME || '/'
+
+/**
  * File name of the generated asset manifest.
  */
 export const assetManifestFile = 'asset-manifest.json'

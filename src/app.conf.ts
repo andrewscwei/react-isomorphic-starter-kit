@@ -44,4 +44,9 @@ export default {
    * Specifies whether the creation of the HTTP server should be skipped.
    */
   skipHTTP: typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false,
+
+  /**
+   * Basename for the router.
+   */
+  routerBasename: __BUILD_ARGS__.routerBasename,
 }

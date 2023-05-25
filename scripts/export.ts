@@ -7,22 +7,41 @@ import request from 'supertest'
 import * as buildArgs from '../config/build.args'
 
 const publicDir = path.join(__dirname, '../build')
-const { default: app, config } = require(publicDir)
+const { default: app, config: appConf } = require(publicDir)
+
+function urlJoin(...args: string[]): string {
+  return args
+    .join('/')
+    .replace(/[/]+/g, '/')
+    .replace(/^(.+):\//, '$1://')
+    .replace(/^file:/, 'file:/')
+    .replace(/\/(\?|&|#[^!])/g, '$1')
+    .replace(/\?/g, '&')
+    .replace('&', '?')
+}
 
 async function generateSitemap() {
-  const { text: str } = await request(app).get('/sitemap.xml')
-  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
+  try {
+    const { text: str } = await request(app).get(urlJoin(appConf.routerBasename, '/sitemap.xml'))
+    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
+
+    console.log('Generating sitemap... OK')
+  }
+  catch (err) {
+    console.log(`Generating sitemap... ERR: ${err}`)
+    throw err
+  }
 }
 
 async function generatePages() {
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(config.url, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(appConf.url, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(url)
+      const { text: html } = await request(app).get(urlJoin(appConf.routerBasename, url))
       const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -37,7 +56,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get('/404')
+  const { text: html } = await request(app).get(urlJoin(appConf.routerBasename, '/404'))
   const file = path.join(publicDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)

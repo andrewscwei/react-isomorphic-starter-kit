@@ -56,7 +56,7 @@ export default function App<T extends RouterType = 'browser'>({
     <React.StrictMode>
       <HelmetProvider context={helmetContext}>
         <LocalsProvider locals={locals}>
-          <Router {...routerProps ?? {} as any}>
+          <Router {...routerProps ?? {} as any} basename={appConf.routerBasename}>
             <I18nProvider defaultLocale={appConf.defaultLocale} translations={translations} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
               <Header/>
               <I18nRoutes>
