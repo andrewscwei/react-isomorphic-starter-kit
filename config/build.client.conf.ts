@@ -62,15 +62,15 @@ const config: Configuration = {
                   'nesting-rules': true,
                 },
               }),
-              PostCSSPurgeCSS({
+              ...isDev ? [] : [PostCSSPurgeCSS({
                 content: [
                   path.join(buildArgs.inputDir, '**/*.html'),
                   path.join(buildArgs.inputDir, '**/*.tsx'),
-                  path.join(buildArgs.inputDir, '**/*.tx'),
+                  path.join(buildArgs.inputDir, '**/*.ts'),
                   path.join(buildArgs.inputDir, '**/*.module.css'),
                 ],
                 defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
-              }),
+              })],
             ],
           },
         },
