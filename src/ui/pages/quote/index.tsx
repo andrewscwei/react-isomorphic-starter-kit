@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Head from '../../components/Head'
-import GetQuote from '../../interactors/apis/GetQuote'
 import { useInteractor } from '../../interactors/UseCase'
+import GetQuote from '../../interactors/apis/GetQuote'
 import { useLocalizedString } from '../../providers/I18nProvider'
 import { useLocals } from '../../providers/LocalsProvider'
 import style from './index.module.css'
@@ -13,6 +13,8 @@ export default function About() {
   const { run: getQuote, value: quote } = useInteractor(GetQuote, { defaultValue: locals.prefetched })
 
   useEffect(() => {
+    // Uncomment to always use prefetched quote.
+    // if (quote) return
     getQuote()
   }, [])
 

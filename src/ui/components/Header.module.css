@@ -2,9 +2,8 @@
   align-items: center;
   box-sizing: border-box;
   display: flex;
-  height: 7rem;
   justify-content: flex-end;
-  padding: 0 5%;
+  padding: 2rem;
   position: fixed;
   width: 100%;
   z-index: var(--z-huds);
