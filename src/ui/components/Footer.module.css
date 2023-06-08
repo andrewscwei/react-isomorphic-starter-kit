@@ -3,9 +3,8 @@
   bottom: 0;
   box-sizing: border-box;
   display: flex;
-  height: 5rem;
   left: 0;
-  padding: 2rem;
+  padding: 2.4rem;
   position: fixed;
   width: 100%;
   z-index: var(--z-huds);
