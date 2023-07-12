@@ -25,7 +25,7 @@ declare module 'worker-loader!*' {
   export default WebpackWorker
 }
 
-declare const __BUILD_ARGS__: typeof import('../config/build.args')
+declare const __BUILD_ARGS__: typeof import('../../config/build.args')
 
 interface Error {
   status?: number
@@ -34,4 +34,11 @@ interface Error {
 interface Window {
   __LOCALS__: Record<string, any>
   __VERSION__: string
+}
+
+type RouteConfig = {
+  component: React.ComponentType
+  path: string
+  index?: boolean
+  prefetch?: () => Promise<any>
 }

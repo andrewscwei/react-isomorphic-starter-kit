@@ -10,11 +10,11 @@ import path from 'path'
 import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
-import routesConf from '../routes.conf'
-import Layout from '../templates/Layout'
-import App from '../ui/App'
+import Layout from '../../templates/Layout'
+import App from '../../ui/App'
 
-type RenderOptions = {
+type Params = {
+  routes: RouteConfig[]
   ssrEnabled?: boolean
 }
 
@@ -36,9 +36,9 @@ function resolveAssetPath(pathToResolve: string): string {
   return out
 }
 
-export default function render({ ssrEnabled = false }: RenderOptions = {}): RequestHandler {
+export default function renderer({ routes, ssrEnabled = false }: Params): RequestHandler {
   return async (req, res) => {
-    const config = routesConf.find(t => matchPath(t.path, req.path))
+    const config = routes.find(t => matchPath(t.path, req.path))
     const prefetched = await config?.prefetch?.()
     const helmetContext = {}
     const locals = { ...res.locals, prefetched }
@@ -46,16 +46,16 @@ export default function render({ ssrEnabled = false }: RenderOptions = {}): Requ
       <App
         helmetContext={helmetContext}
         locals={locals}
-        routerType='static'
         routerProps={{ location: req.url }}
+        routerType='static'
       />
     ) : undefined
 
     res.send(`<!DOCTYPE html>${renderToStaticMarkup(
       <Layout
         body={body}
-        locals={locals}
         helmetContext={helmetContext}
+        locals={locals}
         resolveAssetPath={resolveAssetPath}
       />,
     )}`)

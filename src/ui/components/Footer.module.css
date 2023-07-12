@@ -14,7 +14,6 @@
   flex-grow: 1;
 
   & > a {
-    background: url('../assets/images/github-logo.svg') center / 100% no-repeat;
     display: block;
     height: 2.2rem;
     transition: all .2s ease-out;
@@ -28,9 +27,8 @@
 
 .button {
   align-items: center;
-  background: var(--color-grey);
+  background: var(--color-dark-grey);
   border: none;
-  box-sizing: border-box;
   color: var(--color-white);
   cursor: pointer;
   display: flex;
@@ -38,14 +36,14 @@
   font-size: 1.2rem;
   height: 2.2rem;
   justify-content: center;
+  line-height: 2.2rem;
   outline: none;
   text-decoration: none;
   transition: all .2s ease-out;
   width: 2.2rem;
 
   &:hover {
-    background: var(--color-white);
-    color: var(--color-black);
+    opacity: .6;
   }
 
   &:not(:last-child) {

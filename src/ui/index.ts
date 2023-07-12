@@ -1,6 +1,6 @@
 import Worker from 'worker-loader!./workers/web'
 import appConf from '../app.conf'
-import useDebug from '../utils/useDebug'
+import useDebug from '../arch/utils/useDebug'
 import { mount } from './App'
 
 if (process.env.NODE_ENV === 'development') window.localStorage.debug = 'app*'

@@ -1,8 +1,8 @@
 import React from 'react'
 import appConf from '../../../app.conf'
+import { useLocalizedString } from '../../../arch/providers/I18nProvider'
 import Head from '../../components/Head'
 import ReactLogo from '../../components/ReactLogo'
-import { useLocalizedString } from '../../providers/I18nProvider'
 import style from './index.module.css'
 
 export default function Home() {

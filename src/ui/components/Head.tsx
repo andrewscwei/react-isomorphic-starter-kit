@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
 import appConf from '../../app.conf'
+import { useLocale } from '../../arch/providers/I18nProvider'
 import * as assets from '../assets'
-import { useLocale } from '../providers/I18nProvider'
 
 type Props = {
   description?: string
@@ -33,7 +33,7 @@ export default function Head({
   }, [])
 
   return (
-    <Helmet>
+    <Helmet htmlAttributes={{ lang: locale }}>
       <link rel='canonical' href={pageUrl}/>
       <link rel='mask-icon' type='image/svg+xml' href={assets.meta.PinnedIcon} color={isDarkMode ? '#fff' : '#000'}/>
       <link rel='alternate icon' type='image/png' href={isDarkMode ? assets.meta.AltFaviconDark : assets.meta.AltFaviconLight}/>

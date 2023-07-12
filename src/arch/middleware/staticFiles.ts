@@ -2,17 +2,24 @@ import express, { Router } from 'express'
 import fs from 'fs'
 import path from 'path'
 
+type Params = {
+  /**
+   * The root directory to begin searching for static files.
+   */
+  rootDir: string
+}
+
 /**
  * Serve static files and add expire headers.
  *
- * @param rootDir - The root directory to begin searching for static files.
+ * @param params - See {@link Params}.
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export default function localStaticFiles(rootDir: string) {
+export default function staticFiles({ rootDir }: Params) {
   const { publicPath } = __BUILD_ARGS__
   const router = Router()
-  const localPublicPath = path.join(__dirname, publicPath)
+  const localPublicPath = path.join(rootDir, publicPath)
 
   if (fs.existsSync(localPublicPath)) {
     router.use(publicPath, express.static(localPublicPath, {

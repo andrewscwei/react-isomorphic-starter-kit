@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import useDebug from '../../utils/useDebug'
-
-const debug = useDebug('interactor')
+import useDebug from '../utils/useDebug'
+import UseCase, { UseCaseError } from './UseCase'
 
 export type Interactor<Params, Result> = {
   /**
@@ -57,6 +56,8 @@ export type InteractorOptions<Result> = {
    */
   onSuccess?: (result: Result) => void
 }
+
+const debug = useDebug('interactor')
 
 /**
  * Hook for interacting with a {@link UseCase}.
@@ -147,30 +148,4 @@ export function useInteractor<Params, Result, Options>(
   }
 }
 
-export namespace UseCaseError {
-  export const CANCELLED = Error('Use case cancelled')
-}
-
-export default interface UseCase<Params, Result, Options> {
-  /**
-   * Validates the input parameters of this use case.
-   *
-   * @throws If validation fails.
-   */
-  validateParams: (params: Partial<Params>) => asserts params is Params
-
-  /**
-   * Runs this use case.
-   *
-   * @param params - The input parameters for running this use case.
-   * @param options - Options for running this use case.
-   *
-   * @throws If validation fails for the input parameters.
-   */
-  run: (params: Partial<Params>, options?: Options) => Promise<Result>
-
-  /**
-   * Cancels the execution of this use case.
-   */
-  cancel: () => void
-}
+export default Interactor

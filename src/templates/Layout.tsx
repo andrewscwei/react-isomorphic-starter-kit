@@ -6,23 +6,18 @@ import React from 'react'
 
 type Props = {
   body?: string
-  locals?: Record<string, any>
-  helmetContext?: Record<string, any>
-  resolveAssetPath?: (path: string) => string
+  locals: Record<string, any>
+  helmetContext: Record<string, any>
+  resolveAssetPath: (path: string) => string
 }
 
-export default function Layout({
-  body = '',
-  locals = {},
-  helmetContext = {},
-  resolveAssetPath = t => t,
-}: Props) {
+export default function Layout({ body = '', locals, helmetContext, resolveAssetPath }: Props) {
   return (
     <html>
       <head>
         <meta charSet='utf-8'/>
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
-        <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'/>
+        <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover'/>
 
         {helmetContext.helmet?.title.toComponent()}
         {helmetContext.helmet?.priority.toComponent()}

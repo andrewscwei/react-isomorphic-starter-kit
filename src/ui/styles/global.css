@@ -3,7 +3,8 @@
 :root {
   --color-background: #0f0e13;
   --color-white: #fff;
-  --color-grey: #666;
+  --color-grey: #888;
+  --color-dark-grey: #666;
   --color-black: #111;
   --font-header: 'Roboto', sans-serif;
   --font-body: 'Roboto', sans-serif;
