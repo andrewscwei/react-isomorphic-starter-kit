@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": true,
     "jsx": "react",
-    "lib": ["es6", "dom", "WebWorker"],
+    "lib": ["ES2017", "DOM", "WebWorker"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -24,7 +24,7 @@
     "sourceRoot": "/",
     "strict": true,
     "strictNullChecks": true,
-    "target": "es5"
+    "target": "ES2017"
   },
   "include": [
     "src/**/*.ts",
