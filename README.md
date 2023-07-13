@@ -112,4 +112,4 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 
 ### `v12.0.0`
 
-- Decoupled boilerplate architectural code to `src/arch`
+- Decoupled boilerplate architectural code to `src/base`
