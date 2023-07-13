@@ -1,9 +1,8 @@
 :root {
   --color-background: #15141a;
   --color-white: #fff;
-  --color-grey: #888;
+  --light-grey: #888;
   --color-dark-grey: #666;
-  --color-black: #111;
   --color-accent: #ff4f4f;
   --font-header: 'Roboto', sans-serif;
   --font-body: 'Roboto', sans-serif;

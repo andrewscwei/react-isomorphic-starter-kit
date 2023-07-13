@@ -22,7 +22,7 @@
 .content {
   align-items: center;
   box-sizing: border-box;
-  color: var(--color-grey);
+  color: var(--light-grey);
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -30,7 +30,7 @@
   > section {
     align-items: flex-start;
     box-sizing: border-box;
-    color: var(--color-grey);
+    color: var(--light-grey);
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
