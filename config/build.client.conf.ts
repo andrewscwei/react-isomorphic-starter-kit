@@ -16,7 +16,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import * as buildArgs from './build.args'
 
-const isDev = buildArgs.env === 'development'
+const { isDev } = buildArgs
 
 const config: Configuration = {
   devtool: buildArgs.useSourceMaps ? 'source-map' : false,

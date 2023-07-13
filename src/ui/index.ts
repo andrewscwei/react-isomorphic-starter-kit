@@ -3,8 +3,8 @@
  */
 
 import Worker from 'worker-loader!../workers/web'
-import mountRoot from '../framework/utils/mountRoot'
-import useDebug from '../framework/utils/useDebug'
+import mountRoot from '../base/utils/mountRoot'
+import useDebug from '../base/utils/useDebug'
 import App from './App'
 
 const debug = useDebug()

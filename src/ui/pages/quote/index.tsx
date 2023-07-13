@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import Head from '../../../framework/components/Head'
-import { useInteractor } from '../../../framework/interactors/Interactor'
-import { useLocalizedString } from '../../../framework/providers/I18nProvider'
-import { useLocals } from '../../../framework/providers/LocalsProvider'
+import Head from '../../../base/components/Head'
+import { useInteractor } from '../../../base/interactors/Interactor'
+import { useLocalizedString } from '../../../base/providers/I18nProvider'
+import { useLocals } from '../../../base/providers/LocalsProvider'
 import GetQuote from '../../interactors/GetQuote'
 import style from './index.module.css'
 

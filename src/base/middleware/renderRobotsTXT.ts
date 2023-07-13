@@ -2,14 +2,10 @@ import { Router } from 'express'
 import appConf from '../../app.conf'
 import joinURL from '../utils/joinURL'
 
-type Params = {
-  routes: RouteConfig[]
-}
-
 /**
  * `robots.txt` generator.
  */
-export default function robots({ routes }: Params) {
+export default function renderRobotsTXT() {
   const router = Router()
 
   router.use(joinURL(appConf.basePath, '/robots.txt'), async (req, res, next) => {

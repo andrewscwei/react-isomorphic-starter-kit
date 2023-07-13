@@ -1,6 +1,6 @@
 import React from 'react'
-import Head from '../../../framework/components/Head'
-import { useLocalizedString } from '../../../framework/providers/I18nProvider'
+import Head from '../../../base/components/Head'
+import { useLocalizedString } from '../../../base/providers/I18nProvider'
 import style from './index.module.css'
 
 export default function NotFound() {

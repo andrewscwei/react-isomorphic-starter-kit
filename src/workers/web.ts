@@ -1,4 +1,4 @@
-import useDebug from '../framework/utils/useDebug'
+import useDebug from '../base/utils/useDebug'
 
 const debug = useDebug(undefined, 'worker')
 

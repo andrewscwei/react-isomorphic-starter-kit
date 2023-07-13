@@ -9,7 +9,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
 
-const isDev = buildArgs.env === 'development'
+const { isDev } = buildArgs
 
 const config: Configuration = {
   devtool: buildArgs.useSourceMaps ? 'source-map' : false,

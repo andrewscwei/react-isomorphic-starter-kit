@@ -2,18 +2,16 @@ import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
 import appConf from '../../app.conf'
 import translations from '../../locales'
+import routesConf from '../../routes.conf'
 import { getLocalizedURLs } from '../providers/I18nProvider'
 import joinURL from '../utils/joinURL'
-
-type Params = {
-  routes: RouteConfig[]
-}
 
 /**
  * Sitemap generator.
  */
-export default function sitemap({ routes }: Params) {
+export default function renderSitemap() {
   const router = Router()
+  const routes = routesConf
   const { defaultLocale, url: hostname } = appConf
 
   router.use(joinURL(appConf.basePath, '/sitemap.xml'), async (req, res, next) => {

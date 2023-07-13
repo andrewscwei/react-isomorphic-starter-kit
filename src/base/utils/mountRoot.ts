@@ -8,7 +8,7 @@ export default function mountRoot(root: ComponentType, containerId = 'root') {
   const container = document.getElementById(containerId)
   if (!container) return console.warn(`No container with ID <${containerId}> found`)
 
-  if (process.env.NODE_ENV === 'development') {
+  if (__BUILD_ARGS__.isDev) {
     createRoot(container).render(createElement(root))
   }
   else {
