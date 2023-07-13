@@ -9,13 +9,14 @@ import ip from 'ip'
 import morgan from 'morgan'
 import path from 'path'
 import appConf from './app.conf'
-import renderer from './arch/middleware/renderer'
-import robots from './arch/middleware/robots'
-import sitemap from './arch/middleware/sitemap'
-import staticFiles from './arch/middleware/staticFiles'
-import useAssetPathResolver from './arch/utils/useAssetPathResolver'
-import useDebug from './arch/utils/useDebug'
+import renderer from './framework/middleware/renderer'
+import robots from './framework/middleware/robots'
+import sitemap from './framework/middleware/sitemap'
+import staticFiles from './framework/middleware/staticFiles'
+import useAssetPathResolver from './framework/utils/useAssetPathResolver'
+import useDebug from './framework/utils/useDebug'
 import routesConf from './routes.conf'
+import App from './ui/App'
 
 const debug = useDebug(undefined, 'server')
 
@@ -24,11 +25,12 @@ app.use(morgan('dev'))
 app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-if (process.env.NODE_ENV === 'development') app.use(require('./arch/middleware/dev').default())
+if (process.env.NODE_ENV === 'development') app.use(require('./framework/middleware/dev').default())
 if (process.env.NODE_ENV !== 'development') app.use(staticFiles({ rootDir: __dirname, publicPath: __BUILD_ARGS__.publicPath }))
 app.use(sitemap({ routes: routesConf }))
 app.use(robots({ routes: routesConf }))
 app.use(renderer({
+  rootComponent: App,
   routes: routesConf,
   ssrEnabled: process.env.NODE_ENV !== 'development',
   assetPathResolver: useAssetPathResolver({

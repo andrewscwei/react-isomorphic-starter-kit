@@ -1,7 +1,7 @@
 import React from 'react'
 import appConf from '../../../app.conf'
-import { useLocalizedString } from '../../../arch/providers/I18nProvider'
-import Head from '../../components/Head'
+import Head from '../../../framework/components/Head'
+import { useLocalizedString } from '../../../framework/providers/I18nProvider'
 import ReactLogo from '../../components/ReactLogo'
 import style from './index.module.css'
 

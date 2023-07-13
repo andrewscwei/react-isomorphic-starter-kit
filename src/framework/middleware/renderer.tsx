@@ -8,15 +8,16 @@ import { RequestHandler } from 'express'
 import React from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { matchPath } from 'react-router'
-import Layout from '../../templates/Layout'
+import Layout from '../components/Layout'
 
 type Params = {
+  rootComponent: RootComponentType<'static'>
   routes: RouteConfig[]
   ssrEnabled?: boolean
   assetPathResolver?: (path: string) => string
 }
 
-export default function renderer({ routes, ssrEnabled = false, assetPathResolver }: Params): RequestHandler {
+export default function renderer({ routes, rootComponent, ssrEnabled = false, assetPathResolver }: Params): RequestHandler {
   return async (req, res) => {
     const config = routes.find(t => matchPath(t.path, req.path))
     const prefetched = await config?.prefetch?.()
@@ -27,6 +28,7 @@ export default function renderer({ routes, ssrEnabled = false, assetPathResolver
         helmetContext={helmetContext}
         locals={locals}
         inject={ssrEnabled}
+        rootComponent={rootComponent}
         routerProps={{ location: req.url }}
         resolveAssetPath={assetPathResolver}
       />

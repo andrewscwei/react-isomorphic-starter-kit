@@ -1,18 +1,5 @@
 @import 'normalize.css';
 
-:root {
-  --color-background: #15141a;
-  --color-white: #fff;
-  --color-grey: #888;
-  --color-dark-grey: #666;
-  --color-black: #111;
-  --color-accent: #ff4f4f;
-  --font-header: 'Roboto', sans-serif;
-  --font-body: 'Roboto', sans-serif;
-  --font-mono: monospace;
-  --z-huds: 10;
-}
-
 .n1 {
   font-family: var(--font-body);
   font-size: 1.2rem;
@@ -20,30 +7,6 @@
   letter-spacing: .1rem;
   text-decoration: none;
   text-transform: uppercase;
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 700;
-  src: url('../assets/fonts/Roboto-Bold.ttf') format('truetype');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/Roboto-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 300;
-  src: url('../assets/fonts/Roboto-Light.ttf') format('truetype');
 }
 
 html {

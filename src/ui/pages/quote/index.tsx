@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { useInteractor } from '../../../arch/interactors/Interactor'
-import { useLocalizedString } from '../../../arch/providers/I18nProvider'
-import { useLocals } from '../../../arch/providers/LocalsProvider'
-import Head from '../../components/Head'
-import GetQuote from '../../useCases/GetQuote'
+import Head from '../../../framework/components/Head'
+import { useInteractor } from '../../../framework/interactors/Interactor'
+import { useLocalizedString } from '../../../framework/providers/I18nProvider'
+import { useLocals } from '../../../framework/providers/LocalsProvider'
+import GetQuote from '../../interactors/GetQuote'
 import style from './index.module.css'
 
 export default function About() {

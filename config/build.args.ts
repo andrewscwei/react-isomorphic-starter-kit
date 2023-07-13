@@ -1,7 +1,6 @@
 /**
  * @file Build arguments computed at buildtime and passed to both server and
- *       client runtime environments as a global variable named
- *       `__BUILD_ARGS__`.
+ *       client runtime environments as global variable `__BUILD_ARGS__`.
  */
 
 import dotenv from 'dotenv'

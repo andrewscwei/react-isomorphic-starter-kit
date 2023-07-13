@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import useDebug from '../utils/useDebug'
 import UseCase, { UseCaseError } from './UseCase'
 
-const debug = useDebug('arch')
+const debug = useDebug()
 
 type Interactor<UseCaseParams, UseCaseResult> = {
   /**

@@ -96,7 +96,7 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
   1. `src/assets/`
   2. `src/static/`
 6. Edit files in `src/ui/components/` and `src/pages/`
-7. Edit translations in `src/ui/locales/`
+7. Edit translations in `src/locales/`
 
 ## Breaking Changes
 
@@ -109,3 +109,7 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 - Created reusable workflows for CI/CD
 - Added interactors
 - Added `I18nProvider`
+
+### `v12.0.0`
+
+- Decoupled boilerplate architectural code to `src/arch`

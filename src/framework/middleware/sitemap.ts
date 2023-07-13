@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
 import appConf from '../../app.conf'
+import translations from '../../locales'
 import { getLocalizedURLs } from '../providers/I18nProvider'
-import getTranslations from '../utils/getTranslations'
 import joinURL from '../utils/joinURL'
 
 type Params = {
@@ -20,7 +20,7 @@ export default function sitemap({ routes }: Params) {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const supportedLocales = Object.keys(getTranslations())
+      const supportedLocales = Object.keys(translations)
       const urls = routes.filter(config => config.path !== '*').reduce<string[]>((out, config) => [
         ...out,
         ...appConf.changeLocaleStrategy === 'path' ? getLocalizedURLs(config.path, { defaultLocale, supportedLocales }) : [config.path],

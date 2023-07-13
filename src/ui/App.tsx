@@ -7,11 +7,12 @@ import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, BrowserRouterProps, Route } from 'react-router-dom'
 import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
 import appConf from '../app.conf'
-import I18nProvider, { I18nRoutes } from '../arch/providers/I18nProvider'
-import LocalsProvider from '../arch/providers/LocalsProvider'
-import getTranslations from '../arch/utils/getTranslations'
+import I18nProvider, { I18nRoutes } from '../framework/providers/I18nProvider'
+import LocalsProvider from '../framework/providers/LocalsProvider'
+import translations from '../locales'
 import routesConf from '../routes.conf'
 import './styles/global.css'
+import './styles/theme.css'
 
 type RouterType = 'browser' | 'static'
 
@@ -38,7 +39,7 @@ export default function App<T extends RouterType = 'browser'>({
       <HelmetProvider context={helmetContext}>
         <LocalsProvider locals={locals}>
           <Router {...routerProps ?? {} as any} basename={appConf.basePath}>
-            <I18nProvider defaultLocale={appConf.defaultLocale} translations={getTranslations()} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
+            <I18nProvider defaultLocale={appConf.defaultLocale} translations={translations} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
               <Suspense>
                 <Header/>
               </Suspense>

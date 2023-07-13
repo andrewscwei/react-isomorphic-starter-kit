@@ -1,5 +1,5 @@
 /**
- * @file Webpack config for compiling the app server.
+ * @file Webpack config for compiling the server.
  */
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'

@@ -1,11 +1,11 @@
-import Worker from 'worker-loader!../workers/web'
-import appConf from '../app.conf'
-import mount from '../arch/utils/mount'
-import useDebug from '../arch/utils/useDebug'
-import App from './App'
+/**
+ * @file Loads and parses all translations into a map.
+ */
 
-if (process.env.NODE_ENV === 'development') window.localStorage.debug = 'app*'
-window.__VERSION__ = appConf.version
+import Worker from 'worker-loader!../workers/web'
+import mountRoot from '../framework/utils/mountRoot'
+import useDebug from '../framework/utils/useDebug'
+import App from './App'
 
 const debug = useDebug()
 
@@ -17,4 +17,4 @@ worker.addEventListener('message', event => {
   worker.terminate()
 })
 
-mount(App)
+mountRoot(App)

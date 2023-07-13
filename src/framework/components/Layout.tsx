@@ -2,19 +2,20 @@
  * @file Base HTML template for all pages.
  */
 
-import React from 'react'
+import React, { createElement } from 'react'
 import { StaticRouterProps } from 'react-router-dom/server'
-import App from '../ui/App'
+import appConf from '../../app.conf'
 
 type Props = {
-  locals: Record<string, any>
   helmetContext: Record<string, any>
   inject?: boolean
+  locals: Record<string, any>
+  rootComponent?: RootComponentType<'static'>
   routerProps?: StaticRouterProps
   resolveAssetPath?: (path: string) => string
 }
 
-export default function Layout({ locals, helmetContext, inject = false, routerProps, resolveAssetPath = t => t }: Props) {
+export default function Layout({ locals, helmetContext, inject = false, rootComponent, routerProps, resolveAssetPath = t => t }: Props) {
   return (
     <html>
       <head>
@@ -51,6 +52,7 @@ export default function Layout({ locals, helmetContext, inject = false, routerPr
         {helmetContext.helmet?.script.toComponent()}
 
         <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
+        <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__=${JSON.stringify(appConf.version)};` }}/>
 
         {inject && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
@@ -58,14 +60,12 @@ export default function Layout({ locals, helmetContext, inject = false, routerPr
       </head>
       <body>
         <div id='root'>
-          {inject && (
-            <App
-              helmetContext={helmetContext}
-              locals={locals}
-              routerProps={routerProps}
-              routerType='static'
-            />
-          )}
+          {inject && rootComponent && createElement(rootComponent, {
+            helmetContext,
+            locals,
+            routerProps,
+            routerType: 'static',
+          })}
         </div>
       </body>
     </html>

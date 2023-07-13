@@ -1,6 +1,6 @@
 import objectHash from 'object-hash'
-import UseCase, { UseCaseError } from '../../arch/interactors/UseCase'
-import useCache from '../../arch/utils/useCache'
+import UseCase, { UseCaseError } from '../../framework/interactors/UseCase'
+import useCache from '../../framework/utils/useCache'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
@@ -35,7 +35,7 @@ export default abstract class FetchUseCase<Params extends Record<string, any>, R
    * Time to live (TTL) in seconds for the cached result of this use case. If
    * `NaN` or <= 0, caching is disabled.
    */
-  get ttl(): number { return 300 }
+  get ttl(): number { return 0 }
 
   /**
    * Optional headers to be passed to the request.

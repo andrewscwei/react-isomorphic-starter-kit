@@ -5,20 +5,10 @@ import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
+import joinURL from '../src/framework/utils/joinURL'
 
 const publicDir = path.join(__dirname, '../build')
 const { default: app, config: appConf } = require(publicDir)
-
-function joinURL(...args: string[]): string {
-  return args
-    .join('/')
-    .replace(/[/]+/g, '/')
-    .replace(/^(.+):\//, '$1://')
-    .replace(/^file:/, 'file:/')
-    .replace(/\/(\?|&|#[^!])/g, '$1')
-    .replace(/\?/g, '&')
-    .replace('&', '?')
-}
 
 async function generateSitemap() {
   try {

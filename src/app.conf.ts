@@ -48,4 +48,14 @@ export default {
    * Base path of the router (i.e. the `basename` property).
    */
   basePath: __BUILD_ARGS__.basePath,
+
+  /**
+   * Specifies whether debug is enabled.
+   */
+  debugEnabled: process.env.NODE_ENV === 'development',
+
+  /**
+   * Enabled debug channels in the client.
+   */
+  debugChannels: ['app'],
 }

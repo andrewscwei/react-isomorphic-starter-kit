@@ -1,5 +1,5 @@
 /**
- * @file Webpack config for compiling the app client.
+ * @file Webpack config for compiling the client.
  */
 
 import PostCSSPurgeCSS from '@fullhuman/postcss-purgecss'
@@ -39,16 +39,16 @@ const config: Configuration = {
           plugins: isDev ? [require.resolve('react-refresh/babel')] : [],
         },
       }],
-    }, ...[true, false].map(useCSSModules => ({
+    }, ...[true/* CSS modules */, false/* Non-CSS modules */].map(isModules => ({
       test: /\.css$/,
-      ...useCSSModules ? { include: /\.module\.css$/ } : { exclude: /\.module\.css$/ },
+      ...isModules ? { include: /\.module\.css$/ } : { exclude: /\.module\.css$/ },
       use: [{
         loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader,
       }, {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
-          modules: useCSSModules,
+          modules: isModules,
           sourceMap: buildArgs.useSourceMaps,
         },
       }, {
@@ -148,7 +148,7 @@ const config: Configuration = {
     }),
     new CopyPlugin({
       patterns: [{
-        from: path.join(buildArgs.inputDir, 'ui', 'static'),
+        from: path.join(buildArgs.inputDir, 'static'),
         to: buildArgs.outputDir,
       }],
     }),
