@@ -34,6 +34,8 @@ export default function Layout({ locals, helmetContext, inject = false, rootComp
 
         {helmetContext.helmet?.link.toComponent()}
 
+        <link rel='icon' href='data:;base64,iVBORw0KGgo='/>
+
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-72.png')} sizes='72x72'/>
