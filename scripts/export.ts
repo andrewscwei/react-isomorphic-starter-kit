@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
-import joinURL from '../src/framework/utils/joinURL'
+import joinURL from '../src/base/utils/joinURL'
 
 const publicDir = path.join(__dirname, '../build')
 const { default: app, config: appConf } = require(publicDir)
