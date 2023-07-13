@@ -39,7 +39,7 @@
 
   @media (min-height: 600px) {
     flex-flow: column nowrap;
-    max-width: 60rem;
+    max-width: 40rem;
 
     & > section {
       align-items: center;

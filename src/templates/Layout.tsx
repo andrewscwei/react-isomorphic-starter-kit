@@ -3,15 +3,18 @@
  */
 
 import React from 'react'
+import { StaticRouterProps } from 'react-router-dom/server'
+import App from '../ui/App'
 
 type Props = {
-  body?: string
   locals: Record<string, any>
   helmetContext: Record<string, any>
-  resolveAssetPath: (path: string) => string
+  inject?: boolean
+  routerProps?: StaticRouterProps
+  resolveAssetPath?: (path: string) => string
 }
 
-export default function Layout({ body = '', locals, helmetContext, resolveAssetPath }: Props) {
+export default function Layout({ locals, helmetContext, inject = false, routerProps, resolveAssetPath = t => t }: Props) {
   return (
     <html>
       <head>
@@ -21,9 +24,6 @@ export default function Layout({ body = '', locals, helmetContext, resolveAssetP
 
         {helmetContext.helmet?.title.toComponent()}
         {helmetContext.helmet?.priority.toComponent()}
-
-        <meta name='theme-color' content='#000'/>
-
         {helmetContext.helmet?.meta.toComponent()}
 
         <meta name='twitter:card' content='summary_large_image'/>
@@ -45,19 +45,28 @@ export default function Layout({ body = '', locals, helmetContext, resolveAssetP
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
-        {process.env.NODE_ENV !== 'development' && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
-        {process.env.NODE_ENV !== 'development' && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
+        {inject && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
+        {inject && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
 
         {helmetContext.helmet?.script.toComponent()}
 
         <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
 
-        {process.env.NODE_ENV !== 'development' && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
+        {inject && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
       </head>
       <body>
-        <div id='root' dangerouslySetInnerHTML={{ __html: body }}/>
+        <div id='root'>
+          {inject && (
+            <App
+              helmetContext={helmetContext}
+              locals={locals}
+              routerProps={routerProps}
+              routerType='static'
+            />
+          )}
+        </div>
       </body>
     </html>
   )

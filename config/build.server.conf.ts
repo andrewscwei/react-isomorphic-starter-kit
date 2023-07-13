@@ -84,10 +84,10 @@ const config: Configuration = {
   plugins: [
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
-      '__BUILD_ARGS__': JSON.stringify(buildArgs),
+      __BUILD_ARGS__: JSON.stringify(buildArgs),
     }),
     new EnvironmentPlugin({
-      'NODE_ENV': 'production',
+      NODE_ENV: 'production',
     }),
     ...buildArgs.useSourceMaps ? [
       new BannerPlugin({

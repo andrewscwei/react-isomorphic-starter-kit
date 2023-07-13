@@ -1,7 +1,8 @@
-import Worker from 'worker-loader!./workers/web'
+import Worker from 'worker-loader!../workers/web'
 import appConf from '../app.conf'
+import mount from '../arch/utils/mount'
 import useDebug from '../arch/utils/useDebug'
-import { mount } from './App'
+import App from './App'
 
 if (process.env.NODE_ENV === 'development') window.localStorage.debug = 'app*'
 window.__VERSION__ = appConf.version
@@ -16,4 +17,4 @@ worker.addEventListener('message', event => {
   worker.terminate()
 })
 
-mount()
+mount(App)

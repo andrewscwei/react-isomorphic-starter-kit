@@ -1,6 +1,6 @@
 import debug from 'debug'
 
-export default function useDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
+export default function useDebug(subnamespace = '', thread: 'client' | 'server' | 'worker' = 'client') {
   if (process.env.NODE_ENV === 'development') {
     const namespace = [thread, ...subnamespace.split(':').filter(Boolean)].join(':')
     if (typeof window === 'undefined') debug.enable(namespace)

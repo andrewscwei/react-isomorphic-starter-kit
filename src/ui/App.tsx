@@ -2,8 +2,7 @@
  * @file Client app root.
  */
 
-import React from 'react'
-import { createRoot, hydrateRoot } from 'react-dom/client'
+import React, { Suspense } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, BrowserRouterProps, Route } from 'react-router-dom'
 import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
@@ -11,10 +10,7 @@ import appConf from '../app.conf'
 import I18nProvider, { I18nRoutes } from '../arch/providers/I18nProvider'
 import LocalsProvider from '../arch/providers/LocalsProvider'
 import getTranslations from '../arch/utils/getTranslations'
-import useDebug from '../arch/utils/useDebug'
 import routesConf from '../routes.conf'
-import Footer from './components/Footer'
-import Header from './components/Header'
 import './styles/global.css'
 
 type RouterType = 'browser' | 'static'
@@ -26,27 +22,12 @@ type Props<T extends RouterType> = {
   routerType?: T
 }
 
-const debug = useDebug()
-
-export function mount(containerId = 'root') {
-  const container = document.getElementById(containerId)
-  if (!container) return console.warn(`No container with ID <${containerId}> found`)
-
-  const app = <App locals={window.__LOCALS__ ?? {}}/>
-
-  if (process.env.NODE_ENV === 'development') {
-    createRoot(container).render(app)
-  }
-  else {
-    hydrateRoot(container, app)
-  }
-
-  debug('Mounting app...', 'OK')
-}
+const Footer = React.lazy(() => import('./components/Footer'))
+const Header = React.lazy(() => import('./components/Header'))
 
 export default function App<T extends RouterType = 'browser'>({
   helmetContext = {},
-  locals,
+  locals = window.__LOCALS__ ?? {},
   routerProps,
   routerType,
 }: Props<T>) {
@@ -58,18 +39,24 @@ export default function App<T extends RouterType = 'browser'>({
         <LocalsProvider locals={locals}>
           <Router {...routerProps ?? {} as any} basename={appConf.basePath}>
             <I18nProvider defaultLocale={appConf.defaultLocale} translations={getTranslations()} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
-              <Header/>
-              <I18nRoutes>
-                {routesConf.map(config => {
-                  const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
-                  const isIndex = path === ''
+              <Suspense>
+                <Header/>
+              </Suspense>
+              <Suspense>
+                <I18nRoutes>
+                  {routesConf.map(config => {
+                    const path = config.path.startsWith('/') ? config.path.substring(1) : config.path
+                    const isIndex = path === ''
 
-                  return (
-                    <Route key={path} index={isIndex} path={isIndex ? undefined : path} element={<config.component/>}/>
-                  )
-                })}
-              </I18nRoutes>
-              <Footer/>
+                    return (
+                      <Route key={path} index={isIndex} path={isIndex ? undefined : path} element={<config.component/>}/>
+                    )
+                  })}
+                </I18nRoutes>
+              </Suspense>
+              <Suspense>
+                <Footer/>
+              </Suspense>
             </I18nProvider>
           </Router>
         </LocalsProvider>

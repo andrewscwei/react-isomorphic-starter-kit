@@ -9,7 +9,7 @@ import * as buildArgs from '../config/build.args'
 const publicDir = path.join(__dirname, '../build')
 const { default: app, config: appConf } = require(publicDir)
 
-function urlJoin(...args: string[]): string {
+function joinURL(...args: string[]): string {
   return args
     .join('/')
     .replace(/[/]+/g, '/')
@@ -22,13 +22,26 @@ function urlJoin(...args: string[]): string {
 
 async function generateSitemap() {
   try {
-    const { text: str } = await request(app).get(urlJoin(appConf.basePath, '/sitemap.xml'))
+    const { text: str } = await request(app).get(joinURL(appConf.basePath, '/sitemap.xml'))
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
 
     console.log('Generating sitemap... OK')
   }
   catch (err) {
     console.log(`Generating sitemap... ERR: ${err}`)
+    throw err
+  }
+}
+
+async function generateRobotsTXT() {
+  try {
+    const { text: str } = await request(app).get(joinURL(appConf.basePath, '/robots.txt'))
+    fs.writeFileSync(path.join(publicDir, 'robots.txt'), str)
+
+    console.log('Generating robots.txt... OK')
+  }
+  catch (err) {
+    console.log(`Generating robots.txt... ERR: ${err}`)
     throw err
   }
 }
@@ -41,7 +54,7 @@ async function generatePages() {
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(urlJoin(appConf.basePath, url))
+      const { text: html } = await request(app).get(joinURL(appConf.basePath, url))
       const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -56,7 +69,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get(urlJoin(appConf.basePath, '/404'))
+  const { text: html } = await request(app).get(joinURL(appConf.basePath, '/404'))
   const file = path.join(publicDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
@@ -74,6 +87,7 @@ async function cleanup() {
 
 async function main() {
   await generateSitemap()
+  await generateRobotsTXT()
   await generatePages()
   await generate404()
   await cleanup()

@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import useDebug from '../utils/useDebug'
 import UseCase, { UseCaseError } from './UseCase'
 
-export type Interactor<Params, Result> = {
+const debug = useDebug('arch')
+
+type Interactor<UseCaseParams, UseCaseResult> = {
   /**
    * Indicates whether the use case is running.
    */
@@ -16,14 +18,14 @@ export type Interactor<Params, Result> = {
   /**
    * The current result of the use case.
    */
-  value?: Result
+  value?: UseCaseResult
 
   /**
    * Runs the use case.
    *
    * @param params - The input parameters of the use case.
    */
-  run: (params?: Partial<Params>) => Promise<void>
+  run: (params?: Partial<UseCaseParams>) => Promise<void>
 
   /**
    * Resets the state of this interactor.
@@ -31,7 +33,7 @@ export type Interactor<Params, Result> = {
   reset: () => void
 }
 
-export type InteractorOptions<Result> = {
+type Options<Result> = {
   /**
    * Specifies the default value.
    */
@@ -57,30 +59,28 @@ export type InteractorOptions<Result> = {
   onSuccess?: (result: Result) => void
 }
 
-const debug = useDebug('interactor')
-
 /**
  * Hook for interacting with a {@link UseCase}.
  *
  * @param UseCaseClass - The {@link UseCase} class to interact with.
- * @param options - @see {@link InteractorOptions}.
+ * @param options - @see {@link Options}.
  *
  * @returns The {@link Interactor}.
  */
-export function useInteractor<Params, Result, Options>(
-  UseCaseClass: new () => UseCase<Params, Result, Options>,
+export function useInteractor<UseCaseParams, UseCaseResult, UseCaseOptions>(
+  UseCaseClass: new () => UseCase<UseCaseParams, UseCaseResult, UseCaseOptions>,
   {
     defaultValue,
     onCancel,
     onError,
     onSuccess,
-  }: InteractorOptions<Result> = {}
-): Interactor<Params, Result> {
+  }: Options<UseCaseResult> = {}
+): Interactor<UseCaseParams, UseCaseResult> {
   const totalRunCountRef = useRef(0)
   const runningCountRef = useRef(0)
   const [totalRunCount, setTotalRunCount] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
-  const [result, setResult] = useState<Result | undefined>(defaultValue)
+  const [result, setResult] = useState<UseCaseResult | undefined>(defaultValue)
   const useCase = useMemo(() => new UseCaseClass(), [])
   const useCaseName = useCase.constructor.name
 
@@ -103,7 +103,7 @@ export function useInteractor<Params, Result, Options>(
     setResult(undefined)
   }
 
-  const run = async (params: Partial<Params> = {}, options?: Options) => {
+  const run = async (params: Partial<UseCaseParams> = {}, options?: UseCaseOptions) => {
     debug(`Interacting with use case <${useCaseName}>...`)
 
     setResult(undefined)

@@ -1,20 +1,18 @@
 /**
- * @file Route definitions for React router.
+ * @file Client router config.
  */
 
-import Home from './ui/pages/home'
-import NotFound from './ui/pages/notFound'
-import Quote, { prefetch as prefetchQuote } from './ui/pages/quote'
+import React from 'react'
 
 const config: RouteConfig[] = [{
-  component: Home,
+  component: React.lazy(() => import('./ui/pages/home')),
   path: '/',
 }, {
-  component: Quote,
+  component: React.lazy(() => import('./ui/pages/quote')),
   path: '/quote',
-  prefetch: prefetchQuote,
+  prefetch: async () => (await import('./ui/pages/quote')).prefetch,
 }, {
-  component: NotFound,
+  component: React.lazy(() => import('./ui/pages/notFound')),
   path: '*',
 }]
 

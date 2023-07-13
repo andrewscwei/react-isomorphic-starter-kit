@@ -1,4 +1,4 @@
-import FetchUseCase from '../../arch/interactors/FetchUseCase'
+import FetchUseCase from './FetchUseCase'
 
 type Quote = {
   author: string

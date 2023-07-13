@@ -1,6 +1,6 @@
 import objectHash from 'object-hash'
-import useCache from '../utils/useCache'
-import UseCase, { UseCaseError } from './UseCase'
+import UseCase, { UseCaseError } from '../../arch/interactors/UseCase'
+import useCache from '../../arch/utils/useCache'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
@@ -11,8 +11,7 @@ type Options = {
   skipCache?: boolean
 
   /**
-   * Timeout of the request in seconds. If `undefined` or <= 0, there is no
-   * timeout.
+   * Timeout of the request in seconds (disabled if `undefined` or <= 0).
    */
   timeout?: number
 }

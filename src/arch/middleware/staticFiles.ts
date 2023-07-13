@@ -7,6 +7,11 @@ type Params = {
    * The root directory to begin searching for static files.
    */
   rootDir: string
+
+  /**
+   * The public path for static files.
+   */
+  publicPath?: string
 }
 
 /**
@@ -16,8 +21,7 @@ type Params = {
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export default function staticFiles({ rootDir }: Params) {
-  const { publicPath } = __BUILD_ARGS__
+export default function staticFiles({ rootDir, publicPath = '/' }: Params) {
   const router = Router()
   const localPublicPath = path.join(rootDir, publicPath)
 

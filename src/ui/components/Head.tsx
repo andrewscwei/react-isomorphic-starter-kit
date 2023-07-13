@@ -41,6 +41,8 @@ export default function Head({
       <title>{pageTitle}</title>
       <meta name='description' content={pageDescription}/>
 
+      <meta name='theme-color' content='#000'/>
+
       <meta property='og:site_name' content={baseTitle}/>
       <meta property='og:title' content={pageTitle}/>
       <meta property='og:description' content={pageDescription}/>

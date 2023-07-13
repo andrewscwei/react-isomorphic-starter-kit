@@ -15,7 +15,7 @@ export default function dev() {
   const router = Router()
 
   router.use(webpackDevMiddleware(compiler, {
-    publicPath: __BUILD_ARGS__.publicPath,
+    publicPath: clientBuildConfig.output?.publicPath,
   }))
 
   router.use(webpackHotMiddleware(compiler, {
