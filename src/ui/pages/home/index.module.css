@@ -27,7 +27,7 @@
   flex-flow: row nowrap;
   justify-content: center;
 
-  & > section {
+  > section {
     align-items: flex-start;
     box-sizing: border-box;
     color: var(--color-grey);
@@ -41,7 +41,7 @@
     flex-flow: column nowrap;
     max-width: 40rem;
 
-    & > section {
+    > section {
       align-items: center;
       text-align: center;
     }

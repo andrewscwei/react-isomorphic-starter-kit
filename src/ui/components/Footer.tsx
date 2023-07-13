@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, { HTMLAttributes } from 'react'
 import { useChangeLocale, useLocalizedString } from '../../arch/providers/I18nProvider'
-import $GitHubLogo from '../assets/images/github-logo.svg'
+import $$GitHubLogo from '../assets/images/github-logo.svg'
 import style from './Footer.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
@@ -17,7 +17,7 @@ export default function Footer({
     <footer {...props} className={classNames(className, style.root)}>
       <nav className={style.nav}>
         <a href='https://github.com/andrewscwei/react-isomorphic-starter-kit'>
-          <img src={$GitHubLogo} alt='GitHub' />
+          <img src={$$GitHubLogo} alt='GitHub' />
         </a>
       </nav>
       <button className={style.button} onClick={() => changeLocale('en')}>{ltxt('en')}</button>

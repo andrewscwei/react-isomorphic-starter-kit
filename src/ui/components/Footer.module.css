@@ -13,7 +13,7 @@
 .nav {
   flex-grow: 1;
 
-  & > a {
+  > a {
     display: block;
     height: 2.2rem;
     transition: all .2s ease-out;
