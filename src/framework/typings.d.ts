@@ -43,7 +43,9 @@ type RouteConfig = {
   prefetch?: () => Promise<any>
 }
 
-type RootComponentProps<T extends 'browser' | 'static'> = {
+type RouterType = 'browser' | 'static'
+
+type RootComponentProps<T extends RouterType> = {
   helmetContext?: Record<string, any>
   locals?: Record<string, any>
   routerProps?: T extends 'static' ? import('react-router-dom/server').StaticRouterProps : import('react-router-dom').BrowserRouterProps

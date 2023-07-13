@@ -4,8 +4,8 @@
 
 import React, { Suspense } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
-import { BrowserRouter, BrowserRouterProps, Route } from 'react-router-dom'
-import { StaticRouter, StaticRouterProps } from 'react-router-dom/server'
+import { BrowserRouter, Route } from 'react-router-dom'
+import { StaticRouter } from 'react-router-dom/server'
 import appConf from '../app.conf'
 import I18nProvider, { I18nRoutes } from '../framework/providers/I18nProvider'
 import LocalsProvider from '../framework/providers/LocalsProvider'
@@ -13,15 +13,6 @@ import translations from '../locales'
 import routesConf from '../routes.conf'
 import './styles/global.css'
 import './styles/theme.css'
-
-type RouterType = 'browser' | 'static'
-
-type Props<T extends RouterType> = {
-  helmetContext?: Record<string, any>
-  locals?: Record<string, any>
-  routerProps?: T extends 'static' ? StaticRouterProps : BrowserRouterProps
-  routerType?: T
-}
 
 const Footer = React.lazy(() => import('./components/Footer'))
 const Header = React.lazy(() => import('./components/Header'))
@@ -31,7 +22,7 @@ export default function App<T extends RouterType = 'browser'>({
   locals = window.__LOCALS__ ?? {},
   routerProps,
   routerType,
-}: Props<T>) {
+}: RootComponentProps<T>) {
   const Router = routerType === 'static' ? StaticRouter : BrowserRouter
 
   return (

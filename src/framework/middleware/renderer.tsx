@@ -23,6 +23,7 @@ export default function renderer({ routes, rootComponent, ssrEnabled = false, as
     const prefetched = await config?.prefetch?.()
     const helmetContext = {}
     const locals = { ...res.locals, prefetched }
+
     const layout = (
       <Layout
         helmetContext={helmetContext}
