@@ -12,11 +12,6 @@ dotenv.config()
 export const packageVersion = packageInfo.version
 
 /**
- * Indicates whether the current environment is development.
- */
-export const isDev = process.env.NODE_ENV !== 'production'
-
-/**
  * Version number.
  */
 export const version = packageVersion
@@ -39,7 +34,7 @@ export const outputDir = path.join(__dirname, '../', 'build')
 /**
  * Specifies whether source maps should be generated.
  */
-export const useSourceMaps = isDev
+export const useSourceMaps = process.env.NODE_ENV === 'development'
 
 /**
  * Specifies whether the bundle analyzer should be enabled while building.
@@ -50,7 +45,7 @@ export const useBundleAnalyzer = process.env.npm_config_analyze === 'true'
  * Specifies whether HTML/JS/CSS minifications should be disabled while
  * building.
  */
-export const skipOptimizations = isDev || process.env.npm_config_raw === 'true'
+export const skipOptimizations = process.env.NODE_ENV === 'development' || process.env.npm_config_raw === 'true'
 
 /**
  * Public path for static assets.

@@ -18,7 +18,8 @@ type Params = {
 }
 
 export default function renderLayout({ rootComponent }: Params): RequestHandler {
-  const { isDev, publicPath, assetManifestFile } = __BUILD_ARGS__
+  const isDev = process.env.NODE_ENV === 'development'
+  const { publicPath, assetManifestFile } = __BUILD_ARGS__
   const routes = routesConf
   const assetPathResolver = useAssetPathResolver({
     publicPath,

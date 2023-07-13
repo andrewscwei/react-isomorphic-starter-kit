@@ -25,8 +25,8 @@ app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-if (__BUILD_ARGS__.isDev) app.use(require('./base/middleware/hmr').default())
-if (!__BUILD_ARGS__.isDev) app.use(serveLocalStatic())
+if (process.env.NODE_ENV === 'development') app.use(require('./base/middleware/hmr').default())
+if (process.env.NODE_ENV !== 'development') app.use(serveLocalStatic())
 
 app.use(renderSitemap())
 app.use(renderRobotsTXT())
