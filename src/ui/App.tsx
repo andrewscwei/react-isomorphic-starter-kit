@@ -2,7 +2,7 @@
  * @file Client app root.
  */
 
-import React, { Suspense } from 'react'
+import React, { StrictMode, Suspense, lazy } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { StaticRouter } from 'react-router-dom/server'
@@ -14,8 +14,8 @@ import routesConf from '../routes.conf'
 import './styles/global.css'
 import './styles/theme.css'
 
-const Footer = React.lazy(() => import('./components/Footer'))
-const Header = React.lazy(() => import('./components/Header'))
+const Footer = lazy(() => import('./components/Footer'))
+const Header = lazy(() => import('./components/Header'))
 
 export default function App<T extends RouterType = 'browser'>({
   helmetContext = {},
@@ -26,7 +26,7 @@ export default function App<T extends RouterType = 'browser'>({
   const Router = routerType === 'static' ? StaticRouter : BrowserRouter
 
   return (
-    <React.StrictMode>
+    <StrictMode>
       <HelmetProvider context={helmetContext}>
         <LocalsProvider locals={locals}>
           <Router {...routerProps ?? {} as any} basename={appConf.basePath}>
@@ -53,6 +53,6 @@ export default function App<T extends RouterType = 'browser'>({
           </Router>
         </LocalsProvider>
       </HelmetProvider>
-    </React.StrictMode>
+    </StrictMode>
   )
 }
