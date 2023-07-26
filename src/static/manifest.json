@@ -28,6 +28,5 @@
   ],
   "name": "React Isomorphic Starter Kit",
   "orientation": "portrait",
-  "start_url": "index.html",
   "theme_color": "#000000"
 }
