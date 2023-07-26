@@ -1,33 +1,33 @@
 {
-  "name": "React Isomorphic Starter Kit",
+  "background_color": "#000000",
   "description": "Experimental React universal/isomorphic app starter kit.",
   "display": "standalone",
   "icons": [
     {
-      "src": "app-icon-192.png",
       "sizes": "192x192",
+      "src": "app-icon-192.png",
       "type": "image/png"
     },
     {
-      "src": "app-icon-512.png",
       "sizes": "512x512",
+      "src": "app-icon-512.png",
       "type": "image/png"
     },
     {
       "purpose": "maskable",
-      "src": "app-icon-192.png",
       "sizes": "192x192",
+      "src": "app-icon-192.png",
       "type": "image/png"
     },
     {
       "purpose": "maskable",
-      "src": "app-icon-512.png",
       "sizes": "512x512",
+      "src": "app-icon-512.png",
       "type": "image/png"
     }
   ],
-  "theme_color": "#15141a",
-  "background_color": "#15141a",
+  "name": "React Isomorphic Starter Kit",
+  "orientation": "portrait",
   "start_url": "index.html",
-  "orientation": "portrait"
+  "theme_color": "#000000"
 }
