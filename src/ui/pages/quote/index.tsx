@@ -3,7 +3,7 @@ import Head from '../../../base/components/Head'
 import { useInteractor } from '../../../base/interactors/Interactor'
 import { useLocalizedString } from '../../../base/providers/I18nProvider'
 import { useLocals } from '../../../base/providers/LocalsProvider'
-import GetQuote from '../../interactors/GetQuote'
+import GetQuote from '../../../useCases/GetQuote'
 import style from './index.module.css'
 
 export default function About() {
