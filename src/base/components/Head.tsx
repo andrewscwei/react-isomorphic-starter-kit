@@ -57,6 +57,7 @@ export default function Head({
       <meta property='og:image' content={joinURL(BASE_URL, $$OGImage)}/>
       <meta property='og:image:alt' content={pageDescription}/>
 
+      <meta name='twitter:card' content='summary_large_image'/>
       <meta name='twitter:title' content={pageTitle}/>
       <meta name='twitter:description' content={pageDescription}/>
       <meta name='twitter:image' content={joinURL(BASE_URL, $$TwitterCard)}/>
