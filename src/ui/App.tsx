@@ -6,7 +6,7 @@ import React, { StrictMode, Suspense, lazy } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { StaticRouter } from 'react-router-dom/server'
-import appConf from '../app.conf'
+import { BASE_PATH, DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from '../app.conf'
 import I18nProvider, { I18nRoutes } from '../base/providers/I18nProvider'
 import LocalsProvider from '../base/providers/LocalsProvider'
 import translations from '../locales'
@@ -29,8 +29,8 @@ export default function App<T extends RouterType = 'browser'>({
     <StrictMode>
       <HelmetProvider context={helmetContext}>
         <LocalsProvider locals={locals}>
-          <Router {...routerProps ?? {} as any} basename={appConf.basePath}>
-            <I18nProvider defaultLocale={appConf.defaultLocale} translations={translations} changeLocaleStrategy={appConf.changeLocaleStrategy as any}>
+          <Router {...routerProps ?? {} as any} basename={BASE_PATH}>
+            <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} changeLocaleStrategy={LOCALE_CHANGE_STRATEGY as any}>
               <Suspense>
                 <Header/>
               </Suspense>

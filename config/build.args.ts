@@ -5,11 +5,9 @@
 
 import dotenv from 'dotenv'
 import path from 'path'
-import packageInfo from '../package.json'
+import { version as packageVersion } from '../package.json'
 
 dotenv.config()
-
-export const packageVersion = packageInfo.version
 
 /**
  * Version number.
@@ -51,6 +49,11 @@ export const skipOptimizations = process.env.NODE_ENV === 'development' || proce
  * Public path for static assets.
  */
 export const publicPath = process.env.PUBLIC_PATH || '/'
+
+/**
+ * Base URL of the app.
+ */
+export const baseUrl = process.env.BASE_URL || ''
 
 /**
  * Base path of the router (i.e. the `basename` property).

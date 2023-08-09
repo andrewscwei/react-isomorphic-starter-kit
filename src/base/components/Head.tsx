@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
-import appConf from '../../app.conf'
+import { BASE_URL, DESCRIPTION, TITLE } from '../../app.conf'
 import $$AltFaviconDark from '../../ui/assets/meta/favicon-dark.png'
 import $$FaviconDark from '../../ui/assets/meta/favicon-dark.svg'
 import $$AltFaviconLight from '../../ui/assets/meta/favicon-light.png'
@@ -10,6 +10,7 @@ import $$OGImage from '../../ui/assets/meta/og-image.png'
 import $$PinnedIcon from '../../ui/assets/meta/pinned-icon.svg'
 import $$TwitterCard from '../../ui/assets/meta/twitter-card.png'
 import { useLocale } from '../providers/I18nProvider'
+import joinURL from '../utils/joinURL'
 
 type Props = {
   description?: string
@@ -20,10 +21,9 @@ export default function Head({
   description,
   title,
 }: Props) {
-  const { title: baseTitle, description: baseDescription, url: basePath } = appConf
-  const pageTitle = title ?? baseTitle
-  const pageDescription = description ?? baseDescription
-  const pageUrl = basePath + useLocation().pathname
+  const pageTitle = title ?? TITLE
+  const pageDescription = description ?? DESCRIPTION
+  const pageUrl = joinURL(BASE_URL, useLocation().pathname)
   const locale = useLocale()
   const matchMedia = typeof window !== 'undefined' && typeof window.matchMedia !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
   const [isDarkMode, setIsDarkMode] = useState<boolean>(matchMedia?.matches === true)
@@ -49,19 +49,19 @@ export default function Head({
 
       <meta name='theme-color' content='#15141a'/>
 
-      <meta property='og:site_name' content={baseTitle}/>
+      <meta property='og:site_name' content={TITLE}/>
       <meta property='og:title' content={pageTitle}/>
       <meta property='og:description' content={pageDescription}/>
       <meta property='og:locale' content={locale}/>
       <meta property='og:url' content={pageUrl}/>
-      <meta property='og:image' content={basePath + $$OGImage}/>
+      <meta property='og:image' content={joinURL(BASE_URL, $$OGImage)}/>
       <meta property='og:image:alt' content={pageDescription}/>
 
       <meta name='twitter:title' content={pageTitle}/>
       <meta name='twitter:description' content={pageDescription}/>
-      <meta name='twitter:image' content={basePath + $$TwitterCard}/>
+      <meta name='twitter:image' content={joinURL(BASE_URL, $$TwitterCard)}/>
 
-      <meta name='apple-mobile-web-app-title' content={baseTitle}/>
+      <meta name='apple-mobile-web-app-title' content={TITLE}/>
     </Helmet>
   )
 }

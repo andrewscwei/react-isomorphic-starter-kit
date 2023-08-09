@@ -4,7 +4,7 @@
 
 import React, { createElement } from 'react'
 import { StaticRouterProps } from 'react-router-dom/server'
-import appConf from '../../app.conf'
+import { VERSION } from '../../app.conf'
 
 type Props = {
   helmetContext: Record<string, any>
@@ -54,7 +54,7 @@ export default function Layout({ locals, helmetContext, inject = false, rootComp
         {helmetContext.helmet?.script.toComponent()}
 
         <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
-        <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__=${JSON.stringify(appConf.version)};` }}/>
+        <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__=${JSON.stringify(VERSION)};` }}/>
 
         {inject && <script defer type='application/javascript' src={resolveAssetPath('/polyfills.js')}></script>}
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>

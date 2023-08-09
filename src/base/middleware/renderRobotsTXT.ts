@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import appConf from '../../app.conf'
+import { BASE_PATH } from '../../app.conf'
 import joinURL from '../utils/joinURL'
 
 /**
@@ -8,7 +8,7 @@ import joinURL from '../utils/joinURL'
 export default function renderRobotsTXT() {
   const router = Router()
 
-  router.use(joinURL(appConf.basePath, '/robots.txt'), async (req, res, next) => {
+  router.use(joinURL(BASE_PATH, '/robots.txt'), async (req, res, next) => {
     res.header('Content-Type', 'text/plain')
     res.send('User-agent: * Disallow:')
   })

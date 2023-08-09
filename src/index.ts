@@ -7,7 +7,7 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
-import appConf from './app.conf'
+import * as appConf from './app.conf'
 import handle404 from './base/middleware/handle404'
 import handle500 from './base/middleware/handle500'
 import renderLayout from './base/middleware/renderLayout'
@@ -35,24 +35,24 @@ app.use(renderLayout({ rootComponent: App }))
 app.use(handle404())
 app.use(handle500())
 
-if (!appConf.skipHTTP) {
-  app.listen(appConf.port)
+if (!appConf.SKIP_HTTP) {
+  app.listen(appConf.PORT)
     .on('error', (error: NodeJS.ErrnoException) => {
       if (error.syscall !== 'listen') throw error
 
       switch (error.code) {
         case 'EACCES':
-          debug(`Port ${appConf.port} requires elevated privileges`)
+          debug(`Port ${appConf.PORT} requires elevated privileges`)
           process.exit(1)
         case 'EADDRINUSE':
-          debug(`Port ${appConf.port} is already in use`)
+          debug(`Port ${appConf.PORT} is already in use`)
           process.exit(1)
         default:
           throw error
       }
     })
     .on('listening', () => {
-      debug(`App is listening on ${ip.address()}:${appConf.port}`)
+      debug(`App is listening on ${ip.address()}:${appConf.PORT}`)
     })
 
   process.on('unhandledRejection', reason => {

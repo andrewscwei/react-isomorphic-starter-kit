@@ -1,5 +1,5 @@
 import React from 'react'
-import appConf from '../../../app.conf'
+import { VERSION } from '../../../app.conf'
 import Head from '../../../base/components/Head'
 import { useLocalizedString } from '../../../base/providers/I18nProvider'
 import ReactLogo from '../../components/ReactLogo'
@@ -16,7 +16,7 @@ export default function Home() {
           <ReactLogo className={style.logo}/>
           <section>
             <h1 className={style.title}>{ltxt('hello')}</h1>
-            <code className={style.version}>{appConf.version}</code>
+            <code className={style.version}>{VERSION}</code>
             <span>{ltxt('description') }</span>
           </section>
         </div>
