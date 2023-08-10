@@ -36,10 +36,18 @@ interface Window {
   __VERSION__: string
 }
 
+type MetaTags = {
+  description?: string
+  maskIconColor?: string
+  themeColor?: string
+  title?: string
+}
+
 type RouteConfig = {
   component: React.ComponentType
-  path: string
   index?: boolean
+  metaTags?: MetaTags
+  path: string
   prefetch?: () => Promise<any>
 }
 

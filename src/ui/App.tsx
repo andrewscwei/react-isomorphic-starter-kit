@@ -29,7 +29,7 @@ export default function App<T extends RouterType = 'browser'>({
       <HelmetProvider>
         <LocalsProvider locals={locals}>
           <Router {...routerProps ?? {} as any} basename={BASE_PATH}>
-            <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} changeLocaleStrategy={LOCALE_CHANGE_STRATEGY as any}>
+            <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
               <Suspense>
                 <Header/>
               </Suspense>

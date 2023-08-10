@@ -8,10 +8,12 @@ import { RequestHandler } from 'express'
 import path from 'path'
 import React from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { HelmetProvider } from 'react-helmet-async'
 import { matchPath } from 'react-router'
+import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from '../../app.conf'
+import translations from '../../locales'
 import routesConf from '../../routes.conf'
 import Layout from '../components/Layout'
+import { getLocaleFromURL } from '../providers/I18nProvider'
 import useAssetPathResolver from '../utils/useAssetPathResolver'
 
 type Params = {
@@ -29,21 +31,25 @@ export default function renderLayout({ rootComponent }: Params): RequestHandler 
 
   return async (req, res) => {
     const config = routes.find(t => matchPath(t.path, req.path))
+    const metaTags = config?.metaTags
     const prefetched = await config?.prefetch?.()
-    const helmetContext = {}
     const locals = { ...res.locals, prefetched }
+    const { locale } = getLocaleFromURL(req.url, {
+      defaultLocale: DEFAULT_LOCALE,
+      resolveStrategy: LOCALE_CHANGE_STRATEGY === 'path' ? 'path' : 'query',
+      supportedLocales: Object.keys(translations),
+    }) ?? { locale: DEFAULT_LOCALE }
 
     const layout = (
-      <HelmetProvider context={helmetContext}>
-        <Layout
-          helmetContext={helmetContext}
-          locals={locals}
-          inject={!isDev}
-          rootComponent={rootComponent}
-          routerProps={{ location: req.url }}
-          resolveAssetPath={assetPathResolver}
-        />
-      </HelmetProvider>
+      <Layout
+        injectScripts={!isDev}
+        locale={locale}
+        locals={locals}
+        metaTags={metaTags}
+        rootComponent={rootComponent}
+        routerProps={{ location: req.url }}
+        assetPathResolver={assetPathResolver}
+      />
     )
 
     const { pipe } = renderToPipeableStream(layout, {

@@ -5,9 +5,9 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router'
 interface Translation { [key: string]: Translation | string }
 
 type I18nState = {
-  changeLocaleStrategy: 'action' | 'path' | 'query'
   defaultLocale: string
   locale: string
+  localeChangeStrategy: 'action' | 'path' | 'query'
   polyglots: Record<string, Polyglot>
   supportedLocales: string[]
   getLocalizedPath?: (path: string) => string
@@ -15,19 +15,19 @@ type I18nState = {
 }
 
 type I18nContextValue = {
-  state: I18nState
   dispatch?: Dispatch<I18nChangeLocaleAction>
+  state: I18nState
 }
 
 type I18nProviderProps = PropsWithChildren<{
-  changeLocaleStrategy?: I18nState['changeLocaleStrategy']
   defaultLocale?: I18nState['defaultLocale']
+  localeChangeStrategy?: I18nState['localeChangeStrategy']
   translations: Record<string, Translation>
 }>
 
 type I18nChangeLocaleAction = {
-  type: '@i18n/CHANGE_LOCALE'
   locale: string
+  type: '@i18n/CHANGE_LOCALE'
 }
 
 const reducer = (state: I18nState, action: I18nChangeLocaleAction): I18nState => {
@@ -47,7 +47,7 @@ export const I18nContext = createContext<I18nContextValue | undefined>(undefined
 
 /**
  * Context provider whose value consists of the current i18n state. The method
- * of modifying the locale is specified by `changeLocaleStrategy`, as follows:
+ * of modifying the locale is specified by `localeChangeStrategy`, as follows:
  *   - If set to `action`, the locale can be modified by dispatching an action
  *   - If set to `path`, the locale is inferred from the current path name
  *   - If set to `query`, the locale is inferred from the search parameter
@@ -60,8 +60,8 @@ export const I18nContext = createContext<I18nContextValue | undefined>(undefined
 export default function I18nProvider({
   children,
   defaultLocale = 'en',
+  localeChangeStrategy = 'path',
   translations,
-  changeLocaleStrategy = 'path',
 }: I18nProviderProps) {
   const { pathname, search, hash } = useLocation()
   const url = `${pathname}${search}${hash}`
@@ -77,10 +77,10 @@ export default function I18nProvider({
     [locale]: new Polyglot({ locale, phrases: translations[locale] }),
   }), {}), [translations])
 
-  switch (changeLocaleStrategy) {
+  switch (localeChangeStrategy) {
     case 'action': {
       const [state, dispatch] = useReducer(reducer, {
-        changeLocaleStrategy,
+        localeChangeStrategy,
         defaultLocale,
         locale: defaultLocale,
         polyglots,
@@ -95,7 +95,7 @@ export default function I18nProvider({
       )
     }
     default: {
-      const resolveStrategy = changeLocaleStrategy === 'path' ? 'path' : 'query'
+      const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
       const localeInfo = getLocaleFromURL(url, { defaultLocale, resolveStrategy, supportedLocales })
       if (!localeInfo) console.warn(`Unable to infer locale from path <${url}>`)
 
@@ -105,12 +105,12 @@ export default function I18nProvider({
       if (!polyglot) console.warn(`Missing transtions for locale <${locale}>`)
 
       const state: I18nState = {
-        changeLocaleStrategy,
+        localeChangeStrategy,
         defaultLocale,
         locale,
         polyglots,
         supportedLocales,
-        getLocalizedPath: path => locale === defaultLocale ? getUnlocalizedURL(path, { resolveStrategy, supportedLocales }) : getLocalizedURL(path, locale, { defaultLocale, resolveStrategy: changeLocaleStrategy, supportedLocales }),
+        getLocalizedPath: path => locale === defaultLocale ? getUnlocalizedURL(path, { resolveStrategy, supportedLocales }) : getLocalizedURL(path, locale, { defaultLocale, resolveStrategy: localeChangeStrategy, supportedLocales }),
         getLocalizedString: (...args) => polyglot?.t(...args) ?? args[0],
       }
 
@@ -133,9 +133,9 @@ export function I18nRoutes({ children }: PropsWithChildren) {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the value of I18nContext, is the corresponding provider instated?')
 
-  const { defaultLocale, supportedLocales, changeLocaleStrategy } = context.state
+  const { defaultLocale, supportedLocales, localeChangeStrategy } = context.state
 
-  switch (changeLocaleStrategy) {
+  switch (localeChangeStrategy) {
     case 'path':
       return (
         <Routes>
@@ -168,18 +168,18 @@ export function useChangeLocale() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
-  if (context.state.changeLocaleStrategy === 'action') {
+  if (context.state.localeChangeStrategy === 'action') {
     return (locale: string) => context.dispatch?.({
       locale,
       type: '@i18n/CHANGE_LOCALE',
     })
   }
   else {
-    const { defaultLocale, changeLocaleStrategy, supportedLocales } = context.state
+    const { defaultLocale, localeChangeStrategy, supportedLocales } = context.state
     const { pathname, search, hash } = useLocation()
     const path = `${pathname}${search}${hash}`
     const navigate = useNavigate()
-    const resolveStrategy = changeLocaleStrategy === 'path' ? 'path' : 'query'
+    const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
 
     return (locale: string) => {
       const newPath = locale === defaultLocale

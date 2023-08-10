@@ -18,6 +18,16 @@ export const TITLE = 'React Isomorphic Starter Kit'
 export const DESCRIPTION = 'React isomorphic app starter kit'
 
 /**
+ * Value for the `theme-color` meta tag.
+ */
+export const THEME_COLOR = '#15141a'
+
+/**
+ * Value for the `color` attribute of the `mask-icon` meta tag.
+ */
+export const MASK_ICON_COLOR = '#000'
+
+/**
  * Base URL of the app.
  */
 export const BASE_URL = __BUILD_ARGS__.baseUrl
@@ -33,8 +43,8 @@ export const BASE_PATH = __BUILD_ARGS__.basePath
 export const DEFAULT_LOCALE = 'en'
 
 /**
- * Location in the URL to infer the current locale, available options are
- * "path" and "query".
+ * Location in the URL to infer the current locale, available options are "path"
+ * and "query".
  */
 export const LOCALE_CHANGE_STRATEGY = 'path'
 
