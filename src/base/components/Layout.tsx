@@ -15,7 +15,14 @@ type Props = {
   resolveAssetPath?: (path: string) => string
 }
 
-export default function Layout({ locals, helmetContext, inject = false, rootComponent, routerProps, resolveAssetPath = t => t }: Props) {
+export default function Layout({
+  helmetContext,
+  inject = false,
+  locals,
+  rootComponent,
+  routerProps,
+  resolveAssetPath = t => t,
+}: Props) {
   return (
     <html>
       <head>
