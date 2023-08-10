@@ -18,7 +18,6 @@ const Footer = lazy(() => import('./components/Footer'))
 const Header = lazy(() => import('./components/Header'))
 
 export default function App<T extends RouterType = 'browser'>({
-  helmetContext = {},
   locals = window.__LOCALS__ ?? {},
   routerProps,
   routerType,
@@ -27,7 +26,7 @@ export default function App<T extends RouterType = 'browser'>({
 
   return (
     <StrictMode>
-      <HelmetProvider context={helmetContext}>
+      <HelmetProvider>
         <LocalsProvider locals={locals}>
           <Router {...routerProps ?? {} as any} basename={BASE_PATH}>
             <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} changeLocaleStrategy={LOCALE_CHANGE_STRATEGY as any}>

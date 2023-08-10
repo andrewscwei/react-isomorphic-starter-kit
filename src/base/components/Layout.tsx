@@ -7,7 +7,7 @@ import { StaticRouterProps } from 'react-router-dom/server'
 import { VERSION } from '../../app.conf'
 
 type Props = {
-  helmetContext: Record<string, any>
+  helmetContext?: Record<string, any>
   inject?: boolean
   locals: Record<string, any>
   rootComponent?: RootComponentType<'static'>
@@ -23,16 +23,16 @@ export default function Layout({ locals, helmetContext, inject = false, rootComp
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
         <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover'/>
 
-        {helmetContext.helmet?.title.toComponent()}
-        {helmetContext.helmet?.priority.toComponent()}
-        {helmetContext.helmet?.meta.toComponent()}
+        {helmetContext?.helmet?.title.toComponent()}
+        {helmetContext?.helmet?.priority.toComponent()}
+        {helmetContext?.helmet?.meta.toComponent()}
 
         <meta name='twitter:card' content='summary_large_image'/>
         <meta name='mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
 
-        {helmetContext.helmet?.link.toComponent()}
+        {helmetContext?.helmet?.link.toComponent()}
 
         <link rel='icon' href='data:;base64,iVBORw0KGgo='/>
 
@@ -63,7 +63,6 @@ export default function Layout({ locals, helmetContext, inject = false, rootComp
       <body>
         <div id='root'>
           {inject && rootComponent && createElement(rootComponent, {
-            helmetContext,
             locals,
             routerProps,
             routerType: 'static',

@@ -8,6 +8,7 @@ import { RequestHandler } from 'express'
 import path from 'path'
 import React from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
+import { HelmetProvider } from 'react-helmet-async'
 import { matchPath } from 'react-router'
 import routesConf from '../../routes.conf'
 import Layout from '../components/Layout'
@@ -33,14 +34,16 @@ export default function renderLayout({ rootComponent }: Params): RequestHandler 
     const locals = { ...res.locals, prefetched }
 
     const layout = (
-      <Layout
-        helmetContext={helmetContext}
-        locals={locals}
-        inject={!isDev}
-        rootComponent={rootComponent}
-        routerProps={{ location: req.url }}
-        resolveAssetPath={assetPathResolver}
-      />
+      <HelmetProvider context={helmetContext}>
+        <Layout
+          helmetContext={helmetContext}
+          locals={locals}
+          inject={!isDev}
+          rootComponent={rootComponent}
+          routerProps={{ location: req.url }}
+          resolveAssetPath={assetPathResolver}
+        />
+      </HelmetProvider>
     )
 
     const { pipe } = renderToPipeableStream(layout, {
