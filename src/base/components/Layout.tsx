@@ -58,7 +58,7 @@ export default function Layout({
         {inject && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
         {inject && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
 
-        {helmetContext.helmet?.script.toComponent()}
+        {helmetContext?.helmet?.script.toComponent()}
 
         <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
         <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__=${JSON.stringify(VERSION)};` }}/>
