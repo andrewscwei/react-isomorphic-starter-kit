@@ -26,8 +26,8 @@
   "configurations": [
     {
       "name": "Launch (Chrome)",
-      "type": "chrome",
       "request": "launch",
+      "type": "chrome",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}",
       "sourceMapPathOverrides": {
@@ -36,9 +36,9 @@
       }
     },
     {
-      "type": "firefox",
-      "request": "launch",
       "name": "Launch (Firefox)",
+      "request": "launch",
+      "type": "firefox",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}",
       "pathMappings": [
@@ -49,9 +49,9 @@
       ]
     },
     {
-      "type": "msedge",
-      "request": "launch",
       "name": "Launch (Edge)",
+      "request": "launch",
+      "type": "msedge",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
     },
