@@ -3,33 +3,34 @@
  */
 
 import React, { PropsWithChildren } from 'react'
-import { StaticRouterProps } from 'react-router-dom/server'
-import { BASE_URL, DEFAULT_LOCALE, APP_DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, APP_NAME, VERSION } from '../app.conf'
 import joinURL from '../../lib/utils/joinURL'
+import { APP_DESCRIPTION, APP_NAME, BASE_URL, DEFAULT_LOCALE, MASK_ICON_COLOR, THEME_COLOR, VERSION } from '../app.conf'
 
 type Props = PropsWithChildren<{
+  description?: string
   injectScripts?: boolean
   locale?: string
   locals?: Record<string, any>
-  metaTags?: MetaTags
-  routerProps?: StaticRouterProps
+  title?: string
+  url?: string
   resolveAssetPath?: (path: string) => string
 }>
 
 export default function Layout({
   children,
+  description,
   injectScripts = false,
   locale,
   locals = {},
-  metaTags,
-  routerProps,
+  title,
+  url,
   resolveAssetPath = t => t,
 }: Props) {
   const baseTitle = APP_NAME
-  const pageDescription = metaTags?.description ?? APP_DESCRIPTION
+  const pageDescription = description ?? APP_DESCRIPTION
   const pageLocale = locale ?? DEFAULT_LOCALE
-  const pageTitle = metaTags?.title ?? baseTitle
-  const pageUrl = joinURL(BASE_URL, routerProps?.location?.toString() ?? '')
+  const pageTitle = title ?? baseTitle
+  const pageUrl = url ?? BASE_URL
   const pageThemeColor = THEME_COLOR
   const pageMaskIconColor = MASK_ICON_COLOR ?? pageThemeColor
 

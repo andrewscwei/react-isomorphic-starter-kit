@@ -45,7 +45,7 @@ export const BASE_PATH = __BUILD_ARGS__.basePath
 /**
  * Default locale.
  */
-export const DEFAULT_LOCALE = 'en'
+export const DEFAULT_LOCALE = __BUILD_ARGS__.defaultLocale
 
 /**
  * Location in the URL to infer the current locale, available options are "path"

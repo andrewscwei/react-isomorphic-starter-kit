@@ -73,6 +73,11 @@ export const baseURL = process.env.BASE_URL || ''
 export const basePath = process.env.BASE_PATH || '/'
 
 /**
+ * Default locale.
+ */
+export const defaultLocale = process.env.DEFAULT_LOCALE || 'en'
+
+/**
  * File name of the generated asset manifest.
  */
 export const assetManifestFile = 'asset-manifest.json'

@@ -17,13 +17,10 @@ import './styles/theme.css'
 const Footer = lazy(() => import('./components/Footer'))
 const Header = lazy(() => import('./components/Header'))
 
-export default function App<T extends RouterType = 'browser'>({
+export default function App({
   locals = window.__LOCALS__ ?? {},
-  routerProps,
-  routerType,
-}: RootComponentProps<T>) {
-  const Router = routerType === 'static' ? StaticRouter : BrowserRouter
-
+  staticURL,
+}: RootComponentProps) {
   useThemeColor(THEME_COLOR)
 
   useFavicon({
@@ -38,10 +35,14 @@ export default function App<T extends RouterType = 'browser'>({
     },
   })
 
+  const renderRouter = (children: JSX.Element) => staticURL
+    ? <StaticRouter location={staticURL} basename={BASE_PATH}>{children}</StaticRouter>
+    : <BrowserRouter basename={BASE_PATH}>{children}</BrowserRouter>
+
   return (
     <StrictMode>
       <LocalsProvider locals={locals}>
-        <Router {...routerProps ?? {} as any} basename={BASE_PATH}>
+        {renderRouter(
           <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
             <Suspense>
               <Header/>
@@ -62,7 +63,7 @@ export default function App<T extends RouterType = 'browser'>({
               <Footer/>
             </Suspense>
           </I18nProvider>
-        </Router>
+        )}
       </LocalsProvider>
     </StrictMode>
   )

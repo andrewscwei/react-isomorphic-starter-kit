@@ -1,33 +1,37 @@
 import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
-import { BASE_PATH, BASE_URL, DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from '../../src/app.conf'
-import translations from '../../src/locales'
-import routesConf from '../../src/routes.conf'
 import { getLocalizedURLs } from '../i18n'
-import joinURL from '../utils/joinURL'
+import { joinURL } from '../utils'
+
+type Params = {
+  localeChangeStrategy: string
+  routes: RouteConfig[]
+  translations: Record<string, any>
+}
+
+const { basePath, baseURL, defaultLocale } = __BUILD_ARGS__
 
 /**
  * Sitemap generator.
  */
-export default function renderSitemap() {
+export default function renderSitemap({ localeChangeStrategy, routes, translations }: Params) {
   const router = Router()
-  const routes = routesConf
 
-  router.use(joinURL(BASE_PATH, '/sitemap.xml'), async (req, res, next) => {
+  router.use(joinURL(basePath, '/sitemap.xml'), async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     try {
       const supportedLocales = Object.keys(translations)
       const urls = routes.filter(config => config.path !== '*').reduce<string[]>((out, config) => [
         ...out,
-        ...LOCALE_CHANGE_STRATEGY === 'path' ? getLocalizedURLs(config.path, { defaultLocale: DEFAULT_LOCALE, supportedLocales }) : [config.path],
+        ...localeChangeStrategy === 'path' ? getLocalizedURLs(config.path, { defaultLocale, supportedLocales }) : [config.path],
       ], [])
 
       const builder = new XMLBuilder()
       const xml = builder.build({
         'urlset': {
           url: urls.map(t => ({
-            'loc': joinURL(BASE_URL, t),
+            'loc': joinURL(baseURL, t),
             'lastmod': new Date().toISOString(),
             'changefreq': 'daily',
             'priority': '0.7',
