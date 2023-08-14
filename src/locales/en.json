@@ -8,8 +8,8 @@
   "description": "This is an experimental React isomorphic app starter kit.",
   "not-found-title": "This page does not exist",
   "quote-title": "A quote from someone...",
-  "quote-text": "\"%{text}\"",
-  "quote-author": "~ %{author}",
+  "quote-text": "\"%(text)s\"",
+  "quote-author": "~ %(author)s",
   "en": "EN",
   "ja": "日"
 }

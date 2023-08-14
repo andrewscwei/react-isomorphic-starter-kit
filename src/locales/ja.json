@@ -8,8 +8,8 @@
   "description": "実験的なReactユニバーサル・アイソモーフィックアプリケーションのスターターキット。",
   "not-found-title": "ページが表示できません",
   "quote-title": "誰からの引用…",
-  "quote-text": "\"%{text}\"",
-  "quote-author": "~ %{author}",
+  "quote-text": "\"%(text)s\"",
+  "quote-author": "~ %(author)s",
   "en": "EN",
   "ja": "日"
 }

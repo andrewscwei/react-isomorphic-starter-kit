@@ -1,16 +1,18 @@
 import React from 'react'
+import { useMetaTags } from '../../../../lib/dom'
+import { useLocalizedString } from '../../../../lib/i18n'
 import { VERSION } from '../../../app.conf'
-import Head from '../../../base/components/Head'
-import { useLocalizedString } from '../../../base/providers/I18nProvider'
 import ReactLogo from '../../components/ReactLogo'
 import style from './index.module.css'
 
 export default function Home() {
   const ltxt = useLocalizedString()
 
+  useMetaTags({ title: ltxt('window-title-home') })
+
   return (
     <>
-      <Head title={ltxt('window-title-home')}/>
+      {/* <Head title={ltxt('window-title-home')}/> */}
       <main>
         <div className={style.content}>
           <ReactLogo className={style.logo}/>

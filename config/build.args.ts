@@ -12,6 +12,16 @@ dotenv.config()
 const packageVersion = packageInfo.version
 
 /**
+ * Specifies whether debug is enabled.
+ */
+export const debugEnabled = process.env.DEBUG_ENABLED === 'true' || process.env.NODE_ENV === 'development'
+
+/**
+ * Enabled debug channels in the client.
+ */
+export const debugChannels = process.env.DEBUG_CHANNELS?.split(',') || ['app']
+
+/**
  * Version number.
  */
 export const version = packageVersion
@@ -53,9 +63,9 @@ export const skipOptimizations = process.env.NODE_ENV === 'development' || proce
 export const publicPath = process.env.PUBLIC_PATH || '/'
 
 /**
- * Base URL of the app.
+ * Base URL of the app (no trailing `/`).
  */
-export const baseUrl = process.env.BASE_URL || ''
+export const baseURL = process.env.BASE_URL || ''
 
 /**
  * Base path of the router (i.e. the `basename` property).

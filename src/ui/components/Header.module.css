@@ -14,11 +14,13 @@
   cursor: pointer;
   transition: all .2s ease-out;
 
-  &:hover {
-    opacity: .6;
-  }
-
   &:not(:last-child) {
     margin-right: 2rem;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: .6;
+    }
   }
 }

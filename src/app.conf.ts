@@ -10,12 +10,12 @@ export const VERSION = `v${__BUILD_ARGS__.version}+build.${__BUILD_ARGS__.buildN
 /**
  * Fallback window title.
  */
-export const TITLE = 'React Isomorphic Starter Kit'
+export const APP_NAME = 'React Isomorphic Starter Kit'
 
 /**
  * Fallback app description.
  */
-export const DESCRIPTION = 'React isomorphic app starter kit'
+export const APP_DESCRIPTION = 'React isomorphic app starter kit'
 
 /**
  * Value for the `theme-color` meta tag.
@@ -28,9 +28,14 @@ export const THEME_COLOR = '#15141a'
 export const MASK_ICON_COLOR = '#000'
 
 /**
+ * Public path for static assets (with trailing slash if needed).
+ */
+export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
+
+/**
  * Base URL of the app.
  */
-export const BASE_URL = __BUILD_ARGS__.baseUrl
+export const BASE_URL = __BUILD_ARGS__.baseURL
 
 /**
  * Base path of the router (i.e. the `basename` property).
@@ -57,13 +62,3 @@ export const PORT = Number(typeof process !== 'undefined' && process.env.PORT ||
  * Specifies whether the creation of the HTTP server should be skipped.
  */
 export const SKIP_HTTP = typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false
-
-/**
- * Specifies whether debug is enabled.
- */
-export const DEBUG_ENABLED = process.env.NODE_ENV === 'development'
-
-/**
- * Enabled debug channels in the client.
- */
-export const DEBUG_CHANNELS = ['app']
