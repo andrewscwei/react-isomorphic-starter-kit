@@ -11,18 +11,15 @@ export default function Home() {
   useMetaTags({ title: ltxt('window-title-home') })
 
   return (
-    <>
-      {/* <Head title={ltxt('window-title-home')}/> */}
-      <main>
-        <div className={style.content}>
-          <ReactLogo className={style.logo}/>
-          <section>
-            <h1 className={style.title}>{ltxt('hello')}</h1>
-            <code className={style.version}>{VERSION}</code>
-            <span>{ltxt('description') }</span>
-          </section>
-        </div>
-      </main>
-    </>
+    <main>
+      <div className={style.content}>
+        <ReactLogo className={style.logo}/>
+        <section>
+          <h1 className={style.title}>{ltxt('hello')}</h1>
+          <code className={style.version}>{VERSION}</code>
+          <span>{ltxt('description') }</span>
+        </section>
+      </div>
+    </main>
   )
 }

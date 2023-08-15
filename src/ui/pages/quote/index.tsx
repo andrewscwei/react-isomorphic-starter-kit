@@ -21,14 +21,11 @@ export default function About() {
   }, [])
 
   return (
-    <>
-      {/* <Head title={ltxt('window-title-quote')}/> */}
-      <main>
-        {quote && <span className={style.title}>{ltxt('quote-title')}</span>}
-        {quote?.text && <span className={style.quote}>{ltxt('quote-text', { text: quote.text })}</span>}
-        {quote?.author && <span className={style.author}>{ltxt('quote-author', { author: quote.author })}</span>}
-      </main>
-    </>
+    <main>
+      {quote && <span className={style.title}>{ltxt('quote-title')}</span>}
+      {quote?.text && <span className={style.quote}>{ltxt('quote-text', { text: quote.text })}</span>}
+      {quote?.author && <span className={style.author}>{ltxt('quote-author', { author: quote.author })}</span>}
+    </main>
   )
 }
 
