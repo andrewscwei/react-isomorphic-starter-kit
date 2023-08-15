@@ -1,15 +1,26 @@
-import constructURL, { URLParts } from './constructURL'
+import constructURL from './constructURL'
 import getLocaleInfoFromURL from './getLocaleInfoFromURL'
 import getUnlocalizedURL from './getUnlocalizedURL'
 import parseURL from './parseURL'
-import resolveLocale, { ResolveLocaleOptions } from './resolveLocale'
 
-export type ResolveLocalizedURLOptions = ResolveLocaleOptions & {
+type Options = {
+  /**
+   * The locale to fallback to if one cannot be inferred from the provided URL.
+   */
+  defaultLocale?: string
+
   /**
    * Specifies where in the URL the locale should be matched. If `resolver` is
    * provided, this option is ignored.
    */
-  resolveStrategy?: 'auto' | 'domain' | 'path' | 'query'
+  resolveStrategy?: 'auto' | 'domain' | 'path' | 'query' | 'custom'
+
+  /**
+   * An array of supported locales to validate the inferred locale against. If
+   * it doesn't exist in the list of supported locales, the default locale (if
+   * specified) or `undefined` will be returned.
+   */
+  supportedLocales?: string[]
 
   /**
    * Custom resolver function.
@@ -21,7 +32,7 @@ export type ResolveLocalizedURLOptions = ResolveLocaleOptions & {
    *
    * @returns The resolved locale.
    */
-  resolver?: (urlParts: URLParts) => string | undefined
+  resolver?: (urlParts: ReturnType<typeof parseURL>) => string | undefined
 }
 
 /**
@@ -29,11 +40,16 @@ export type ResolveLocalizedURLOptions = ResolveLocaleOptions & {
  *
  * @param url - The URL.
  * @param locale - The target locale.
- * @param options - See {@link ResolveLocalizedURLOptions}.
+ * @param options - See {@link Options}.
  *
  * @returns The localized URL.
  */
-export default function getLocalizedURL(url: string, locale: string, { defaultLocale, resolveStrategy = 'auto', resolver, supportedLocales }: ResolveLocalizedURLOptions = {}): string {
+export default function getLocalizedURL(url: string, locale: string, {
+  defaultLocale,
+  resolver,
+  resolveStrategy = 'auto',
+  supportedLocales,
+}: Options = {}): string {
   const currLocaleInfo = getLocaleInfoFromURL(url, { resolveStrategy, resolver, supportedLocales })
   const parts = parseURL(url)
   const targetLocale = resolveLocale(locale, { defaultLocale, supportedLocales })
@@ -87,4 +103,15 @@ export default function getLocalizedURL(url: string, locale: string, { defaultLo
         return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t)].join('/') : undefined })
     }
   }
+}
+
+function resolveLocale(locale?: string, { defaultLocale, supportedLocales }: Pick<Options, 'defaultLocale' | 'supportedLocales'> = {}): string | undefined {
+  if (supportedLocales) {
+    if (locale && supportedLocales.indexOf(locale) >= 0) return locale
+    if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) return defaultLocale
+
+    return undefined
+  }
+
+  return locale ?? defaultLocale
 }

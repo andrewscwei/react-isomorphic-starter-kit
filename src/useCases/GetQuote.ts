@@ -1,6 +1,6 @@
 import FetchUseCase from './FetchUseCase'
 
-type Quote = {
+export type Quote = {
   author: string
   text: string
 }

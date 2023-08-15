@@ -22,6 +22,7 @@ export default function useChangeLocale() {
   else {
     const { defaultLocale, localeChangeStrategy, supportedLocales } = context.state
     const { pathname, search, hash } = useLocation()
+
     const path = `${pathname}${search}${hash}`
     const navigate = useNavigate()
     const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'

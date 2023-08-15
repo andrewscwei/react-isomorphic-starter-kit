@@ -3,32 +3,22 @@
  */
 
 import React, { PropsWithChildren } from 'react'
-import joinURL from '../../lib/utils/joinURL'
+import { joinURL } from '../../lib/utils'
 import { APP_DESCRIPTION, APP_NAME, BASE_URL, DEFAULT_LOCALE, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf'
 
-type Props = PropsWithChildren<{
-  description?: string
-  injectScripts?: boolean
-  locale?: string
-  title?: string
-  url?: string
-  resolveAssetPath?: (path: string) => string
-}>
+type Props = PropsWithChildren<LayoutComponentProps>
 
 export default function Layout({
   children,
-  description,
   injectScripts = false,
-  locale,
-  title,
-  url,
+  metadata = {},
   resolveAssetPath = t => t,
 }: Props) {
   const baseTitle = APP_NAME
-  const pageDescription = description ?? APP_DESCRIPTION
-  const pageLocale = locale ?? DEFAULT_LOCALE
-  const pageTitle = title ?? baseTitle
-  const pageUrl = url ?? BASE_URL
+  const pageDescription = metadata.description ?? APP_DESCRIPTION
+  const pageLocale = metadata.locale ?? DEFAULT_LOCALE
+  const pageTitle = metadata.title ?? baseTitle
+  const pageUrl = metadata.url ?? BASE_URL
   const pageThemeColor = THEME_COLOR
   const pageMaskIconColor = MASK_ICON_COLOR ?? pageThemeColor
 

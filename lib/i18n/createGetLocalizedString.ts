@@ -1,12 +1,14 @@
 import { sprintf } from 'sprintf-js'
 
-type Params = {
+type Options = {
   translations: Record<string, any>
 }
 
-type TranslateFunction = (keyPath: string, ...args: any[]) => string
+type Output = (keyPath: string, ...args: any[]) => string
 
-export default function createTranslateFunction(locale: string, { translations }: Params): TranslateFunction {
+export default function createGetLocalizedString(locale: string, {
+  translations,
+}: Options): Output {
   const dict = translations[locale]
 
   return (keyPath: string, ...args) => {

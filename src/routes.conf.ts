@@ -2,18 +2,25 @@
  * @file Client router config.
  */
 
-import { lazy } from 'react'
+import { RouteObject } from 'react-router'
+import generateLocalizedRoutes from '../lib/i18n/generateLocalizedRoutes'
+import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from './app.conf'
+import translations from './locales'
 
-const config: RouteConfig[] = [{
-  component: lazy(() => import('./ui/pages/home')),
+const routes: RouteObject[] = [{
   path: '/',
+  index: true,
+  lazy: () => import('./ui/pages/home'),
 }, {
-  component: lazy(() => import('./ui/pages/quote')),
   path: '/quote',
-  prefetch: async () => (await import('./ui/pages/quote')).prefetch(),
+  lazy: () => import('./ui/pages/quote'),
 }, {
-  component: lazy(() => import('./ui/pages/notFound')),
   path: '*',
+  lazy: () => import('./ui/pages/notFound'),
 }]
 
-export default config
+export default generateLocalizedRoutes(routes, {
+  defaultLocale: DEFAULT_LOCALE,
+  localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
+  supportedLocales: Object.keys(translations),
+})

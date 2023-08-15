@@ -13,7 +13,9 @@ type Options = {
   manifestFile?: string
 }
 
-export default function createResolveAssetPathFunction({ publicPath = '/', manifestFile }: Options = {}) {
+type ResolveAssetPath = (path: string) => string
+
+export default function createResolveAssetPath({ publicPath = '/', manifestFile }: Options = {}): ResolveAssetPath {
   return (pathToResolve: string): string => {
     let out = pathToResolve
 

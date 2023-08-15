@@ -1,17 +1,47 @@
 import constructURL from './constructURL'
 import getLocaleInfoFromURL from './getLocaleInfoFromURL'
-import { ResolveLocalizedURLOptions } from './getLocalizedURL'
 import parseURL from './parseURL'
+
+type Options = {
+  /**
+   * Specifies where in the URL the locale should be matched. If `resolver` is
+   * provided, this option is ignored.
+   */
+  resolveStrategy?: 'auto' | 'domain' | 'path' | 'query' | 'custom'
+
+  /**
+   * An array of supported locales to validate the inferred locale against. If
+   * it doesn't exist in the list of supported locales, the default locale (if
+   * specified) or `undefined` will be returned.
+   */
+  supportedLocales?: string[]
+
+  /**
+   * Custom resolver function.
+   *
+   * @param protocol - The matched protocol of the provided url, if available.
+   * @param host - The matched host of the provided url, if available.
+   * @param port - The matched port of the provided url, if available.
+   * @param path - The matched path of the provided url, if available.
+   *
+   * @returns The resolved locale.
+   */
+  resolver?: (urlParts: ReturnType<typeof parseURL>) => string | undefined
+}
 
 /**
  * Returns the unlocalized version of a URL.
  *
  * @param url - The URL.
- * @param options - See {@link ResolveLocalizedURLOptions}.
+ * @param options - See {@link Options}.
  *
  * @returns The unlocalized URL.
  */
-export default function getUnlocalizedURL(url: string, { resolveStrategy = 'auto', resolver, supportedLocales }: ResolveLocalizedURLOptions = {}): string {
+export default function getUnlocalizedURL(url: string, {
+  resolver,
+  resolveStrategy = 'auto',
+  supportedLocales,
+}: Options = {}): string {
   const currLocaleInfo = getLocaleInfoFromURL(url, { resolveStrategy, resolver, supportedLocales })
   const parts = parseURL(url)
 
@@ -19,7 +49,7 @@ export default function getUnlocalizedURL(url: string, { resolveStrategy = 'auto
 
   switch (currLocaleInfo.resolveStrategy) {
     case 'domain':
-      return constructURL({ ...parts, host: parts.host ? parts.host.split('.').filter(t => t).slice(1).join('.') : undefined })
+      return constructURL({ ...parts, host: parts.host ? parts.host.split('.').filter(t => t).slice(1).join('.') || '/' : undefined })
     case 'query': {
       if (!parts.query) return url
 

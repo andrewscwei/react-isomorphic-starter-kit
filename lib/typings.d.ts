@@ -44,15 +44,16 @@ type RouteConfig = {
 }
 
 type RootComponentProps = {
-  locals?: Record<string, any>
-  staticURL?: string
+  routerProvider?: JSX.Element
 }
 
-type LayoutComponentProps = PropsWithChildren<{
-  description?: string
+type LayoutComponentProps = {
   injectScripts?: boolean
-  locale?: string
-  title?: string
-  url?: string
+  metadata?: {
+    description?: string
+    locale?: string
+    title?: string
+    url?: string
+  }
   resolveAssetPath?: (path: string) => string
-}>
+}

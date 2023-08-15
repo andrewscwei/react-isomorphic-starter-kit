@@ -1,27 +1,19 @@
-export type URLParts = {
-  base?: string
-  hash?: string
-  host?: string
-  path?: string
-  port?: string
-  protocol?: string
-  query?: string
-}
+import parseURL from './parseURL'
 
 /**
- * Constructs a URL from {@link URLParts}.
+ * Constructs a URL from {@link Params}.
  *
- * @param parts - See {@link URLParts}.
+ * @param urlParts - See {@link Params}.
  *
  * @returns The constructed URL.
  */
-export default function constructURL(parts: URLParts): string {
-  const protocol = parts.protocol?.concat('://') ?? ''
-  const host = parts.host?.concat('/') ?? ''
-  const port = parts.port ? `:${parts.port}` : ''
-  const path = parts.path ? `/${parts.path.split('/').filter(t => t).join('/')}` : ''
-  const query = parts.query ? `?${parts.query}` : ''
-  const hash = parts.hash ? `#${parts.hash}` : ''
+export default function constructURL(urlParts: ReturnType<typeof parseURL>): string {
+  const protocol = urlParts.protocol?.concat('://') ?? ''
+  const host = urlParts.host?.concat('/') ?? ''
+  const port = urlParts.port !== undefined ? `:${urlParts.port}` : ''
+  const path = urlParts.path !== undefined ? `/${urlParts.path.split('/').filter(t => t).join('/')}` : ''
+  const query = urlParts.query !== undefined ? `?${urlParts.query}` : ''
+  const hash = urlParts.hash !== undefined ? `#${urlParts.hash}` : ''
 
   return `${protocol}${host}${port}${path}${query}${hash}`
 }

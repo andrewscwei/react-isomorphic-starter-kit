@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
+import { RouteObject } from 'react-router'
 import { getLocalizedURLs } from '../i18n'
 import { joinURL } from '../utils'
 
 type Params = {
   localeChangeStrategy: string
-  routes: RouteConfig[]
+  routes: RouteObject[]
   translations: Record<string, any>
 }
 
@@ -22,9 +23,9 @@ export default function renderSitemap({ localeChangeStrategy, routes, translatio
 
     try {
       const supportedLocales = Object.keys(translations)
-      const urls = routes.filter(config => config.path !== '*').reduce<string[]>((out, config) => [
+      const urls = routes.filter(({ path }) => path !== '*').reduce<string[]>((out, { path }) => [
         ...out,
-        ...localeChangeStrategy === 'path' ? getLocalizedURLs(config.path, { defaultLocale, supportedLocales }) : [config.path],
+        ...path ? (localeChangeStrategy === 'path' ? getLocalizedURLs(path, { defaultLocale, supportedLocales }) : [path]) : [],
       ], [])
 
       const builder = new XMLBuilder()

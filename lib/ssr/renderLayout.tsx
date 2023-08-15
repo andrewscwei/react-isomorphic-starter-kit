@@ -6,18 +6,20 @@
 
 import { RequestHandler } from 'express'
 import path from 'path'
-import { ComponentType, createElement } from 'react'
+import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { matchPath } from 'react-router'
-import { getLocaleInfoFromURL, getUnlocalizedURL } from '../i18n'
+import { Outlet, RouteObject } from 'react-router'
+import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from '../../src/app.conf'
+import { I18nProvider, getLocaleInfoFromURL } from '../i18n'
 import { joinURL } from '../utils'
-import createResolveAssetPathFunction from './createResolveAssetPathFunction'
+import createResolveAssetPathFunction from './createResolveAssetPath'
+import createStaticRouterProvider from './createStaticRouterProvider'
 
 type Params = {
   layoutComponent: ComponentType<LayoutComponentProps>
   localeChangeStrategy: string
   rootComponent: ComponentType<RootComponentProps>
-  routes: RouteConfig[]
+  routes: RouteObject[]
   translations: Record<string, any>
 }
 
@@ -36,25 +38,25 @@ export default function renderLayout({
   })
 
   return async (req, res) => {
+    const Container = () => (
+      <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
+        <Outlet/>
+      </I18nProvider>
+    )
+
     const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
     const supportedLocales = Object.keys(translations)
     const localeInfo = getLocaleInfoFromURL(req.url, { defaultLocale, resolveStrategy, supportedLocales })
-    const locale = localeInfo?.locale ?? defaultLocale
-    const config = routes.find(t => matchPath(t.path, getUnlocalizedURL(req.path, { defaultLocale, resolveStrategy, supportedLocales })))
-    const prefetched = await config?.prefetch?.(req.url, locale)
-    const locals = { ...res.locals, prefetched }
-
-    const root = createElement(rootComponent, {
-      locals,
-      staticURL: req.url,
-    })
+    const routerProvider = await createStaticRouterProvider(req, { container: Container, routes })
 
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,
-      locale,
-      url: joinURL(baseURL, req.url),
+      metadata: {
+        locale: localeInfo?.locale ?? defaultLocale,
+        url: joinURL(baseURL, req.url),
+      },
       resolveAssetPath,
-    }, !isDev && root)
+    }, !isDev && createElement(rootComponent, { routerProvider }))
 
     const { pipe } = renderToPipeableStream(layout, {
       onShellReady() {
