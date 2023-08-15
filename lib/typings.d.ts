@@ -32,7 +32,6 @@ interface Error {
 }
 
 interface Window {
-  __LOCALS__: Record<string, any>
   __VERSION__: string
 }
 

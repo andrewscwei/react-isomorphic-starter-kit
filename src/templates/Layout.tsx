@@ -4,13 +4,12 @@
 
 import React, { PropsWithChildren } from 'react'
 import joinURL from '../../lib/utils/joinURL'
-import { APP_DESCRIPTION, APP_NAME, BASE_URL, DEFAULT_LOCALE, MASK_ICON_COLOR, THEME_COLOR, VERSION } from '../app.conf'
+import { APP_DESCRIPTION, APP_NAME, BASE_URL, DEFAULT_LOCALE, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf'
 
 type Props = PropsWithChildren<{
   description?: string
   injectScripts?: boolean
   locale?: string
-  locals?: Record<string, any>
   title?: string
   url?: string
   resolveAssetPath?: (path: string) => string
@@ -21,7 +20,6 @@ export default function Layout({
   description,
   injectScripts = false,
   locale,
-  locals = {},
   title,
   url,
   resolveAssetPath = t => t,
@@ -84,9 +82,6 @@ export default function Layout({
 
         {injectScripts && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
         {injectScripts && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
-
-        <script dangerouslySetInnerHTML={{ __html: `window.__LOCALS__=${JSON.stringify(locals)};` }}/>
-        <script dangerouslySetInnerHTML={{ __html: `window.__VERSION__=${JSON.stringify(VERSION)};` }}/>
 
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>

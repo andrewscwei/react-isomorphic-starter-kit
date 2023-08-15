@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useMetaTags } from '../../../../lib/dom'
+import { useLocals } from '../../../../lib/dom/LocalsProvider'
 import { useLocalizedString } from '../../../../lib/i18n'
 import { useInteractor } from '../../../../lib/interactors'
-import { useLocals } from '../../../../lib/dom/LocalsProvider'
 import GetQuote from '../../../useCases/GetQuote'
 import style from './index.module.css'
 
@@ -13,14 +13,6 @@ export default function About() {
   const { run: getQuote, value: quote } = useInteractor(GetQuote, { defaultValue: locals.prefetched })
 
   useMetaTags({ title: ltxt('window-title-quote') })
-
-  useEffect(() => {
-    document.title = 'asdf'
-
-    const descriptionMeta = document.querySelector('meta[name="description"]')
-
-    if (descriptionMeta) descriptionMeta.setAttribute('content', 'asdf')
-  }, [])
 
   useEffect(() => {
     // Uncomment to always use prefetched quote.

@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
-import { joinURL } from '../lib/utils'
+import joinURL from '../lib/utils/joinURL'
 
 const publicDir = path.join(__dirname, '../build')
 const { default: app } = require(publicDir)
@@ -23,9 +23,9 @@ async function generateSitemap() {
   }
 }
 
-async function generateRobotsTXT() {
+async function generateRobots() {
   try {
-    const { text: str } = await request(app).get(joinURL(buildArgs.baseURL, '/robots.txt'))
+    const { text: str } = await request(app).get(joinURL(buildArgs.basePath, '/robots.txt'))
     fs.writeFileSync(path.join(publicDir, 'robots.txt'), str)
 
     console.log('Generating robots.txt... OK')
@@ -77,7 +77,7 @@ async function cleanup() {
 
 async function main() {
   await generateSitemap()
-  await generateRobotsTXT()
+  await generateRobots()
   await generatePages()
   await generate404()
   await cleanup()

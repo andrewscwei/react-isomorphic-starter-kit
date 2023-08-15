@@ -18,7 +18,7 @@ const Footer = lazy(() => import('./components/Footer'))
 const Header = lazy(() => import('./components/Header'))
 
 export default function App({
-  locals = window.__LOCALS__ ?? {},
+  locals,
   staticURL,
 }: RootComponentProps) {
   useThemeColor(THEME_COLOR)

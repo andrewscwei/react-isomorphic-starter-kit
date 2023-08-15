@@ -9,7 +9,7 @@ import path from 'path'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { matchPath } from 'react-router'
-import { createTranslationResolver, getLocaleInfoFromURL, getUnlocalizedURL } from '../i18n'
+import { getLocaleInfoFromURL, getUnlocalizedURL } from '../i18n'
 import { joinURL } from '../utils'
 import createResolveAssetPathFunction from './createResolveAssetPathFunction'
 
@@ -40,28 +40,21 @@ export default function renderLayout({
     const supportedLocales = Object.keys(translations)
     const localeInfo = getLocaleInfoFromURL(req.url, { defaultLocale, resolveStrategy, supportedLocales })
     const locale = localeInfo?.locale ?? defaultLocale
-    const config = routes.find(t => matchPath(t.path, getUnlocalizedURL(req.path, { defaultLocale, resolveStrategy, supportedLocales})))
+    const config = routes.find(t => matchPath(t.path, getUnlocalizedURL(req.path, { defaultLocale, resolveStrategy, supportedLocales })))
     const prefetched = await config?.prefetch?.(req.url, locale)
-    const metaTags = config?.metaTags?.(prefetched, createTranslationResolver(locale, { translations }))
     const locals = { ...res.locals, prefetched }
-    const routerProps = { location: req.url }
 
-    const bar = config?.component as any
-    bar.foo?.()
-
-    const app = createElement(rootComponent, {
+    const root = createElement(rootComponent, {
       locals,
-      routerProps,
-      routerType: 'static',
+      staticURL: req.url,
     })
 
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,
       locale,
-      locals,
       url: joinURL(baseURL, req.url),
       resolveAssetPath,
-    }, !isDev && app)
+    }, !isDev && root)
 
     const { pipe } = renderToPipeableStream(layout, {
       onShellReady() {
