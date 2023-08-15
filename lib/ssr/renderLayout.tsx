@@ -6,7 +6,7 @@
 
 import { RequestHandler } from 'express'
 import path from 'path'
-import { createElement } from 'react'
+import { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { matchPath } from 'react-router'
 import { getLocaleInfoFromURL, getUnlocalizedURL } from '../i18n'
@@ -14,9 +14,9 @@ import { joinURL } from '../utils'
 import createResolveAssetPathFunction from './createResolveAssetPathFunction'
 
 type Params = {
-  layoutComponent: LayoutComponentType
+  layoutComponent: ComponentType<LayoutComponentProps>
   localeChangeStrategy: string
-  rootComponent: RootComponentType<'static'>
+  rootComponent: ComponentType<RootComponentProps>
   routes: RouteConfig[]
   translations: Record<string, any>
 }

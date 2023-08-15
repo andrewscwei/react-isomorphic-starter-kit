@@ -43,21 +43,16 @@ type RouteConfig = {
   prefetch?: (url: string, locale: string) => Promise<any>
 }
 
-type RouterType = 'browser' | 'static'
-
 type RootComponentProps = {
   locals?: Record<string, any>
   staticURL?: string
 }
 
-type LayoutComponentType = React.ComponentType<PropsWithChildren<{
+type LayoutComponentProps = PropsWithChildren<{
   description?: string
   injectScripts?: boolean
   locale?: string
-  locals?: Record<string, any>
   title?: string
   url?: string
   resolveAssetPath?: (path: string) => string
-}>>
-
-type RootComponentType<T> = React.ComponentType<RootComponentProps<T>>
+}>
