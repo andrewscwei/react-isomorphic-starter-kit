@@ -1,13 +1,13 @@
-import parseURL from './parseURL'
+import { URLParts } from '../types'
 
 /**
- * Constructs a URL from {@link Params}.
+ * Constructs a URL from {@link URLParts}.
  *
- * @param urlParts - See {@link Params}.
+ * @param urlParts - See {@link URLParts}.
  *
  * @returns The constructed URL.
  */
-export default function constructURL(urlParts: ReturnType<typeof parseURL>): string {
+export default function constructURL(urlParts: URLParts): string {
   const protocol = urlParts.protocol?.concat('://') ?? ''
   const host = urlParts.host?.concat('/') ?? ''
   const port = urlParts.port !== undefined ? `:${urlParts.port}` : ''

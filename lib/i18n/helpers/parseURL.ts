@@ -1,12 +1,4 @@
-type Output = {
-  base?: string
-  hash?: string
-  host?: string
-  path?: string
-  port?: string
-  protocol?: string
-  query?: string
-}
+import { URLParts } from '../types'
 
 /**
  * Parses a URL into parts.
@@ -15,7 +7,7 @@ type Output = {
  *
  * @returns The parsed result.
  */
-export default function parseURL(url: string): Output {
+export default function parseURL(url: string): URLParts {
   const regex = /((?:(.*):\/\/)?((?:[A-Za-z0-9-]+\.?)+)?(?::([0-9]+))?)([^?#]*)(?:\?([^#]*))?(?:#(.*))?/
   const parts = url.match(regex)
 
