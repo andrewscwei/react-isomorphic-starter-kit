@@ -13,7 +13,7 @@ const { default: app } = require(publicDir)
 
 async function generateSitemap() {
   try {
-    const { text: str } = await request(app).get(joinURL(basePath, '/sitemap.xml'))
+    const { text: str } = await request(app).get('/sitemap.xml')
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
 
     console.log('Generating sitemap... OK')
@@ -26,7 +26,7 @@ async function generateSitemap() {
 
 async function generateRobots() {
   try {
-    const { text: str } = await request(app).get(joinURL(basePath, '/robots.txt'))
+    const { text: str } = await request(app).get('/robots.txt')
     fs.writeFileSync(path.join(publicDir, 'robots.txt'), str)
 
     console.log('Generating robots.txt... OK')
