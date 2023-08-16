@@ -6,7 +6,7 @@ import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
 
-const { assetManifestFile, baseURL } = buildArgs
+const { assetManifestFile, baseURL, publicPath, basePath } = buildArgs
 const publicDir = path.join(__dirname, '../build')
 const { default: app } = require(publicDir)
 
@@ -37,7 +37,7 @@ async function generateRobots() {
 }
 
 async function generatePages() {
-  console.log('FOO', baseURL)
+  console.log('FOO', baseURL, publicPath, basePath)
 
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
