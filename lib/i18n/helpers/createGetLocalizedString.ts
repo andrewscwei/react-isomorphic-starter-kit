@@ -1,7 +1,8 @@
 import { sprintf } from 'sprintf-js'
+import { Translations } from '../types'
 
 type Options = {
-  translations: Record<string, any>
+  translations: Translations
 }
 
 type Output = (keyPath: string, ...args: any[]) => string
@@ -20,7 +21,7 @@ export default function createGetLocalizedString(locale: string, {
 
     const keys = keyPath.split('.')
 
-    let str = dict
+    let str: any = dict
 
     try {
       while (keys.length > 0) {

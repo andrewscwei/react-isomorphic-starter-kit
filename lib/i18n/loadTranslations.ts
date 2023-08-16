@@ -1,3 +1,5 @@
+import { Translations } from './types'
+
 /**
  * Loads translations from a directory via Webpack `RequireContext`.
  *
@@ -5,7 +7,7 @@
  *
  * @returns The translations dictionary.
  */
-export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Record<string, any> {
+export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
   const translations: Record<string, any> = {}
 
   try {
