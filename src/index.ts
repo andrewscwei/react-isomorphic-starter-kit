@@ -10,7 +10,7 @@ import morgan from 'morgan'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
 import { LOCALE_CHANGE_STRATEGY, PORT, SKIP_HTTP } from './app.conf'
-import translations from './locales'
+import { translations } from './locales'
 import handle404 from './middleware/handle404'
 import handle500 from './middleware/handle500'
 import routesConf from './routes.conf'
@@ -29,11 +29,7 @@ if (process.env.NODE_ENV === 'development') app.use(require('../lib/dev').hmr())
 if (process.env.NODE_ENV !== 'development') app.use(serveLocalStatic())
 
 app.use(renderRobots())
-app.use(renderSitemap({
-  localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
-  routes: routesConf,
-  translations,
-}))
+app.use(renderSitemap({ routes: routesConf }))
 app.use(renderLayout({
   layoutComponent: Layout,
   localeChangeStrategy: LOCALE_CHANGE_STRATEGY,

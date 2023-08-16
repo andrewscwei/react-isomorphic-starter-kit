@@ -8,9 +8,10 @@ import { RequestHandler } from 'express'
 import path from 'path'
 import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { Outlet, RouteObject } from 'react-router'
+import { Outlet, RouteObject, matchRoutes } from 'react-router'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
 import { I18nProvider, getLocaleInfoFromURL } from '../i18n'
+import createGetLocalizedString from '../i18n/helpers/createGetLocalizedString'
 import { joinURL } from '../utils'
 import createResolveAssetPath from './helpers/createResolveAssetPath'
 import createStaticHandlerAndContext from './helpers/createStaticHandlerAndContext'
@@ -49,6 +50,8 @@ export default function renderLayout({
     const supportedLocales = Object.keys(translations)
     const localeInfo = getLocaleInfoFromURL(req.url, { defaultLocale, resolveStrategy, supportedLocales })
     const { handler, context } = await createStaticHandlerAndContext(req, { container: Container, routes })
+    const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
+    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(localeInfo?.locale ?? defaultLocale, { translations }))
 
     if (context instanceof Response) {
       return res.redirect(context.status, context.headers.get('Location') ?? '')
@@ -61,6 +64,7 @@ export default function renderLayout({
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,
       metadata: {
+        ...metadata ?? {},
         locale: localeInfo?.locale ?? defaultLocale,
         url: joinURL(baseURL, req.url),
       },

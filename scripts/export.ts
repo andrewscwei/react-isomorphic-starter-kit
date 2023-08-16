@@ -7,12 +7,13 @@ import request from 'supertest'
 import * as buildArgs from '../config/build.args'
 import joinURL from '../lib/utils/joinURL'
 
+const { assetManifestFile, basePath, baseURL } = buildArgs
 const publicDir = path.join(__dirname, '../build')
 const { default: app } = require(publicDir)
 
 async function generateSitemap() {
   try {
-    const { text: str } = await request(app).get(joinURL(buildArgs.basePath, '/sitemap.xml'))
+    const { text: str } = await request(app).get(joinURL(basePath, '/sitemap.xml'))
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
 
     console.log('Generating sitemap... OK')
@@ -25,7 +26,7 @@ async function generateSitemap() {
 
 async function generateRobots() {
   try {
-    const { text: str } = await request(app).get(joinURL(buildArgs.basePath, '/robots.txt'))
+    const { text: str } = await request(app).get(joinURL(basePath, '/robots.txt'))
     fs.writeFileSync(path.join(publicDir, 'robots.txt'), str)
 
     console.log('Generating robots.txt... OK')
@@ -40,11 +41,11 @@ async function generatePages() {
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(buildArgs.baseURL, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(baseURL, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(joinURL(buildArgs.basePath, url))
+      const { text: html } = await request(app).get(joinURL(basePath, url))
       const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -59,7 +60,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get(joinURL(buildArgs.basePath, '/404'))
+  const { text: html } = await request(app).get(joinURL(basePath, '/404'))
   const file = path.join(publicDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
@@ -68,7 +69,7 @@ async function generate404() {
 }
 
 async function cleanup() {
-  const files = [buildArgs.assetManifestFile, 'index.js']
+  const files = [assetManifestFile, 'index.js']
 
   for (const file of files) {
     fs.rmSync(path.join(publicDir, file))

@@ -1,32 +1,29 @@
 import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
 import { RouteObject } from 'react-router'
-import { getLocalizedURLs } from '../i18n'
 import { joinURL } from '../utils'
 
 type Params = {
-  localeChangeStrategy: string
   routes: RouteObject[]
-  translations: Record<string, any>
 }
 
-const { basePath, baseURL, defaultLocale } = __BUILD_ARGS__
+const { basePath, baseURL } = __BUILD_ARGS__
 
 /**
  * Sitemap generator.
  */
-export default function renderSitemap({ localeChangeStrategy, routes, translations }: Params) {
+export default function renderSitemap({ routes }: Params) {
   const router = Router()
 
   router.use(joinURL(basePath, '/sitemap.xml'), async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const supportedLocales = Object.keys(translations)
-      const urls = routes.filter(({ path }) => path !== '*').reduce<string[]>((out, { path }) => [
-        ...out,
-        ...path ? (localeChangeStrategy === 'path' ? getLocalizedURLs(path, { defaultLocale, supportedLocales }) : [path]) : [],
-      ], [])
+      const urls = routes.reduce((out, route) => {
+        if (!route.path || route.path.endsWith('*')) return out
+
+        return [...out, route.path]
+      }, [] as string[])
 
       const builder = new XMLBuilder()
       const xml = builder.build({

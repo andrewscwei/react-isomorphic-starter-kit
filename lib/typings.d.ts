@@ -35,12 +35,8 @@ interface Window {
   __VERSION__: string
 }
 
-type RouteConfig = {
-  component: React.ComponentType
-  index?: boolean
-  path: string
-  metaTags?: (prefetched?: any, ltxt: typeof import('node-polyglot').prototype.t) => MetaTags
-  prefetch?: (url: string, locale: string) => Promise<any>
+type RouteObjectWithMetadata = import('react-router').RouteObject & {
+  metadata?: (ltxt: (keyPath: string, ...args: any[]) => string) => Promise<{ title?: string; description?: string }>
 }
 
 type RootComponentProps = {
