@@ -16,8 +16,6 @@ async function generateSitemap() {
     const { text: str } = await request(app).get(joinURL(basePath, '/sitemap.xml'))
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
 
-    console.log('FOO', fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8'))
-
     console.log('Generating sitemap... OK')
   }
   catch (err) {

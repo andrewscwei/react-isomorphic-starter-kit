@@ -7,7 +7,7 @@ type Params = {
   routes: RouteObject[]
 }
 
-const { basePath, baseURL } = __BUILD_ARGS__
+const { baseURL } = __BUILD_ARGS__
 
 /**
  * Sitemap generator.
@@ -15,7 +15,7 @@ const { basePath, baseURL } = __BUILD_ARGS__
 export default function renderSitemap({ routes }: Params) {
   const router = Router()
 
-  router.use(joinURL(basePath, '/sitemap.xml'), async (req, res, next) => {
+  router.use('/sitemap.xml', async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     try {

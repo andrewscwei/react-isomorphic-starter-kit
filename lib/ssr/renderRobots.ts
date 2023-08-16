@@ -1,7 +1,4 @@
 import { Router } from 'express'
-import { joinURL } from '../utils'
-
-const { basePath } = __BUILD_ARGS__
 
 /**
  * `robots.txt` generator.
@@ -9,7 +6,7 @@ const { basePath } = __BUILD_ARGS__
 export default function renderRobots() {
   const router = Router()
 
-  router.use(joinURL(basePath, '/robots.txt'), async (req, res, next) => {
+  router.use('/robots.txt', async (req, res, next) => {
     res.header('Content-Type', 'text/plain')
     res.send('User-agent: * Disallow:')
   })
