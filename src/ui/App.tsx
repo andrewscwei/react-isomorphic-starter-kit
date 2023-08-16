@@ -15,9 +15,7 @@ import './styles/theme.css'
 
 type Props = RootComponentProps
 
-export default function App({
-  routerProvider,
-}: Props) {
+export default function App({ routerProvider }: Props) {
   useThemeColor(THEME_COLOR)
 
   useFavicon({

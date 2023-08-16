@@ -5,9 +5,7 @@ import style from './Header.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
 
-export default function Header({
-  ...props
-}: Props) {
+export default function Header({ ...props }: Props) {
   const ltxt = useLocalizedString()
   const lpath = useLocalizedPath()
 
