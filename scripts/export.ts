@@ -6,7 +6,7 @@ import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
 
-const { assetManifestFile, baseURL, publicPath, basePath } = buildArgs
+const { assetManifestFile, baseURL } = buildArgs
 const publicDir = path.join(__dirname, '../build')
 const { default: app } = require(publicDir)
 

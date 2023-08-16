@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { I18nContext } from './I18nProvider'
-import getLocalizedURL from './getLocalizedURL'
-import getUnlocalizedURL from './getUnlocalizedURL'
+import getLocalizedURL from './helpers/getLocalizedURL'
+import getUnlocalizedURL from './helpers/getUnlocalizedURL'
 
 /**
  * Hook for retrieving the change locale function.

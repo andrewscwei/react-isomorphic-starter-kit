@@ -1,3 +1,10 @@
+/**
+ * Loads translations from a directory via Webpack `RequireContext`.
+ *
+ * @param ctx - Webpack `RequireContext`.
+ *
+ * @returns The translations dictionary.
+ */
 export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Record<string, any> {
   const translations: Record<string, any> = {}
 

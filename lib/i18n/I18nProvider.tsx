@@ -2,8 +2,7 @@ import React, { createContext, Dispatch, PropsWithChildren, useReducer } from 'r
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import getLocaleInfoFromURL from './getLocaleInfoFromURL'
-import createGetLocalizedPath from './helpers/createGetLocalizedPath'
-import createGetLocalizedString from './helpers/createGetLocalizedString'
+import { createGetLocalizedPath, createGetLocalizedString } from './helpers'
 
 type I18nState = {
   defaultLocale: string
@@ -23,7 +22,7 @@ type I18nContextValue = {
 type I18nProviderProps = PropsWithChildren<{
   defaultLocale?: I18nState['defaultLocale']
   localeChangeStrategy?: I18nState['localeChangeStrategy']
-  translations: Record<string, any>
+  translations: I18nState['translations']
 }>
 
 type I18nChangeLocaleAction = {

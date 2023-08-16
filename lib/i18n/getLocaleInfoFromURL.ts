@@ -1,4 +1,4 @@
-import parseURL from './helpers/parseURL'
+import { parseURL } from './helpers'
 
 type Options = {
   /**
