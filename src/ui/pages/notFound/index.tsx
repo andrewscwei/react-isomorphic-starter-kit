@@ -14,7 +14,7 @@ export function Component() {
     <>
       <Header/>
       <main>
-        <h1 className={style.title}>{ltxt('not-found-title') }</h1>
+        <h1 className={style.title}>{ltxt('not-found-title')}</h1>
       </main>
       <Footer/>
     </>

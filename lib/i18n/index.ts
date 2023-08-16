@@ -1,5 +1,6 @@
 export { default as I18nProvider } from './I18nProvider'
 export { default as I18nRoutes } from './I18nRoutes'
+export { default as generateLocalizedRoutes } from './generateLocalizedRoutes'
 export { default as getLocaleInfoFromURL } from './getLocaleInfoFromURL'
 export { default as getLocalizedURL } from './getLocalizedURL'
 export { default as getLocalizedURLs } from './getLocalizedURLs'

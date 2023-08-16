@@ -18,6 +18,7 @@ const config: Config = {
   },
   passWithNoTests: true,
   rootDir: path.join(__dirname, '../'),
+  setupFiles: ['whatwg-fetch'],
   verbose: true,
 }
 

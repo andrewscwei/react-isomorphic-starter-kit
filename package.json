@@ -85,6 +85,7 @@
     "webpack-hot-middleware": "^2.25.4",
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-node-externals": "^3.0.0",
+    "whatwg-fetch": "^3.6.17",
     "worker-loader": "^3.0.8"
   },
   "dependencies": {

@@ -2,7 +2,7 @@
  * @file Client router config.
  */
 
-import generateLocalizedRoutes from '../lib/i18n/generateLocalizedRoutes'
+import { generateLocalizedRoutes } from '../lib/i18n'
 import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from './app.conf'
 import { translations } from './locales'
 
