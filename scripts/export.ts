@@ -37,6 +37,8 @@ async function generateRobots() {
 }
 
 async function generatePages() {
+  console.log('FOO', baseURL, publicPath, basePath)
+
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
