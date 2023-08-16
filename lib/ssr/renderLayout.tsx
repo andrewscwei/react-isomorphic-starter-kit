@@ -36,7 +36,7 @@ export default function renderLayout({
 }: Params): RequestHandler {
   const resolveAssetPath = createResolveAssetPath({
     publicPath,
-    manifestFile: path.join(__dirname, publicPath, assetManifestFile),
+    manifestFile: path.join(__dirname, assetManifestFile),
   })
 
   return async (req, res) => {

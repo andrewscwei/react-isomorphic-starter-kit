@@ -5,9 +5,8 @@ import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 import * as buildArgs from '../config/build.args'
-import joinURL from '../lib/utils/joinURL'
 
-const { assetManifestFile, basePath, baseURL } = buildArgs
+const { assetManifestFile, baseURL } = buildArgs
 const publicDir = path.join(__dirname, '../build')
 const { default: app } = require(publicDir)
 
@@ -45,7 +44,7 @@ async function generatePages() {
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(joinURL(basePath, url))
+      const { text: html } = await request(app).get(url)
       const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -60,7 +59,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get(joinURL(basePath, '/404'))
+  const { text: html } = await request(app).get('/404')
   const file = path.join(publicDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
