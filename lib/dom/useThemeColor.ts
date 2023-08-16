@@ -1,6 +1,12 @@
 import { DependencyList, useEffect } from 'react'
 import updateElementAttributes from './updateElementAttributes'
 
+/**
+ * Hook for updating the theme color meta tag in the document head.
+ *
+ * @param color - The color.
+ * @param deps - Additional dependencies.
+ */
 export default function useThemeColor(color: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return
 

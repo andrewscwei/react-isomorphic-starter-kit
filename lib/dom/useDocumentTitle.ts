@@ -1,6 +1,12 @@
 import { DependencyList, useEffect } from 'react'
 import updateElementAttributes from './updateElementAttributes'
 
+/**
+ * Hook for updating relevant title meta tags in the document head.
+ *
+ * @param title - The title.
+ * @param deps - Additional dependencies.
+ */
 export default function useDocumentTitle(title: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return
 

@@ -11,6 +11,17 @@ type Options = {
 
 type Undo = () => void
 
+/**
+ * Declaratively updates the attributes of an element. If `options.autoCreate`
+ * is `true`, if the element is not present it will be created and injected into
+ * `options.parent`.
+ *
+ * @param tagName - The tag name of the element to update.
+ * @param attributes - The attributes to set to.
+ * @param options - See {@link Options}.
+ *
+ * @returns A function that undoes the updates.
+ */
 export default function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
   if (typeof document === 'undefined') return () => {}
 

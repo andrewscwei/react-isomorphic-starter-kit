@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import updateElementAttributes from './updateElementAttributes'
 
-type Props = {
+type Params = {
   alternateIcon?: {
     defaultImage?: string
     darkImage?: string
@@ -16,11 +16,17 @@ type Props = {
   }
 }
 
+/**
+ * Hook for updating favicon meta tags in the document head when dark mode is
+ * toggled.
+ *
+ * @param params - See {@link Params}.
+ */
 export default function useFavicon({
   alternateIcon,
   icon,
   maskIcon,
-}: Props) {
+}: Params) {
   if (typeof window === 'undefined' || typeof document === 'undefined') return
 
   const matchMedia = typeof window.matchMedia !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
