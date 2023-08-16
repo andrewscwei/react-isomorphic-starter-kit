@@ -33,11 +33,9 @@ export default function App({
   })
 
   const Container = () => (
-    <>
-      <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
-        <Outlet/>
-      </I18nProvider>
-    </>
+    <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
+      <Outlet/>
+    </I18nProvider>
   )
 
   const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter([{ Component: Container, children: routesConf }], { basename: BASE_PATH })}/>

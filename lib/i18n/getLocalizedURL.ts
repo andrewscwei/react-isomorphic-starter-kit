@@ -1,7 +1,7 @@
-import constructURL from './constructURL'
 import getLocaleInfoFromURL from './getLocaleInfoFromURL'
 import getUnlocalizedURL from './getUnlocalizedURL'
-import parseURL from './parseURL'
+import constructURL from './helpers/constructURL'
+import parseURL from './helpers/parseURL'
 
 type Options = {
   /**

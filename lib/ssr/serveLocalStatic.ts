@@ -2,6 +2,8 @@ import express, { Router } from 'express'
 import fs from 'fs'
 import path from 'path'
 
+const { publicPath } = __BUILD_ARGS__
+
 /**
  * Serve local static files and add expire headers.
  *
@@ -9,7 +11,6 @@ import path from 'path'
  */
 export default function serveLocalStatic() {
   const router = Router()
-  const { publicPath } = __BUILD_ARGS__
   const localPublicPath = path.join(__dirname, publicPath)
 
   if (fs.existsSync(localPublicPath)) {

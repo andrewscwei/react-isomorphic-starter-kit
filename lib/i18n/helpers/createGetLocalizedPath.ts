@@ -1,5 +1,5 @@
-import getLocalizedURL from './getLocalizedURL'
-import getUnlocalizedURL from './getUnlocalizedURL'
+import getLocalizedURL from '../getLocalizedURL'
+import getUnlocalizedURL from '../getUnlocalizedURL'
 
 type Options = {
   /**

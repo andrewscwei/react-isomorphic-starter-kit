@@ -1,9 +1,9 @@
 import React, { createContext, Dispatch, PropsWithChildren, useReducer } from 'react'
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
-import createGetLocalizedPath from './createGetLocalizedPath'
-import createGetLocalizedString from './createGetLocalizedString'
 import getLocaleInfoFromURL from './getLocaleInfoFromURL'
+import createGetLocalizedPath from './helpers/createGetLocalizedPath'
+import createGetLocalizedString from './helpers/createGetLocalizedString'
 
 type I18nState = {
   defaultLocale: string

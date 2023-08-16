@@ -9,19 +9,22 @@ import path from 'path'
 import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { Outlet, RouteObject } from 'react-router'
-import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from '../../src/app.conf'
+import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
 import { I18nProvider, getLocaleInfoFromURL } from '../i18n'
 import { joinURL } from '../utils'
-import createResolveAssetPathFunction from './createResolveAssetPath'
-import createStaticRouterProvider from './createStaticRouterProvider'
+import createResolveAssetPath from './helpers/createResolveAssetPath'
+import createStaticHandlerAndContext from './helpers/createStaticHandlerAndContext'
 
 type Params = {
   layoutComponent: ComponentType<LayoutComponentProps>
-  localeChangeStrategy: string
+  localeChangeStrategy: Parameters<typeof I18nProvider>[0]['localeChangeStrategy']
   rootComponent: ComponentType<RootComponentProps>
   routes: RouteObject[]
   translations: Record<string, any>
 }
+
+const { baseURL, publicPath, assetManifestFile, defaultLocale } = __BUILD_ARGS__
+const isDev = process.env.NODE_ENV === 'development'
 
 export default function renderLayout({
   layoutComponent,
@@ -30,16 +33,14 @@ export default function renderLayout({
   routes,
   translations,
 }: Params): RequestHandler {
-  const { baseURL, publicPath, assetManifestFile, defaultLocale } = __BUILD_ARGS__
-  const isDev = process.env.NODE_ENV === 'development'
-  const resolveAssetPath = createResolveAssetPathFunction({
+  const resolveAssetPath = createResolveAssetPath({
     publicPath,
     manifestFile: path.join(__dirname, publicPath, assetManifestFile),
   })
 
   return async (req, res) => {
     const Container = () => (
-      <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
+      <I18nProvider defaultLocale={defaultLocale} translations={translations} localeChangeStrategy={localeChangeStrategy}>
         <Outlet/>
       </I18nProvider>
     )
@@ -47,7 +48,15 @@ export default function renderLayout({
     const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
     const supportedLocales = Object.keys(translations)
     const localeInfo = getLocaleInfoFromURL(req.url, { defaultLocale, resolveStrategy, supportedLocales })
-    const routerProvider = await createStaticRouterProvider(req, { container: Container, routes })
+    const { handler, context } = await createStaticHandlerAndContext(req, { container: Container, routes })
+
+    if (context instanceof Response) {
+      return res.redirect(context.status, context.headers.get('Location') ?? '')
+    }
+
+    const root = createElement(rootComponent, {
+      routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
+    })
 
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,
@@ -56,7 +65,7 @@ export default function renderLayout({
         url: joinURL(baseURL, req.url),
       },
       resolveAssetPath,
-    }, !isDev && createElement(rootComponent, { routerProvider }))
+    }, !isDev && root)
 
     const { pipe } = renderToPipeableStream(layout, {
       onShellReady() {
