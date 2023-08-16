@@ -5,13 +5,13 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 ## Features
 
 1. [React Router](https://reacttraining.com/react-router/)
-2. [Polyglot](http://airbnb.io/polyglot.js/)
-3. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
-4. [TypeScript](https://www.typescriptlang.org/) + [Babel](https://babeljs.io/) + [ESLint](https://eslint.org/)
-5. [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/)
-6. [webpack](https://webpack.js.org/)
-7. [Docker](https://docker.com) config
-8. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
+2. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
+3. [TypeScript](https://www.typescriptlang.org/) + [Babel](https://babeljs.io/) + [ESLint](https://eslint.org/)
+4. [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/)
+5. [webpack](https://webpack.js.org/)
+6. [Docker](https://docker.com) config
+7. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
+8. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
 9. Server-side rendering with [Express](https://expressjs.com/) or exporting as static site
 10. Data prefetching and caching
 11. Web workers
@@ -92,9 +92,7 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 2. Edit `README.md`
 3. Edit fields in `package.json`
 4. Edit fields in `src/app.conf.ts`
-5. Edit resources in `res/`, then ensure to replace the generated assets in the following places:
-    1. `src/ui/assets/meta/`
-    2. `src/static/`
+5. Edit resources in `res/`, then ensure to replace the generated assets in `src/static/`
 6. Edit files in `src/ui/components/` and `src/ui/pages/`
 7. Edit translations in `src/locales/`
 
@@ -117,3 +115,8 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 ### `v13.0.0`
 
 - Restructured folders
+
+### `v14.0.0`
+
+- Moved boilerplate code to `lib/`
+- Replaced `react-helmet-async` with custom solution in `lib/`
