@@ -10,8 +10,13 @@
 }
 
 .link {
-  composes: n1 from global;
   cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: .1rem;
+  text-decoration: none;
+  text-transform: uppercase;
   transition: all .2s ease-out;
 
   &:not(:last-child) {

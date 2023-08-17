@@ -1,12 +1,3 @@
-.n1 {
-  font-family: var(--font-body);
-  font-size: 1.2rem;
-  font-weight: 400;
-  letter-spacing: .1rem;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
 html {
   background: var(--color-background);
   font-size: 10px;
@@ -17,6 +8,7 @@ html {
 body {
   color: var(--color-white);
   height: 100%;
+  font-size: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
