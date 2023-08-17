@@ -10,7 +10,7 @@ import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { Outlet, RouteObject, matchRoutes } from 'react-router'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { I18nOptions, I18nProvider, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
+import { I18nConfig, I18nProvider, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
 import { joinURL } from '../utils'
 import { createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
 
@@ -18,7 +18,7 @@ type Params = {
   layoutComponent: ComponentType<LayoutComponentProps>
   rootComponent: ComponentType<RootComponentProps>
   routes: RouteObject[]
-  i18n: I18nOptions
+  i18n: I18nConfig
 }
 
 const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
@@ -30,7 +30,7 @@ export default function renderLayout({
   rootComponent,
   routes,
 }: Params): RequestHandler {
-  const resolveAssetPath = isDev ? undefined : createResolveAssetPath({
+  const resolveAssetPath = createResolveAssetPath({
     publicPath,
     manifestFile: path.join(__dirname, assetManifestFile),
   })

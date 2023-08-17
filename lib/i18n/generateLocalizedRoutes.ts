@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router'
 import { joinURL } from '../utils'
 import { createResolveLocaleOptions } from './helpers'
-import { I18nOptions } from './types'
+import { I18nConfig } from './types'
 
-export default function generateLocalizedRoutes(routes: RouteObject[], options: I18nOptions): RouteObject[] {
-  const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(options)
+export default function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
+  const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
 
   return routes.reduce((out, route) => {
     const path = route.path

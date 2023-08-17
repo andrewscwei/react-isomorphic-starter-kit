@@ -7,8 +7,8 @@ import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { useFavicon, useThemeColor } from '../../lib/dom'
 import { I18nProvider } from '../../lib/i18n'
 import { joinURL } from '../../lib/utils'
-import { BASE_PATH, DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY, MASK_ICON_COLOR, PUBLIC_PATH, THEME_COLOR } from '../app.conf'
-import { translations } from '../locales'
+import { BASE_PATH, MASK_ICON_COLOR, PUBLIC_PATH, THEME_COLOR } from '../app.conf'
+import { i18nConfig } from '../locales'
 import routesConf from '../routes.conf'
 import './styles/global.css'
 import './styles/theme.css'
@@ -31,7 +31,7 @@ export default function App({ routerProvider }: Props) {
   })
 
   const Container = () => (
-    <I18nProvider defaultLocale={DEFAULT_LOCALE} translations={translations} localeChangeStrategy={LOCALE_CHANGE_STRATEGY}>
+    <I18nProvider {...i18nConfig}>
       <Outlet/>
     </I18nProvider>
   )

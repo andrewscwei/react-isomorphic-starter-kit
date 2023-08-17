@@ -1,6 +1,6 @@
-import { I18nOptions, ResolveLocaleOptions } from '../types'
+import { I18nConfig, ResolveLocaleOptions } from '../types'
 
-export default function createResolveLocaleOptions({ defaultLocale, localeChangeStrategy, translations }: I18nOptions): ResolveLocaleOptions {
+export default function createResolveLocaleOptions({ defaultLocale, localeChangeStrategy, translations }: I18nConfig): ResolveLocaleOptions {
   const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
   const supportedLocales = Object.keys(translations)
 

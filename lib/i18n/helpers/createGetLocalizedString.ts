@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js'
-import { GetLocalizedString, I18nOptions, Locale } from '../types'
+import { GetLocalizedString, I18nConfig, Locale } from '../types'
 
-export default function createGetLocalizedString(locale: Locale | undefined, { defaultLocale, translations }: I18nOptions): GetLocalizedString {
+export default function createGetLocalizedString(locale: Locale | undefined, { defaultLocale, translations }: I18nConfig): GetLocalizedString {
   const dict = translations[locale ?? defaultLocale]
 
   return (keyPath: string, ...args) => {
