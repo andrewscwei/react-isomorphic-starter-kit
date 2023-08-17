@@ -24,5 +24,5 @@ const routes: RouteObjectWithMetadata[] = [{
 export default generateLocalizedRoutes(routes, {
   defaultLocale: DEFAULT_LOCALE,
   localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
-  supportedLocales: Object.keys(translations),
+  translations,
 })

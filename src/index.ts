@@ -9,7 +9,7 @@ import ip from 'ip'
 import morgan from 'morgan'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
-import { LOCALE_CHANGE_STRATEGY, PORT, SKIP_HTTP } from './app.conf'
+import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY, PORT, SKIP_HTTP } from './app.conf'
 import { translations } from './locales'
 import handle404 from './middleware/handle404'
 import handle500 from './middleware/handle500'
@@ -32,10 +32,13 @@ app.use(renderRobots())
 app.use(renderSitemap({ routes: routesConf }))
 app.use(renderLayout({
   layoutComponent: Layout,
-  localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
   rootComponent: App,
   routes: routesConf,
-  translations,
+  i18n: {
+    defaultLocale: DEFAULT_LOCALE,
+    localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
+    translations,
+  },
 }))
 
 app.use(handle404())

@@ -1,17 +1,13 @@
-import React, { createContext, Dispatch, PropsWithChildren, useReducer } from 'react'
+import React, { createContext, Dispatch, PropsWithChildren, Reducer, useReducer } from 'react'
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
-import getLocaleInfoFromURL from './getLocaleInfoFromURL'
-import { createGetLocalizedPath, createGetLocalizedString } from './helpers'
+import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
+import { GetLocalizedPath, GetLocalizedString, I18nOptions } from './types'
 
-type I18nState = {
-  defaultLocale: string
+type I18nState = I18nOptions & {
+  getLocalizedPath: GetLocalizedPath
+  getLocalizedString: GetLocalizedString
   locale: string
-  localeChangeStrategy: 'action' | 'path' | 'query'
-  supportedLocales: string[]
-  translations: Record<string, any>
-  getLocalizedPath: ReturnType<typeof createGetLocalizedPath>
-  getLocalizedString: ReturnType<typeof createGetLocalizedString>
 }
 
 type I18nContextValue = {
@@ -19,11 +15,7 @@ type I18nContextValue = {
   state: I18nState
 }
 
-type I18nProviderProps = PropsWithChildren<{
-  defaultLocale?: I18nState['defaultLocale']
-  localeChangeStrategy?: I18nState['localeChangeStrategy']
-  translations: I18nState['translations']
-}>
+type I18nProviderProps = PropsWithChildren<Partial<I18nOptions>>
 
 type I18nChangeLocaleAction = {
   locale: string
@@ -46,14 +38,9 @@ export default function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
-  translations,
+  translations = {},
 }: I18nProviderProps) {
-  const supportedLocales = Object.keys(translations)
-
-  if (supportedLocales.indexOf(defaultLocale) < 0) {
-    console.warn(`Provided supported locales do not contain the default locale <${defaultLocale}>`)
-    supportedLocales.push(defaultLocale)
-  }
+  const options = { defaultLocale, localeChangeStrategy, translations }
 
   switch (localeChangeStrategy) {
     case 'action': {
@@ -61,10 +48,9 @@ export default function I18nProvider({
         localeChangeStrategy,
         defaultLocale,
         locale: defaultLocale,
-        supportedLocales,
         translations,
-        getLocalizedPath: path => path,
-        getLocalizedString: createGetLocalizedString(defaultLocale, { translations }),
+        getLocalizedPath: createGetLocalizedPath(defaultLocale, options),
+        getLocalizedString: createGetLocalizedString(defaultLocale, options),
       })
 
       useDocumentLocale(state.locale)
@@ -78,11 +64,10 @@ export default function I18nProvider({
     default: {
       const { pathname, search, hash } = useLocation()
       const url = `${pathname}${search}${hash}`
-      const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
-      const localeInfo = getLocaleInfoFromURL(url, { defaultLocale, resolveStrategy, supportedLocales })
-      if (!localeInfo) console.warn(`Unable to infer locale from path <${url}>`)
+      const resolveLocaleResult = resolveLocaleFromURL(url, createResolveLocaleOptions(options))
+      if (!resolveLocaleResult) console.warn(`Unable to infer locale from path <${url}>`)
 
-      const locale = localeInfo?.locale ?? defaultLocale
+      const locale = resolveLocaleResult?.locale ?? defaultLocale
 
       useDocumentLocale(locale)
 
@@ -91,9 +76,8 @@ export default function I18nProvider({
         defaultLocale,
         locale,
         translations,
-        supportedLocales,
-        getLocalizedPath: createGetLocalizedPath(locale, { defaultLocale, resolveStrategy, supportedLocales }),
-        getLocalizedString: createGetLocalizedString(locale, { translations }),
+        getLocalizedPath: createGetLocalizedPath(locale, options),
+        getLocalizedString: createGetLocalizedString(locale, options),
       }
 
       return (
@@ -105,13 +89,13 @@ export default function I18nProvider({
   }
 }
 
-const reducer = (state: I18nState, action: I18nChangeLocaleAction): I18nState => {
+const reducer: Reducer<I18nState, I18nChangeLocaleAction> = (state, action) => {
   switch (action.type) {
     case '@i18n/CHANGE_LOCALE':
       return {
         ...state,
         locale: action.locale,
-        getLocalizedString: createGetLocalizedString(action.locale, { translations: state.translations }),
+        getLocalizedString: createGetLocalizedString(action.locale, state),
       }
     default:
       return state

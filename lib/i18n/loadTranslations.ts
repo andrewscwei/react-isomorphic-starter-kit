@@ -3,19 +3,19 @@ import { Translations } from './types'
 /**
  * Loads translations from a directory via Webpack `RequireContext`.
  *
- * @param ctx - Webpack `RequireContext`.
+ * @param ctx - See {@link __WebpackModuleApi.RequireContext}.
  *
  * @returns The translations dictionary.
  */
 export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
-  const translations: Record<string, any> = {}
+  const translations: Translations = {}
 
   try {
     for (const key of ctx.keys()) {
       const phrases = ctx(key)
       const parts = key.replace('./', '').split('/')
 
-      let t = translations
+      let t: any = translations
 
       for (const part of parts) {
         const subkey = part.replace('.json', '')

@@ -1,38 +1,7 @@
-import { parseURL } from './helpers'
+import { ResolveLocaleOptions } from '../types'
+import parseURL from './parseURL'
 
-type Options = {
-  /**
-   * The locale to fallback to if one cannot be inferred from the provided URL.
-   */
-  defaultLocale?: string
-
-  /**
-   * Specifies where in the URL the locale should be matched. If `resolver` is
-   * provided, this option is ignored.
-   */
-  resolveStrategy?: 'auto' | 'domain' | 'path' | 'query' | 'custom'
-
-  /**
-   * An array of supported locales to validate the inferred locale against. If
-   * it doesn't exist in the list of supported locales, the default locale (if
-   * specified) or `undefined` will be returned.
-   */
-  supportedLocales?: string[]
-
-  /**
-   * Custom resolver function.
-   *
-   * @param protocol - The matched protocol of the provided url, if available.
-   * @param host - The matched host of the provided url, if available.
-   * @param port - The matched port of the provided url, if available.
-   * @param path - The matched path of the provided url, if available.
-   *
-   * @returns The resolved locale.
-   */
-  resolver?: (urlParts: ReturnType<typeof parseURL>) => string | undefined
-}
-
-type Output = {
+type Result = {
   /**
    * The matched locale.
    */
@@ -41,7 +10,7 @@ type Output = {
   /**
    * Specifies where in the URL the locale was matched.
    */
-  resolveStrategy: 'auto' | 'domain' | 'path' | 'query' | 'custom'
+  resolveStrategy: Required<ResolveLocaleOptions>['resolveStrategy']
 }
 
 /**
@@ -50,16 +19,11 @@ type Output = {
  * the first directory of the path. You can provide a custom resolver.
  *
  * @param url - The URL, can be a full URL or a valid path.
- * @param options - See {@link Options}.
+ * @param options - See {@link ResolveLocaleOptions}.
  *
- * @returns The inferred locale if it exists.
+ * @returns The result of the resolution if successful, `undefined` otherwise.
  */
-export default function getLocaleInfoFromURL(url: string, {
-  defaultLocale,
-  resolver,
-  resolveStrategy = 'auto',
-  supportedLocales,
-}: Options = {}): Output | undefined {
+export default function resolveLocaleFromURL(url: string, { defaultLocale, resolver, resolveStrategy = 'auto', supportedLocales = [] }: Partial<ResolveLocaleOptions> = {}): Result | undefined {
   const parts = parseURL(url)
 
   if (resolver) {

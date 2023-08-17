@@ -1,3 +1,4 @@
+import { ResolveLocaleOptions } from '../types'
 import getLocalizedURL from './getLocalizedURL'
 
 /**
@@ -5,17 +6,12 @@ import getLocalizedURL from './getLocalizedURL'
  * `supportedLocales`.
  *
  * @param url - The URL.
- * @param options - See {@link Options}.
+ * @param options - See {@link ResolveLocaleOptions}.
  *
  * @returns The localized URLs.
  */
-export default function getLocalizedURLs(url: string, {
-  defaultLocale,
-  resolver,
-  resolveStrategy = 'auto',
-  supportedLocales,
-}: Parameters<typeof getLocalizedURL>[2] = {}): string[] {
+export default function getLocalizedURLs(url: string, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string[] {
   if (!supportedLocales) return []
 
-  return supportedLocales.map(locale => getLocalizedURL(url, locale, { defaultLocale, resolveStrategy, resolver, supportedLocales }))
+  return supportedLocales.map(locale => getLocalizedURL(url, locale, { defaultLocale, resolveStrategy, supportedLocales }))
 }

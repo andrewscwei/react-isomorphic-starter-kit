@@ -10,48 +10,42 @@ import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { Outlet, RouteObject, matchRoutes } from 'react-router'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { I18nProvider, getLocaleInfoFromURL } from '../i18n'
-import createGetLocalizedString from '../i18n/helpers/createGetLocalizedString'
+import { I18nOptions, I18nProvider, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
 import { joinURL } from '../utils'
-import createResolveAssetPath from './helpers/createResolveAssetPath'
-import createStaticHandlerAndContext from './helpers/createStaticHandlerAndContext'
+import { createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
 
 type Params = {
   layoutComponent: ComponentType<LayoutComponentProps>
-  localeChangeStrategy: Parameters<typeof I18nProvider>[0]['localeChangeStrategy']
   rootComponent: ComponentType<RootComponentProps>
   routes: RouteObject[]
-  translations: Record<string, any>
+  i18n: I18nOptions
 }
 
-const { baseURL, publicPath, assetManifestFile, defaultLocale } = __BUILD_ARGS__
+const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 
 export default function renderLayout({
+  i18n,
   layoutComponent,
-  localeChangeStrategy,
   rootComponent,
   routes,
-  translations,
 }: Params): RequestHandler {
-  const resolveAssetPath = createResolveAssetPath({
+  const resolveAssetPath = isDev ? undefined : createResolveAssetPath({
     publicPath,
     manifestFile: path.join(__dirname, assetManifestFile),
   })
 
   return async (req, res) => {
     const Container = () => (
-      <I18nProvider defaultLocale={defaultLocale} translations={translations} localeChangeStrategy={localeChangeStrategy}>
+      <I18nProvider {...i18n}>
         <Outlet/>
       </I18nProvider>
     )
 
-    const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
-    const supportedLocales = Object.keys(translations)
-    const localeInfo = getLocaleInfoFromURL(req.url, { defaultLocale, resolveStrategy, supportedLocales })
+    const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
     const { handler, context } = await createStaticHandlerAndContext(req, { container: Container, routes })
     const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
-    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(localeInfo?.locale ?? defaultLocale, { translations }))
+    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
 
     if (context instanceof Response) {
       return res.redirect(context.status, context.headers.get('Location') ?? '')
@@ -65,7 +59,7 @@ export default function renderLayout({
       injectScripts: !isDev,
       metadata: {
         ...metadata ?? {},
-        locale: localeInfo?.locale ?? defaultLocale,
+        locale: resolveResult?.locale,
         url: joinURL(baseURL, req.url),
       },
       resolveAssetPath,
