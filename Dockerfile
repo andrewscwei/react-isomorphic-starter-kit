@@ -1,12 +1,6 @@
 # Builds the app with dev dependencies included.
 FROM node:18.8.0 AS dev
 
-ARG BUILD_NUMBER
-ARG PUBLIC_PATH
-
-ENV BUILD_NUMBER=$BUILD_NUMBER
-ENV PUBLIC_PATH=$PUBLIC_PATH
-
 WORKDIR /var/app
 
 COPY package*.json ./
@@ -15,9 +9,13 @@ RUN npm install
 
 COPY config ./config
 COPY scripts ./scripts
+COPY lib ./lib
 COPY src ./src
+COPY tests ./tests
 COPY ts*.json ./
 COPY .babelrc ./
+COPY .eslintrc ./
+COPY .stylelintrc ./
 
 RUN npm run build
 
@@ -30,16 +28,13 @@ COPY tests ./tests
 # Strips dev dependencies from the dev build.
 FROM dev AS prod
 
-RUN npm prune --production
+# RUN npm prune --production
 
 
 # Final production build.
 FROM node:18.8.0-slim AS release
 
-ARG BUILD_NUMBER
-
 ENV NODE_ENV=production
-ENV BUILD_NUMBER=$BUILD_NUMBER
 
 WORKDIR /var/app
 

@@ -63,7 +63,7 @@ export const skipOptimizations = process.env.NODE_ENV === 'development' || proce
 export const publicPath = process.env.PUBLIC_PATH || '/'
 
 /**
- * Base URL of the app (no trailing `/`).
+ * Base URL of the app.
  */
 export const baseURL = process.env.BASE_URL || ''
 

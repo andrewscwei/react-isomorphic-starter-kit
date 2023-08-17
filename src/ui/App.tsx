@@ -15,7 +15,7 @@ import './styles/theme.css'
 
 type Props = RootComponentProps
 
-export default function App({ routerProvider }: Props) {
+export default function App({ routerProvider, url }: Props) {
   useThemeColor(THEME_COLOR)
 
   useFavicon({
@@ -34,7 +34,7 @@ export default function App({ routerProvider }: Props) {
 
   return (
     <StrictMode>
-      <I18nProvider {...i18nConfig}>
+      <I18nProvider {...i18nConfig} url={url}>
         {renderRouter()}
       </I18nProvider>
     </StrictMode>

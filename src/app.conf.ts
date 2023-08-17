@@ -28,7 +28,7 @@ export const THEME_COLOR = '#15141a'
 export const MASK_ICON_COLOR = '#000'
 
 /**
- * Public path for static assets (with trailing slash if needed).
+ * Public path for static assets.
  */
 export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
 

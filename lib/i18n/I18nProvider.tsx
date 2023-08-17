@@ -4,9 +4,9 @@ import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOp
 import { GetLocalizedPath, GetLocalizedString, I18nConfig, Locale } from './types'
 
 type I18nState = I18nConfig & {
+  locale: string
   getLocalizedPath: GetLocalizedPath
   getLocalizedString: GetLocalizedString
-  locale: string
 }
 
 type I18nContextValue = {
@@ -14,7 +14,9 @@ type I18nContextValue = {
   state: I18nState
 }
 
-type I18nProviderProps = PropsWithChildren<Partial<I18nConfig>>
+type I18nProviderProps = PropsWithChildren<Partial<I18nConfig> & {
+  url?: string
+}>
 
 type I18nChangeLocaleAction = {
   locale: string
@@ -37,6 +39,7 @@ export default function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
+  url,
   translations = {},
 }: I18nProviderProps) {
   const config = { defaultLocale, localeChangeStrategy, translations }
@@ -44,10 +47,11 @@ export default function I18nProvider({
   let locale: Locale = defaultLocale
 
   if (localeChangeStrategy !== 'action') {
-    const { pathname, search, hash } = window.location
-    const url = `${pathname}${search}${hash}`
-    const res = resolveLocaleFromURL(url, createResolveLocaleOptions(config))
-    if (!res) console.warn(`Unable to infer locale from path <${url}>`)
+    const currURL = url ?? (typeof window !== 'undefined' ? window.location.href : undefined)
+    if (!currURL) throw Error('Unable to detect current URL')
+
+    const res = resolveLocaleFromURL(currURL, createResolveLocaleOptions(config))
+    if (!res) console.warn(`Unable to infer locale from path <${currURL}>`)
 
     locale = res?.locale ?? defaultLocale
   }
@@ -74,6 +78,7 @@ const reducer: Reducer<I18nState, I18nChangeLocaleAction> = (state, action) => {
       return {
         ...state,
         locale: action.locale,
+        getLocalizedPath: createGetLocalizedPath(action.locale, state),
         getLocalizedString: createGetLocalizedString(action.locale, state),
       }
     default:
