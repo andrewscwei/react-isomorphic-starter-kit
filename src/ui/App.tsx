@@ -3,7 +3,7 @@
  */
 
 import React, { StrictMode } from 'react'
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { useFavicon, useThemeColor } from '../../lib/dom'
 import { I18nProvider } from '../../lib/i18n'
 import { joinURL } from '../../lib/utils'
@@ -30,17 +30,13 @@ export default function App({ routerProvider }: Props) {
     },
   })
 
-  const Container = () => (
-    <I18nProvider {...i18nConfig}>
-      <Outlet/>
-    </I18nProvider>
-  )
-
-  const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter([{ Component: Container, children: routesConf }], { basename: BASE_PATH })}/>
+  const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter([{ children: routesConf }], { basename: BASE_PATH })}/>
 
   return (
     <StrictMode>
-      {renderRouter()}
+      <I18nProvider {...i18nConfig}>
+        {renderRouter()}
+      </I18nProvider>
     </StrictMode>
   )
 }

@@ -9,6 +9,8 @@ self.addEventListener('message', event => {
   switch (message) {
     case 'Marco':
       self.postMessage({ message: 'Polo' })
+
+      break
     default:
       break
   }

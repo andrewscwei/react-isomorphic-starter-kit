@@ -8,9 +8,9 @@ import { RequestHandler } from 'express'
 import path from 'path'
 import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { Outlet, RouteObject, matchRoutes } from 'react-router'
+import { RouteObject, matchRoutes } from 'react-router'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { I18nConfig, I18nProvider, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
+import { I18nConfig, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
 import { joinURL } from '../utils'
 import { createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
 
@@ -36,24 +36,17 @@ export default function renderLayout({
   })
 
   return async (req, res) => {
-    const Container = () => (
-      <I18nProvider {...i18n}>
-        <Outlet/>
-      </I18nProvider>
-    )
+    const { handler, context } = await createStaticHandlerAndContext(req, { routes })
 
-    const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
-    const { handler, context } = await createStaticHandlerAndContext(req, { container: Container, routes })
-    const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
-    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
-
-    if (context instanceof Response) {
-      return res.redirect(context.status, context.headers.get('Location') ?? '')
-    }
+    if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const root = createElement(rootComponent, {
       routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
     })
+
+    const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
+    const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
+    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
 
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,
