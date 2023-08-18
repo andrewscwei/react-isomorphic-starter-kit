@@ -71,7 +71,7 @@
     "rimraf": "^5.0.1",
     "source-map-support": "^0.5.21",
     "style-loader": "^3.3.3",
-    "stylelint": "^15.10.2",
+    "stylelint": "^15.10.3",
     "supertest": "^6.3.3",
     "terser-webpack-plugin": "^5.3.9",
     "ts-node": "^10.9.1",

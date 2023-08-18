@@ -11,7 +11,7 @@ import { tryOrUndefined } from '../lib/utils'
 export const VERSION = `v${__BUILD_ARGS__.version}+build.${__BUILD_ARGS__.buildNumber}`
 
 /**
- * Fallback window title.
+ * Fallback app title.
  */
 export const APP_NAME = 'React Isomorphic Starter Kit'
 
@@ -31,11 +31,6 @@ export const THEME_COLOR = '#15141a'
 export const MASK_ICON_COLOR = '#000'
 
 /**
- * Public path for static assets.
- */
-export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
-
-/**
  * Base URL of the app.
  */
 export const BASE_URL = __BUILD_ARGS__.baseURL
@@ -44,6 +39,16 @@ export const BASE_URL = __BUILD_ARGS__.baseURL
  * Base path of the router (i.e. the `basename` property).
  */
 export const BASE_PATH = __BUILD_ARGS__.basePath
+
+/**
+ * Public path for static assets.
+ */
+export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
+
+/**
+ * Absolute public URL for static assets.
+ */
+export const PUBLIC_URL = __BUILD_ARGS__.publicURL
 
 /**
  * Port.

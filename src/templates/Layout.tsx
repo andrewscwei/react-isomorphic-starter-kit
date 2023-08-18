@@ -4,7 +4,7 @@
 
 import React, { PropsWithChildren } from 'react'
 import { joinURL } from '../../lib/utils'
-import { APP_DESCRIPTION, APP_NAME, BASE_URL, I18N_CONFIG, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf'
+import { APP_DESCRIPTION, APP_NAME, BASE_URL, I18N_CONFIG, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR } from '../app.conf'
 
 type Props = PropsWithChildren<LayoutComponentProps>
 
@@ -60,13 +60,13 @@ export default function Layout({
         <meta property='og:description' content={pageDescription}/>
         <meta property='og:locale' content={pageLocale}/>
         <meta property='og:url' content={pageUrl}/>
-        <meta property='og:image' content={joinURL(BASE_URL, resolveAssetPath('/og-image.png'))}/>
+        <meta property='og:image' content={joinURL(PUBLIC_URL, '/og-image.png')}/>
         <meta property='og:image:alt' content={pageDescription}/>
 
         <meta name='twitter:card' content='summary_large_image'/>
         <meta name='twitter:title' content={pageTitle}/>
         <meta name='twitter:description' content={pageDescription}/>
-        <meta name='twitter:image' content={joinURL(BASE_URL, resolveAssetPath('/twitter-card.png'))}/>
+        <meta name='twitter:image' content={joinURL(PUBLIC_URL, '/twitter-card.png')}/>
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 

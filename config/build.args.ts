@@ -32,6 +32,31 @@ export const version = packageVersion
 export const buildNumber = process.env.BUILD_NUMBER || 'local'
 
 /**
+ * Base URL of the app.
+ */
+export const baseURL = process.env.BASE_URL || ''
+
+/**
+ * Base path of the router (i.e. the `basename` property).
+ */
+export const basePath = process.env.BASE_PATH || '/'
+
+/**
+ * Absolute public URL for static assets.
+ */
+export const publicURL = process.env.PUBLIC_URL || baseURL
+
+/**
+ * Public path for static assets.
+ */
+export const publicPath = process.env.PUBLIC_PATH || basePath
+
+/**
+ * Default locale.
+ */
+export const defaultLocale = process.env.DEFAULT_LOCALE || 'en'
+
+/**
  * Input directory of source files to compile.
  */
 export const inputDir = path.join(__dirname, '../', 'src')
@@ -56,26 +81,6 @@ export const useBundleAnalyzer = process.env.npm_config_analyze === 'true'
  * building.
  */
 export const skipOptimizations = process.env.NODE_ENV === 'development' || process.env.npm_config_raw === 'true'
-
-/**
- * Public path for static assets.
- */
-export const publicPath = process.env.PUBLIC_PATH || '/'
-
-/**
- * Base URL of the app.
- */
-export const baseURL = process.env.BASE_URL || ''
-
-/**
- * Base path of the router (i.e. the `basename` property).
- */
-export const basePath = process.env.BASE_PATH || '/'
-
-/**
- * Default locale.
- */
-export const defaultLocale = process.env.DEFAULT_LOCALE || 'en'
 
 /**
  * File name of the generated asset manifest.
