@@ -1,6 +1,14 @@
 # Builds the app with dev dependencies included.
 FROM node:18.8.0 AS dev
 
+ARG BASE_PATH
+ARG BASE_URL
+ARG BUILD_NUMBER
+ARG DEBUG_CHANNELS
+ARG DEBUG_ENABLED
+ARG DEFAULT_LOCALE
+ARG PUBLIC_PATH
+
 WORKDIR /var/app
 
 COPY package*.json ./
