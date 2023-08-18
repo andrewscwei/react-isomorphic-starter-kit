@@ -1,22 +1,21 @@
 import React, { createContext, Dispatch, PropsWithChildren, Reducer, useReducer } from 'react'
+import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
-import { GetLocalizedPath, GetLocalizedString, I18nConfig, Locale } from './types'
+import { GetLocalizedPath, GetLocalizedString, I18nConfig } from './types'
 
 type I18nState = I18nConfig & {
-  locale: string
   getLocalizedPath: GetLocalizedPath
   getLocalizedString: GetLocalizedString
+  locale: string
 }
 
 type I18nContextValue = {
-  dispatch: Dispatch<I18nChangeLocaleAction>
+  dispatch?: Dispatch<I18nChangeLocaleAction>
   state: I18nState
 }
 
-type I18nProviderProps = PropsWithChildren<Partial<I18nConfig> & {
-  url?: string
-}>
+type I18nProviderProps = PropsWithChildren<Partial<I18nConfig>>
 
 type I18nChangeLocaleAction = {
   locale: string
@@ -39,29 +38,44 @@ export default function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
-  url,
   translations = {},
 }: I18nProviderProps) {
   const config = { defaultLocale, localeChangeStrategy, translations }
 
-  let locale: Locale = defaultLocale
+  let state: I18nState
+  let dispatch: Dispatch<I18nChangeLocaleAction> | undefined
 
-  if (localeChangeStrategy !== 'action') {
-    const currURL = url ?? (typeof window !== 'undefined' ? window.location.href : undefined)
-    if (!currURL) throw Error('Unable to detect current URL')
+  switch (localeChangeStrategy) {
+    case 'action': {
+      [state, dispatch] = useReducer(reducer, {
+        localeChangeStrategy,
+        defaultLocale,
+        locale: defaultLocale,
+        translations,
+        getLocalizedPath: createGetLocalizedPath(defaultLocale, config),
+        getLocalizedString: createGetLocalizedString(defaultLocale, config),
+      })
 
-    const res = resolveLocaleFromURL(currURL, createResolveLocaleOptions(config))
-    if (!res) console.warn(`Unable to infer locale from path <${currURL}>`)
+      break
+    }
+    default: {
+      const { pathname, search, hash } = useLocation()
+      const url = `${pathname}${search}${hash}`
+      const res = resolveLocaleFromURL(url, createResolveLocaleOptions(config))
+      if (!res) console.warn(`Unable to infer locale from path <${url}>`)
 
-    locale = res?.locale ?? defaultLocale
+      const locale = res?.locale ?? defaultLocale
+
+      state = {
+        localeChangeStrategy,
+        defaultLocale,
+        locale,
+        translations,
+        getLocalizedPath: createGetLocalizedPath(locale, config),
+        getLocalizedString: createGetLocalizedString(locale, config),
+      }
+    }
   }
-
-  const [state, dispatch] = useReducer(reducer, {
-    ...config,
-    locale,
-    getLocalizedPath: createGetLocalizedPath(locale, config),
-    getLocalizedString: createGetLocalizedString(locale, config),
-  })
 
   useDocumentLocale(state.locale)
 
@@ -78,7 +92,6 @@ const reducer: Reducer<I18nState, I18nChangeLocaleAction> = (state, action) => {
       return {
         ...state,
         locale: action.locale,
-        getLocalizedPath: createGetLocalizedPath(action.locale, state),
         getLocalizedString: createGetLocalizedString(action.locale, state),
       }
     default:

@@ -9,7 +9,7 @@ type Options = {
 
 export default async function createStaticHandlerAndContext(req: Request, { routes }: Options) {
   const fetchRequest = createFetchRequest(req)
-  const handler = createStaticHandler([{ children: routes }])
+  const handler = createStaticHandler(routes)
   const context = await handler.query(fetchRequest)
 
   return { handler, context }

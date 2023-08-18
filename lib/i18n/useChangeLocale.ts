@@ -4,8 +4,7 @@ import { I18nContext } from './I18nProvider'
 import { createResolveLocaleOptions, getLocalizedURL } from './helpers'
 
 /**
- * Hook for retrieving the change locale function. This hook has a dependency on
- * `react-router` and needs to be used within a router provider.
+ * Hook for retrieving the change locale function.
  *
  * @returns The change locale function.
  */
@@ -17,7 +16,7 @@ export default function useChangeLocale() {
 
   switch (localeChangeStrategy) {
     case 'action': {
-      return (locale: string) => context.dispatch({
+      return (locale: string) => context.dispatch?.({
         locale,
         type: '@i18n/CHANGE_LOCALE',
       })
@@ -28,11 +27,6 @@ export default function useChangeLocale() {
       const navigate = useNavigate()
 
       return (locale: string) => {
-        context.dispatch({
-          locale,
-          type: '@i18n/CHANGE_LOCALE',
-        })
-
         const newPath = getLocalizedURL(path, locale, createResolveLocaleOptions(context.state))
 
         navigate(newPath)

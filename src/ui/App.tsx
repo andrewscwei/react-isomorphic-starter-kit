@@ -5,17 +5,15 @@
 import React, { StrictMode } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { useFavicon, useThemeColor } from '../../lib/dom'
-import { I18nProvider } from '../../lib/i18n'
 import { joinURL } from '../../lib/utils'
 import { BASE_PATH, MASK_ICON_COLOR, PUBLIC_PATH, THEME_COLOR } from '../app.conf'
-import { i18nConfig } from '../locales'
 import routesConf from '../routes.conf'
 import './styles/global.css'
 import './styles/theme.css'
 
 type Props = RootComponentProps
 
-export default function App({ routerProvider, url }: Props) {
+export default function App({ routerProvider }: Props) {
   useThemeColor(THEME_COLOR)
 
   useFavicon({
@@ -30,13 +28,11 @@ export default function App({ routerProvider, url }: Props) {
     },
   })
 
-  const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter([{ children: routesConf }], { basename: BASE_PATH })}/>
+  const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter(routesConf, { basename: BASE_PATH })}/>
 
   return (
     <StrictMode>
-      <I18nProvider {...i18nConfig} url={url}>
-        {renderRouter()}
-      </I18nProvider>
+      {renderRouter()}
     </StrictMode>
   )
 }

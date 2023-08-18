@@ -19,12 +19,7 @@ export default function renderSitemap({ routes }: Params) {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const urls = routes.reduce((out, route) => {
-        if (!route.path || route.path.endsWith('*')) return out
-
-        return [...out, route.path]
-      }, [] as string[])
-
+      const urls = extractURLs(routes)
       const builder = new XMLBuilder()
       const xml = builder.build({
         'urlset': {
@@ -45,4 +40,15 @@ export default function renderSitemap({ routes }: Params) {
   })
 
   return router
+}
+
+function extractURLs(routes?: RouteObject[]): string[] {
+  if (!routes) return []
+
+  return routes.reduce<string[]>((out, { path, children }) => {
+    if (!path) return [...out, ...extractURLs(children)]
+    if (path.endsWith('*')) return out
+
+    return [...out, path]
+  }, [])
 }

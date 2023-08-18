@@ -41,7 +41,6 @@ type RouteObjectWithMetadata = import('react-router').RouteObject & {
 
 type RootComponentProps = {
   routerProvider?: JSX.Element
-  url?: string
 }
 
 type LayoutComponentProps = {

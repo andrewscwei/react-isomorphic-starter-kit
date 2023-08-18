@@ -10,10 +10,9 @@ import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject, matchRoutes } from 'react-router'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { I18nConfig, createGetLocalizedString, createResolveLocaleOptions, parseURL, resolveLocaleFromURL } from '../i18n'
+import { I18nConfig, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
 import { joinURL } from '../utils'
 import { createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
-import { parse } from 'url'
 
 type Params = {
   layoutComponent: ComponentType<LayoutComponentProps>
@@ -43,7 +42,6 @@ export default function renderLayout({
 
     const root = createElement(rootComponent, {
       routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
-      url: req.url,
     })
 
     const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
