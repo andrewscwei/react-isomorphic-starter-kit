@@ -2,6 +2,9 @@
  * @file Runtime application config.
  */
 
+import { I18nConfig, loadTranslations } from '../lib/i18n'
+import { tryOrUndefined } from '../lib/utils'
+
 /**
  * Full version string.
  */
@@ -43,20 +46,18 @@ export const BASE_URL = __BUILD_ARGS__.baseURL
 export const BASE_PATH = __BUILD_ARGS__.basePath
 
 /**
- * Default locale.
- */
-export const DEFAULT_LOCALE = __BUILD_ARGS__.defaultLocale
-
-/**
- * Location in the URL to infer the current locale, available options are "path"
- * and "query".
- */
-export const LOCALE_CHANGE_STRATEGY = 'path'
-
-/**
  * Port.
  */
 export const PORT = Number(typeof process !== 'undefined' && process.env.PORT || 8080)
+
+/**
+ * I18n config.
+ */
+export const I18N_CONFIG: I18nConfig = {
+  defaultLocale: __BUILD_ARGS__.defaultLocale,
+  localeChangeStrategy: 'path',
+  translations: tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
+}
 
 /**
  * Specifies whether the creation of the HTTP server should be skipped.

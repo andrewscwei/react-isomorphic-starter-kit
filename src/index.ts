@@ -9,8 +9,7 @@ import ip from 'ip'
 import morgan from 'morgan'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
-import { PORT, SKIP_HTTP } from './app.conf'
-import { i18nConfig } from './locales'
+import { I18N_CONFIG, PORT, SKIP_HTTP } from './app.conf'
 import handle404 from './middleware/handle404'
 import handle500 from './middleware/handle500'
 import routesConf from './routes.conf'
@@ -34,7 +33,7 @@ app.use(renderLayout({
   layoutComponent: Layout,
   rootComponent: App,
   routes: routesConf,
-  i18n: i18nConfig,
+  i18n: I18N_CONFIG,
 }))
 
 app.use(handle404())
