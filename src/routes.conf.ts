@@ -3,7 +3,7 @@
  */
 
 import { generateLocalizedRoutes } from '../lib/i18n'
-import i18nConf from './i18n.conf'
+import { I18N } from './app.conf'
 
 const routes: RouteObjectWithMetadata[] = [{
   path: '/',
@@ -20,4 +20,4 @@ const routes: RouteObjectWithMetadata[] = [{
   metadata: async ltxt => ({ title: ltxt('window-title-not-found') }),
 }]
 
-export default generateLocalizedRoutes(routes, i18nConf)
+export default generateLocalizedRoutes(routes, I18N)

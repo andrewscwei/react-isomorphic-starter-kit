@@ -2,6 +2,9 @@
  * @file Runtime application config.
  */
 
+import { I18nConfig, loadTranslations } from '../lib/i18n'
+import { tryOrUndefined } from '../lib/utils'
+
 /**
  * Full version string.
  */
@@ -26,6 +29,15 @@ export const THEME_COLOR = '#15141a'
  * Value for the `color` attribute of the `mask-icon` meta tag.
  */
 export const MASK_ICON_COLOR = '#000'
+
+/**
+ * I18n config.
+ */
+export const I18N: I18nConfig = {
+  defaultLocale: __BUILD_ARGS__.defaultLocale,
+  localeChangeStrategy: 'path',
+  translations: tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
+}
 
 /**
  * Base URL of the app.

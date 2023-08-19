@@ -10,8 +10,7 @@ import morgan from 'morgan'
 import { handle404, handle500 } from '../lib/middleware'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
-import { PORT, SKIP_HTTP } from './app.conf'
-import i18nConf from './i18n.conf'
+import { I18N, PORT, SKIP_HTTP } from './app.conf'
 import routesConf from './routes.conf'
 import Layout from './templates/Layout'
 import App from './ui/App'
@@ -33,7 +32,7 @@ app.use(renderLayout({
   layoutComponent: Layout,
   rootComponent: App,
   routes: routesConf,
-  i18n: i18nConf,
+  i18n: I18N,
 }))
 
 app.use(handle404())
