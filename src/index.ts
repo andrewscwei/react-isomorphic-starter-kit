@@ -7,11 +7,11 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
+import { handle404, handle500 } from '../lib/middleware'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
-import { I18N_CONFIG, PORT, SKIP_HTTP } from './app.conf'
-import handle404 from './middleware/handle404'
-import handle500 from './middleware/handle500'
+import { PORT, SKIP_HTTP } from './app.conf'
+import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
 import Layout from './templates/Layout'
 import App from './ui/App'
@@ -33,7 +33,7 @@ app.use(renderLayout({
   layoutComponent: Layout,
   rootComponent: App,
   routes: routesConf,
-  i18n: I18N_CONFIG,
+  i18n: i18nConf,
 }))
 
 app.use(handle404())

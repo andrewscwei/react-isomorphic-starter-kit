@@ -2,9 +2,6 @@
  * @file Runtime application config.
  */
 
-import { I18nConfig, loadTranslations } from '../lib/i18n'
-import { tryOrUndefined } from '../lib/utils'
-
 /**
  * Full version string.
  */
@@ -13,12 +10,12 @@ export const VERSION = `v${__BUILD_ARGS__.version}+build.${__BUILD_ARGS__.buildN
 /**
  * Fallback app title.
  */
-export const APP_NAME = 'React Isomorphic Starter Kit'
+export const TITLE = 'React Isomorphic Starter Kit'
 
 /**
  * Fallback app description.
  */
-export const APP_DESCRIPTION = 'React isomorphic app starter kit'
+export const DESCRIPTION = 'React isomorphic app starter kit'
 
 /**
  * Value for the `theme-color` meta tag.
@@ -54,15 +51,6 @@ export const PUBLIC_URL = __BUILD_ARGS__.publicURL
  * Port.
  */
 export const PORT = Number(typeof process !== 'undefined' && process.env.PORT || 8080)
-
-/**
- * I18n config.
- */
-export const I18N_CONFIG: I18nConfig = {
-  defaultLocale: __BUILD_ARGS__.defaultLocale,
-  localeChangeStrategy: 'path',
-  translations: tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
-}
 
 /**
  * Specifies whether the creation of the HTTP server should be skipped.

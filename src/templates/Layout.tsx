@@ -4,7 +4,8 @@
 
 import React, { PropsWithChildren } from 'react'
 import { joinURL } from '../../lib/utils'
-import { APP_DESCRIPTION, APP_NAME, BASE_URL, I18N_CONFIG, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR } from '../app.conf'
+import { BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from '../app.conf'
+import i18nConf from '../i18n.conf'
 
 type Props = PropsWithChildren<LayoutComponentProps>
 
@@ -14,9 +15,9 @@ export default function Layout({
   metadata = {},
   resolveAssetPath = t => t,
 }: Props) {
-  const baseTitle = APP_NAME
-  const pageDescription = metadata.description ?? APP_DESCRIPTION
-  const pageLocale = metadata.locale ?? I18N_CONFIG.defaultLocale
+  const baseTitle = TITLE
+  const pageDescription = metadata.description ?? DESCRIPTION
+  const pageLocale = metadata.locale ?? i18nConf.defaultLocale
   const pageTitle = metadata.title ?? baseTitle
   const pageUrl = metadata.url ?? BASE_URL
   const pageThemeColor = THEME_COLOR
