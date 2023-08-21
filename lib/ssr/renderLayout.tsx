@@ -37,7 +37,6 @@ export default function renderLayout({
 
   return async (req, res) => {
     const { handler, context } = await createStaticHandlerAndContext(req, { routes })
-
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const root = createElement(rootComponent, {

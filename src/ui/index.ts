@@ -3,9 +3,10 @@
  */
 
 import Worker from 'worker-loader!../workers/web'
-import { mountRoot } from '../../lib/dom'
+import { loadLazyComponents, mountRoot } from '../../lib/dom'
 import { useDebug } from '../../lib/utils'
 import { VERSION } from '../app.conf'
+import routesConf from '../routes.conf'
 import App from './App'
 
 window.__VERSION__ = VERSION
@@ -20,4 +21,4 @@ worker.addEventListener('message', event => {
   worker.terminate()
 })
 
-mountRoot(App)
+loadLazyComponents(routesConf).then(() => mountRoot(App))
