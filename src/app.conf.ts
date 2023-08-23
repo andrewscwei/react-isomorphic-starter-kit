@@ -65,8 +65,3 @@ export const PUBLIC_URL = __BUILD_ARGS__.publicURL
  * Port.
  */
 export const PORT = Number(typeof process !== 'undefined' && process.env.PORT || 8080)
-
-/**
- * Specifies whether the creation of the HTTP server should be skipped.
- */
-export const SKIP_HTTP = typeof process !== 'undefined' && process.env.SKIP_HTTP === 'true' || false

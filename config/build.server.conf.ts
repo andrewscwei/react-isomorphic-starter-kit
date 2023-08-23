@@ -4,7 +4,7 @@
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
-import { BannerPlugin, Configuration, DefinePlugin, EnvironmentPlugin, WatchIgnorePlugin } from 'webpack'
+import { BannerPlugin, Configuration, DefinePlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
@@ -69,6 +69,9 @@ const config: Configuration = {
     __dirname: false,
     __filename: false,
   },
+  optimization: {
+    nodeEnv: false,
+  },
   output: {
     filename: '[name].js',
     libraryTarget: 'commonjs2',
@@ -85,9 +88,6 @@ const config: Configuration = {
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
       __BUILD_ARGS__: JSON.stringify(buildArgs),
-    }),
-    new EnvironmentPlugin({
-      NODE_ENV: 'production',
     }),
     ...buildArgs.useSourceMaps ? [
       new BannerPlugin({

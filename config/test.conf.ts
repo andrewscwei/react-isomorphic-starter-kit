@@ -8,7 +8,6 @@ import * as buildArgs from './build.args'
 
 const config: Config = {
   bail: true,
-  detectOpenHandles: true,
   globals: {
     __BUILD_ARGS__: buildArgs,
   },

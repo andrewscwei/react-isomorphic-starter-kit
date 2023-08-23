@@ -10,7 +10,7 @@ import morgan from 'morgan'
 import { handle404, handle500 } from '../lib/middleware'
 import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
 import { useDebug } from '../lib/utils'
-import { I18N, PORT, SKIP_HTTP } from './app.conf'
+import { I18N, PORT } from './app.conf'
 import routesConf from './routes.conf'
 import Layout from './templates/Layout'
 import App from './ui/App'
@@ -38,7 +38,7 @@ app.use(renderLayout({
 app.use(handle404())
 app.use(handle500())
 
-if (!SKIP_HTTP) {
+if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT)
     .on('error', (error: NodeJS.ErrnoException) => {
       if (error.syscall !== 'listen') throw error
