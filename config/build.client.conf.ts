@@ -22,7 +22,7 @@ const config: Configuration = {
   devtool: buildArgs.useSourceMaps ? 'source-map' : false,
   entry: {
     main: [
-      path.join(buildArgs.inputDir, 'ui', 'index.ts'),
+      path.join(buildArgs.inputDir, 'index.client.ts'),
       ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
     ],
   },

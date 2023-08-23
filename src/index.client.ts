@@ -2,12 +2,12 @@
  * @file Loads and parses all translations into a map.
  */
 
-import Worker from 'worker-loader!../workers/web'
-import { loadLazyComponents, mountRoot } from '../../lib/dom'
-import { useDebug } from '../../lib/utils'
-import { VERSION } from '../app.conf'
-import routesConf from '../routes.conf'
-import App from './App'
+import Worker from 'worker-loader!./workers/web'
+import { loadLazyComponents, mountRoot } from '../lib/dom'
+import { useDebug } from '../lib/utils'
+import { VERSION } from './app.conf'
+import routesConf from './routes.conf'
+import App from './ui/App'
 
 window.__VERSION__ = VERSION
 
