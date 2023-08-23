@@ -36,7 +36,9 @@ export const MASK_ICON_COLOR = '#000'
 export const I18N: I18nConfig = {
   defaultLocale: __BUILD_ARGS__.defaultLocale,
   localeChangeStrategy: 'path',
-  translations: tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
+  translations: process.env.NODE_ENV === 'test'
+    ? { [__BUILD_ARGS__.defaultLocale]: {} }
+    : tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
 }
 
 /**
