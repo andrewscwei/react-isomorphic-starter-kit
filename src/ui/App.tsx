@@ -10,13 +10,15 @@ import './styles/theme.css'
 
 type Props = PropsWithChildren
 
+const { publicPath } = __BUILD_ARGS__
+
 export default function App({ children }: Props) {
   useFavicon({
     icon: {
-      darkImage: joinURL(__BUILD_ARGS__.publicPath, 'favicon-dark.svg'),
+      darkImage: joinURL(publicPath, 'favicon-dark.svg'),
     },
     alternateIcon: {
-      darkImage: joinURL(__BUILD_ARGS__.publicPath, 'favicon-dark.png'),
+      darkImage: joinURL(publicPath, 'favicon-dark.png'),
     },
   })
 

@@ -12,9 +12,11 @@ import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
 import App from './ui/App'
 
+const { basePath } = __BUILD_ARGS__
+
 export default initClient(({ routes }) => (
   <App>
-    <RouterProvider router={createBrowserRouter(routes, { basename: __BUILD_ARGS__.basePath })}/>
+    <RouterProvider router={createBrowserRouter(routes, { basename: basePath })}/>
   </App>
 ), {
   i18n: i18nConf,
