@@ -14,18 +14,17 @@ import serveStatic from './serveStatic'
 type Config = {
   defaultMetadata?: Metadata
   i18n: I18nConfig
-  port: number
   routes: RouteObjectWithMetadata[]
 }
 
 const debug = useDebug(undefined, 'server')
+const { port } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
 export default function initServer(render: (props: RenderProps) => JSX.Element, {
   defaultMetadata,
   i18n,
-  port,
   routes,
 }: Config) {
   const app = express()
