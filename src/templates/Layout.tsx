@@ -75,6 +75,7 @@ export default function Layout({
 
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
+        <script defer type='application/javascript' src={resolveAssetPath('/workers.js')}></script>
       </head>
       <body>
         <div id='root'>

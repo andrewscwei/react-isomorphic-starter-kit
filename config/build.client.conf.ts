@@ -25,6 +25,10 @@ const config: Configuration = {
       path.join(buildArgs.inputDir, 'index.client.tsx'),
       ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
     ],
+    workers: [
+      path.join(buildArgs.inputDir, 'index.workers.tsx'),
+      ...isDev ? ['webpack-hot-middleware/client?reload=true'] : [],
+    ],
   },
   mode: isDev ? 'development' : 'production',
   module: {

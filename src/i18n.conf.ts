@@ -5,10 +5,12 @@
 import { I18nConfig, loadTranslations } from '../lib/i18n'
 import { tryOrUndefined } from '../lib/utils'
 
-export default {
+const i18n: I18nConfig = {
   defaultLocale: __BUILD_ARGS__.defaultLocale,
   localeChangeStrategy: 'path',
   translations: process.env.NODE_ENV === 'test'
     ? { [__BUILD_ARGS__.defaultLocale]: {} }
     : tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? {},
-} as I18nConfig
+}
+
+export default i18n

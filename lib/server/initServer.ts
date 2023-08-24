@@ -6,7 +6,7 @@ import morgan from 'morgan'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
-import renderLayout from './renderLayout'
+import renderRoot from './renderRoot'
 import renderRobots from './renderRobots'
 import renderSitemap from './renderSitemap'
 import serveLocalStatic from './serveLocalStatic'
@@ -19,9 +19,9 @@ type Config = {
 
 const debug = useDebug(undefined, 'server')
 
-export default function initServer(render: Parameters<typeof renderLayout>[0]['render'], {
-  routes: routesConf,
-  i18n: i18nConf,
+export default function initServer(render: Parameters<typeof renderRoot>[0]['render'], {
+  routes,
+  i18n,
   port,
 }: Config) {
   const app = express()
@@ -33,11 +33,11 @@ export default function initServer(render: Parameters<typeof renderLayout>[0]['r
   if (process.env.NODE_ENV === 'development') app.use(require('../dev').hmr())
   if (process.env.NODE_ENV !== 'development') app.use(serveLocalStatic())
 
-  const routes = generateLocalizedRoutes(routesConf, i18nConf)
+  const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
   app.use(renderRobots())
-  app.use(renderSitemap({ routes }))
-  app.use(renderLayout({ routes, i18n: i18nConf, render }))
+  app.use(renderSitemap({ routes: localizedRoutes }))
+  app.use(renderRoot({ routes: localizedRoutes, i18n, render }))
   app.use(handle500())
 
   if (port !== undefined) {

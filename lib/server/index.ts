@@ -1,6 +1,6 @@
 export { default as handle500 } from './handle500'
 export { default as initServer } from './initServer'
-export { default as renderLayout } from './renderLayout'
 export { default as renderRobots } from './renderRobots'
+export { default as renderRoot } from './renderRoot'
 export { default as renderSitemap } from './renderSitemap'
 export { default as serveLocalStatic } from './serveLocalStatic'

@@ -17,24 +17,25 @@ type RenderProps = {
 const debug = useDebug(undefined, 'app')
 
 export default async function initClient(render: (props: RenderProps) => JSX.Element, {
-  routes: routesConf,
-  i18n: i18nConf,
+  routes,
+  i18n,
   containerId = 'root',
 }: Config) {
   window.__VERSION__ = __BUILD_ARGS__.version
 
-  const routes = generateLocalizedRoutes(routesConf, i18nConf)
+  const localizedRoutes = generateLocalizedRoutes(routes, i18n)
   const container = document.getElementById(containerId ?? 'root')
 
   if (!container) throw console.warn(`No container with ID <${containerId}> found`)
 
-  await loadLazyComponents(routes)
+  const root = render({ routes: localizedRoutes })
 
   if (process.env.NODE_ENV === 'development') {
-    createRoot(container).render(render({ routes }))
+    createRoot(container).render(root)
   }
   else {
-    hydrateRoot(container, render({ routes }))
+    await loadLazyComponents(localizedRoutes)
+    hydrateRoot(container, root)
   }
 
   debug('Initializing client...', 'OK')

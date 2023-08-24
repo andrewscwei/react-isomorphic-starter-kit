@@ -38,14 +38,14 @@ export const BASE_URL = __BUILD_ARGS__.baseURL
 export const BASE_PATH = __BUILD_ARGS__.basePath
 
 /**
- * Public path for static assets.
- */
-export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
-
-/**
  * Absolute public URL for static assets.
  */
 export const PUBLIC_URL = __BUILD_ARGS__.publicURL
+
+/**
+ * Public path for static assets.
+ */
+export const PUBLIC_PATH = __BUILD_ARGS__.publicPath
 
 /**
  * Port.

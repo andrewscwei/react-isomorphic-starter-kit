@@ -25,16 +25,16 @@ type RenderProps = LayoutComponentProps & {
 
 const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
 
-export default function renderLayout({ i18n, routes, render }: Params): RequestHandler {
+export default function renderRoot({ i18n, routes, render }: Params): RequestHandler {
   return async (req, res) => {
     const { handler, context } = await createStaticHandlerAndContext(req, { routes })
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifestFile: path.join(__dirname, assetManifestFile) })
     const metadata = await createMetadata(req, { baseURL, i18n })
-    const element = render({ context, metadata, routes: handler.dataRoutes, resolveAssetPath })
+    const root = render({ context, metadata, routes: handler.dataRoutes, resolveAssetPath })
 
-    const { pipe } = renderToPipeableStream(element, {
+    const { pipe } = renderToPipeableStream(root, {
       onShellReady() {
         res.setHeader('content-type', 'text/html')
         pipe(res)
