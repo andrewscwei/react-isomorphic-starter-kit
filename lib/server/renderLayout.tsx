@@ -39,13 +39,13 @@ export default function renderLayout({
     const { handler, context } = await createStaticHandlerAndContext(req, { routes })
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
-    const root = createElement(rootComponent, {
-      routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
-    })
-
     const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
     const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
     const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
+
+    const root = createElement(rootComponent, {
+      routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
+    })
 
     const layout = createElement(layoutComponent, {
       injectScripts: !isDev,

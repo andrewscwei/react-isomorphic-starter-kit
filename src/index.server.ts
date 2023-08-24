@@ -2,66 +2,16 @@
  * @file Server entry file.
  */
 
-import compression from 'compression'
-import express from 'express'
-import helmet from 'helmet'
-import ip from 'ip'
-import morgan from 'morgan'
-import { handle404, handle500 } from '../lib/middleware'
-import { renderLayout, renderRobots, renderSitemap, serveLocalStatic } from '../lib/ssr'
-import { useDebug } from '../lib/utils'
+import { createServer } from '../lib/server'
 import { I18N, PORT } from './app.conf'
 import routesConf from './routes.conf'
 import Layout from './templates/Layout'
 import App from './ui/App'
 
-const debug = useDebug(undefined, 'server')
-
-const app = express()
-app.use(morgan('dev'))
-app.use(compression())
-app.use(helmet({ contentSecurityPolicy: false }))
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-if (process.env.NODE_ENV === 'development') app.use(require('../lib/dev').hmr())
-if (process.env.NODE_ENV !== 'development') app.use(serveLocalStatic())
-
-app.use(renderRobots())
-app.use(renderSitemap({ routes: routesConf }))
-app.use(renderLayout({
+export default createServer({
   layoutComponent: Layout,
   rootComponent: App,
   routes: routesConf,
   i18n: I18N,
-}))
-
-app.use(handle404())
-app.use(handle500())
-
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT)
-    .on('error', (error: NodeJS.ErrnoException) => {
-      if (error.syscall !== 'listen') throw error
-
-      switch (error.code) {
-        case 'EACCES':
-          debug(`Port ${PORT} requires elevated privileges`)
-          process.exit(1)
-        case 'EADDRINUSE':
-          debug(`Port ${PORT} is already in use`)
-          process.exit(1)
-        default:
-          throw error
-      }
-    })
-    .on('listening', () => {
-      debug(`App is listening on ${ip.address()}:${PORT}`)
-    })
-
-  process.on('unhandledRejection', reason => {
-    console.error('Unhandled Promise rejection:', reason)
-    process.exit(1)
-  })
-}
-
-export default app
+  port: process.env.NODE_ENV === 'test' ? undefined : PORT,
+})
