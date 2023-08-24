@@ -5,7 +5,6 @@ import ip from 'ip'
 import morgan from 'morgan'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
-import handle404 from './handle404'
 import handle500 from './handle500'
 import renderLayout from './renderLayout'
 import renderRobots from './renderRobots'
@@ -39,7 +38,6 @@ export default function initServer(render: Parameters<typeof renderLayout>[0]['r
   app.use(renderRobots())
   app.use(renderSitemap({ routes }))
   app.use(renderLayout({ routes, i18n: i18nConf, render }))
-  app.use(handle404())
   app.use(handle500())
 
   if (port !== undefined) {

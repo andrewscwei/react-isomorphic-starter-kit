@@ -1,4 +1,3 @@
-export { default as handle404 } from './handle404'
 export { default as handle500 } from './handle500'
 export { default as initServer } from './initServer'
 export { default as renderLayout } from './renderLayout'
