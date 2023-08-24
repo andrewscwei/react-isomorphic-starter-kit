@@ -40,7 +40,7 @@ type RouteObjectWithMetadata = import('react-router').RouteObject & {
 }
 
 type LayoutComponentProps = {
-  injectScripts?: boolean
+  injectStyles?: boolean
   metadata?: {
     description?: string
     locale?: string

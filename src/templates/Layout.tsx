@@ -10,7 +10,7 @@ type Props = PropsWithChildren<LayoutComponentProps>
 
 export default function Layout({
   children,
-  injectScripts = false,
+  injectStyles = false,
   metadata = {},
   resolveAssetPath = t => t,
 }: Props) {
@@ -70,8 +70,8 @@ export default function Layout({
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 
-        {injectScripts && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
-        {injectScripts && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
+        {injectStyles && <link rel='stylesheet' href={resolveAssetPath('/common.css')}/>}
+        {injectStyles && <link rel='stylesheet' href={resolveAssetPath('/main.css')}/>}
 
         <script defer type='application/javascript' src={resolveAssetPath('/common.js')}></script>
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>

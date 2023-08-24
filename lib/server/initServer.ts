@@ -12,8 +12,8 @@ import renderSitemap from './renderSitemap'
 import serveLocalStatic from './serveLocalStatic'
 
 type Config = {
-  routes: RouteObjectWithMetadata[]
   i18n: I18nConfig
+  routes: RouteObjectWithMetadata[]
   port?: number
 }
 

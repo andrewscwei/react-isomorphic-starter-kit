@@ -15,7 +15,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
 export default initServer(({ routes, context, metadata, resolveAssetPath }) => (
-  <Layout injectScripts={!isDev} metadata={metadata} resolveAssetPath={resolveAssetPath}>
+  <Layout injectStyles={!isDev} metadata={metadata} resolveAssetPath={resolveAssetPath}>
     <App>
       {!isDev && <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>}
     </App>

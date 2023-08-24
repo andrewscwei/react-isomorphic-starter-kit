@@ -18,11 +18,9 @@ type Params = {
   render: (props: RenderProps) => JSX.Element
 }
 
-type RenderProps = {
+type RenderProps = LayoutComponentProps & {
   context: StaticHandlerContext
-  metadata: Record<string, any>
   routes: RouteObject[]
-  resolveAssetPath: ReturnType<typeof createResolveAssetPath>
 }
 
 const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
