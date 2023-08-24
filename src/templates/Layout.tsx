@@ -4,7 +4,7 @@
 
 import React, { PropsWithChildren } from 'react'
 import { joinURL } from '../../lib/utils'
-import { BASE_URL, DESCRIPTION, I18N, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from '../app.conf'
+import { BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from '../app.conf'
 
 type Props = PropsWithChildren<LayoutComponentProps>
 
@@ -16,7 +16,7 @@ export default function Layout({
 }: Props) {
   const baseTitle = TITLE
   const pageDescription = metadata.description ?? DESCRIPTION
-  const pageLocale = metadata.locale ?? I18N.defaultLocale
+  const pageLocale = metadata.locale
   const pageTitle = metadata.title ?? baseTitle
   const pageUrl = metadata.url ?? BASE_URL
   const pageThemeColor = THEME_COLOR

@@ -1,5 +1,5 @@
+export { default as initClient } from './initClient'
 export { default as loadLazyComponents } from './loadLazyComponents'
-export { default as mountRoot } from './mountRoot'
 export { default as updateElementAttributes } from './updateElementAttributes'
 export { default as useDocumentDescription } from './useDocumentDescription'
 export { default as useDocumentLocale } from './useDocumentLocale'

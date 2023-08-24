@@ -39,10 +39,6 @@ type RouteObjectWithMetadata = import('react-router').RouteObject & {
   metadata?: (ltxt: (keyPath: string, ...args: any[]) => string) => Promise<{ title?: string; description?: string }>
 }
 
-type RootComponentProps = {
-  routerProvider?: JSX.Element
-}
-
 type LayoutComponentProps = {
   injectScripts?: boolean
   metadata?: {

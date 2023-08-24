@@ -3,9 +3,7 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
-import { ComponentType } from 'react'
-import { RouteObject } from 'react-router'
-import { I18nConfig } from '../i18n'
+import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import handle404 from './handle404'
 import handle500 from './handle500'
@@ -14,23 +12,19 @@ import renderRobots from './renderRobots'
 import renderSitemap from './renderSitemap'
 import serveLocalStatic from './serveLocalStatic'
 
-type Options = {
-  layoutComponent: ComponentType<LayoutComponentProps>
-  rootComponent: ComponentType<RootComponentProps>
-  routes: RouteObject[]
+type Config = {
+  routes: RouteObjectWithMetadata[]
   i18n: I18nConfig
   port?: number
 }
 
 const debug = useDebug(undefined, 'server')
 
-export default function createServer({
-  layoutComponent,
-  rootComponent,
-  routes,
-  i18n,
+export default function initServer(render: Parameters<typeof renderLayout>[0]['render'], {
+  routes: routesConf,
+  i18n: i18nConf,
   port,
-}: Options) {
+}: Config) {
   const app = express()
   app.use(morgan('dev'))
   app.use(compression())
@@ -40,15 +34,11 @@ export default function createServer({
   if (process.env.NODE_ENV === 'development') app.use(require('../dev').hmr())
   if (process.env.NODE_ENV !== 'development') app.use(serveLocalStatic())
 
+  const routes = generateLocalizedRoutes(routesConf, i18nConf)
+
   app.use(renderRobots())
   app.use(renderSitemap({ routes }))
-  app.use(renderLayout({
-    layoutComponent,
-    rootComponent,
-    routes,
-    i18n,
-  }))
-
+  app.use(renderLayout({ routes, i18n: i18nConf, render }))
   app.use(handle404())
   app.use(handle500())
 

@@ -22,14 +22,14 @@ export const debugEnabled = process.env.DEBUG_ENABLED === 'true' || process.env.
 export const debugChannels = process.env.DEBUG_CHANNELS?.split(',') || ['app']
 
 /**
- * Version number.
- */
-export const version = packageVersion
-
-/**
  * Build number.
  */
 export const buildNumber = process.env.BUILD_NUMBER || 'local'
+
+/**
+ * Version number.
+ */
+export const version = `v${packageVersion}+build.${buildNumber}`
 
 /**
  * Base URL of the app.

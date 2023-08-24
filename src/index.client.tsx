@@ -2,14 +2,16 @@
  * @file Loads and parses all translations into a map.
  */
 
+import React from 'react'
+import { RouterProvider } from 'react-router'
+import { createBrowserRouter } from 'react-router-dom'
 import Worker from 'worker-loader!./workers/web'
-import { loadLazyComponents, mountRoot } from '../lib/dom'
+import { initClient } from '../lib/dom'
 import { useDebug } from '../lib/utils'
-import { VERSION } from './app.conf'
+import { BASE_PATH } from './app.conf'
+import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
 import App from './ui/App'
-
-window.__VERSION__ = VERSION
 
 const debug = useDebug()
 
@@ -21,4 +23,8 @@ worker.addEventListener('message', event => {
   worker.terminate()
 })
 
-loadLazyComponents(routesConf).then(() => mountRoot(App))
+export default initClient(({ routes }) => (
+  <App>
+    <RouterProvider router={createBrowserRouter(routes, { basename: BASE_PATH })}/>
+  </App>
+), { i18n: i18nConf, routes: routesConf })

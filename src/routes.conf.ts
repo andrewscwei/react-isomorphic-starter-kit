@@ -2,9 +2,6 @@
  * @file Client router config.
  */
 
-import { generateLocalizedRoutes } from '../lib/i18n'
-import { I18N } from './app.conf'
-
 const routes: RouteObjectWithMetadata[] = [{
   path: '/',
   index: true,
@@ -20,4 +17,4 @@ const routes: RouteObjectWithMetadata[] = [{
   metadata: async ltxt => ({ title: ltxt('window-title-not-found') }),
 }]
 
-export default generateLocalizedRoutes(routes, I18N)
+export default routes

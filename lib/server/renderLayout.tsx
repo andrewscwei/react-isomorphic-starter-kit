@@ -4,60 +4,39 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
+import { StaticHandlerContext } from '@remix-run/router'
 import { RequestHandler } from 'express'
 import path from 'path'
-import React, { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { RouteObject, matchRoutes } from 'react-router'
-import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { I18nConfig, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../i18n'
-import { joinURL } from '../utils'
-import { createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
+import { RouteObject } from 'react-router'
+import { I18nConfig } from '../i18n'
+import { createMetadata, createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
 
 type Params = {
-  layoutComponent: ComponentType<LayoutComponentProps>
-  rootComponent: ComponentType<RootComponentProps>
-  routes: RouteObject[]
   i18n: I18nConfig
+  routes: RouteObject[]
+  render: (props: RenderProps) => JSX.Element
+}
+
+type RenderProps = {
+  context: StaticHandlerContext
+  metadata: Record<string, any>
+  routes: RouteObject[]
+  resolveAssetPath: ReturnType<typeof createResolveAssetPath>
 }
 
 const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
-const isDev = process.env.NODE_ENV === 'development'
 
-export default function renderLayout({
-  i18n,
-  layoutComponent,
-  rootComponent,
-  routes,
-}: Params): RequestHandler {
-  const resolveAssetPath = createResolveAssetPath({
-    publicPath,
-    manifestFile: path.join(__dirname, assetManifestFile),
-  })
-
+export default function renderLayout({ i18n, routes, render }: Params): RequestHandler {
   return async (req, res) => {
     const { handler, context } = await createStaticHandlerAndContext(req, { routes })
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
-    const resolveResult = resolveLocaleFromURL(req.url, createResolveLocaleOptions(i18n))
-    const matchedRouteObject = matchRoutes(routes, req.url)?.[0]?.route as RouteObjectWithMetadata
-    const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
+    const resolveAssetPath = createResolveAssetPath({ publicPath, manifestFile: path.join(__dirname, assetManifestFile) })
+    const metadata = await createMetadata(req, { baseURL, i18n })
+    const element = render({ context, metadata, routes: handler.dataRoutes, resolveAssetPath })
 
-    const root = createElement(rootComponent, {
-      routerProvider: <StaticRouterProvider router={createStaticRouter(handler.dataRoutes, context)} context={context}/>,
-    })
-
-    const layout = createElement(layoutComponent, {
-      injectScripts: !isDev,
-      metadata: {
-        ...metadata ?? {},
-        locale: resolveResult?.locale,
-        url: joinURL(baseURL, req.url),
-      },
-      resolveAssetPath,
-    }, !isDev && root)
-
-    const { pipe } = renderToPipeableStream(layout, {
+    const { pipe } = renderToPipeableStream(element, {
       onShellReady() {
         res.setHeader('content-type', 'text/html')
         pipe(res)

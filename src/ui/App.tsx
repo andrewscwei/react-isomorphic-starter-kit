@@ -2,18 +2,16 @@
  * @file Client app root.
  */
 
-import React, { StrictMode } from 'react'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import React, { PropsWithChildren, StrictMode } from 'react'
 import { useFavicon, useThemeColor } from '../../lib/dom'
 import { joinURL } from '../../lib/utils'
-import { BASE_PATH, MASK_ICON_COLOR, PUBLIC_PATH, THEME_COLOR } from '../app.conf'
-import routesConf from '../routes.conf'
+import { MASK_ICON_COLOR, PUBLIC_PATH, THEME_COLOR } from '../app.conf'
 import './styles/global.css'
 import './styles/theme.css'
 
-type Props = RootComponentProps
+type Props = PropsWithChildren
 
-export default function App({ routerProvider }: Props) {
+export default function App({ children }: Props) {
   useThemeColor(THEME_COLOR)
 
   useFavicon({
@@ -28,11 +26,9 @@ export default function App({ routerProvider }: Props) {
     },
   })
 
-  const renderRouter = () => routerProvider ?? <RouterProvider router={createBrowserRouter(routesConf, { basename: BASE_PATH })}/>
-
   return (
     <StrictMode>
-      {renderRouter()}
+      {children}
     </StrictMode>
   )
 }
