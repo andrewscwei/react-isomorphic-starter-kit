@@ -12,8 +12,6 @@ import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
 import App from './ui/App'
 
-const debug = useDebug()
-
 export default initClient(({ routes }) => (
   <App>
     <RouterProvider router={createBrowserRouter(routes, { basename: __BUILD_ARGS__.basePath })}/>
@@ -26,6 +24,7 @@ export default initClient(({ routes }) => (
 const worker = new Worker()
 worker.postMessage({ message: 'Marco' })
 worker.addEventListener('message', event => {
+  const debug = useDebug()
   const message = event.data.message
   debug('Receiving message from worker...', 'OK', message)
   worker.terminate()
