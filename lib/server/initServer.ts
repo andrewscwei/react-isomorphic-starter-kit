@@ -7,10 +7,10 @@ import { ComponentType } from 'react'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
-import renderRobots from './renderRobots'
 import renderRoot, { type Props as RenderProps } from './renderRoot'
-import renderSitemap from './renderSitemap'
-import serveLocalStatic from './serveLocalStatic'
+import serveRobots from './serveRobots'
+import serveSitemap from './serveSitemap'
+import serveStatic from './serveStatic'
 
 type Config = {
   i18n: I18nConfig
@@ -36,12 +36,12 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   if (isDev) app.use(require('../dev').hmr())
-  if (!isDev) app.use(serveLocalStatic())
+  if (!isDev) app.use(serveStatic())
 
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
-  app.use(renderRobots())
-  app.use(renderSitemap({ routes: localizedRoutes }))
+  app.use(serveRobots())
+  app.use(serveSitemap({ routes: localizedRoutes }))
   app.use(renderRoot({ i18n, layout, routes: localizedRoutes, render: isDev ? undefined : render }))
   app.use(handle500())
 
@@ -64,12 +64,12 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
       .on('listening', () => {
         debug(`App is listening on ${ip.address()}:${port}`)
       })
-
-    process.on('unhandledRejection', reason => {
-      console.error('Unhandled Promise rejection:', reason)
-      process.exit(1)
-    })
   }
+
+  process.on('unhandledRejection', reason => {
+    console.error('Unhandled Promise rejection:', reason)
+    process.exit(1)
+  })
 
   return app
 }

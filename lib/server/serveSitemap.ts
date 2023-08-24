@@ -12,7 +12,7 @@ const { baseURL } = __BUILD_ARGS__
 /**
  * Sitemap generator.
  */
-export default function renderSitemap({ routes }: Params) {
+export default function serveSitemap({ routes }: Params) {
   const router = Router()
 
   router.use('/sitemap.xml', async (req, res, next) => {

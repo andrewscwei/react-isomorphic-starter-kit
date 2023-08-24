@@ -9,7 +9,7 @@ const { publicPath } = __BUILD_ARGS__
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export default function serveLocalStatic() {
+export default function serveStatic() {
   const router = Router()
   const localPublicPath = path.join(__dirname, publicPath)
 

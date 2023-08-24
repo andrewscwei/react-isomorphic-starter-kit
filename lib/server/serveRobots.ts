@@ -3,7 +3,7 @@ import { Router } from 'express'
 /**
  * `robots.txt` generator.
  */
-export default function renderRobots() {
+export default function serveRobots() {
   const router = Router()
 
   router.use('/robots.txt', async (req, res, next) => {
