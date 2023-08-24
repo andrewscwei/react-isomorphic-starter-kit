@@ -3,10 +3,16 @@
  */
 
 import React, { PropsWithChildren } from 'react'
-import { joinURL } from '../../lib/utils'
-import { BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from '../app.conf'
+import { joinURL } from '../utils'
+import { createResolveAssetPath } from './helpers'
 
-type Props = PropsWithChildren<LayoutComponentProps>
+type Props = PropsWithChildren<{
+  injectStyles?: boolean
+  metadata?: Metadata
+  resolveAssetPath?: ReturnType<typeof createResolveAssetPath>
+}>
+
+const { defaultLocale, publicURL } = __BUILD_ARGS__
 
 export default function Layout({
   children,
@@ -14,13 +20,13 @@ export default function Layout({
   metadata = {},
   resolveAssetPath = t => t,
 }: Props) {
-  const baseTitle = TITLE
-  const pageDescription = metadata.description ?? DESCRIPTION
-  const pageLocale = metadata.locale
+  const baseTitle = metadata.baseTitle
+  const pageDescription = metadata.description
+  const pageLocale = metadata.locale ?? defaultLocale
   const pageTitle = metadata.title ?? baseTitle
-  const pageUrl = metadata.url ?? BASE_URL
-  const pageThemeColor = THEME_COLOR
-  const pageMaskIconColor = MASK_ICON_COLOR ?? pageThemeColor
+  const pageURL = metadata.url
+  const pageThemeColor = metadata.themeColor
+  const pageMaskIconColor = metadata.maskIconColor ?? pageThemeColor
 
   return (
     <html lang={pageLocale}>
@@ -28,12 +34,12 @@ export default function Layout({
         <meta charSet='utf-8'/>
         <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
         <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover'/>
-        <meta name='description' content={pageDescription}/>
-        <meta name='theme-color' content={pageThemeColor}/>
+        {pageDescription && <meta name='description' content={pageDescription}/>}
+        {pageThemeColor && <meta name='theme-color' content={pageThemeColor}/>}
 
         <title>{pageTitle}</title>
 
-        <link rel='canonical' href={pageUrl}/>
+        {pageURL && <link rel='canonical' href={pageURL}/>}
         <link rel='mask-icon' type='image/svg+xml' href={resolveAssetPath('/mask-icon.svg')} color={pageMaskIconColor}/>
         <link rel='alternate icon' type='image/png' href={resolveAssetPath('/favicon.png')}/>
         <link rel='icon' type='image/x-icon' href={resolveAssetPath('/favicon.svg')}/>
@@ -42,7 +48,7 @@ export default function Layout({
         <meta name='mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-capable' content='yes'/>
         <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
-        <meta name='apple-mobile-web-app-title' content={baseTitle}/>
+        {baseTitle && <meta name='apple-mobile-web-app-title' content={baseTitle}/>}
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-72.png')} sizes='72x72'/>
@@ -54,19 +60,19 @@ export default function Layout({
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-180.png')} sizes='180x180'/>
         <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
 
-        <meta property='og:site_name' content={baseTitle}/>
+        {baseTitle && <meta property='og:site_name' content={baseTitle}/>}
         <meta property='og:type' content='website'/>
-        <meta property='og:title' content={pageTitle}/>
-        <meta property='og:description' content={pageDescription}/>
+        {pageTitle && <meta property='og:title' content={pageTitle}/>}
+        {pageDescription && <meta property='og:description' content={pageDescription}/>}
         <meta property='og:locale' content={pageLocale}/>
-        <meta property='og:url' content={pageUrl}/>
-        <meta property='og:image' content={joinURL(PUBLIC_URL, '/og-image.png')}/>
-        <meta property='og:image:alt' content={pageDescription}/>
+        {pageURL && <meta property='og:url' content={pageURL}/>}
+        <meta property='og:image' content={joinURL(publicURL, '/og-image.png')}/>
+        {pageDescription && <meta property='og:image:alt' content={pageDescription}/>}
 
         <meta name='twitter:card' content='summary_large_image'/>
-        <meta name='twitter:title' content={pageTitle}/>
-        <meta name='twitter:description' content={pageDescription}/>
-        <meta name='twitter:image' content={joinURL(PUBLIC_URL, '/twitter-card.png')}/>
+        {pageTitle && <meta name='twitter:title' content={pageTitle}/>}
+        {pageDescription && <meta name='twitter:description' content={pageDescription}/>}
+        <meta name='twitter:image' content={joinURL(publicURL, '/twitter-card.png')}/>
 
         <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
 

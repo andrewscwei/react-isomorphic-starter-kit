@@ -3,7 +3,6 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
-import { ComponentType } from 'react'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
@@ -13,10 +12,10 @@ import serveSitemap from './serveSitemap'
 import serveStatic from './serveStatic'
 
 type Config = {
+  defaultMetadata?: Metadata
   i18n: I18nConfig
-  layout: ComponentType<LayoutComponentProps>
-  routes: RouteObjectWithMetadata[]
   port: number
+  routes: RouteObjectWithMetadata[]
 }
 
 const debug = useDebug(undefined, 'server')
@@ -24,15 +23,20 @@ const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
 export default function initServer(render: (props: RenderProps) => JSX.Element, {
+  defaultMetadata,
   i18n,
-  layout,
   port,
   routes,
 }: Config) {
   const app = express()
+
   app.use(morgan('dev'))
+
   app.use(compression())
-  app.use(helmet({ contentSecurityPolicy: false }))
+
+  app.use(helmet({
+    contentSecurityPolicy: false,
+  }))
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   if (isDev) app.use(require('../dev').hmr())
@@ -41,8 +45,18 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
   app.use(serveRobots())
-  app.use(serveSitemap({ routes: localizedRoutes }))
-  app.use(renderRoot({ i18n, layout, routes: localizedRoutes, render: isDev ? undefined : render }))
+
+  app.use(serveSitemap({
+    routes: localizedRoutes,
+  }))
+
+  app.use(renderRoot({
+    defaultMetadata,
+    i18n,
+    routes: localizedRoutes,
+    render: isDev ? undefined : render,
+  }))
+
   app.use(handle500())
 
   if (!isTest) {

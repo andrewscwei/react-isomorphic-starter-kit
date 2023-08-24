@@ -35,17 +35,16 @@ interface Window {
   __VERSION__: string
 }
 
-type RouteObjectWithMetadata = import('react-router').RouteObject & {
-  metadata?: (ltxt: (keyPath: string, ...args: any[]) => string) => Promise<{ title?: string; description?: string }>
+type Metadata = {
+  baseTitle?: string
+  description?: string
+  locale?: string
+  maskIconColor?: string
+  themeColor?: string
+  title?: string
+  url?: string
 }
 
-type LayoutComponentProps = {
-  injectStyles?: boolean
-  metadata?: {
-    description?: string
-    locale?: string
-    title?: string
-    url?: string
-  }
-  resolveAssetPath?: (path: string) => string
+type RouteObjectWithMetadata = import('react-router').RouteObject & {
+  metadata?: (ltxt: (keyPath: string, ...args: any[]) => string) => Promise<Metadata>
 }

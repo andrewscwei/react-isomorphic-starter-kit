@@ -15,4 +15,7 @@ export default initClient(({ routes }) => (
   <App>
     <RouterProvider router={createBrowserRouter(routes, { basename: BASE_PATH })}/>
   </App>
-), { i18n: i18nConf, routes: routesConf })
+), {
+  i18n: i18nConf,
+  routes: routesConf,
+})
