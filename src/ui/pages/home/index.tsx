@@ -20,7 +20,7 @@ export function Component() {
           <section>
             <h1 className={style.title}>{ltxt('hello')}</h1>
             <code className={style.version}>{window.__VERSION__}</code>
-            <span>{ltxt('description') }</span>s
+            <span>{ltxt('description') }</span>
           </section>
         </div>
       </main>
