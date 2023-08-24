@@ -7,20 +7,20 @@
 import { StaticHandlerContext } from '@remix-run/router'
 import { RequestHandler } from 'express'
 import path from 'path'
+import { ComponentType, createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
 import { I18nConfig } from '../i18n'
 import { createMetadata, createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
-import { ComponentType, createElement } from 'react'
 
 type Params = {
   i18n: I18nConfig
   layout: ComponentType<LayoutComponentProps>
   routes: RouteObject[]
-  render?: (props: RenderProps) => JSX.Element
+  render?: (props: Props) => JSX.Element
 }
 
-type RenderProps = LayoutComponentProps & {
+export type Props = LayoutComponentProps & {
   context: StaticHandlerContext
   routes: RouteObject[]
 }
@@ -37,7 +37,7 @@ export default function renderRoot({ i18n, layout, routes, render }: Params): Re
     const root = render?.({ context, metadata, routes: handler.dataRoutes, resolveAssetPath })
 
     const { pipe } = renderToPipeableStream(createElement(layout, {
-      injectStyles: process.env.NODE_ENV !== 'development',
+      injectStyles: render !== undefined,
       metadata,
       resolveAssetPath,
     }, root), {

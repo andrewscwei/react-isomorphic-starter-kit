@@ -8,7 +8,7 @@ import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
 import renderRobots from './renderRobots'
-import renderRoot from './renderRoot'
+import renderRoot, { type Props as RenderProps } from './renderRoot'
 import renderSitemap from './renderSitemap'
 import serveLocalStatic from './serveLocalStatic'
 
@@ -23,7 +23,7 @@ const debug = useDebug(undefined, 'server')
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
-export default function initServer(render: Parameters<typeof renderRoot>[0]['render'], {
+export default function initServer(render: (props: RenderProps) => JSX.Element, {
   i18n,
   layout,
   port,
