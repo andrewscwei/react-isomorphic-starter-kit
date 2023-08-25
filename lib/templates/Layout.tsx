@@ -5,6 +5,7 @@
 import React, { PropsWithChildren } from 'react'
 import { createResolveAssetPath } from '../server'
 import { joinURL } from '../utils'
+import { Metadata } from './types'
 
 type Props = PropsWithChildren<{
   injectStyles: boolean

@@ -3,7 +3,9 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
+import { RouteObject } from 'react-router'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
+import { Metadata } from '../templates'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
 import renderRoot, { type Props as RenderProps } from './renderRoot'
@@ -15,7 +17,7 @@ import { SEOConfig } from './types'
 type Config = {
   defaultMetadata?: Metadata
   i18n: I18nConfig
-  routes: RouteObjectWithMetadata[]
+  routes: RouteObject[]
   seo?: SEOConfig
 }
 

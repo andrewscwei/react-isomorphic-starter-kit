@@ -2,7 +2,9 @@
  * @file Routes config.
  */
 
-const routes: RouteObjectWithMetadata[] = [{
+import { RouteObject } from 'react-router'
+
+const routes: RouteObject[] = [{
   path: '/',
   index: true,
   lazy: () => import('./ui/pages/home'),

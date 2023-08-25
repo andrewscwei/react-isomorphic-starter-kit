@@ -12,7 +12,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import { I18nConfig } from '../i18n'
-import { Layout } from '../templates'
+import { Layout, Metadata } from '../templates'
 import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
 
 type Params = {
