@@ -28,13 +28,14 @@ export default async function initClient(render: (props: RenderProps) => JSX.Ele
 
   if (!container) throw console.warn(`No container with ID <${containerId}> found`)
 
+  await loadLazyComponents(localizedRoutes)
+
   const root = render({ routes: localizedRoutes })
 
   if (process.env.NODE_ENV === 'development') {
     createRoot(container).render(root)
   }
   else {
-    await loadLazyComponents(localizedRoutes)
     hydrateRoot(container, root)
   }
 
