@@ -10,9 +10,10 @@ import path from 'path'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
+import { createStaticHandler } from 'react-router-dom/server'
 import { I18nConfig } from '../i18n'
 import { Layout } from '../templates'
-import { createMetadata, createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
+import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
 
 type Params = {
   defaultMetadata?: Metadata
@@ -26,11 +27,14 @@ export type Props = {
   routes: RouteObject[]
 }
 
-const { baseURL, publicPath, assetManifestFile } = __BUILD_ARGS__
+const { baseURL, basePath, publicPath, assetManifestFile } = __BUILD_ARGS__
 
 export default function renderRoot({ defaultMetadata, i18n, routes, render }: Params): RequestHandler {
   return async (req, res) => {
-    const { handler, context } = await createStaticHandlerAndContext(req, { routes })
+    const fetchRequest = createFetchRequest(req)
+    const handler = createStaticHandler(routes, { basename: basePath })
+    const context = await handler.query(fetchRequest)
+
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifestFile: path.join(__dirname, assetManifestFile) })
