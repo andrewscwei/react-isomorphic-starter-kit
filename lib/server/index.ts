@@ -1,4 +1,3 @@
-export { default as Layout } from './Layout'
 export { default as handle500 } from './handle500'
 export * from './helpers'
 export { default as initServer } from './initServer'

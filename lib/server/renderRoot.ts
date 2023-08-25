@@ -11,7 +11,7 @@ import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
 import { I18nConfig } from '../i18n'
-import Layout from './Layout'
+import { Layout } from '../templates'
 import { createMetadata, createResolveAssetPath, createStaticHandlerAndContext } from './helpers'
 
 type Params = {

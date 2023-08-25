@@ -3,8 +3,8 @@
  */
 
 import React, { PropsWithChildren } from 'react'
+import { createResolveAssetPath } from '../server'
 import { joinURL } from '../utils'
-import { createResolveAssetPath } from './helpers'
 
 type Props = PropsWithChildren<{
   injectStyles: boolean
