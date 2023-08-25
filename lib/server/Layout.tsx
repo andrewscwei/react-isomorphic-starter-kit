@@ -7,8 +7,8 @@ import { joinURL } from '../utils'
 import { createResolveAssetPath } from './helpers'
 
 type Props = PropsWithChildren<{
-  injectStyles?: boolean
-  metadata?: Metadata
+  injectStyles: boolean
+  metadata: Metadata
   resolveAssetPath?: ReturnType<typeof createResolveAssetPath>
 }>
 
@@ -16,8 +16,8 @@ const { defaultLocale, publicURL } = __BUILD_ARGS__
 
 export default function Layout({
   children,
-  injectStyles = false,
-  metadata = {},
+  injectStyles,
+  metadata,
   resolveAssetPath = t => t,
 }: Props) {
   const baseTitle = metadata.baseTitle

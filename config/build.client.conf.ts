@@ -63,6 +63,7 @@ const config: Configuration = {
               }),
               ...isDev ? [] : [PostCSSPurgeCSS({
                 content: [
+                  path.join(buildArgs.libDir, '**/*.tsx'),
                   path.join(buildArgs.inputDir, '**/*.html'),
                   path.join(buildArgs.inputDir, '**/*.tsx'),
                   path.join(buildArgs.inputDir, '**/*.ts'),

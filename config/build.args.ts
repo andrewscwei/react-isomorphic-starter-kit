@@ -57,6 +57,11 @@ export const publicPath = process.env.PUBLIC_PATH || basePath
 export const defaultLocale = process.env.DEFAULT_LOCALE || 'en'
 
 /**
+ * Lib directory.
+ */
+export const libDir = path.join(__dirname, '../', 'lib')
+
+/**
  * Input directory of source files to compile.
  */
 export const inputDir = path.join(__dirname, '../', 'src')
