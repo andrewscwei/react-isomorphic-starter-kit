@@ -10,13 +10,13 @@ import renderRoot, { type Props as RenderProps } from './renderRoot'
 import serveRobots from './serveRobots'
 import serveSitemap from './serveSitemap'
 import serveStatic from './serveStatic'
-import { SitemapConfig } from './types'
+import { SEOConfig } from './types'
 
 type Config = {
   defaultMetadata?: Metadata
   i18n: I18nConfig
   routes: RouteObjectWithMetadata[]
-  sitemap?: SitemapConfig
+  seo?: SEOConfig
 }
 
 const debug = useDebug(undefined, 'server')
@@ -28,7 +28,7 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
   defaultMetadata,
   i18n,
   routes,
-  sitemap = {},
+  seo = {},
 }: Config) {
   const app = express()
 
@@ -46,11 +46,13 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
 
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
-  app.use(serveRobots())
+  app.use(serveRobots({
+    seo,
+  }))
 
   app.use(serveSitemap({
     routes: localizedRoutes,
-    ...sitemap,
+    seo,
   }))
 
   app.use(renderRoot({

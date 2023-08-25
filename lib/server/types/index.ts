@@ -1,1 +1,1 @@
-export { type default as SitemapConfig } from './SitemapConfig'
+export { type default as SEOConfig } from './SEOConfig'

@@ -2,10 +2,11 @@ import { Router } from 'express'
 import { XMLBuilder } from 'fast-xml-parser'
 import { RouteObject } from 'react-router'
 import { joinURL } from '../utils'
-import { SitemapConfig } from './types'
+import { SEOConfig } from './types'
 
-type Params = SitemapConfig & {
+type Params = {
   routes: RouteObject[]
+  seo?: SEOConfig
 }
 
 const { baseURL } = __BUILD_ARGS__
@@ -13,14 +14,14 @@ const { baseURL } = __BUILD_ARGS__
 /**
  * Sitemap generator.
  */
-export default function serveSitemap({ routes, filter = t => true }: Params) {
+export default function serveSitemap({ routes, seo }: Params) {
   const router = Router()
 
   router.use('/sitemap.xml', async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const urls = extractURLs(routes).filter(filter)
+      const urls = extractURLs(routes).filter(seo?.urlFilter ?? (t => true))
       const builder = new XMLBuilder()
       const xml = builder.build({
         'urlset': {
