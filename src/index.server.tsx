@@ -8,6 +8,7 @@ import { initServer } from '../lib/server'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
+import sitemapConf from './sitemap.conf'
 import App from './ui/App'
 
 export default initServer(({ context, routes }) => (
@@ -23,4 +24,5 @@ export default initServer(({ context, routes }) => (
   },
   i18n: i18nConf,
   routes: routesConf,
+  sitemap: sitemapConf,
 })
