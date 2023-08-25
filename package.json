@@ -13,6 +13,7 @@
     "build:client": "webpack --config config/build.client.conf.ts",
     "ship:build": "docker build -t ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest} .",
     "ship:run": "docker run -it --rm -p ${PORT:-8080}:8080 --name app ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest}",
+    "foo": "wrangler pages dev --compatibility-date=2023-08-14 ./build",
     "test": "jest --config=config/test.conf.ts tests/$npm_config_files",
     "test:ts": "jest --testEnvironment=jsdom --config=config/test.conf.ts src/$npm_config_files",
     "export": "ts-node ./scripts/export",
@@ -28,6 +29,7 @@
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.11",
+    "@cloudflare/workers-types": "^4.20230821.0",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@testing-library/react": "^14.0.0",
@@ -85,7 +87,8 @@
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-node-externals": "^3.0.0",
     "whatwg-fetch": "^3.6.17",
-    "worker-loader": "^3.0.8"
+    "worker-loader": "^3.0.8",
+    "wrangler": "^3.6.0"
   },
   "dependencies": {
     "compression": "^1.7.4",
