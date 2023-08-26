@@ -1,5 +1,4 @@
-import fs from 'fs'
-import path from 'path'
+import { joinURL } from '../../utils'
 
 type Options = {
   /**
@@ -10,26 +9,24 @@ type Options = {
   /**
    * Absolute path of the manifest file.
    */
-  manifestFile?: string
+  manifest?: Record<string, string>
 }
 
 type ResolveAssetPath = (path: string) => string
 
-export default function createResolveAssetPath({ publicPath = '/', manifestFile }: Options = {}): ResolveAssetPath {
-  return (pathToResolve: string): string => {
-    let out = pathToResolve
+export default function createResolveAssetPath({ publicPath = '/', manifest }: Options = {}): ResolveAssetPath {
+  return (path: string): string => {
+    let out = path
 
-    if (manifestFile !== undefined) {
+    if (manifest !== undefined) {
       try {
-        const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf-8'))
-        const normalizedPath: string = path.join(...pathToResolve.split('/'))
-
-        out = manifest[normalizedPath] ?? manifest[path.join(publicPath, normalizedPath)] ?? normalizedPath
+        const normalizedPath: string = joinURL(...path.split('/').filter(Boolean))
+        out = manifest[normalizedPath] ?? manifest[joinURL(publicPath, normalizedPath)] ?? normalizedPath
       }
       catch (err) {}
     }
 
-    if (!out.startsWith(publicPath)) out = path.join(publicPath, out)
+    if (!out.startsWith(publicPath)) out = joinURL(publicPath, out)
 
     return out
   }

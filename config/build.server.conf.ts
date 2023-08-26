@@ -8,6 +8,7 @@ import { BannerPlugin, Configuration, DefinePlugin, WatchIgnorePlugin } from 'we
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
+import getAssetManifest from './utils/getAssetManifest'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -88,6 +89,7 @@ const config: Configuration = {
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
       __BUILD_ARGS__: JSON.stringify(buildArgs),
+      __ASSET_MANIFEST__: JSON.stringify(getAssetManifest(path.join(buildArgs.outputDir, buildArgs.assetManifestFile))),
     }),
     ...buildArgs.useSourceMaps ? [
       new BannerPlugin({
