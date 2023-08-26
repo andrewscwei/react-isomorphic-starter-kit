@@ -4,10 +4,11 @@
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
-import { BannerPlugin, Configuration, DefinePlugin, WatchIgnorePlugin } from 'webpack'
+import { BannerPlugin, Configuration, DefinePlugin, WatchIgnorePlugin, optimize } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
+import getAssetManifest from './utils/getAssetManifest'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -86,8 +87,12 @@ const config: Configuration = {
   },
   plugins: [
     new ForkTSCheckerPlugin(),
+    new optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
     new DefinePlugin({
       __BUILD_ARGS__: JSON.stringify(buildArgs),
+      __ASSET_MANIFEST__: JSON.stringify(getAssetManifest(path.join(buildArgs.outputDir, buildArgs.assetManifestFile))),
     }),
     ...buildArgs.useSourceMaps ? [
       new BannerPlugin({
