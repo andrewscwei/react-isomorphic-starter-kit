@@ -26,6 +26,7 @@ declare module 'worker-loader!*' {
 }
 
 declare const __BUILD_ARGS__: typeof import('../config/build.args')
+declare const __ASSET_MANIFEST__: Record<string, string>
 
 interface Error {
   status?: number

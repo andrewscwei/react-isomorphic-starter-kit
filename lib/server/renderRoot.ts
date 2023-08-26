@@ -6,7 +6,6 @@
 
 import { StaticHandlerContext } from '@remix-run/router'
 import { RequestHandler } from 'express'
-import path from 'path'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
@@ -27,7 +26,7 @@ export type Props = {
   routes: RouteObject[]
 }
 
-const { baseURL, basePath, publicPath, assetManifestFile } = __BUILD_ARGS__
+const { baseURL, basePath, publicPath } = __BUILD_ARGS__
 
 export default function renderRoot({ defaultMetadata, i18n, routes, render }: Params): RequestHandler {
   return async (req, res) => {
@@ -36,7 +35,7 @@ export default function renderRoot({ defaultMetadata, i18n, routes, render }: Pa
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
-    const resolveAssetPath = createResolveAssetPath({ publicPath, manifestFile: path.join(__dirname, assetManifestFile) })
+    const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
     const metadata = await createMetadata(req, { baseURL, i18n })
     const root = render?.({ context, routes: handler.dataRoutes })
 
