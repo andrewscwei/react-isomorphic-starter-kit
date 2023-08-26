@@ -36,7 +36,7 @@ export default function renderRoot({ defaultMetadata, i18n, routes, render }: Pa
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
-    const metadata = await createMetadata(req, { baseURL, i18n })
+    const metadata = await createMetadata(req.url, { baseURL, i18n, routes })
     const root = render?.({ context, routes: handler.dataRoutes })
 
     const { pipe } = renderToPipeableStream(createElement(Layout, {
