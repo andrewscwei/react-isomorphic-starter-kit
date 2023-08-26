@@ -37,9 +37,7 @@ export default function renderRoot({ defaultMetadata, i18n, routes, render }: Pa
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
     const metadata = await createMetadata(req.url, { baseURL, i18n, routes })
-    const root = render?.({ context, routes: handler.dataRoutes })
-
-    const { pipe } = renderToPipeableStream(createElement(Layout, {
+    const root = createElement(Layout, {
       injectStyles: render !== undefined,
       metadata: {
         ...defaultMetadata,
@@ -47,7 +45,9 @@ export default function renderRoot({ defaultMetadata, i18n, routes, render }: Pa
         ...metadata,
       },
       resolveAssetPath,
-    }, root), {
+    }, render?.({ context, routes: handler.dataRoutes }))
+
+    const { pipe } = renderToPipeableStream(root, {
       onShellReady() {
         res.setHeader('content-type', 'text/html')
         pipe(res)
