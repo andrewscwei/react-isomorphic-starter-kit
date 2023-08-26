@@ -31,9 +31,8 @@ const { baseURL, basePath, publicPath, assetManifestFile } = __BUILD_ARGS__
 
 export default function renderRoot({ defaultMetadata, i18n, routes, render }: Params): RequestHandler {
   return async (req, res) => {
-    const fetchRequest = createFetchRequest(req)
     const handler = createStaticHandler(routes, { basename: basePath })
-    const context = await handler.query(fetchRequest)
+    const context = await handler.query(createFetchRequest(req))
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
