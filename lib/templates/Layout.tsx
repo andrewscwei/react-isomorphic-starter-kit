@@ -2,8 +2,7 @@
  * @file Base HTML template for all pages.
  */
 
-import type { PropsWithChildren } from 'react'
-import React from 'react'
+import React, { type PropsWithChildren } from 'react'
 import type { createResolveAssetPath } from '../server'
 import { joinURL } from '../utils'
 import type { Metadata } from './types'
@@ -16,7 +15,7 @@ type Props = PropsWithChildren<{
 
 const { defaultLocale, publicURL } = __BUILD_ARGS__
 
-export default function Layout({
+export function Layout({
   children,
   injectStyles,
   metadata,

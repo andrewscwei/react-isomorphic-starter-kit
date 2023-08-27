@@ -1,4 +1,4 @@
-type Metadata = {
+export type Metadata = {
   baseTitle?: string
   description?: string
   locale?: string
@@ -7,5 +7,3 @@ type Metadata = {
   title?: string
   url?: string
 }
-
-export default Metadata
