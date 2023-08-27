@@ -5,6 +5,7 @@ import ip from 'ip'
 import morgan from 'morgan'
 import { RouteObject } from 'react-router'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
+import { SEOConfig } from '../seo'
 import { Metadata } from '../templates'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
@@ -12,7 +13,6 @@ import renderRoot, { type Props as RenderProps } from './renderRoot'
 import serveRobots from './serveRobots'
 import serveSitemap from './serveSitemap'
 import serveStatic from './serveStatic'
-import { SEOConfig } from './types'
 
 type Config = {
   defaultMetadata?: Metadata
@@ -51,6 +51,8 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
   app.use(serveRobots({
     seo,
   }))
+
+
 
   app.use(serveSitemap({
     routes: localizedRoutes,

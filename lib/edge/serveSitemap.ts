@@ -1,4 +1,3 @@
-import { Router } from 'express'
 import { RouteObject } from 'react-router'
 import { SEOConfig, generateSitemap } from '../seo'
 
@@ -8,20 +7,16 @@ type Params = {
 }
 
 export default function serveSitemap({ routes, seo }: Params) {
-  const router = Router()
-
-  router.use('/sitemap.xml', async (req, res, next) => {
-    res.header('Content-Type', 'application/xml')
-
+  return async (request: Request) => {
     try {
       const sitemap = generateSitemap({ routes, seo })
 
-      res.send(sitemap)
+      return new Response(sitemap, {
+        headers: { 'content-type': 'text/html' },
+      })
     }
     catch (err) {
-      next(err)
+      return new Response(`${err}`, { status: 500 })
     }
-  })
-
-  return router
+  }
 }

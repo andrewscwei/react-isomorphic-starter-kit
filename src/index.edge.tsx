@@ -4,12 +4,19 @@
 
 import React from 'react'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { renderRoot } from '../lib/edge'
+import { renderRoot, serveRobots, serveSitemap } from '../lib/edge'
 import { generateLocalizedRoutes } from '../lib/i18n'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
+import seoConf from './seo.conf'
 import App from './ui/App'
+
+const localizedRoutes = generateLocalizedRoutes(routesConf, i18nConf)
+
+export const handleRobots = serveRobots({ seo: seoConf })
+
+export const handleSitemap = serveSitemap({ routes: localizedRoutes, seo: seoConf })
 
 export const handleRoot = renderRoot(({ context, routes }) => (
   <App>
@@ -22,6 +29,6 @@ export const handleRoot = renderRoot(({ context, routes }) => (
     themeColor: THEME_COLOR,
     title: TITLE,
   },
-  routes: generateLocalizedRoutes(routesConf, i18nConf),
+  routes: localizedRoutes,
   i18n: i18nConf,
 })

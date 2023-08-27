@@ -1,5 +1,7 @@
-export const onRequest: PagesFunction = async ({ request, functionPath: path }) => {
-  const response = new Response('bar')
+import { handleRobots } from '../build/index.edge'
+
+export const onRequest: PagesFunction = async ({ request }) => {
+  const response = await handleRobots(request)
 
   return response
 }

@@ -1,19 +1,18 @@
 import { Router } from 'express'
-import { SEOConfig } from './types'
+import { SEOConfig, generateRobots } from '../seo'
 
 type Params = {
   seo?: SEOConfig
 }
 
-/**
- * `robots.txt` generator.
- */
 export default function serveRobots({ seo }: Params = {}) {
   const router = Router()
 
   router.use('/robots.txt', async (req, res, next) => {
+    const robots = generateRobots({ seo })
+
     res.header('Content-Type', 'text/plain')
-    res.send(seo?.robots ?? '')
+    res.send(robots)
   })
 
   return router
