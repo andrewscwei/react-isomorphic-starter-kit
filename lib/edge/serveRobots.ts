@@ -1,11 +1,10 @@
-import type { SEOConfig } from '../seo'
-import { generateRobots } from '../seo'
+import { generateRobots, type SEOConfig } from '../seo'
 
 type Params = {
   seo?: SEOConfig
 }
 
-export default function serveRobots({ seo }: Params = {}) {
+export function serveRobots({ seo }: Params = {}) {
   return async (request: Request) => {
     const robots = generateRobots({ seo })
 

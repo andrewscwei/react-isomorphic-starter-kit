@@ -8,8 +8,7 @@ import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import type { I18nConfig } from '../i18n'
 import { createMetadata, createResolveAssetPath } from '../server/helpers'
-import type { Metadata } from '../templates'
-import { Layout } from '../templates'
+import { Layout, type Metadata } from '../templates'
 import type { RenderProps } from './types'
 
 type Options = {
@@ -20,7 +19,7 @@ type Options = {
 
 const { basePath, baseURL, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot(render: (props: RenderProps) => JSX.Element, { metadata, i18n, routes }: Options) {
+export function renderRoot(render: (props: RenderProps) => JSX.Element, { metadata, i18n, routes }: Options) {
   return async (request: Request, path: string) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(request)

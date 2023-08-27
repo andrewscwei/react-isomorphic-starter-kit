@@ -1,4 +1,4 @@
-export { default as renderRoot } from './renderRoot'
-export { default as serveRobots } from './serveRobots'
-export { default as serveSitemap } from './serveSitemap'
+export * from './renderRoot'
+export * from './serveRobots'
+export * from './serveSitemap'
 export * from './types'
