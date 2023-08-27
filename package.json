@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build",
     "start:static": "http-server build",
-    "start:edge": "wrangler pages dev --remote --node-compat --compatibility-date=2023-08-14 ./build",
+    "start:edge": "wrangler pages dev --node-compat --compatibility-date=2023-08-14 ./build",
     "clean": "rimraf build",
     "prebuild": "npm run lint",
     "dev": "npm run clean && cross-env NODE_ENV=development concurrently \"npm run bundle:server -- --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --quiet --exec 'node -r dotenv/config' --watch build build\"",
@@ -64,6 +64,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "eslint": "^8.47.0",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "http-server": "^14.1.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
