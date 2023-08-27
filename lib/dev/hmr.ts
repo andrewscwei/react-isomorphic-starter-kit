@@ -10,7 +10,7 @@ import clientBuildConfig from '../../config/build.client.conf'
  * @see {@link https://www.npmjs.com/package/webpack-dev-middleware}
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
-export default function hmr() {
+export function hmr() {
   const compiler = webpack(clientBuildConfig)
   const router = Router()
 
