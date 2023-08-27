@@ -7,6 +7,6 @@ type Params = {
 /**
  * `robots.txt` generator.
  */
-export default function generateRobots({ seo }: Params = {}) {
+export function generateRobots({ seo }: Params = {}) {
   return seo?.robots ?? ''
 }

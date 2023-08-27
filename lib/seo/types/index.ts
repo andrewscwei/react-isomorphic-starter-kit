@@ -1,1 +1,1 @@
-export type { default as SEOConfig } from './SEOConfig'
+export type * from './SEOConfig'

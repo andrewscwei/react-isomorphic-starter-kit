@@ -13,7 +13,7 @@ const { baseURL } = __BUILD_ARGS__
 /**
  * Sitemap generator.
  */
-export default function generateSitemap({ routes, seo }: Params) {
+export function generateSitemap({ routes, seo }: Params) {
   const urls = extractURLs(routes).filter(seo?.urlFilter ?? (t => true))
   const builder = new XMLBuilder()
   const xml = builder.build({
