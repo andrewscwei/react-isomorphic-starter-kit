@@ -8,8 +8,8 @@ import { createBrowserRouter } from 'react-router-dom'
 import Worker from 'worker-loader!./workers/web'
 import { initClient } from '../lib/dom'
 import { useDebug } from '../lib/utils'
-import i18nConf from './i18n.conf'
-import routesConf from './routes.conf'
+import { config as i18nConf } from './i18n.conf'
+import { config as routesConf } from './routes.conf'
 import { App } from './ui/App'
 
 const { basePath } = __BUILD_ARGS__

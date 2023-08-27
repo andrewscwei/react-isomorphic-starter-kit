@@ -9,10 +9,8 @@ import { LOCALE_CHANGE_STRATEGY } from './app.conf'
 
 const { defaultLocale } = __BUILD_ARGS__
 
-const i18n: I18nConfig = {
+export const config: I18nConfig = {
   defaultLocale,
   localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
   translations: tryOrUndefined(() => loadTranslations(require.context('./locales', true, /^.*\.json$/))) ?? { [defaultLocale]: {} },
 }
-
-export default i18n

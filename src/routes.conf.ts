@@ -4,7 +4,7 @@
 
 import type { RouteObject } from 'react-router'
 
-const routes: RouteObject[] = [{
+export const config: RouteObject[] = [{
   path: '/',
   index: true,
   lazy: () => import('./ui/pages/home'),
@@ -18,5 +18,3 @@ const routes: RouteObject[] = [{
   lazy: () => import('./ui/pages/notFound'),
   metadata: async ltxt => ({ title: ltxt('window-title-not-found') }),
 }]
-
-export default routes
