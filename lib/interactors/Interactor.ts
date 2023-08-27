@@ -1,4 +1,4 @@
-type Interactor<UseCaseParams, UseCaseResult> = {
+export type Interactor<UseCaseParams, UseCaseResult> = {
   /**
    * Indicates whether the use case is running.
    */
@@ -26,5 +26,3 @@ type Interactor<UseCaseParams, UseCaseResult> = {
    */
   reset: () => void
 }
-
-export default Interactor

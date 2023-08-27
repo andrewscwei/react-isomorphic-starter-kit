@@ -1,4 +1,4 @@
-export default interface UseCase<Params, Result, Options> {
+export interface UseCase<Params, Result, Options> {
   /**
    * Validates the input parameters of this use case.
    *
