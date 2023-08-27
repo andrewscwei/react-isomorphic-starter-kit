@@ -20,7 +20,7 @@ type Params = {
  * Hook for updating favicon meta tags in the document head when dark mode is
  * toggled.
  *
- * @param params - See {@link Params}.
+ * @param params See {@link Params}.
  */
 export function useFavicon({
   alternateIcon,

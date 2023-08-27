@@ -12,8 +12,8 @@ type Params = {
 /**
  * Hook for modifying head meta tags.
  *
- * @param params - See {@link Params}.
- * @param deps - Additional dependencies.
+ * @param params See {@link Params}.
+ * @param deps Additional dependencies.
  */
 export function useMetaTags({ title, description, url }: Params, deps?: DependencyList) {
   if (title) useDocumentTitle(title, deps)

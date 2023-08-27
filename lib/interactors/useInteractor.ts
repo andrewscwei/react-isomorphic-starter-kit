@@ -35,8 +35,8 @@ const debug = useDebug()
 /**
  * Hook for interacting with a {@link UseCase}.
  *
- * @param UseCaseClass - The {@link UseCase} class to interact with.
- * @param options - @see {@link Options}.
+ * @param UseCaseClass The {@link UseCase} class to interact with.
+ * @param options @see {@link Options}.
  *
  * @returns The {@link Interactor}.
  */

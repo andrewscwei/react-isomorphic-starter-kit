@@ -7,9 +7,9 @@ import { resolveLocaleFromURL } from './resolveLocaleFromURL'
 /**
  * Returns the localized version of a URL.
  *
- * @param url - The URL.
- * @param locale - The target locale.
- * @param options - See {@link ResolveLocaleOptions}.
+ * @param url The URL.
+ * @param locale The target locale.
+ * @param options See {@link ResolveLocaleOptions}.
  *
  * @returns The localized URL.
  */

@@ -3,7 +3,7 @@ import type { URLParts } from '../types'
 /**
  * Constructs a URL from {@link URLParts}.
  *
- * @param urlParts - See {@link URLParts}.
+ * @param urlParts See {@link URLParts}.
  *
  * @returns The constructed URL.
  */

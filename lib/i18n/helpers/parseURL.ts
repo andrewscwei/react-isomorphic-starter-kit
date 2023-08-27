@@ -3,7 +3,7 @@ import type { URLParts } from '../types'
 /**
  * Parses a URL into parts.
  *
- * @param url - The URL to parse.
+ * @param url The URL to parse.
  *
  * @returns The parsed result.
  */

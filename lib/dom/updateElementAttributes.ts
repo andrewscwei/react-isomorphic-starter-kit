@@ -16,9 +16,9 @@ type Undo = () => void
  * is `true`, if the element is not present it will be created and injected into
  * `options.parent`.
  *
- * @param tagName - The tag name of the element to update.
- * @param attributes - The attributes to set to.
- * @param options - See {@link Options}.
+ * @param tagName The tag name of the element to update.
+ * @param attributes The attributes to set to.
+ * @param options See {@link Options}.
  *
  * @returns A function that undoes the updates.
  */

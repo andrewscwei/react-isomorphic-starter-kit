@@ -5,8 +5,8 @@ import { updateElementAttributes } from './updateElementAttributes'
 /**
  * Hook for updating relevant URL meta tags in the document head.
  *
- * @param url - The URL.
- * @param deps - Additional dependencies.
+ * @param url The URL.
+ * @param deps Additional dependencies.
  */
 export function useDocumentURL(url: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return

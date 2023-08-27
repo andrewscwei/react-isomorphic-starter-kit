@@ -6,8 +6,8 @@ import { resolveLocaleFromURL } from './resolveLocaleFromURL'
 /**
  * Returns the unlocalized version of a URL.
  *
- * @param url - The URL.
- * @param options - See {@link ResolveLocaleOptions}.
+ * @param url The URL.
+ * @param options See {@link ResolveLocaleOptions}.
  *
  * @returns The unlocalized URL.
  */

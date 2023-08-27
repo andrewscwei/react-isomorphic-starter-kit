@@ -5,8 +5,8 @@ import { updateElementAttributes } from './updateElementAttributes'
 /**
  * Hook for updating relevant description meta tags in the document head.
  *
- * @param description - The description.
- * @param deps - Additional dependencies.
+ * @param description The description.
+ * @param deps Additional dependencies.
  */
 export function useDocumentDescription(description: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return

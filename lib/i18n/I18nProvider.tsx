@@ -31,7 +31,7 @@ type I18nChangeLocaleAction = {
  *   - If set to `query`, the locale is inferred from the search parameter
  *     `locale` in the current path
  *
- * @param props - See {@link I18nProviderProps}.
+ * @param props See {@link I18nProviderProps}.
  *
  * @returns The context provider.
  */

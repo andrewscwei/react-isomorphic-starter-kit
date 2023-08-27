@@ -3,7 +3,7 @@ import type { Translations } from './types'
 /**
  * Loads translations from a directory via Webpack `RequireContext`.
  *
- * @param ctx - See {@link __WebpackModuleApi.RequireContext}.
+ * @param ctx See {@link __WebpackModuleApi.RequireContext}.
  *
  * @returns The translations dictionary.
  */

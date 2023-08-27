@@ -18,8 +18,8 @@ type Result = {
  * function to look for the locale identifier in the domain first followed by
  * the first directory of the path. You can provide a custom resolver.
  *
- * @param url - The URL, can be a full URL or a valid path.
- * @param options - See {@link ResolveLocaleOptions}.
+ * @param url The URL, can be a full URL or a valid path.
+ * @param options See {@link ResolveLocaleOptions}.
  *
  * @returns The result of the resolution if successful, `undefined` otherwise.
  */
