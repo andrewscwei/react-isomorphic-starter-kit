@@ -1,7 +1,3 @@
-/**
- * @file Client app root.
- */
-
 import React, { StrictMode, type PropsWithChildren } from 'react'
 import { useFavicon } from '../../lib/dom'
 import { joinURL } from '../../lib/utils'
