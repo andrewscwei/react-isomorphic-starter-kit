@@ -12,14 +12,14 @@ import { Layout, Metadata } from '../templates'
 import { RenderProps } from './types'
 
 type Options = {
-  defaultMetadata?: Metadata
   i18n: I18nConfig
+  metadata?: Metadata
   routes: RouteObject[]
 }
 
 const { basePath, baseURL, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot(render: (props: RenderProps) => JSX.Element, { defaultMetadata, i18n, routes }: Options) {
+export default function renderRoot(render: (props: RenderProps) => JSX.Element, { metadata, i18n, routes }: Options) {
   return async (request: Request, path: string) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(request)
@@ -27,13 +27,13 @@ export default function renderRoot(render: (props: RenderProps) => JSX.Element, 
     if (context instanceof Response) return context
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
-    const metadata = await createMetadata(path, { baseURL, i18n, routes })
+    const customMetadata = await createMetadata(path, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
       metadata: {
-        ...defaultMetadata,
-        baseTitle: defaultMetadata?.baseTitle ?? defaultMetadata?.title,
         ...metadata,
+        baseTitle: metadata?.baseTitle ?? metadata?.title,
+        ...customMetadata,
       },
       resolveAssetPath,
     }, render?.({ context, routes: handler.dataRoutes }))

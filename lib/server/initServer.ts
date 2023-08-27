@@ -16,8 +16,8 @@ import serveStatic from './serveStatic'
 import { RenderProps } from './types'
 
 type Config = {
-  defaultMetadata?: Metadata
   i18n: I18nConfig
+  metadata?: Metadata
   routes: RouteObject[]
   seo?: SEOConfig
 }
@@ -28,7 +28,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
 export default function initServer(render: (props: RenderProps) => JSX.Element, {
-  defaultMetadata,
+  metadata,
   i18n,
   routes,
   seo = {},
@@ -61,7 +61,7 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
   }))
 
   app.use(renderRoot(isDev ? undefined : render, {
-    defaultMetadata,
+    metadata,
     i18n,
     routes: localizedRoutes,
   }))

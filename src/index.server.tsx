@@ -16,13 +16,13 @@ export default initServer(({ context, routes }) => (
     <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
   </App>
 ), {
-  defaultMetadata: {
+  i18n: i18nConf,
+  metadata: {
     description: DESCRIPTION,
     maskIconColor: MASK_ICON_COLOR,
     themeColor: THEME_COLOR,
     title: TITLE,
   },
-  i18n: i18nConf,
   routes: routesConf,
   seo: seoConf,
 })

@@ -15,14 +15,14 @@ import { createFetchRequest, createMetadata, createResolveAssetPath } from './he
 import { RenderProps } from './types'
 
 type Params = {
-  defaultMetadata?: Metadata
   i18n: I18nConfig
+  metadata?: Metadata
   routes: RouteObject[]
 }
 
 const { baseURL, basePath, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { defaultMetadata, i18n, routes }: Params): RequestHandler {
+export default function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { metadata, i18n, routes }: Params): RequestHandler {
   return async (req, res) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(createFetchRequest(req))
@@ -30,13 +30,13 @@ export default function renderRoot(render: ((props: RenderProps) => JSX.Element)
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
-    const metadata = await createMetadata(req.url, { baseURL, i18n, routes })
+    const customMetadata = await createMetadata(req.url, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
       metadata: {
-        ...defaultMetadata,
-        baseTitle: defaultMetadata?.baseTitle ?? defaultMetadata?.title,
         ...metadata,
+        baseTitle: metadata?.baseTitle ?? metadata?.title,
+        ...customMetadata,
       },
       resolveAssetPath,
     }, render?.({ context, routes: handler.dataRoutes }))

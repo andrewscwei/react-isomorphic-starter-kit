@@ -23,12 +23,12 @@ export const handleRoot = renderRoot(({ context, routes }) => (
     <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
   </App>
 ), {
-  defaultMetadata: {
+  i18n: i18nConf,
+  metadata: {
     description: DESCRIPTION,
     maskIconColor: MASK_ICON_COLOR,
     themeColor: THEME_COLOR,
     title: TITLE,
   },
   routes: localizedRoutes,
-  i18n: i18nConf,
 })
