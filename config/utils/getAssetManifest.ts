@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export default function getAssetManifest(file: string): Record<string, string> {
+export function getAssetManifest(file: string): Record<string, string> {
   try {
     const manifest = fs.readFileSync(file, 'utf-8')
     const json = JSON.parse(manifest)

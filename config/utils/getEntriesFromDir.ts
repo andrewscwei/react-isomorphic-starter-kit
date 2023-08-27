@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-export default function getEntriesFromDir(dir: string, baseDir: string = dir): string[] {
+export function getEntriesFromDir(dir: string, baseDir: string = dir): string[] {
   const files = fs.readdirSync(dir)
   const entries: string[] = []
 

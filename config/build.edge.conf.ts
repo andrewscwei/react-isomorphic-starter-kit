@@ -9,7 +9,7 @@ import { BannerPlugin, DefinePlugin, WatchIgnorePlugin, optimize } from 'webpack
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
-import getAssetManifest from './utils/getAssetManifest'
+import { getAssetManifest } from './utils/getAssetManifest'
 
 const isDev = process.env.NODE_ENV === 'development'
 
