@@ -3,15 +3,12 @@ import { RouteObject } from 'react-router'
 import { I18nConfig, generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import loadLazyComponents from './loadLazyComponents'
+import { RenderProps } from './types'
 
 type Config = {
   i18n: I18nConfig
   routes: RouteObject[]
   containerId?: string
-}
-
-type RenderProps = {
-  routes: RouteObject[]
 }
 
 const debug = useDebug(undefined, 'app')

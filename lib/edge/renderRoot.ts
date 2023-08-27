@@ -5,10 +5,11 @@
 import { createElement } from 'react'
 import { renderToReadableStream } from 'react-dom/server'
 import { RouteObject } from 'react-router'
-import { StaticHandlerContext, createStaticHandler } from 'react-router-dom/server'
+import { createStaticHandler } from 'react-router-dom/server'
 import { I18nConfig } from '../i18n'
 import { createMetadata, createResolveAssetPath } from '../server/helpers'
 import { Layout, Metadata } from '../templates'
+import { RenderProps } from './types'
 
 type Options = {
   defaultMetadata?: Metadata
@@ -16,14 +17,9 @@ type Options = {
   routes: RouteObject[]
 }
 
-type Props = {
-  context: StaticHandlerContext
-  routes: RouteObject[]
-}
-
 const { basePath, baseURL, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot(render: (props: Props) => JSX.Element, { defaultMetadata, i18n, routes }: Options) {
+export default function renderRoot(render: (props: RenderProps) => JSX.Element, { defaultMetadata, i18n, routes }: Options) {
   return async (request: Request, path: string) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(request)

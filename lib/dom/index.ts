@@ -1,5 +1,6 @@
 export { default as initClient } from './initClient'
 export { default as loadLazyComponents } from './loadLazyComponents'
+export * from './types'
 export { default as updateElementAttributes } from './updateElementAttributes'
 export { default as useDocumentDescription } from './useDocumentDescription'
 export { default as useDocumentLocale } from './useDocumentLocale'

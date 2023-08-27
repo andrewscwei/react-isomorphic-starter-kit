@@ -9,10 +9,11 @@ import { SEOConfig } from '../seo'
 import { Metadata } from '../templates'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
-import renderRoot, { type Props as RenderProps } from './renderRoot'
+import renderRoot from './renderRoot'
 import serveRobots from './serveRobots'
 import serveSitemap from './serveSitemap'
 import serveStatic from './serveStatic'
+import { RenderProps } from './types'
 
 type Config = {
   defaultMetadata?: Metadata
@@ -59,11 +60,10 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
     seo,
   }))
 
-  app.use(renderRoot({
+  app.use(renderRoot(isDev ? undefined : render, {
     defaultMetadata,
     i18n,
     routes: localizedRoutes,
-    render: isDev ? undefined : render,
   }))
 
   app.use(handle500())
