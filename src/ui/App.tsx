@@ -2,7 +2,8 @@
  * @file Client app root.
  */
 
-import React, { PropsWithChildren, StrictMode } from 'react'
+import type { PropsWithChildren } from 'react'
+import React, { StrictMode } from 'react'
 import { useFavicon } from '../../lib/dom'
 import { joinURL } from '../../lib/utils'
 import './styles/global.css'

@@ -1,4 +1,4 @@
-import { SEOConfig } from './types'
+import type { SEOConfig } from './types'
 
 type Params = {
   seo?: SEOConfig

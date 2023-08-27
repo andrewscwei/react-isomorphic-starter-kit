@@ -1,4 +1,4 @@
-import { SEOConfig } from '../lib/seo'
+import type { SEOConfig } from '../lib/seo'
 
 const robots = `
 User-agent: * Disallow:

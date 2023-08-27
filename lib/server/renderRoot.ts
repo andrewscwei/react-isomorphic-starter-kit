@@ -4,15 +4,16 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { RouteObject } from 'react-router'
+import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
-import { I18nConfig } from '../i18n'
-import { Layout, Metadata } from '../templates'
+import type { I18nConfig } from '../i18n'
+import type { Metadata } from '../templates'
+import { Layout } from '../templates'
 import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
-import { RenderProps } from './types'
+import type { RenderProps } from './types'
 
 type Params = {
   i18n: I18nConfig

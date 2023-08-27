@@ -1,5 +1,5 @@
-import Locale from './Locale'
-import URLParts from './URLParts'
+import type Locale from './Locale'
+import type URLParts from './URLParts'
 
 type ResolveLocaleOptions = {
   /**

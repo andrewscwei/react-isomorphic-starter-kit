@@ -1,5 +1,5 @@
-import { RouteObject } from 'react-router'
-import { StaticHandlerContext } from 'react-router-dom/server'
+import type { RouteObject } from 'react-router'
+import type { StaticHandlerContext } from 'react-router-dom/server'
 
 type RenderProps = {
   context: StaticHandlerContext

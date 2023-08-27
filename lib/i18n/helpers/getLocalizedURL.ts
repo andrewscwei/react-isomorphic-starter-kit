@@ -1,4 +1,4 @@
-import { ResolveLocaleOptions } from '../types'
+import type { ResolveLocaleOptions } from '../types'
 import constructURL from './constructURL'
 import getUnlocalizedURL from './getUnlocalizedURL'
 import parseURL from './parseURL'

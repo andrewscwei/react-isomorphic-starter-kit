@@ -22,7 +22,7 @@
     "test:ts": "jest --testEnvironment=jsdom --config=config/test.conf.ts src/$npm_config_files",
     "lint": "npm run lint:ts && npm run lint:css",
     "lint:fix": "npm run lint:ts:fix && npm run lint:css:fix",
-    "lint:ts": "eslint --ext .ts --ext .tsx src config tests scripts",
+    "lint:ts": "eslint --ext .ts --ext .tsx --ignore-pattern *.d.ts config lib scripts src tests",
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "lint:css": "stylelint src/**/*.css",
     "lint:css:fix": "npm run lint:css -- --fix"

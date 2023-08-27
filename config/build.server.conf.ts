@@ -4,7 +4,8 @@
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
-import { BannerPlugin, Configuration, DefinePlugin, WatchIgnorePlugin } from 'webpack'
+import type { Configuration } from 'webpack'
+import { BannerPlugin, DefinePlugin, WatchIgnorePlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'

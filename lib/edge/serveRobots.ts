@@ -1,4 +1,5 @@
-import { SEOConfig, generateRobots } from '../seo'
+import type { SEOConfig } from '../seo'
+import { generateRobots } from '../seo'
 
 type Params = {
   seo?: SEOConfig

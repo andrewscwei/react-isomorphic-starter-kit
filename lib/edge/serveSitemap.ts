@@ -1,5 +1,6 @@
-import { RouteObject } from 'react-router'
-import { SEOConfig, generateSitemap } from '../seo'
+import type { RouteObject } from 'react-router'
+import type { SEOConfig } from '../seo'
+import { generateSitemap } from '../seo'
 
 type Params = {
   routes: RouteObject[]

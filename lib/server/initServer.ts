@@ -3,17 +3,18 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
-import { RouteObject } from 'react-router'
-import { I18nConfig, generateLocalizedRoutes } from '../i18n'
-import { SEOConfig } from '../seo'
-import { Metadata } from '../templates'
+import type { RouteObject } from 'react-router'
+import type { I18nConfig } from '../i18n'
+import { generateLocalizedRoutes } from '../i18n'
+import type { SEOConfig } from '../seo'
+import type { Metadata } from '../templates'
 import { useDebug } from '../utils'
 import handle500 from './handle500'
 import renderRoot from './renderRoot'
 import serveRobots from './serveRobots'
 import serveSitemap from './serveSitemap'
 import serveStatic from './serveStatic'
-import { RenderProps } from './types'
+import type { RenderProps } from './types'
 
 type Config = {
   i18n: I18nConfig
@@ -52,8 +53,6 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
   app.use(serveRobots({
     seo,
   }))
-
-
 
   app.use(serveSitemap({
     routes: localizedRoutes,

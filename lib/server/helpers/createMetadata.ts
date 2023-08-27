@@ -1,5 +1,7 @@
-import { RouteObject, matchRoutes } from 'react-router'
-import { I18nConfig, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../../i18n'
+import type { RouteObject } from 'react-router'
+import { matchRoutes } from 'react-router'
+import type { I18nConfig } from '../../i18n'
+import { createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../../i18n'
 import { joinURL } from '../../utils'
 
 type Options = {

@@ -2,7 +2,8 @@
  * @file I18n config.
  */
 
-import { I18nConfig, loadTranslations } from '../lib/i18n'
+import type { I18nConfig } from '../lib/i18n'
+import { loadTranslations } from '../lib/i18n'
 import { tryOrUndefined } from '../lib/utils'
 import { LOCALE_CHANGE_STRATEGY } from './app.conf'
 

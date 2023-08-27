@@ -4,12 +4,13 @@
 
 import { createElement } from 'react'
 import { renderToReadableStream } from 'react-dom/server'
-import { RouteObject } from 'react-router'
+import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
-import { I18nConfig } from '../i18n'
+import type { I18nConfig } from '../i18n'
 import { createMetadata, createResolveAssetPath } from '../server/helpers'
-import { Layout, Metadata } from '../templates'
-import { RenderProps } from './types'
+import type { Metadata } from '../templates'
+import { Layout } from '../templates'
+import type { RenderProps } from './types'
 
 type Options = {
   i18n: I18nConfig

@@ -1,4 +1,4 @@
-import { DependencyList } from 'react'
+import type { DependencyList } from 'react'
 import useDocumentDescription from './useDocumentDescription'
 import useDocumentTitle from './useDocumentTitle'
 import useDocumentURL from './useDocumentURL'

@@ -1,7 +1,7 @@
 import { XMLBuilder } from 'fast-xml-parser'
-import { RouteObject } from 'react-router'
+import type { RouteObject } from 'react-router'
 import { joinURL } from '../utils'
-import { SEOConfig } from './types'
+import type { SEOConfig } from './types'
 
 type Params = {
   routes: RouteObject[]

@@ -1,4 +1,4 @@
-import { URLParts } from '../types'
+import type { URLParts } from '../types'
 
 /**
  * Parses a URL into parts.

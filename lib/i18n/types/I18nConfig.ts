@@ -1,5 +1,5 @@
-import Locale from './Locale'
-import Translations from './Translations'
+import type Locale from './Locale'
+import type Translations from './Translations'
 
 /**
  * Properties defining i18n localization behavior.

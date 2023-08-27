@@ -1,9 +1,10 @@
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import { RouteObject } from 'react-router'
-import { I18nConfig, generateLocalizedRoutes } from '../i18n'
+import type { RouteObject } from 'react-router'
+import type { I18nConfig } from '../i18n'
+import { generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
 import loadLazyComponents from './loadLazyComponents'
-import { RenderProps } from './types'
+import type { RenderProps } from './types'
 
 type Config = {
   i18n: I18nConfig

@@ -1,4 +1,4 @@
-import Locale from './Locale'
+import type Locale from './Locale'
 
 type Translation = { [key: string]: Translation | string }
 

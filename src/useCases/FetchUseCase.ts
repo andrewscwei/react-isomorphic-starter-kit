@@ -1,5 +1,6 @@
 import objectHash from 'object-hash'
-import { UseCase, UseCaseError } from '../../lib/interactors'
+import type { UseCase } from '../../lib/interactors'
+import { UseCaseError } from '../../lib/interactors'
 import { useCache } from '../../lib/utils'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'

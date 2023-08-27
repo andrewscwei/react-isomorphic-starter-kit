@@ -1,4 +1,4 @@
-import { ResolveLocaleOptions } from '../types'
+import type { ResolveLocaleOptions } from '../types'
 import getLocalizedURL from './getLocalizedURL'
 
 /**

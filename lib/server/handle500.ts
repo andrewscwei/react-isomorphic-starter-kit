@@ -6,7 +6,7 @@
  *       ends up here does not have a status code, it will default to 500.
  */
 
-import { ErrorRequestHandler } from 'express'
+import type { ErrorRequestHandler } from 'express'
 
 export default function handle500(): ErrorRequestHandler {
   return (err, req, res) => {

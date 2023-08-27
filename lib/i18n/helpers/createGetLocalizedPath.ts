@@ -1,4 +1,4 @@
-import { GetLocalizedPath, I18nConfig, Locale } from '../types'
+import type { GetLocalizedPath, I18nConfig, Locale } from '../types'
 import createResolveLocaleOptions from './createResolveLocaleOptions'
 import getLocalizedURL from './getLocalizedURL'
 

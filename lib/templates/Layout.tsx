@@ -2,10 +2,11 @@
  * @file Base HTML template for all pages.
  */
 
-import React, { PropsWithChildren } from 'react'
-import { createResolveAssetPath } from '../server'
+import type { PropsWithChildren } from 'react'
+import React from 'react'
+import type { createResolveAssetPath } from '../server'
 import { joinURL } from '../utils'
-import { Metadata } from './types'
+import type { Metadata } from './types'
 
 type Props = PropsWithChildren<{
   injectStyles: boolean

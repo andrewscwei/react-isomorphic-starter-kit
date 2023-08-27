@@ -2,7 +2,7 @@
  * @file Routes config.
  */
 
-import { RouteObject } from 'react-router'
+import type { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [{
   path: '/',
