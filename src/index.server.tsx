@@ -9,7 +9,7 @@ import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
 import seoConf from './seo.conf'
-import App from './ui/App'
+import { App } from './ui/App'
 
 export const server = initServer(({ context, routes }) => (
   <App>

@@ -6,7 +6,7 @@ import style from './Footer.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
 
-export default function Footer({ ...props }: Props) {
+export function Footer({ ...props }: Props) {
   const ltxt = useLocalizedString()
   const changeLocale = useChangeLocale()
 

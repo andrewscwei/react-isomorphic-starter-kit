@@ -10,7 +10,7 @@ import { initClient } from '../lib/dom'
 import { useDebug } from '../lib/utils'
 import i18nConf from './i18n.conf'
 import routesConf from './routes.conf'
-import App from './ui/App'
+import { App } from './ui/App'
 
 const { basePath } = __BUILD_ARGS__
 
