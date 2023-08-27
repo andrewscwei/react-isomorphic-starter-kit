@@ -62,7 +62,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "http-server": "^14.1.1",
     "identity-obj-proxy": "^3.0.0",
