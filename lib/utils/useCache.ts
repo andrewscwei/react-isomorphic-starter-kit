@@ -55,7 +55,7 @@ function setValue<T>(value: T, key: string, ttl: number): T {
   return value
 }
 
-export default function useCache({ defaultTTL = 300 }: CacheOptions = {}): CacheProxy {
+export function useCache({ defaultTTL = 300 }: CacheOptions = {}): CacheProxy {
   return {
     getValue,
     invalidate,

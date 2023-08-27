@@ -1,4 +1,4 @@
-export default function joinURL(...args: string[]): string {
+export function joinURL(...args: string[]): string {
   return args
     .join('/')
     .replace(/[/]+/g, '/')

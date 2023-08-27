@@ -1,4 +1,4 @@
-export default function tryOrUndefined<T>(fn: () => T): T | undefined {
+export function tryOrUndefined<T>(fn: () => T): T | undefined {
   try {
     return fn()
   }
