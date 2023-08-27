@@ -1,11 +1,11 @@
-import FetchUseCase from './FetchUseCase'
+import { FetchUseCase } from './FetchUseCase'
 
 export type Quote = {
   author: string
   text: string
 }
 
-export default class GetQuote extends FetchUseCase<never, Quote> {
+export class GetQuote extends FetchUseCase<never, Quote> {
   getEndpoint() { return 'https://type.fit/api/quotes' }
 
   transformResult(payload: any): Quote {

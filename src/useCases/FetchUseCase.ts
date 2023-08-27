@@ -21,7 +21,7 @@ type Options = {
 /**
  * A {@link UseCase} for fetching data from external API.
  */
-export default abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
+export abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
   protected abortController: AbortController | undefined
 
   private cache = useCache({ defaultTTL: this.ttl })

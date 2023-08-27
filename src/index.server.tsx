@@ -11,7 +11,7 @@ import routesConf from './routes.conf'
 import seoConf from './seo.conf'
 import App from './ui/App'
 
-export default initServer(({ context, routes }) => (
+export const server = initServer(({ context, routes }) => (
   <App>
     <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
   </App>

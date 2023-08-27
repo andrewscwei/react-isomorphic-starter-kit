@@ -1,10 +1,8 @@
 import React from 'react'
-import type { LoaderFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
 import { useMetaTags } from '../../../../lib/dom'
 import { useLocalizedString } from '../../../../lib/i18n'
-import type { Quote } from '../../../useCases/GetQuote'
-import GetQuote from '../../../useCases/GetQuote'
+import { GetQuote, type Quote } from '../../../useCases/GetQuote'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import style from './index.module.css'
@@ -28,4 +26,6 @@ export function Component() {
   )
 }
 
-export const loader: LoaderFunction = async () => new GetQuote().run()
+export async function loader() {
+  return new GetQuote().run()
+}

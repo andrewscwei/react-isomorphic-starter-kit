@@ -14,7 +14,7 @@ import App from './ui/App'
 
 const { basePath } = __BUILD_ARGS__
 
-export default initClient(({ routes }) => (
+export const client = initClient(({ routes }) => (
   <App>
     <RouterProvider router={createBrowserRouter(routes, { basename: basePath })}/>
   </App>
