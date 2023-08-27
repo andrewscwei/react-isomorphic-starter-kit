@@ -12,7 +12,7 @@ export default function serveSitemap({ routes, seo }: Params) {
       const sitemap = generateSitemap({ routes, seo })
 
       return new Response(sitemap, {
-        headers: { 'content-type': 'text/html' },
+        headers: { 'content-type': 'application/xml' },
       })
     }
     catch (err) {
