@@ -1,5 +1,5 @@
 /**
- * @file Webpack config for compiling the server.
+ * @file Webpack config for compiling the edge worker.
  */
 
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
@@ -15,7 +15,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const config: Configuration = {
   devtool: buildArgs.useSourceMaps ? 'source-map' : false,
   entry: {
-    'index.workers': path.join(buildArgs.inputDir, 'index.workers.tsx'),
+    'index.edge': path.join(buildArgs.inputDir, 'index.edge.tsx'),
   },
   externals: [
     nodeExternals(),
