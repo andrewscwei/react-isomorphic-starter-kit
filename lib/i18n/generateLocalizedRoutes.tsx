@@ -6,6 +6,16 @@ import { I18nProvider } from './I18nProvider'
 import { createResolveLocaleOptions } from './helpers'
 import type { I18nConfig } from './types'
 
+/**
+ * Returns an array of {@link RouteObject} containg the localized version of
+ * each {@link RouteObject} (specified by the `routes` argument). The locales to
+ * generate are specified by `config`.
+ *
+ * @param routes An array of {@link RouteObject} to localize.
+ * @param config See {@link I18nConfig}.
+ *
+ * @returns The localized array of {@link RouteObject}.
+ */
 export function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
   const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
 

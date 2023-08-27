@@ -6,7 +6,7 @@ import { UseCaseError } from './UseCaseError'
 
 type Options<Result> = {
   /**
-   * Specifies the default value.
+   * Specifies the default value of the {@link UseCase}.
    */
   defaultValue?: Result
 

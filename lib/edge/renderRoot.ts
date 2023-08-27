@@ -12,13 +12,33 @@ import { Layout, type Metadata } from '../templates'
 import type { RenderProps } from './types'
 
 type Options = {
+  /**
+   * Configuration for i18n (see {@link I18nConfig}).
+   */
   i18n: I18nConfig
+
+  /**
+   * Default metadata to use when rendering the application root.
+   */
   metadata?: Metadata
+
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
 }
 
 const { basePath, baseURL, publicPath } = __BUILD_ARGS__
 
+/**
+ * Creates a {@link Request} handler that returns a {@link Response} containing
+ * the markup for the rendered application root.
+ *
+ * @param render Render function for the application root.
+ * @param options See {@link Options}.
+ *
+ * @returns The {@link Request} handler.
+ */
 export function renderRoot(render: (props: RenderProps) => JSX.Element, { metadata, i18n, routes }: Options) {
   return async (request: Request, path: string) => {
     const handler = createStaticHandler(routes, { basename: basePath })

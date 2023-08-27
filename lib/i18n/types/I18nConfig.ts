@@ -2,7 +2,7 @@ import type { Locale } from './Locale'
 import type { Translations } from './Translations'
 
 /**
- * Properties defining i18n localization behavior.
+ * Configuration for i18n behavior.
  */
 export type I18nConfig = {
   /**

@@ -1,12 +1,12 @@
 import type { SEOConfig } from './types'
 
-type Params = {
-  seo?: SEOConfig
-}
-
 /**
- * `robots.txt` generator.
+ * Generates plain text `robots.txt` from the provided configuration.
+ *
+ * @param config Configuration for SEO (see {@link SEOConfig}).
+ *
+ * @returns The plain text `robots.txt`.
  */
-export function generateRobots({ seo }: Params = {}) {
-  return seo?.robots ?? ''
+export function generateRobots({ robots = '' }: SEOConfig = {}) {
+  return robots
 }

@@ -3,18 +3,18 @@ import type { RouteObject } from 'react-router'
 import { joinURL } from '../utils'
 import type { SEOConfig } from './types'
 
-type Params = {
-  routes: RouteObject[]
-  seo?: SEOConfig
-}
-
 const { baseURL } = __BUILD_ARGS__
 
 /**
- * Sitemap generator.
+ * Generates plain text `sitemap.xml` from the provided params.
+ *
+ * @param routes Array of {@link RouteObject} to generate the sitemap from.
+ * @param config Configuration for SEO (see {@link SEOConfig}).
+ *
+ * @returns The plain text `sitemap.xml`.
  */
-export function generateSitemap({ routes, seo }: Params) {
-  const urls = extractURLs(routes).filter(seo?.urlFilter ?? (t => true))
+export function generateSitemap(routes: RouteObject[], { urlFilter = t => true }: SEOConfig = {}) {
+  const urls = extractURLs(routes).filter(urlFilter)
   const builder = new XMLBuilder()
   const xml = builder.build({
     'urlset': {

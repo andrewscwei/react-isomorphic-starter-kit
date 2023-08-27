@@ -5,7 +5,8 @@ import path from 'path'
 const { publicPath } = __BUILD_ARGS__
 
 /**
- * Serve local static files and add expire headers.
+ * Creates an Express router for serving local static files and adding expire
+ * headers.
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */

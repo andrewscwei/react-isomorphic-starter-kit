@@ -1,5 +1,5 @@
 /**
- * @file Generates a static site from the built server app.
+ * @file Generates a static site from the built server application.
  */
 
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */

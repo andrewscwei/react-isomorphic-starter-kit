@@ -2,14 +2,23 @@ import { useEffect, useState } from 'react'
 import { updateElementAttributes } from './updateElementAttributes'
 
 type Params = {
+  /**
+   * Favicon for <link rel='alternate icon'>.
+   */
   alternateIcon?: {
     defaultImage?: string
     darkImage?: string
   }
+  /**
+   * Favicon for <link rel='mask icon'>.
+   */
   maskIcon?: {
     image?: string
     color?: string
   }
+  /**
+   * Default favicon (for <link rel='icon'>).
+   */
   icon?: {
     defaultImage?: string
     darkImage?: string

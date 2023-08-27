@@ -2,8 +2,8 @@ import type { ResolveLocaleOptions } from '../types'
 import { getLocalizedURL } from './getLocalizedURL'
 
 /**
- * Returns all localized versions of a URL based on the specified
- * `supportedLocales`.
+ * Returns all localized versions of a URL based on the provided
+ * {@link ResolveLocaleOptions}.
  *
  * @param url The URL.
  * @param options See {@link ResolveLocaleOptions}.

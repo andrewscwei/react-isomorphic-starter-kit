@@ -3,10 +3,24 @@ import type { RouteObject } from 'react-router'
 import { generateSitemap, type SEOConfig } from '../seo'
 
 type Params = {
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
+
+  /**
+   * Configuration for SEO (see {@link SEOConfig}).
+   */
   seo?: SEOConfig
 }
 
+/**
+ * Creates an Express router serving the sitemap of the application.
+ *
+ * @param params See {@link Params}.
+ *
+ * @returns The request handler.
+ */
 export function serveSitemap({ routes, seo }: Params) {
   const router = Router()
 
@@ -14,7 +28,7 @@ export function serveSitemap({ routes, seo }: Params) {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const sitemap = generateSitemap({ routes, seo })
+      const sitemap = generateSitemap(routes, seo)
 
       res.send(sitemap)
     }

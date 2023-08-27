@@ -4,8 +4,19 @@ import { useDocumentTitle } from './useDocumentTitle'
 import { useDocumentURL } from './useDocumentURL'
 
 type Params = {
+  /**
+   * The document title (see {@link useDocumentTitle}).
+   */
   title?: string
+
+  /**
+   * The document description (see {@link useDocumentDescription}).
+   */
   description?: string
+
+  /**
+   * The document URL (see {@link useDocumentURL}).
+   */
   url?: string
 }
 

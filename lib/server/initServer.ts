@@ -17,9 +17,24 @@ import { serveStatic } from './serveStatic'
 import type { RenderProps } from './types'
 
 type Config = {
+  /**
+   * Configuration for i18n (see {@link I18nConfig}).
+   */
   i18n: I18nConfig
+
+  /**
+   * Defualt {@link Metadata} for the rendered application.
+   */
   metadata?: Metadata
+
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
+
+  /**
+   * Configuration for SEO (see {@link SEOConfig}).
+   */
   seo?: SEOConfig
 }
 
@@ -28,6 +43,15 @@ const { port } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
+/**
+ * Initializes, configures and returns the Express server for serving the
+ * application.
+ *
+ * @param render Function for rendering the application.
+ * @param config See {@link Config}.
+ *
+ * @returns The Express server.
+ */
 export function initServer(render: (props: RenderProps) => JSX.Element, {
   metadata,
   i18n,

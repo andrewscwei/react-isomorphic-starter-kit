@@ -15,8 +15,8 @@ type Result = {
 
 /**
  * Retrieves the locale identifier from a URL. The default behavior of this
- * function to look for the locale identifier in the domain first followed by
- * the first directory of the path. You can provide a custom resolver.
+ * function is to look for the locale identifier in the domain first, followed
+ * by the first directory of the path. You can also provide a custom resolver.
  *
  * @param url The URL, can be a full URL or a valid path.
  * @param options See {@link ResolveLocaleOptions}.

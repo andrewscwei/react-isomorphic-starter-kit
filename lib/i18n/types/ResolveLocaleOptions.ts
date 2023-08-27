@@ -1,6 +1,9 @@
 import type { Locale } from './Locale'
 import type { URLParts } from './URLParts'
 
+/**
+ * Options that determine how locales are resolved from a URL.
+ */
 export type ResolveLocaleOptions = {
   /**
    * The locale to fallback to if one cannot be inferred from the provided URL.

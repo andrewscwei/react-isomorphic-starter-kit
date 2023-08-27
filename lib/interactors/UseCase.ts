@@ -1,3 +1,6 @@
+/**
+ * An interface for interacting with external resources from the application.
+ */
 export interface UseCase<Params, Result, Options> {
   /**
    * Validates the input parameters of this use case.
