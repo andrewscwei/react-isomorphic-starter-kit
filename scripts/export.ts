@@ -12,7 +12,7 @@ import * as buildArgs from '../config/build.args'
 
 const { assetManifestFile, baseURL } = buildArgs
 const publicDir = path.join(__dirname, '../build')
-const { default: app } = require(publicDir)
+const { server: app } = require(publicDir)
 
 async function generateSitemap() {
   try {
