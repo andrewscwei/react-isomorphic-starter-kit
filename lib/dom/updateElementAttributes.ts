@@ -22,7 +22,7 @@ type Undo = () => void
  *
  * @returns A function that undoes the updates.
  */
-export default function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
+export function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
   if (typeof document === 'undefined') return () => {}
 
   const keyAttributes = attributes.filter(t => t.key === true)

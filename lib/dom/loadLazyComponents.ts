@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router'
 import { matchRoutes } from 'react-router'
 
-export default async function loadLazyComponents(routes: RouteObject[]) {
+export async function loadLazyComponents(routes: RouteObject[]) {
   const matches = matchRoutes(routes, window.location)?.filter(t => t.route.lazy)
 
   if (!matches || matches.length === 0) return

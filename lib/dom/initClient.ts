@@ -3,7 +3,7 @@ import type { RouteObject } from 'react-router'
 import type { I18nConfig } from '../i18n'
 import { generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
-import loadLazyComponents from './loadLazyComponents'
+import { loadLazyComponents } from './loadLazyComponents'
 import type { RenderProps } from './types'
 
 type Config = {
@@ -14,7 +14,7 @@ type Config = {
 
 const debug = useDebug(undefined, 'app')
 
-export default async function initClient(render: (props: RenderProps) => JSX.Element, {
+export async function initClient(render: (props: RenderProps) => JSX.Element, {
   routes,
   i18n,
   containerId = 'root',

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import updateElementAttributes from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes'
 
 type Params = {
   alternateIcon?: {
@@ -22,7 +22,7 @@ type Params = {
  *
  * @param params - See {@link Params}.
  */
-export default function useFavicon({
+export function useFavicon({
   alternateIcon,
   icon,
   maskIcon,

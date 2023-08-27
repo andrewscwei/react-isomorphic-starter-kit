@@ -1,6 +1,6 @@
 import type { DependencyList } from 'react'
 import { useEffect } from 'react'
-import updateElementAttributes from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes'
 
 /**
  * Hook for updating relevant description meta tags in the document head.
@@ -8,7 +8,7 @@ import updateElementAttributes from './updateElementAttributes'
  * @param description - The description.
  * @param deps - Additional dependencies.
  */
-export default function useDocumentDescription(description: string, deps?: DependencyList) {
+export function useDocumentDescription(description: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return
 
   const metaTags = [{

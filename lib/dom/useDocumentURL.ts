@@ -1,6 +1,6 @@
 import type { DependencyList } from 'react'
 import { useEffect } from 'react'
-import updateElementAttributes from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes'
 
 /**
  * Hook for updating relevant URL meta tags in the document head.
@@ -8,7 +8,7 @@ import updateElementAttributes from './updateElementAttributes'
  * @param url - The URL.
  * @param deps - Additional dependencies.
  */
-export default function useDocumentURL(url: string, deps?: DependencyList) {
+export function useDocumentURL(url: string, deps?: DependencyList) {
   if (typeof document === 'undefined') return
 
   const metaTags = [{

@@ -1,7 +1,5 @@
 import type { RouteObject } from 'react-router'
 
-type RenderProps = {
+export type RenderProps = {
   routes: RouteObject[]
 }
-
-export default RenderProps
