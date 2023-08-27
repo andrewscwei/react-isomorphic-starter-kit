@@ -1,3 +1,7 @@
+/**
+ * @file Generates a static site from the built server app.
+ */
+
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 import { XMLParser } from 'fast-xml-parser'
