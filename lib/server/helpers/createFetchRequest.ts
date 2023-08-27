@@ -1,6 +1,15 @@
-import { Request as ExpressRequest } from 'express'
+import type { Request as ExpressRequest } from 'express'
 
-export default function createFetchRequest(req: ExpressRequest) {
+/**
+ * Converts an Express request to a Fetch request.
+ *
+ * @param req The Express request.
+ *
+ * @returns The corresponding Fetch request.
+ *
+ * @see {@link https://www.npmjs.com/package/@remix-run/express}
+ */
+export function createFetchRequest(req: ExpressRequest) {
   const origin = `${req.protocol}://${req.get('host')}`
   const url = new URL(req.originalUrl || req.url, origin)
 

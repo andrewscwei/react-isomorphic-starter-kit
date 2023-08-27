@@ -1,3 +1,4 @@
-type GetLocalizedPath = (path: string) => string
-
-export default GetLocalizedPath
+/**
+ * Returns the localized version of a path.
+ */
+export type GetLocalizedPath = (path: string) => string

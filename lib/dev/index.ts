@@ -1,1 +1,1 @@
-export { default as hmr } from './hmr'
+export * from './hmr'

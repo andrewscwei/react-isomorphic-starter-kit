@@ -6,7 +6,7 @@ import { I18nContext } from './I18nProvider'
  *
  * @returns The current locale.
  */
-export default function useLocale() {
+export function useLocale() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 

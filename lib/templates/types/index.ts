@@ -1,1 +1,2 @@
-export { type default as Metadata } from './Metadata'
+export type * from './Metadata'
+export type * from './ResolveAssetPath'

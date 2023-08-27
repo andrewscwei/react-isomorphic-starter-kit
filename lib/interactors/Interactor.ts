@@ -1,4 +1,7 @@
-type Interactor<UseCaseParams, UseCaseResult> = {
+/**
+ * An object that manages the life cycle of a {@link UseCase}.
+ */
+export interface Interactor<UseCaseParams, UseCaseResult> {
   /**
    * Indicates whether the use case is running.
    */
@@ -26,5 +29,3 @@ type Interactor<UseCaseParams, UseCaseResult> = {
    */
   reset: () => void
 }
-
-export default Interactor

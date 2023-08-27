@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react'
-import updateElementAttributes from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes'
 
 type Params = {
+  /**
+   * Favicon for <link rel='alternate icon'>.
+   */
   alternateIcon?: {
     defaultImage?: string
     darkImage?: string
   }
+  /**
+   * Favicon for <link rel='mask icon'>.
+   */
   maskIcon?: {
     image?: string
     color?: string
   }
+  /**
+   * Default favicon (for <link rel='icon'>).
+   */
   icon?: {
     defaultImage?: string
     darkImage?: string
@@ -20,9 +29,9 @@ type Params = {
  * Hook for updating favicon meta tags in the document head when dark mode is
  * toggled.
  *
- * @param params - See {@link Params}.
+ * @param params See {@link Params}.
  */
-export default function useFavicon({
+export function useFavicon({
   alternateIcon,
   icon,
   maskIcon,

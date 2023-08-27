@@ -1,7 +1,10 @@
-import Locale from './Locale'
-import URLParts from './URLParts'
+import type { Locale } from './Locale'
+import type { URLParts } from './URLParts'
 
-type ResolveLocaleOptions = {
+/**
+ * Options that determine how locales are resolved from a URL.
+ */
+export type ResolveLocaleOptions = {
   /**
    * The locale to fallback to if one cannot be inferred from the provided URL.
    */
@@ -39,5 +42,3 @@ type ResolveLocaleOptions = {
    */
   resolver?: (urlParts: URLParts) => Locale | undefined
 }
-
-export default ResolveLocaleOptions

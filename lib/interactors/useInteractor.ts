@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebug } from '../utils'
-import Interactor from './Interactor'
-import UseCase from './UseCase'
-import UseCaseError from './UseCaseError'
+import type { Interactor } from './Interactor'
+import type { UseCase } from './UseCase'
+import { UseCaseError } from './UseCaseError'
 
 type Options<Result> = {
   /**
-   * Specifies the default value.
+   * Specifies the default value of the {@link UseCase}.
    */
   defaultValue?: Result
 
@@ -35,8 +35,8 @@ const debug = useDebug()
 /**
  * Hook for interacting with a {@link UseCase}.
  *
- * @param UseCaseClass - The {@link UseCase} class to interact with.
- * @param options - @see {@link Options}.
+ * @param UseCaseClass The {@link UseCase} class to interact with.
+ * @param options @see {@link Options}.
  *
  * @returns The {@link Interactor}.
  */

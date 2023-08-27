@@ -12,10 +12,12 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 6. [Docker](https://docker.com) config
 7. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
 8. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
-9. Server-side rendering with [Express](https://expressjs.com/) or exporting as static site
-10. Data prefetching and caching
-11. Web workers
-12. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
+9. Building for [Express](https://expressjs.com/) with server-side rendering
+10. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
+11. Building for a static app with prerendering (example on GitHub Pages)
+12. Data prefetching and caching
+13. Web workers
+14. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
 
 ## Usage
 
@@ -26,7 +28,7 @@ $ npm install
 # Run in development
 $ npm run dev
 
-# Run production tests
+# Run production tests (Express app)
 $ npm test
 
 # Run tests in specific dir relative to src
@@ -35,7 +37,7 @@ $ npm test --files=dir
 # Run unit tests
 $ npm run test:ts
 
-# Build for production
+# Build for production (Express app)
 $ npm run build
 
 # Run in production (after successful build)
@@ -54,9 +56,35 @@ $ npm run build --raw
 
 See `scripts` in `package.json` for additional commands.
 
+## Exporting as Edge-Rendered Site
+
+To build for Edge, run:
+
+```sh
+$ npm run build:edge
+```
+
+You can then test it on Cloudflare:
+
+```sh
+$ npm run start:edge
+```
+
 ## Exporting as Static Site
 
-To export this app as a static site, run `npm run export` after a successful build. This will remove all server components from the built app and generate static HTML files for all pages outlined in the `/sitemap.xml` endpoint.
+To export this app as a static site, run:
+
+```sh
+$ npm run build:static
+```
+
+This removes all server components from the built server app and generates static HTML files for all pages outlined in the `/sitemap.xml` endpoint.
+
+To test, run:
+
+```sh
+$ npm run start:static
+```
 
 ## Testing
 

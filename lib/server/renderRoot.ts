@@ -4,51 +4,63 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import { StaticHandlerContext } from '@remix-run/router'
-import { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import { RouteObject } from 'react-router'
+import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
-import { I18nConfig } from '../i18n'
-import { Layout, Metadata } from '../templates'
+import type { I18nConfig } from '../i18n'
+import { Layout, type Metadata } from '../templates'
 import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
+import type { RenderProps } from './types'
 
-type Params = {
-  defaultMetadata?: Metadata
+type Options = {
+  /**
+   * Configuration for i18n (see {@link I18nConfig}).
+   */
   i18n: I18nConfig
-  routes: RouteObject[]
-  render?: (props: Props) => JSX.Element
-}
 
-export type Props = {
-  context: StaticHandlerContext
+  /**
+   * Default {@link Metadata} for the rendered application.
+   */
+  metadata?: Metadata
+
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
 }
 
 const { baseURL, basePath, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot({ defaultMetadata, i18n, routes, render }: Params): RequestHandler {
+/**
+ * Creates an Express request handler for rendering the applicaiton root.
+ *
+ * @param render Function for rendering the application.
+ * @param options See {@link Options}.
+ *
+ * @returns The request handler.
+ */
+export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { metadata, i18n, routes }: Options): RequestHandler {
   return async (req, res) => {
-    const fetchRequest = createFetchRequest(req)
     const handler = createStaticHandler(routes, { basename: basePath })
-    const context = await handler.query(fetchRequest)
+    const context = await handler.query(createFetchRequest(req))
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
-    const metadata = await createMetadata(req.url, { baseURL, i18n, routes })
-    const root = render?.({ context, routes: handler.dataRoutes })
-
-    const { pipe } = renderToPipeableStream(createElement(Layout, {
+    const customMetadata = await createMetadata(req.url, { baseURL, i18n, routes })
+    const root = createElement(Layout, {
       injectStyles: render !== undefined,
       metadata: {
-        ...defaultMetadata,
-        baseTitle: defaultMetadata?.baseTitle ?? defaultMetadata?.title,
         ...metadata,
+        baseTitle: metadata?.baseTitle ?? metadata?.title,
+        ...customMetadata,
       },
       resolveAssetPath,
-    }, root), {
+    }, render?.({ context, routes: handler.dataRoutes }))
+
+    const { pipe } = renderToPipeableStream(root, {
       onShellReady() {
         res.setHeader('content-type', 'text/html')
         pipe(res)

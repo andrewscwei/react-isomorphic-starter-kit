@@ -1,13 +1,13 @@
-import { URLParts } from '../types'
+import type { URLParts } from '../types'
 
 /**
- * Parses a URL into parts.
+ * Parses a URL into {@link URLParts}.
  *
- * @param url - The URL to parse.
+ * @param url The URL to parse.
  *
- * @returns The parsed result.
+ * @returns The resulting {@link URLParts}.
  */
-export default function parseURL(url: string): URLParts {
+export function parseURL(url: string): URLParts {
   const regex = /((?:(.*):\/\/)?((?:[A-Za-z0-9-]+\.?)+)?(?::([0-9]+))?)([^?#]*)(?:\?([^#]*))?(?:#(.*))?/
   const parts = url.match(regex)
 

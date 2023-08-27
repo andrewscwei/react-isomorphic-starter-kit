@@ -1,5 +1,6 @@
 import objectHash from 'object-hash'
-import { UseCase, UseCaseError } from '../../lib/interactors'
+import type { UseCase } from '../../lib/interactors'
+import { UseCaseError } from '../../lib/interactors'
 import { useCache } from '../../lib/utils'
 
 type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
@@ -20,7 +21,7 @@ type Options = {
 /**
  * A {@link UseCase} for fetching data from external API.
  */
-export default abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
+export abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
   protected abortController: AbortController | undefined
 
   private cache = useCache({ defaultTTL: this.ttl })

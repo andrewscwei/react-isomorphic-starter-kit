@@ -6,23 +6,23 @@ import React from 'react'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
 import { initServer } from '../lib/server'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
-import i18nConf from './i18n.conf'
-import routesConf from './routes.conf'
-import seoConf from './seo.conf'
-import App from './ui/App'
+import { config as i18nConf } from './i18n.conf'
+import { config as routesConf } from './routes.conf'
+import { config as seoConf } from './seo.conf'
+import { App } from './ui/App'
 
-export default initServer(({ context, routes }) => (
+export const server = initServer(({ context, routes }) => (
   <App>
     <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
   </App>
 ), {
-  defaultMetadata: {
+  i18n: i18nConf,
+  metadata: {
     description: DESCRIPTION,
     maskIconColor: MASK_ICON_COLOR,
     themeColor: THEME_COLOR,
     title: TITLE,
   },
-  i18n: i18nConf,
   routes: routesConf,
   seo: seoConf,
 })

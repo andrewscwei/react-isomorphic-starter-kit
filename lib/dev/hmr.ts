@@ -5,12 +5,13 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import clientBuildConfig from '../../config/build.client.conf'
 
 /**
- * Middleware for development only, sets up Webpack dev server and HMR features.
+ * Express middleware that builds, serves and watches the client bundle with hot
+ * module reloading configured. Intended for development use only.
  *
  * @see {@link https://www.npmjs.com/package/webpack-dev-middleware}
  * @see {@link https://www.npmjs.com/package/webpack-hot-middleware}
  */
-export default function hmr() {
+export function hmr() {
   const compiler = webpack(clientBuildConfig)
   const router = Router()
 

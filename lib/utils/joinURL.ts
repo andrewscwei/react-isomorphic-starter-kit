@@ -1,4 +1,11 @@
-export default function joinURL(...args: string[]): string {
+/**
+ * Joins a series of strings into a qualified URL.
+ *
+ * @param args Series of strings to join.
+ *
+ * @returns The URL.
+ */
+export function joinURL(...args: string[]): string {
   return args
     .join('/')
     .replace(/[/]+/g, '/')

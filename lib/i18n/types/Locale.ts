@@ -1,3 +1,4 @@
-type Locale = string
-
-export default Locale
+/**
+ * Locale identifier.
+ */
+export type Locale = string

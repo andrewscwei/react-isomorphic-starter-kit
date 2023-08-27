@@ -1,22 +1,39 @@
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import { RouteObject } from 'react-router'
-import { I18nConfig, generateLocalizedRoutes } from '../i18n'
+import type { RouteObject } from 'react-router'
+import type { I18nConfig } from '../i18n'
+import { generateLocalizedRoutes } from '../i18n'
 import { useDebug } from '../utils'
-import loadLazyComponents from './loadLazyComponents'
+import { loadLazyComponents } from './loadLazyComponents'
+import type { RenderProps } from './types'
 
 type Config = {
-  i18n: I18nConfig
-  routes: RouteObject[]
+  /**
+   * ID of the DOM element to render the application root in. in.
+   */
   containerId?: string
-}
 
-type RenderProps = {
+  /**
+   * Configuration for i18n (see {@link I18nConfig}).
+   */
+  i18n: I18nConfig
+
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
 }
 
 const debug = useDebug(undefined, 'app')
 
-export default async function initClient(render: (props: RenderProps) => JSX.Element, {
+/**
+ * Initializes the client application.
+ *
+ * @param render Render function for the application.
+ * @param config Additional configurations, see {@link Config}.
+ *
+ * @returns The application root.
+ */
+export async function initClient(render: (props: RenderProps) => JSX.Element, {
   routes,
   i18n,
   containerId = 'root',
@@ -30,14 +47,18 @@ export default async function initClient(render: (props: RenderProps) => JSX.Ele
 
   await loadLazyComponents(localizedRoutes)
 
-  const root = render({ routes: localizedRoutes })
+  const app = render({ routes: localizedRoutes })
+  let root
 
   if (process.env.NODE_ENV === 'development') {
-    createRoot(container).render(root)
+    root = createRoot(container)
+    root.render(app)
   }
   else {
-    hydrateRoot(container, root)
+    root = hydrateRoot(container, app)
   }
 
   debug('Initializing client...', 'OK')
+
+  return root
 }

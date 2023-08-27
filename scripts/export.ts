@@ -1,3 +1,7 @@
+/**
+ * @file Generates a static site from the built server application.
+ */
+
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 import { XMLParser } from 'fast-xml-parser'
@@ -8,7 +12,7 @@ import * as buildArgs from '../config/build.args'
 
 const { assetManifestFile, baseURL } = buildArgs
 const publicDir = path.join(__dirname, '../build')
-const { default: app } = require(publicDir)
+const { server: app } = require(publicDir)
 
 async function generateSitemap() {
   try {

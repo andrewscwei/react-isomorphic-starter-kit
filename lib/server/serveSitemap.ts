@@ -1,40 +1,36 @@
 import { Router } from 'express'
-import { XMLBuilder } from 'fast-xml-parser'
-import { RouteObject } from 'react-router'
-import { joinURL } from '../utils'
-import { SEOConfig } from './types'
+import type { RouteObject } from 'react-router'
+import { generateSitemap, type SEOConfig } from '../seo'
 
 type Params = {
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
+
+  /**
+   * Configuration for SEO (see {@link SEOConfig}).
+   */
   seo?: SEOConfig
 }
 
-const { baseURL } = __BUILD_ARGS__
-
 /**
- * Sitemap generator.
+ * Creates an Express router serving the sitemap of the application.
+ *
+ * @param params See {@link Params}.
+ *
+ * @returns The request handler.
  */
-export default function serveSitemap({ routes, seo }: Params) {
+export function serveSitemap({ routes, seo }: Params) {
   const router = Router()
 
   router.use('/sitemap.xml', async (req, res, next) => {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const urls = extractURLs(routes).filter(seo?.urlFilter ?? (t => true))
-      const builder = new XMLBuilder()
-      const xml = builder.build({
-        'urlset': {
-          url: urls.map(t => ({
-            'loc': joinURL(baseURL, t),
-            'lastmod': new Date().toISOString(),
-            'changefreq': 'daily',
-            'priority': '0.7',
-          })),
-        },
-      })
+      const sitemap = generateSitemap(routes, seo)
 
-      res.send(xml)
+      res.send(sitemap)
     }
     catch (err) {
       next(err)
@@ -42,14 +38,4 @@ export default function serveSitemap({ routes, seo }: Params) {
   })
 
   return router
-}
-
-function extractURLs(routes?: RouteObject[]): string[] {
-  if (!routes) return []
-
-  return routes.reduce<string[]>((out, { path, children }) => {
-    if (!path) return [...out, ...extractURLs(children)]
-
-    return [...out, path]
-  }, [])
 }

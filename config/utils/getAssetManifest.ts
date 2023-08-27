@@ -1,6 +1,15 @@
 import fs from 'fs'
 
-export default function getAssetManifest(file: string): Record<string, string> {
+/**
+ * Reads an asset manifest file from the file system and returns it as a JS
+ * object.
+ *
+ * @param file File path of asset manifest file.
+ *
+ * @returns JS object of the asset manifest or an empty object if an error is
+ *          thrown.
+ */
+export function getAssetManifest(file: string): Record<string, string> {
   try {
     const manifest = fs.readFileSync(file, 'utf-8')
     const json = JSON.parse(manifest)

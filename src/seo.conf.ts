@@ -1,16 +1,12 @@
-import { SEOConfig } from '../lib/server'
+import type { SEOConfig } from '../lib/seo'
 
-const robots = `
+export const config: SEOConfig = {
+  robots: `
 User-agent: * Disallow:
-`
+  `,
+  urlFilter: url => {
+    if (url.endsWith('*')) return false
 
-const urlFilter: SEOConfig['urlFilter'] = url => {
-  if (url.endsWith('*')) return false
-
-  return true
+    return true
+  },
 }
-
-export default {
-  robots,
-  urlFilter,
-} as SEOConfig

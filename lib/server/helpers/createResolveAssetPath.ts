@@ -1,3 +1,4 @@
+import type { ResolveAssetPath } from '../../templates'
 import { joinURL } from '../../utils'
 
 type Options = {
@@ -7,14 +8,20 @@ type Options = {
   publicPath?: string
 
   /**
-   * Absolute path of the manifest file.
+   * Absolute path of the asset manifest file.
    */
   manifest?: Record<string, string>
 }
 
-type ResolveAssetPath = (path: string) => string
-
-export default function createResolveAssetPath({ publicPath = '/', manifest }: Options = {}): ResolveAssetPath {
+/**
+ * Creates a function for resolving asset paths in the application against a
+ * pregenerated manifest file.
+ *
+ * @param options See {@link Options}.
+ *
+ * @returns The resolved asset path.
+ */
+export function createResolveAssetPath({ publicPath = '/', manifest }: Options = {}): ResolveAssetPath {
   return (path: string): string => {
     let out = path
 

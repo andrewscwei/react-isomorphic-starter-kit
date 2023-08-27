@@ -1,7 +1,17 @@
 import { sprintf } from 'sprintf-js'
-import { GetLocalizedString, I18nConfig, Locale } from '../types'
+import type { GetLocalizedString, I18nConfig, Locale } from '../types'
 
-export default function createGetLocalizedString(locale: Locale | undefined, { defaultLocale, translations }: I18nConfig): GetLocalizedString {
+/**
+ * Creates a function for getting the localized string for a key path in the
+ * target locale.
+ *
+ * @param locale The target locale.
+ * @param config See {@link I18nConfig}.
+ *
+ * @returns A function for getting the localized string for a key path the
+ *          target locale.
+ */
+export function createGetLocalizedString(locale: Locale | undefined, { defaultLocale, translations }: I18nConfig): GetLocalizedString {
   const dict = translations[locale ?? defaultLocale]
 
   return (keyPath: string, ...args) => {

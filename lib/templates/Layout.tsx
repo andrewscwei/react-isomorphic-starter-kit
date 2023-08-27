@@ -2,20 +2,37 @@
  * @file Base HTML template for all pages.
  */
 
-import React, { PropsWithChildren } from 'react'
-import { createResolveAssetPath } from '../server'
+import React, { type PropsWithChildren } from 'react'
 import { joinURL } from '../utils'
-import { Metadata } from './types'
+import type { Metadata, ResolveAssetPath } from './types'
 
 type Props = PropsWithChildren<{
+  /**
+   * Specifies whether CSS <link> tags should be injected.
+   */
   injectStyles: boolean
+
+  /**
+   * Metadata for <meta> tags in <head>.
+   */
   metadata: Metadata
-  resolveAssetPath?: ReturnType<typeof createResolveAssetPath>
+
+  /**
+   * Function for resolving asset paths.
+   */
+  resolveAssetPath?: ResolveAssetPath
 }>
 
 const { defaultLocale, publicURL } = __BUILD_ARGS__
 
-export default function Layout({
+/**
+ * Renders the JSX of the application root.
+ *
+ * @param params See {@link Props}.
+ *
+ * @returns JSX of the application root.
+ */
+export function Layout({
   children,
   injectStyles,
   metadata,

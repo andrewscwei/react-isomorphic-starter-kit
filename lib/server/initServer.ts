@@ -3,21 +3,38 @@ import express from 'express'
 import helmet from 'helmet'
 import ip from 'ip'
 import morgan from 'morgan'
-import { RouteObject } from 'react-router'
-import { I18nConfig, generateLocalizedRoutes } from '../i18n'
-import { Metadata } from '../templates'
+import type { RouteObject } from 'react-router'
+import type { I18nConfig } from '../i18n'
+import { generateLocalizedRoutes } from '../i18n'
+import type { SEOConfig } from '../seo'
+import type { Metadata } from '../templates'
 import { useDebug } from '../utils'
-import handle500 from './handle500'
-import renderRoot, { type Props as RenderProps } from './renderRoot'
-import serveRobots from './serveRobots'
-import serveSitemap from './serveSitemap'
-import serveStatic from './serveStatic'
-import { SEOConfig } from './types'
+import { handle500 } from './handle500'
+import { renderRoot } from './renderRoot'
+import { serveRobots } from './serveRobots'
+import { serveSitemap } from './serveSitemap'
+import { serveStatic } from './serveStatic'
+import type { RenderProps } from './types'
 
 type Config = {
-  defaultMetadata?: Metadata
+  /**
+   * Configuration for i18n (see {@link I18nConfig}).
+   */
   i18n: I18nConfig
+
+  /**
+   * Defualt {@link Metadata} for the rendered application.
+   */
+  metadata?: Metadata
+
+  /**
+   * Configuration for routes (see {@link RouteObject}).
+   */
   routes: RouteObject[]
+
+  /**
+   * Configuration for SEO (see {@link SEOConfig}).
+   */
   seo?: SEOConfig
 }
 
@@ -26,8 +43,17 @@ const { port } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
-export default function initServer(render: (props: RenderProps) => JSX.Element, {
-  defaultMetadata,
+/**
+ * Initializes, configures and returns the Express server for serving the
+ * application.
+ *
+ * @param render Function for rendering the application.
+ * @param config See {@link Config}.
+ *
+ * @returns The Express server.
+ */
+export function initServer(render: (props: RenderProps) => JSX.Element, {
+  metadata,
   i18n,
   routes,
   seo = {},
@@ -57,11 +83,10 @@ export default function initServer(render: (props: RenderProps) => JSX.Element, 
     seo,
   }))
 
-  app.use(renderRoot({
-    defaultMetadata,
+  app.use(renderRoot(isDev ? undefined : render, {
+    metadata,
     i18n,
     routes: localizedRoutes,
-    render: isDev ? undefined : render,
   }))
 
   app.use(handle500())

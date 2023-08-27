@@ -1,13 +1,13 @@
-import { Translations } from './types'
+import type { Translations } from './types'
 
 /**
  * Loads translations from a directory via Webpack `RequireContext`.
  *
- * @param ctx - See {@link __WebpackModuleApi.RequireContext}.
+ * @param ctx See {@link __WebpackModuleApi.RequireContext}.
  *
  * @returns The translations dictionary.
  */
-export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
+export function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
   const translations: Translations = {}
 
   try {

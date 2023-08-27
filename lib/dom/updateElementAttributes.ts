@@ -5,24 +5,32 @@ type Attribute = {
 }
 
 type Options = {
-  parent?: Node
+  /**
+   * Speicifies whether the DOM element should be created if it does not already
+   * exist.
+   */
   autoCreate?: boolean
+
+  /**
+   * The parent node to appened the created DOM element to, if applicable.
+   */
+  parent?: Node
 }
 
 type Undo = () => void
 
 /**
- * Declaratively updates the attributes of an element. If `options.autoCreate`
- * is `true`, if the element is not present it will be created and injected into
- * `options.parent`.
+ * Declaratively updates the attributes of a DOM element. If `autoCreate` is
+ * `true` and the element is not present it will be created and injected into
+ * `parent`.
  *
- * @param tagName - The tag name of the element to update.
- * @param attributes - The attributes to set to.
- * @param options - See {@link Options}.
+ * @param tagName The tag name of the element to update.
+ * @param attributes The attributes to set to.
+ * @param options See {@link Options}.
  *
  * @returns A function that undoes the updates.
  */
-export default function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
+export function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
   if (typeof document === 'undefined') return () => {}
 
   const keyAttributes = attributes.filter(t => t.key === true)

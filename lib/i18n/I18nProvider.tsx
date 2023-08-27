@@ -1,8 +1,9 @@
-import React, { createContext, Dispatch, PropsWithChildren, Reducer, useReducer } from 'react'
+import type { Dispatch, PropsWithChildren, Reducer } from 'react'
+import React, { createContext, useReducer } from 'react'
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
-import { GetLocalizedPath, GetLocalizedString, I18nConfig } from './types'
+import type { GetLocalizedPath, GetLocalizedString, I18nConfig } from './types'
 
 type I18nState = I18nConfig & {
   getLocalizedPath: GetLocalizedPath
@@ -30,11 +31,11 @@ type I18nChangeLocaleAction = {
  *   - If set to `query`, the locale is inferred from the search parameter
  *     `locale` in the current path
  *
- * @param props - See {@link I18nProviderProps}.
+ * @param props See {@link I18nProviderProps}.
  *
  * @returns The context provider.
  */
-export default function I18nProvider({
+export function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',

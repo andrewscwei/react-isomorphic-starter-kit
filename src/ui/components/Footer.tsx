@@ -1,11 +1,12 @@
-import React, { HTMLAttributes } from 'react'
+import type { HTMLAttributes } from 'react'
+import React from 'react'
 import { useChangeLocale, useLocalizedString } from '../../../lib/i18n'
 import $$GitHubLogo from '../assets/images/github-logo.svg'
 import style from './Footer.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
 
-export default function Footer({ ...props }: Props) {
+export function Footer({ ...props }: Props) {
   const ltxt = useLocalizedString()
   const changeLocale = useChangeLocale()
 

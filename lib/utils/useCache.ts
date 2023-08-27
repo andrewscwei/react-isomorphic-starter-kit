@@ -1,4 +1,8 @@
 type CacheOptions = {
+  /**
+   * The default TTL (in seconds) to use if one is not specified upon setting a
+   * value.
+   */
   defaultTTL?: number
 }
 
@@ -55,7 +59,15 @@ function setValue<T>(value: T, key: string, ttl: number): T {
   return value
 }
 
-export default function useCache({ defaultTTL = 300 }: CacheOptions = {}): CacheProxy {
+/**
+ * Returns a simple caching interface for getting, setting and invalidating a
+ * value from the browser's session storage.
+ *
+ * @param options See {@link CacheOptions}.
+ *
+ * @returns The interface.
+ */
+export function useCache({ defaultTTL = 300 }: CacheOptions = {}): CacheProxy {
   return {
     getValue,
     invalidate,
