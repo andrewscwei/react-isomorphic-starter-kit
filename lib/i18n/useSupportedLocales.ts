@@ -7,7 +7,7 @@ import { createResolveLocaleOptions } from './helpers'
  *
  * @returns All supported locales.
  */
-export default function useSupportedLocales() {
+export function useSupportedLocales() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 

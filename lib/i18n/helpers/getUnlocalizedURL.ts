@@ -1,7 +1,7 @@
 import type { ResolveLocaleOptions } from '../types'
-import constructURL from './constructURL'
-import parseURL from './parseURL'
-import resolveLocaleFromURL from './resolveLocaleFromURL'
+import { constructURL } from './constructURL'
+import { parseURL } from './parseURL'
+import { resolveLocaleFromURL } from './resolveLocaleFromURL'
 
 /**
  * Returns the unlocalized version of a URL.
@@ -11,7 +11,7 @@ import resolveLocaleFromURL from './resolveLocaleFromURL'
  *
  * @returns The unlocalized URL.
  */
-export default function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
+export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
   const currLocaleInfo = resolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
   const parts = parseURL(url)
 

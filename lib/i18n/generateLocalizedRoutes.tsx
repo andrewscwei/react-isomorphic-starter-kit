@@ -2,11 +2,11 @@ import React from 'react'
 import type { RouteObject } from 'react-router'
 import { Outlet } from 'react-router'
 import { joinURL } from '../utils'
-import I18nProvider from './I18nProvider'
+import { I18nProvider } from './I18nProvider'
 import { createResolveLocaleOptions } from './helpers'
 import type { I18nConfig } from './types'
 
-export default function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
+export function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
   const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
 
   const Container = () => (

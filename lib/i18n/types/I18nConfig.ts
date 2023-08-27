@@ -1,10 +1,10 @@
-import type Locale from './Locale'
-import type Translations from './Translations'
+import type { Locale } from './Locale'
+import type { Translations } from './Translations'
 
 /**
  * Properties defining i18n localization behavior.
  */
-type I18nConfig = {
+export type I18nConfig = {
   /**
    * The default locale.
    */
@@ -23,5 +23,3 @@ type I18nConfig = {
    */
   translations: Translations
 }
-
-export default I18nConfig

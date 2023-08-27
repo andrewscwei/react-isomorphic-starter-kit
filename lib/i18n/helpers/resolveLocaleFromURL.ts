@@ -1,5 +1,5 @@
 import type { ResolveLocaleOptions } from '../types'
-import parseURL from './parseURL'
+import { parseURL } from './parseURL'
 
 type Result = {
   /**
@@ -23,7 +23,7 @@ type Result = {
  *
  * @returns The result of the resolution if successful, `undefined` otherwise.
  */
-export default function resolveLocaleFromURL(url: string, { defaultLocale, resolver, resolveStrategy = 'auto', supportedLocales = [] }: Partial<ResolveLocaleOptions> = {}): Result | undefined {
+export function resolveLocaleFromURL(url: string, { defaultLocale, resolver, resolveStrategy = 'auto', supportedLocales = [] }: Partial<ResolveLocaleOptions> = {}): Result | undefined {
   const parts = parseURL(url)
 
   if (resolver) {

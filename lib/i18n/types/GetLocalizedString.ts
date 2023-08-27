@@ -1,3 +1,1 @@
-type GetLocalizedString = (keyPath: string, ...args: any[]) => string
-
-export default GetLocalizedString
+export type GetLocalizedString = (keyPath: string, ...args: any[]) => string

@@ -8,7 +8,7 @@ import { createResolveLocaleOptions, getLocalizedURL } from './helpers'
  *
  * @returns The change locale function.
  */
-export default function useChangeLocale() {
+export function useChangeLocale() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 

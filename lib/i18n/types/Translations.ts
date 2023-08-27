@@ -1,7 +1,5 @@
-import type Locale from './Locale'
+import type { Locale } from './Locale'
 
-type Translation = { [key: string]: Translation | string }
+export type Translation = { [key: string]: Translation | string }
 
-type Translations = Record<Locale, Translation>
-
-export default Translations
+export type Translations = Record<Locale, Translation>

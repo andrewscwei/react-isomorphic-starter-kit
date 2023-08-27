@@ -7,7 +7,7 @@ import type { Translations } from './types'
  *
  * @returns The translations dictionary.
  */
-export default function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
+export function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
   const translations: Translations = {}
 
   try {

@@ -1,3 +1,1 @@
-type Locale = string
-
-export default Locale
+export type Locale = string

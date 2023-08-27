@@ -6,7 +6,7 @@ import { I18nContext } from './I18nProvider'
  *
  * @returns The path localizing function.
  */
-export default function useLocalizedPath() {
+export function useLocalizedPath() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 

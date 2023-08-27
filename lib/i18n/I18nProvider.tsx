@@ -35,7 +35,7 @@ type I18nChangeLocaleAction = {
  *
  * @returns The context provider.
  */
-export default function I18nProvider({
+export function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',

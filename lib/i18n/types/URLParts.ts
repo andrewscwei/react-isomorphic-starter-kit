@@ -1,4 +1,4 @@
-type URLParts = {
+export type URLParts = {
   base?: string
   hash?: string
   host?: string
@@ -7,5 +7,3 @@ type URLParts = {
   protocol?: string
   query?: string
 }
-
-export default URLParts
