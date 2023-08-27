@@ -8,7 +8,7 @@
 
 import type { ErrorRequestHandler } from 'express'
 
-export default function handle500(): ErrorRequestHandler {
+export function handle500(): ErrorRequestHandler {
   return (err, req, res) => {
     res.status(err.status || 500).send(err)
   }

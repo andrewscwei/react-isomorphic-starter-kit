@@ -1,1 +1,1 @@
-export type { default as RenderProps } from './RenderProps'
+export type * from './RenderProps'

@@ -10,7 +10,7 @@ type Options = {
   routes: RouteObject[]
 }
 
-export default async function createMetadata(url: string, { baseURL, i18n, routes }: Options) {
+export async function createMetadata(url: string, { baseURL, i18n, routes }: Options) {
   const resolveResult = resolveLocaleFromURL(url, createResolveLocaleOptions(i18n))
   const matchedRouteObject = matchRoutes(routes, url)?.[0]?.route as RouteObject
   const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))

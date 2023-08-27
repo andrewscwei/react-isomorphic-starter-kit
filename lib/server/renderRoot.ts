@@ -10,8 +10,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import type { I18nConfig } from '../i18n'
-import type { Metadata } from '../templates'
-import { Layout } from '../templates'
+import { Layout, type Metadata } from '../templates'
 import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
 import type { RenderProps } from './types'
 
@@ -23,7 +22,7 @@ type Params = {
 
 const { baseURL, basePath, publicPath } = __BUILD_ARGS__
 
-export default function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { metadata, i18n, routes }: Params): RequestHandler {
+export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { metadata, i18n, routes }: Params): RequestHandler {
   return async (req, res) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(createFetchRequest(req))

@@ -1,14 +1,13 @@
 import { Router } from 'express'
 import type { RouteObject } from 'react-router'
-import type { SEOConfig } from '../seo'
-import { generateSitemap } from '../seo'
+import { generateSitemap, type SEOConfig } from '../seo'
 
 type Params = {
   routes: RouteObject[]
   seo?: SEOConfig
 }
 
-export default function serveSitemap({ routes, seo }: Params) {
+export function serveSitemap({ routes, seo }: Params) {
   const router = Router()
 
   router.use('/sitemap.xml', async (req, res, next) => {

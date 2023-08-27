@@ -1,6 +1,6 @@
 import type { Request as ExpressRequest } from 'express'
 
-export default function createFetchRequest(req: ExpressRequest) {
+export function createFetchRequest(req: ExpressRequest) {
   const origin = `${req.protocol}://${req.get('host')}`
   const url = new URL(req.originalUrl || req.url, origin)
 

@@ -9,11 +9,11 @@ import { generateLocalizedRoutes } from '../i18n'
 import type { SEOConfig } from '../seo'
 import type { Metadata } from '../templates'
 import { useDebug } from '../utils'
-import handle500 from './handle500'
-import renderRoot from './renderRoot'
-import serveRobots from './serveRobots'
-import serveSitemap from './serveSitemap'
-import serveStatic from './serveStatic'
+import { handle500 } from './handle500'
+import { renderRoot } from './renderRoot'
+import { serveRobots } from './serveRobots'
+import { serveSitemap } from './serveSitemap'
+import { serveStatic } from './serveStatic'
 import type { RenderProps } from './types'
 
 type Config = {
@@ -28,7 +28,7 @@ const { port } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
-export default function initServer(render: (props: RenderProps) => JSX.Element, {
+export function initServer(render: (props: RenderProps) => JSX.Element, {
   metadata,
   i18n,
   routes,
