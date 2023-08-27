@@ -5,7 +5,11 @@
   ],
   "exclude": [
     "/assets/*",
+    "/*.css",
     "/*.js",
-    "/*.(css|json)"
+    "/*.json",
+    "/*.png",
+    "/*.svg",
+    "/*.txt"
   ]
 }
