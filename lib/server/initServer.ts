@@ -1,8 +1,4 @@
-import compression from 'compression'
 import express from 'express'
-import helmet from 'helmet'
-import ip from 'ip'
-import morgan from 'morgan'
 import type { RouteObject } from 'react-router'
 import type { I18nConfig } from '../i18n'
 import { generateLocalizedRoutes } from '../i18n'
@@ -60,14 +56,6 @@ export function initServer(render: (props: RenderProps) => JSX.Element, {
 }: Config) {
   const app = express()
 
-  app.use(morgan('dev'))
-
-  app.use(compression())
-
-  app.use(helmet({
-    contentSecurityPolicy: false,
-  }))
-
   // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   if (isDev) app.use(require('../dev').hmr())
   if (!isDev) app.use(serveStatic())
@@ -108,7 +96,7 @@ export function initServer(render: (props: RenderProps) => JSX.Element, {
         }
       })
       .on('listening', () => {
-        debug(`App is listening on ${ip.address()}:${port}`)
+        debug('Starting app...', 'OK')
       })
   }
 
