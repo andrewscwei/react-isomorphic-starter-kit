@@ -36,7 +36,7 @@ COPY tests ./tests
 # Strips dev dependencies from the dev build.
 FROM dev AS prod
 
-# RUN npm prune --production
+RUN npm prune --production
 
 
 # Final production build.
