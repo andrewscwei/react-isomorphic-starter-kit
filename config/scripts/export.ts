@@ -8,10 +8,10 @@ import { XMLParser } from 'fast-xml-parser'
 import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
-import * as buildArgs from '../config/build.args'
+import * as buildArgs from '../build.args'
 
 const { assetManifestFile, baseURL } = buildArgs
-const publicDir = path.join(__dirname, '../build')
+const publicDir = path.join(__dirname, '../../build')
 const { server: app } = require(publicDir)
 
 async function generateSitemap() {

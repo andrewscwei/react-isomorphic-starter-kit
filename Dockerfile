@@ -17,7 +17,6 @@ COPY package*.json ./
 RUN npm install
 
 COPY config ./config
-COPY scripts ./scripts
 COPY lib ./lib
 COPY src ./src
 COPY tests ./tests

@@ -1,8 +1,9 @@
 import objectHash from 'object-hash'
-import { UseCaseError, type UseCase } from '.'
 import { useCache } from '../utils'
+import { type UseCase } from './UseCase'
+import { UseCaseError } from './UseCaseError'
 
-type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
+export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
 type Options = {
   /**
@@ -25,7 +26,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
   protected cache = useCache({ defaultTTL: this.ttl })
 
-  private timer: NodeJS.Timeout | undefined
+  protected timer: NodeJS.Timeout | undefined
 
   /**
    * Method of the fetch request.
@@ -37,6 +38,22 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    * `NaN` or <= 0, caching is disabled.
    */
   get ttl(): number { return 0 }
+
+  /**
+   * Indicates if params should be passed to the request as body instead based
+   * on the specified request method.
+   */
+  private get usesParamsAsBody(): boolean {
+    switch (this.method) {
+      case 'POST':
+      case 'PUT':
+      case 'PATCH':
+      case 'DELETE':
+        return true
+      default:
+        return false
+    }
+  }
 
   /**
    * Optional headers to be passed to the request.
@@ -58,8 +75,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    *
    * @returns The transformed parameters to be used to make the request.
    */
-  transformParams(params: Params): Record<string, any> {
-    return params
+  transformParams(params: Params): any {
+    return this.usesParamsAsBody ? JSON.stringify(params) : params
   }
 
   /**
@@ -107,31 +124,20 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
     const transformedParams = this.transformParams(params)
 
-    let useParamsAsBody = false
-
-    switch (method) {
-      case 'POST':
-      case 'PUT':
-      case 'PATCH':
-      case 'DELETE':
-        useParamsAsBody = true
-        break
-      default:
-        url.search = new URLSearchParams(params).toString()
-    }
+    if (!this.usesParamsAsBody) url.search = new URLSearchParams(params).toString()
 
     try {
       this.startTimeout(timeout)
 
       const res = await fetch(url, {
-        body: useParamsAsBody ? JSON.stringify(transformedParams) : undefined,
+        body: this.usesParamsAsBody ? transformedParams : undefined,
         headers,
         method,
         signal: this.abortController?.signal,
       })
 
       if (!res.ok) {
-        throw Error(res.statusText)
+        throw Error(`[${res.status}] ${res.statusText}`)
       }
 
       const payload = await res.json()
@@ -177,7 +183,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
     })
   }
 
-  private startTimeout(seconds = 0) {
+  protected startTimeout(seconds = 0) {
     this.clearTimeout()
 
     if (this.abortController === undefined) return
@@ -188,7 +194,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
     }, seconds * 1000)
   }
 
-  private clearTimeout() {
+  protected clearTimeout() {
     if (this.timer === undefined) return
 
     clearTimeout(this.timer)
