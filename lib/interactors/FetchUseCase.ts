@@ -5,7 +5,7 @@ import { UseCaseError } from './UseCaseError'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
-type Options = {
+export type Options = {
   /**
    * Ignores the cached result when running this use case.
    */
