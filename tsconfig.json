@@ -33,9 +33,6 @@
     "lib/**/*.tsx"
   ],
   "exclude": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "functions/**/*",
     "node_modules",
     "build",
     "tests"
