@@ -95,4 +95,4 @@ export const assetManifestFile = 'asset-manifest.json'
 /**
  * Port to serve the application in.
  */
-export const port = Number(typeof process !== 'undefined' && process.env.PORT || 8080)
+export const port = Number(process.env.PORT || 8080)
