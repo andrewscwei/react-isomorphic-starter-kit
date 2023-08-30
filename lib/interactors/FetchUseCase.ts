@@ -1,5 +1,5 @@
 import objectHash from 'object-hash'
-import { useCache } from '../utils'
+import { useCache, useDebug } from '../utils'
 import { type UseCase } from './UseCase'
 import { UseCaseError } from './UseCaseError'
 
@@ -17,6 +17,8 @@ export type Options = {
    */
   timeout?: number
 }
+
+const debug = useDebug('fetch')
 
 /**
  * A {@link UseCase} for fetching data from external API.
@@ -126,6 +128,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
     if (!this.usesParamsAsBody) url.search = new URLSearchParams(params).toString()
 
+    const useCaseName = this.constructor.toString().match(/\w+/g)?.[1]
+
     try {
       this.startTimeout(timeout)
 
@@ -141,6 +145,9 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       }
 
       const payload = await res.json()
+
+      debug(`[${useCaseName}] Running fetch use case...`, 'OK', payload)
+
       const transformedResult = this.transformResult(payload)
 
       if (cacheKey) {
@@ -150,6 +157,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       return transformedResult
     }
     catch (err) {
+      debug(`[${useCaseName}] Running fetch use case...`, 'ERR', err)
+
       const error = this.transformError(err)
 
       throw error

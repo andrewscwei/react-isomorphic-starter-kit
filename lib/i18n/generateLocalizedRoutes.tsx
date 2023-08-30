@@ -17,8 +17,6 @@ import type { I18nConfig } from './types'
  * @returns The localized array of {@link RouteObject}.
  */
 export function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
-  const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
-
   const Container = () => (
     <I18nProvider {...config}>
       <Outlet/>
@@ -27,24 +25,36 @@ export function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfi
 
   return [{
     Component: Container,
-    children: routes.reduce((out, route) => {
-      const path = route.path
-      if (!path) return out
-
-      switch (resolveStrategy) {
-        case 'path': {
-          const localizedRoutes = supportedLocales?.filter(t => t !== defaultLocale).map(t => ({ ...route, path: joinURL(`/${t}`, path) }))
-
-          return [
-            ...out,
-            ...localizedRoutes ?? [],
-            route,
-          ]
-        }
-        default: {
-          return routes
-        }
-      }
-    }, [] as RouteObject[]),
+    children: routes.map(t => localizeRoute(t, config)).flat(),
   }]
+}
+
+function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
+  const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
+  const { path, children } = route
+
+  if (path !== undefined) {
+    switch (resolveStrategy) {
+      case 'path': {
+        const localizedRoutes = supportedLocales?.filter(t => t !== defaultLocale).map(t => ({ ...route, path: joinURL(`/${t}`, path) }))
+
+        return [
+          route,
+          ...localizedRoutes ?? [],
+        ]
+      }
+      default: {
+        return [route]
+      }
+    }
+  }
+  else if (children !== undefined) {
+    return [{
+      ...route,
+      children: children.map(t => localizeRoute(t, config)).flat(),
+    }]
+  }
+  else {
+    return [route]
+  }
 }
