@@ -1,5 +1,4 @@
-import type { HTMLAttributes } from 'react'
-import React from 'react'
+import React, { type HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 import { useLocalizedPath, useLocalizedString } from '../../../lib/i18n'
 import style from './Header.module.css'

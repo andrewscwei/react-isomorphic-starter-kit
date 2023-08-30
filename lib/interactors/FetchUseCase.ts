@@ -1,7 +1,6 @@
 import objectHash from 'object-hash'
 import { useCache, useDebug } from '../utils'
-import { type UseCase } from './UseCase'
-import { UseCaseError } from './UseCaseError'
+import { UseCaseError, type UseCase } from './UseCase'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 

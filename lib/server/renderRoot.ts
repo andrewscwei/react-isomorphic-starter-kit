@@ -49,7 +49,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
-    const customMetadata = await createMetadata(req.url, { baseURL, i18n, routes })
+    const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
       metadata: {

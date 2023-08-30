@@ -1,7 +1,6 @@
 import express from 'express'
 import type { RouteObject } from 'react-router'
-import type { I18nConfig } from '../i18n'
-import { generateLocalizedRoutes } from '../i18n'
+import { generateLocalizedRoutes, type I18nConfig } from '../i18n'
 import type { SEOConfig } from '../seo'
 import type { Metadata } from '../templates'
 import { useDebug } from '../utils'

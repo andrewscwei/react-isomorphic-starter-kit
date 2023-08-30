@@ -1,5 +1,4 @@
-import type { RouteObject } from 'react-router'
-import { matchRoutes } from 'react-router'
+import { matchRoutes, type RouteObject } from 'react-router'
 
 /**
  * Fetches and replaces all lazy components with synchronous components for an

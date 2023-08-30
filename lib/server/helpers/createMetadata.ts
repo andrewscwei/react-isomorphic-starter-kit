@@ -1,7 +1,6 @@
-import type { RouteObject } from 'react-router'
-import { matchRoutes } from 'react-router'
-import type { I18nConfig } from '../../i18n'
-import { createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from '../../i18n'
+import { matchRoutes, type RouteObject } from 'react-router'
+import type { StaticHandlerContext } from 'react-router-dom/server'
+import { createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL, type I18nConfig } from '../../i18n'
 import type { Metadata } from '../../templates'
 import { joinURL } from '../../utils'
 
@@ -23,17 +22,19 @@ type Options = {
 }
 
 /**
- * Creates URL specific metadata.
+ * Creates route specific metadata.
  *
- * @param url The URL.
+ * @param context The {@link StaticHandlerContext}.
  * @param options See {@link Options}.
  *
  * @returns The {@link Metadata}.
  */
-export async function createMetadata(url: string, { baseURL, i18n, routes }: Options): Promise<Metadata> {
+export async function createMetadata(context: StaticHandlerContext, { baseURL, i18n, routes }: Options): Promise<Metadata> {
+  const url = context.location.pathname
   const resolveResult = resolveLocaleFromURL(url, createResolveLocaleOptions(i18n))
-  const matchedRouteObject = matchRoutes(routes, url)?.[0]?.route as RouteObject
-  const metadata = await matchedRouteObject?.metadata?.(createGetLocalizedString(resolveResult?.locale, i18n))
+  const matchedRoutes = (matchRoutes(routes, url) ?? []).reverse()
+  const metadataPromise = matchedRoutes.find(t => t.route.metadata !== undefined)?.route.metadata
+  const metadata = await metadataPromise?.(context, { ltxt: createGetLocalizedString(resolveResult?.locale, i18n) })
 
   return {
     ...metadata ?? {},

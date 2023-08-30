@@ -1,6 +1,5 @@
 import React from 'react'
-import type { RouteObject } from 'react-router'
-import { Outlet } from 'react-router'
+import { Outlet, type RouteObject } from 'react-router'
 import { joinURL } from '../utils'
 import { I18nProvider } from './I18nProvider'
 import { createResolveLocaleOptions } from './helpers'

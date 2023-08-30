@@ -1,5 +1,4 @@
-import type { DependencyList } from 'react'
-import { useEffect } from 'react'
+import { useEffect, type DependencyList } from 'react'
 import { updateElementAttributes } from './updateElementAttributes'
 
 /**

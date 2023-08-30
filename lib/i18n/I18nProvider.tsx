@@ -1,5 +1,4 @@
-import type { Dispatch, PropsWithChildren, Reducer } from 'react'
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'

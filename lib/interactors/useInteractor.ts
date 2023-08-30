@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebug } from '../utils'
 import type { Interactor } from './Interactor'
-import type { UseCase } from './UseCase'
-import { UseCaseError } from './UseCaseError'
+import { UseCaseError, type UseCase } from './UseCase'
 
 type Options<Result> = {
   /**
