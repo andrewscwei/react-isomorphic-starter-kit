@@ -9,7 +9,7 @@
     "start:edge": "wrangler pages dev --node-compat --compatibility-date=2023-08-14 ./build",
     "clean": "rimraf build",
     "prebuild": "npm run lint",
-    "dev": "npm run clean && cross-env NODE_ENV=development concurrently \"npm run bundle:server -- --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --quiet --exec 'node -r dotenv/config' --watch build build\"",
+    "dev": "npm run clean && cross-env NODE_ENV=development concurrently \"webpack --config config/build.dev.conf.ts --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --quiet --exec 'node -r dotenv/config' --watch build build\"",
     "build": "cross-env-shell BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD)} \"npm run clean && npm run bundle:client && npm run bundle:server\"",
     "build:static": "npm run build && ts-node ./config/scripts/export",
     "build:edge": "cross-env-shell BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD)} \"npm run clean && npm run bundle:client && npm run bundle:edge\"",

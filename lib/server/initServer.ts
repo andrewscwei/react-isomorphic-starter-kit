@@ -1,6 +1,7 @@
 import express from 'express'
 import type { RouteObject } from 'react-router'
-import { generateLocalizedRoutes, type I18nConfig } from '../i18n'
+import type { I18nConfig } from '../i18n'
+import { generateLocalizedRoutes } from '../i18n'
 import type { SEOConfig } from '../seo'
 import type { Metadata } from '../templates'
 import { useDebug } from '../utils'
@@ -15,7 +16,7 @@ type Config = {
   /**
    * Configuration for i18n (see {@link I18nConfig}).
    */
-  i18n: I18nConfig
+  i18n?: I18nConfig
 
   /**
    * Defualt {@link Metadata} for the rendered application.
@@ -25,7 +26,7 @@ type Config = {
   /**
    * Configuration for routes (see {@link RouteObject}).
    */
-  routes: RouteObject[]
+  routes?: RouteObject[]
 
   /**
    * Configuration for SEO (see {@link SEOConfig}).
@@ -34,7 +35,7 @@ type Config = {
 }
 
 const debug = useDebug(undefined, 'server')
-const { port } = __BUILD_ARGS__
+const { defaultLocale, port } = __BUILD_ARGS__
 const isDev = process.env.NODE_ENV === 'development'
 const isTest = process.env.NODE_ENV === 'test'
 
@@ -47,12 +48,12 @@ const isTest = process.env.NODE_ENV === 'test'
  *
  * @returns The Express server.
  */
-export function initServer(render: (props: RenderProps) => JSX.Element, {
-  metadata,
-  i18n,
-  routes,
+export function initServer(render?: (props: RenderProps) => JSX.Element, {
+  i18n = { defaultLocale, localeChangeStrategy: 'path', translations: { [defaultLocale]: {} } },
+  metadata = {},
+  routes = [],
   seo = {},
-}: Config) {
+}: Config = {}) {
   const app = express()
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
