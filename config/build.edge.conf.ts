@@ -14,7 +14,7 @@ import { getAssetManifest } from './utils/getAssetManifest'
 const isDev = process.env.NODE_ENV === 'development'
 
 const config: Configuration = {
-  devtool: buildArgs.useSourceMaps ? 'source-map' : false,
+  devtool: buildArgs.useSourceMaps ? 'eval-source-map' : 'source-map',
   entry: {
     'index.edge': path.join(buildArgs.inputDir, 'index.edge.tsx'),
   },

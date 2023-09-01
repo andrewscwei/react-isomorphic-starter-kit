@@ -20,7 +20,7 @@ import * as buildArgs from './build.args'
 const isDev = process.env.NODE_ENV === 'development'
 
 const config: Configuration = {
-  devtool: buildArgs.useSourceMaps ? 'source-map' : false,
+  devtool: buildArgs.useSourceMaps ? 'eval-source-map' : false,
   entry: {
     main: [
       path.join(buildArgs.inputDir, 'index.client.tsx'),
