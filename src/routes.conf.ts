@@ -3,11 +3,10 @@
  */
 
 import type { RouteObject } from 'react-router'
-import { ErrorBoundary } from './ui/ErrorBoundary'
 
 export const config: RouteObject[] = [{
   id: 'root',
-  ErrorBoundary,
+  lazy: () => import('./ui/pages/index'),
   children: [{
     path: '/',
     index: true,
