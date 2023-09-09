@@ -10,8 +10,8 @@ import { renderToPipeableStream } from 'react-dom/server'
 import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import type { I18nConfig } from '../i18n'
-import { Layout, type Metadata } from '../templates'
-import { createFetchRequest, createMetadata, createResolveAssetPath } from './helpers'
+import { Layout, createMetadata, type Metadata } from '../templates'
+import { createFetchRequest } from './helpers'
 import type { RenderProps } from './types'
 
 type Options = {
@@ -48,7 +48,6 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
-    const resolveAssetPath = createResolveAssetPath({ manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
@@ -57,7 +56,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
         baseTitle: metadata?.baseTitle ?? metadata?.title,
         ...customMetadata,
       },
-      resolveAssetPath,
+      resolveAssetPath: t => __ASSET_MANIFEST__?.[t] ?? t,
     }, render?.({ context, routes: handler.dataRoutes }))
 
     const { pipe } = renderToPipeableStream(root, {

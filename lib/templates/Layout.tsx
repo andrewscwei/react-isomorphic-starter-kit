@@ -94,7 +94,7 @@ export function Layout({
 
         <link rel='manifest' href={resolveAssetPath('manifest.json')}/>
 
-        {injectStyles && <link rel='stylesheet' href={resolveAssetPath('main.css')}/>}
+        {injectStyles && <link rel='stylesheet' href={resolveAssetPath('styles.css')}/>}
 
         <script defer type='application/javascript' src={resolveAssetPath('main.js')}></script>
       </head>

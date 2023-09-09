@@ -107,6 +107,16 @@ const config: Configuration = {
       new CSSMinimizerPlugin(),
       new TerserPlugin(),
     ],
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          chunks: 'all',
+          enforce: true,
+          name: 'styles',
+          type: 'css/mini-extract',
+        },
+      },
+    },
   },
   output: {
     filename: buildArgs.skipOptimizations ? '[name].js' : '[name].[chunkhash].js',

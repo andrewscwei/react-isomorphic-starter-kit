@@ -7,8 +7,7 @@ import { renderToReadableStream } from 'react-dom/server'
 import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import type { I18nConfig } from '../i18n'
-import { createMetadata, createResolveAssetPath } from '../server/helpers'
-import { Layout, type Metadata } from '../templates'
+import { Layout, createMetadata, type Metadata } from '../templates'
 import type { RenderProps } from './types'
 
 type Options = {
@@ -46,7 +45,6 @@ export function renderRoot(render: (props: RenderProps) => JSX.Element, { metada
 
     if (context instanceof Response) return context
 
-    const resolveAssetPath = createResolveAssetPath({ manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
@@ -55,7 +53,7 @@ export function renderRoot(render: (props: RenderProps) => JSX.Element, { metada
         baseTitle: metadata?.baseTitle ?? metadata?.title,
         ...customMetadata,
       },
-      resolveAssetPath,
+      resolveAssetPath: t => __ASSET_MANIFEST__?.[t] ?? t,
     }, render?.({ context, routes: handler.dataRoutes }))
 
     const stream = await renderToReadableStream(root)
