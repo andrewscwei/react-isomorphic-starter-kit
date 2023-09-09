@@ -10,7 +10,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import type { RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import type { I18nConfig } from '../i18n'
-import { Layout, createMetadata, type Metadata } from '../templates'
+import { Layout, createMetadata, createResolveAssetPath, type Metadata } from '../templates'
 import { createFetchRequest } from './helpers'
 import type { RenderProps } from './types'
 
@@ -31,7 +31,7 @@ type Options = {
   routes: RouteObject[]
 }
 
-const { baseURL, basePath } = __BUILD_ARGS__
+const { baseURL, basePath, publicPath } = __BUILD_ARGS__
 
 /**
  * Creates an Express request handler for rendering the applicaiton root.
@@ -48,6 +48,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
+    const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
@@ -56,7 +57,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
         baseTitle: metadata?.baseTitle ?? metadata?.title,
         ...customMetadata,
       },
-      resolveAssetPath: t => __ASSET_MANIFEST__?.[t] ?? t,
+      resolveAssetPath,
     }, render?.({ context, routes: handler.dataRoutes }))
 
     const { pipe } = renderToPipeableStream(root, {
