@@ -28,7 +28,7 @@ type Options = {
   routes: RouteObject[]
 }
 
-const { basePath, baseURL, publicPath } = __BUILD_ARGS__
+const { basePath, baseURL } = __BUILD_ARGS__
 
 /**
  * Creates a {@link Request} handler that returns a {@link Response} containing
@@ -46,7 +46,7 @@ export function renderRoot(render: (props: RenderProps) => JSX.Element, { metada
 
     if (context instanceof Response) return context
 
-    const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
+    const resolveAssetPath = createResolveAssetPath({ manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,

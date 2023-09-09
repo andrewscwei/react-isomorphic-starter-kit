@@ -11,7 +11,7 @@ import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
 import TerserPlugin from 'terser-webpack-plugin'
 import type { Configuration } from 'webpack'
-import { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin } from 'webpack'
+import { DefinePlugin, EnvironmentPlugin } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import * as buildArgs from './build.args'
@@ -107,23 +107,6 @@ const config: Configuration = {
       new CSSMinimizerPlugin(),
       new TerserPlugin(),
     ],
-    splitChunks: {
-      cacheGroups: {
-        js: {
-          chunks: 'all',
-          enforce: true,
-          name: 'common',
-          test: /node_modules/,
-        },
-        css: {
-          chunks: 'all',
-          enforce: true,
-          maxInitialRequests: 1,
-          name: 'common',
-          test: /\.css$/,
-        },
-      },
-    },
   },
   output: {
     filename: buildArgs.skipOptimizations ? '[name].js' : '[name].[chunkhash].js',
@@ -138,6 +121,7 @@ const config: Configuration = {
   },
   plugins: [
     new MiniCSSExtractPlugin({
+      chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[id].[chunkhash].css',
       filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
     }),
     new ForkTSCheckerPlugin(),
@@ -154,7 +138,6 @@ const config: Configuration = {
       }],
     }),
     ...isDev ? [
-      new HotModuleReplacementPlugin(),
       new ReactRefreshPlugin(),
     ] : [
       new ManifestPlugin({

@@ -31,7 +31,7 @@ type Options = {
   routes: RouteObject[]
 }
 
-const { baseURL, basePath, publicPath } = __BUILD_ARGS__
+const { baseURL, basePath } = __BUILD_ARGS__
 
 /**
  * Creates an Express request handler for rendering the applicaiton root.
@@ -48,7 +48,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
 
     if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
 
-    const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
+    const resolveAssetPath = createResolveAssetPath({ manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
       injectStyles: render !== undefined,
