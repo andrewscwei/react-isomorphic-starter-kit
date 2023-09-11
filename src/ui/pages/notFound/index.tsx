@@ -1,7 +1,7 @@
 import React from 'react'
 import { useMetaTags } from '../../../../lib/dom'
 import { useLocalizedString } from '../../../../lib/i18n'
-import style from './index.module.css'
+import styles from './index.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
@@ -10,7 +10,7 @@ export function Component() {
 
   return (
     <main>
-      <h1 className={style.title}>{ltxt('not-found-title')}</h1>
+      <h1 className={styles.title}>{ltxt('not-found-title')}</h1>
     </main>
   )
 }

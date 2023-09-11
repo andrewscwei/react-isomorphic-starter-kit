@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet, useRouteError } from 'react-router'
 import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
-import style from './index.module.css'
+import styles from './index.module.css'
 
 export function Component() {
   return (
@@ -19,8 +19,8 @@ export function ErrorBoundary() {
 
   return (
     <main>
-      <code className={style.message}>{error.message}</code>
-      <pre className={style.stack}>{error.stack}</pre>
+      <code className={styles.message}>{error.message}</code>
+      <pre className={styles.stack}>{error.stack}</pre>
     </main>
   )
 }
