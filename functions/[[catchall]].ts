@@ -1,4 +1,4 @@
-import { handleRoot } from '../build/index.edge'
+import { handleRoot } from '../build'
 
 export const onRequest: PagesFunction = async ({ request, functionPath: path }) => {
   const response = await handleRoot(request, path)

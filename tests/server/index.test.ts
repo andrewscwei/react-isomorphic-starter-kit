@@ -7,7 +7,7 @@ describe('server', () => {
   let app: Express
 
   beforeAll(async () => {
-    const baseDir = path.join(__dirname, '../build')
+    const baseDir = path.join(__dirname, '../../build')
     expect(fs.existsSync(baseDir)).toBeTruthy()
     app = (await import(baseDir)).server
   })

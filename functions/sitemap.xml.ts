@@ -1,4 +1,4 @@
-import { handleSitemap } from '../build/index.edge'
+import { handleSitemap } from '../build'
 
 export const onRequest: PagesFunction = async ({ request }) => {
   const response = await handleSitemap(request)
