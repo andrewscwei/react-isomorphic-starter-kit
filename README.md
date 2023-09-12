@@ -27,8 +27,8 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 # Install dependencies
 $ npm install
 
-# Run in development
-$ npm run dev
+# Run in development (client only)
+$ npm run dev:static
 
 # Run production tests (Express app)
 $ npm test
@@ -40,7 +40,7 @@ $ npm test --files=dir
 $ npm run test:ts
 
 # Build for production (Express app)
-$ npm run build
+$ npm run build:server
 
 # Run in production (after successful build)
 $ npm start
@@ -50,10 +50,10 @@ In any of the `build` or `build:*` scripts, you can add the following arguments 
 
 ```sh
 # Analyzes the size the generated bundle(s) and displays a visual report in the default browser
-$ npm run build --analyze
+$ npm run build:server --analyze
 
 # Omits HTML/CSS/JS compressions during build
-$ npm run build --raw
+$ npm run build:server --raw
 ```
 
 See `scripts` in `package.json` for additional commands.
