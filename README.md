@@ -30,20 +30,8 @@ $ npm install
 # Run in development (client only)
 $ npm run dev:static
 
-# Run production tests (Express app)
-$ npm test
-
-# Run tests in specific dir relative to src
-$ npm test --files=dir
-
 # Run unit tests
 $ npm run test:ts
-
-# Build for production (Express app)
-$ npm run build:server
-
-# Run in production (after successful build)
-$ npm start
 ```
 
 In any of the `build` or `build:*` scripts, you can add the following arguments for additional diagnosis details of the build process:
@@ -57,6 +45,20 @@ $ npm run build:server --raw
 ```
 
 See `scripts` in `package.json` for additional commands.
+
+## Building as Express app
+
+This is the default behavior, simply run:
+
+```sh
+$ npm run build
+```
+
+You can then test it locally:
+
+```sh
+$ npm start
+```
 
 ## Exporting as Edge-Rendered Site
 
@@ -96,7 +98,7 @@ Unit tests reside in `/src` and can be ran via:
 $ npm run test:ts
 ```
 
-Integration tests are executed directly from the `tests/` directory in TypeScript and requires the app to have already been built (i.e. `build/` directory is not empty):
+End-to-end tests are executed directly from the `tests/` directory in TypeScript and requires the app to have already been built (i.e. `build/` directory is not empty):
 
 ```sh
 $ npm test
