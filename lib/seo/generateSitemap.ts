@@ -5,7 +5,7 @@ import { extractURLs } from './helpers'
 import { type SEOConfig } from './types'
 import { type SitemapTags } from './types/SitemapTags'
 
-const { baseURL } = __BUILD_ARGS__
+const { baseURL, buildTime } = __BUILD_ARGS__
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
@@ -25,7 +25,7 @@ export async function generateSitemap(routes: RouteObject[], {
     'urlset': {
       url: urls.map(t => {
         const defaultTags: Partial<SitemapTags> = {
-          lastmod: new Date().toISOString(),
+          lastmod: buildTime,
           changefreq: 'daily',
           priority: '0.7',
         }

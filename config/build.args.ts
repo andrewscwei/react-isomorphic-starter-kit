@@ -22,6 +22,11 @@ export const debugEnabled = process.env.DEBUG_ENABLED === 'true' || process.env.
 export const debugChannels = process.env.DEBUG_CHANNELS?.split(',') || ['app']
 
 /**
+ * Build time (this should only be evaluated during build time).
+ */
+export const buildTime = new Date().toISOString()
+
+/**
  * Build number.
  */
 export const buildNumber = process.env.BUILD_NUMBER || 'local'
