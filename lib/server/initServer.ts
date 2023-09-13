@@ -63,6 +63,7 @@ export function initServer(render?: (props: RenderProps) => JSX.Element, {
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
   app.use(serveRobots({
+    routes: localizedRoutes,
     seo,
   }))
 

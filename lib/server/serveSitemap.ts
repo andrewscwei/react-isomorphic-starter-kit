@@ -28,7 +28,7 @@ export function serveSitemap({ routes, seo }: Params) {
     res.header('Content-Type', 'application/xml')
 
     try {
-      const sitemap = generateSitemap(routes, seo)
+      const sitemap = await generateSitemap(routes, seo)
 
       res.send(sitemap)
     }

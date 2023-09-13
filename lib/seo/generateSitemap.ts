@@ -1,7 +1,9 @@
 import { XMLBuilder } from 'fast-xml-parser'
-import type { RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router'
 import { joinURL } from '../utils'
-import type { SEOConfig } from './types'
+import { extractURLs } from './helpers'
+import { type SEOConfig } from './types'
+import { type SitemapTags } from './types/SitemapTags'
 
 const { baseURL } = __BUILD_ARGS__
 
@@ -13,29 +15,39 @@ const { baseURL } = __BUILD_ARGS__
  *
  * @returns The plain text `sitemap.xml`.
  */
-export function generateSitemap(routes: RouteObject[], { urlFilter = t => true }: SEOConfig = {}) {
-  const urls = extractURLs(routes).filter(urlFilter)
+export async function generateSitemap(routes: RouteObject[], {
+  urlsProvider,
+  urlFilter = t => true,
+}: SEOConfig = {}) {
+  const urls = urlsProvider ? await urlsProvider(routes) : extractURLs(routes).filter(urlFilter)
   const builder = new XMLBuilder()
   const xml = builder.build({
     'urlset': {
-      url: urls.map(t => ({
-        'loc': joinURL(baseURL, t),
-        'lastmod': new Date().toISOString(),
-        'changefreq': 'daily',
-        'priority': '0.7',
-      })),
+      url: urls.map(t => {
+        const defaultTags: Partial<SitemapTags> = {
+          lastmod: new Date().toISOString(),
+          changefreq: 'daily',
+          priority: '0.7',
+        }
+
+        if (typeof t === 'string') {
+          return {
+            ...defaultTags,
+            'loc': joinURL(baseURL, t),
+          }
+        }
+        else {
+          const { loc, ...tags } = t
+
+          return {
+            ...defaultTags,
+            loc: joinURL(baseURL, loc),
+            ...tags,
+          }
+        }
+      }),
     },
   })
 
   return xml
-}
-
-function extractURLs(routes?: RouteObject[]): string[] {
-  if (!routes) return []
-
-  return routes.reduce<string[]>((out, { path, children }) => {
-    if (!path) return [...out, ...extractURLs(children)]
-
-    return [...out, path]
-  }, [])
 }

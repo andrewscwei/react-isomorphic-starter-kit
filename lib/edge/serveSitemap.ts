@@ -24,7 +24,7 @@ type Params = {
 export function serveSitemap({ routes, seo }: Params) {
   return async (request: Request) => {
     try {
-      const sitemap = generateSitemap(routes, seo)
+      const sitemap = await generateSitemap(routes, seo)
 
       return new Response(sitemap, {
         headers: { 'content-type': 'application/xml' },

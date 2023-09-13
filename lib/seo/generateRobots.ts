@@ -1,12 +1,16 @@
-import type { SEOConfig } from './types'
+import { type RouteObject } from 'react-router'
+import { type SEOConfig } from './types'
 
 /**
  * Generates plain text `robots.txt` from the provided configuration.
  *
+ * @param routes Array of {@link RouteObject} to generate the `robots.txt` from.
  * @param config Configuration for SEO (see {@link SEOConfig}).
  *
  * @returns The plain text `robots.txt`.
  */
-export function generateRobots({ robots = '' }: SEOConfig = {}) {
-  return robots
+export async function generateRobots(routes: RouteObject[], {
+  robotsProvider,
+}: SEOConfig = {}) {
+  return robotsProvider ? robotsProvider(routes) : 'User-agent: * Disallow:'
 }
