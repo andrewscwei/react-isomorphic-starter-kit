@@ -1,16 +1,15 @@
 import express from 'express'
-import type { RouteObject } from 'react-router'
-import type { I18nConfig } from '../i18n'
-import { generateLocalizedRoutes } from '../i18n'
-import type { SEOConfig } from '../seo'
-import type { Metadata } from '../templates'
+import { type RouteObject } from 'react-router'
+import { generateLocalizedRoutes, type I18nConfig } from '../i18n'
+import { type SEOConfig } from '../seo'
+import { type Metadata } from '../templates'
 import { useDebug } from '../utils'
 import { handle500 } from './handle500'
 import { renderRoot } from './renderRoot'
 import { serveRobots } from './serveRobots'
 import { serveSitemap } from './serveSitemap'
 import { serveStatic } from './serveStatic'
-import type { RenderProps } from './types'
+import { type RenderProps } from './types'
 
 type Config = {
   /**

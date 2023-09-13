@@ -1,4 +1,4 @@
-import type { URLParts } from '../types'
+import { type URLParts } from '../types'
 
 /**
  * Constructs a URL from {@link URLParts}.

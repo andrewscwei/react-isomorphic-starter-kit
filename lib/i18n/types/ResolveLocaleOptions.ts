@@ -1,5 +1,5 @@
-import type { Locale } from './Locale'
-import type { URLParts } from './URLParts'
+import { type Locale } from './Locale'
+import { type URLParts } from './URLParts'
 
 /**
  * Options that determine how locales are resolved from a URL.

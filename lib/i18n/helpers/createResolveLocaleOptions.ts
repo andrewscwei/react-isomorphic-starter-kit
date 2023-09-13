@@ -1,4 +1,4 @@
-import type { I18nConfig, ResolveLocaleOptions } from '../types'
+import { type I18nConfig, type ResolveLocaleOptions } from '../types'
 
 /**
  * Creates {@link ResolveLocaleOptions} from {@link I18nConfig}.

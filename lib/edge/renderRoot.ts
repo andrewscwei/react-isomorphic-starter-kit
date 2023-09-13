@@ -4,11 +4,11 @@
 
 import { createElement } from 'react'
 import { renderToReadableStream } from 'react-dom/server'
-import type { RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
-import type { I18nConfig } from '../i18n'
+import { type I18nConfig } from '../i18n'
 import { Layout, createMetadata, createResolveAssetPath, type Metadata } from '../templates'
-import type { RenderProps } from './types'
+import { type RenderProps } from './types'
 
 type Options = {
   /**

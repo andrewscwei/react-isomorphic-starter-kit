@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import type { RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router'
 import { generateSitemap, type SEOConfig } from '../seo'
 
 type Params = {

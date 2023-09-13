@@ -2,7 +2,7 @@ import React, { createContext, useReducer, type Dispatch, type PropsWithChildren
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
-import type { GetLocalizedPath, GetLocalizedString, I18nConfig } from './types'
+import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig } from './types'
 
 type I18nState = I18nConfig & {
   getLocalizedPath: GetLocalizedPath

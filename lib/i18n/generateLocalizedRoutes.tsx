@@ -3,7 +3,7 @@ import { Outlet, type RouteObject } from 'react-router'
 import { joinURL } from '../utils'
 import { I18nProvider } from './I18nProvider'
 import { createResolveLocaleOptions } from './helpers'
-import type { I18nConfig } from './types'
+import { type I18nConfig } from './types'
 
 /**
  * Returns an array of {@link RouteObject} containg the localized version of

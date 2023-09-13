@@ -1,4 +1,4 @@
-import type { ErrorRequestHandler } from 'express'
+import { type ErrorRequestHandler } from 'express'
 
 /**
  * Middleware for the final point of error handling. Any error that was

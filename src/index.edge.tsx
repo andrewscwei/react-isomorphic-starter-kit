@@ -14,7 +14,7 @@ import { App } from './ui/App'
 
 const localizedRoutes = generateLocalizedRoutes(routesConf, i18nConf)
 
-export const handleRobots = serveRobots({ seo: seoConf })
+export const handleRobots = serveRobots({ routes: localizedRoutes, seo: seoConf })
 
 export const handleSitemap = serveSitemap({ routes: localizedRoutes, seo: seoConf })
 

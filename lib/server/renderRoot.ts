@@ -4,15 +4,15 @@
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
-import type { RequestHandler } from 'express'
+import { type RequestHandler } from 'express'
 import { createElement } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
-import type { RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
-import type { I18nConfig } from '../i18n'
+import { type I18nConfig } from '../i18n'
 import { Layout, createMetadata, createResolveAssetPath, type Metadata } from '../templates'
 import { createFetchRequest } from './helpers'
-import type { RenderProps } from './types'
+import { type RenderProps } from './types'
 
 type Options = {
   /**

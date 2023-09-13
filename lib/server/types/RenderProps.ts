@@ -1,5 +1,5 @@
-import type { RouteObject } from 'react-router'
-import type { StaticHandlerContext } from 'react-router-dom/server'
+import { type RouteObject } from 'react-router'
+import { type StaticHandlerContext } from 'react-router-dom/server'
 
 /**
  * Props for rendering the application root.
