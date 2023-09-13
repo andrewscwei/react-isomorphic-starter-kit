@@ -27,7 +27,6 @@
     "bundle:edge": "webpack --config config/build.edge.conf.ts",
     "test": "npm run test:server",
     "test:server": "jest --config=config/test.conf.ts tests/server/$npm_config_files",
-    "test:edge": "jest --config=config/test.conf.ts tests/edge/$npm_config_files",
     "test:ts": "jest --testEnvironment=jsdom --config=config/test.conf.ts src/$npm_config_files",
     "lint": "npm run lint:ts && npm run lint:css",
     "lint:fix": "npm run lint:ts:fix && npm run lint:css:fix",
