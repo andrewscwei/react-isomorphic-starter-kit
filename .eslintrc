@@ -148,6 +148,12 @@
           "objectLiteralProperty",
           "objectLiteralMethod"
         ]
+      },
+      {
+        "format": null,
+        "leadingUnderscore": "allow",
+        "modifiers": ["unused"],
+        "selector": "parameter"
       }
     ],
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
@@ -248,7 +254,7 @@
       "error",
       "consistent"
     ],
-    "arrow-body-style": "error",
+    "arrow-body-style": "off",
     "arrow-parens": [
       "error",
       "as-needed"
@@ -271,13 +277,7 @@
         "allowSingleLine": true
       }
     ],
-    "capitalized-comments": [
-      "warn",
-      "always",
-      {
-        "ignoreConsecutiveComments": true
-      }
-    ],
+    "capitalized-comments": "off",
     "comma-dangle": "off",
     "comma-spacing": "off",
     "comma-style": [

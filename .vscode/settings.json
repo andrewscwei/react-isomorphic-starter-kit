@@ -1,4 +1,8 @@
 {
   "files.trimFinalNewlines": true,
-  "typescript.format.semicolons": "remove"
+  "typescript.format.semicolons": "remove",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true,
+  }
 }

@@ -48,7 +48,12 @@
     "keyframe-block-no-duplicate-selectors": true,
     "keyframe-declaration-no-important": true,
     "keyframe-selector-notation": "percentage",
-    "length-zero-no-unit": true,
+    "length-zero-no-unit": [
+      true,
+      {
+        "ignore": "custom-properties"
+      }
+    ],
     "max-nesting-depth": 3,
     "media-feature-name-no-unknown": true,
     "named-grid-areas-no-invalid": true,

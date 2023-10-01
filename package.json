@@ -10,7 +10,7 @@
     "start:edge": "wrangler pages dev --node-compat --compatibility-date=2023-08-14 ./build",
     "start:container": "docker run -it --rm -p ${PORT:-8080}:8080 --name app ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest}",
     "clean": "rimraf build",
-    "dev": "npm run dev:server",
+    "dev": "npm run dev:static",
     "dev:server": "npm run clean && cross-env NODE_ENV=development concurrently -n server,main -c magenta,cyan \"npm run bundle:server -- --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --exec 'node -r dotenv/config' --watch build build\"",
     "dev:static": "npm run clean && cross-env NODE_ENV=development concurrently -n server,main -c magenta,cyan \"webpack --config config/build.dev.conf.ts --watch\" \"wait-on build/index.js && DEBUG=server* nodemon --exec 'node -r dotenv/config' --watch build build\"",
     "dev:edge": "npm run clean && cross-env NODE_ENV=production concurrently -n client,edge,main -c green,blue,cyan \"npm run bundle:client -- --watch\" \"wait-on build/asset-manifest.json && npm run bundle:edge -- --watch\" \"wait-on build/index.js && wrangler pages dev --node-compat --compatibility-date=2023-08-14 ./build\"",

@@ -12,8 +12,8 @@
     "inlineSources": true,
     "jsx": "react",
     "lib": [
-      "ES2017",
-      "DOM",
+      "es6",
+      "dom",
       "WebWorker"
     ],
     "module": "commonjs",
@@ -28,17 +28,16 @@
     "sourceRoot": "/",
     "strict": true,
     "strictNullChecks": true,
-    "target": "ES2017"
+    "target": "es5"
   },
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "lib/**/*.ts",
     "lib/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "tests"
   ]
 }
