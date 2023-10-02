@@ -4,6 +4,11 @@ import { UseCaseError, type UseCase } from './UseCase'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
+export type RequestOptions = {
+  headers?: Record<string, any>
+  params?: any
+}
+
 export type Options = {
   /**
    * Ignores the cached result when running this use case.
@@ -101,12 +106,12 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    * @returns The transformed error.
    */
   transformError(error: unknown): unknown {
-    if ((error as any).name === 'AbortError') return UseCaseError.CANCELLED
-
     return error
   }
 
   async run(params: Partial<Params> = {}, { skipCache = false, timeout = 5 }: Options = {}): Promise<Result> {
+    const t0 = performance.now()
+
     this.cancel()
     this.abortController = new AbortController()
 
@@ -119,33 +124,20 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       if (cachedResult) return cachedResult
     }
 
-    const method = this.method
-    const headers = this.getHeaders(params)
-    const url = new URL(this.getEndpoint(params))
-
-    const transformedParams = this.transformParams(params)
-
-    if (!this.usesParamsAsBody) url.search = new URLSearchParams(params).toString()
-
     const useCaseName = this.constructor.toString().match(/\w+/g)?.[1]
 
     try {
+      const headers = this.getHeaders(params)
+      const url = new URL(this.getEndpoint(params))
+      const transformedParams = this.transformParams(params)
+
+      if (!this.usesParamsAsBody) url.search = new URLSearchParams(params).toString()
+
       this.startTimeout(timeout)
 
-      const res = await fetch(url, {
-        body: this.usesParamsAsBody ? transformedParams : undefined,
-        headers,
-        method,
-        signal: this.abortController?.signal,
-      })
+      const payload = await this.request(url, { headers, params: transformedParams })
 
-      if (!res.ok) {
-        throw Error(`[${res.status}] ${res.statusText}`)
-      }
-
-      const payload = await res.json()
-
-      debug(`[${useCaseName}] Running fetch use case...`, 'OK', payload)
+      debug(`[${useCaseName}] Running fetch use case...`, `OK (${Math.round(performance.now() - t0)}ms)`)
 
       const transformedResult = this.transformResult(payload)
 
@@ -156,7 +148,13 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       return transformedResult
     }
     catch (err) {
-      debug(`[${useCaseName}] Running fetch use case...`, 'ERR', err)
+      if ((err as any).name === 'AbortError') {
+        debug(`[${useCaseName}] Running fetch use case...`, `CANCEL (${Math.round(performance.now() - t0)}ms)`, err)
+
+        throw UseCaseError.CANCELLED(`Use case [${useCaseName}] cancelled`)
+      }
+
+      debug(`[${useCaseName}] Running fetch use case...`, `ERR (${Math.round(performance.now() - t0)}ms)`, err)
 
       const error = this.transformError(err)
 
@@ -178,6 +176,23 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
   validateParams(params: Partial<Params>): asserts params is Params {
     // Pass
+  }
+
+  protected async request(url: URL, { params, headers }: RequestOptions) {
+    const res = await fetch(url, {
+      body: this.usesParamsAsBody ? params : undefined,
+      headers,
+      method: this.method,
+      signal: this.abortController?.signal,
+    })
+
+    if (!res.ok) {
+      throw Error(`[${res.status}] ${res.statusText}`)
+    }
+
+    const payload = await res.json()
+
+    return payload
   }
 
   protected createCacheKey(params: Params): string {

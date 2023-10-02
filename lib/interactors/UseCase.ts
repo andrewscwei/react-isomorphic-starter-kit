@@ -29,5 +29,10 @@ export interface UseCase<Params, Result, Options> {
  * Namespace containing common {@link UseCase} errors.
  */
 export namespace UseCaseError {
-  export const CANCELLED = Error('Use case cancelled')
+  export const CANCELLED = (message: string = 'Use case cancelled') => {
+    const error = Error(message)
+    error.status = 503
+
+    return error
+  }
 }
