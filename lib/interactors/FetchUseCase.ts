@@ -34,6 +34,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
   protected timer: NodeJS.Timeout | undefined
 
+  get name(): string { return this.constructor.toString().match(/\w+/g)?.[1] ?? 'Unknown' }
+
   /**
    * Method of the fetch request.
    */
@@ -124,7 +126,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       if (cachedResult) return cachedResult
     }
 
-    const useCaseName = this.constructor.toString().match(/\w+/g)?.[1]
+    const useCaseName = this.name
 
     try {
       const headers = this.getHeaders(params)
@@ -134,6 +136,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       if (!this.usesParamsAsBody) url.search = new URLSearchParams(params).toString()
 
       this.startTimeout(timeout)
+
+      debug(`[${useCaseName}] Running fetch use case...`)
 
       const payload = await this.request(url, { headers, params: transformedParams })
 
@@ -214,6 +218,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
     this.timer = setTimeout(() => {
       this.abortController?.abort()
+      debug(`[${this.name}] Running fetch use case...`, 'ERR', `Timed out after ${seconds} seconds`)
     }, seconds * 1000)
   }
 
