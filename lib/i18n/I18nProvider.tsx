@@ -100,3 +100,5 @@ const reducer: Reducer<I18nState, I18nChangeLocaleAction> = (state, action) => {
 }
 
 export const I18nContext = createContext<I18nContextValue | undefined>(undefined)
+
+Object.defineProperty(I18nContext, 'displayName', { value: 'I18n' })
