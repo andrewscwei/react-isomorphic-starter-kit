@@ -39,6 +39,7 @@ const config: Configuration = {
         },
       }],
     }, ...[true/* CSS modules */, false/* Non-CSS modules */].map(isModules => ({
+      exclude: /node_modules/,
       test: /\.css$/,
       ...isModules ? { include: /\.module\.css$/ } : { exclude: /\.module\.css$/ },
       use: [{
@@ -47,7 +48,7 @@ const config: Configuration = {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
-          modules: isModules,
+          modules: isModules ? isDev ? { localIdentName: '[name]-[local]-[hash:base64:5]' } : true : false,
           sourceMap: buildArgs.useSourceMaps,
         },
       }, {
@@ -105,7 +106,9 @@ const config: Configuration = {
     minimize: !buildArgs.skipOptimizations,
     minimizer: [
       new CSSMinimizerPlugin(),
-      new TerserPlugin(),
+      new TerserPlugin({
+        extractComments: false,
+      }),
     ],
     splitChunks: {
       cacheGroups: {
