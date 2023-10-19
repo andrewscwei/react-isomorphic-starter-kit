@@ -1,4 +1,3 @@
-import objectHash from 'object-hash'
 import { useCache, useDebug } from '../utils'
 import { UseCaseError, type UseCase } from './UseCase'
 
@@ -119,7 +118,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
     this.validateParams(params)
 
-    const cacheKey = this.ttl > 0 ? this.createCacheKey(params) : undefined
+    const cacheKey = this.ttl > 0 ? this.createCacheKey?.(params) : undefined
 
     if (!skipCache && cacheKey) {
       const cachedResult = this.cache.getValue<Result>(cacheKey)
@@ -199,15 +198,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
     return payload
   }
 
-  protected createCacheKey(params: Params): string {
-    return objectHash({
-      path: this.getEndpoint(params),
-      headers: this.getHeaders(params),
-      params,
-    }, {
-      unorderedSets: true,
-      unorderedObjects: true,
-    })
+  protected createCacheKey(params: Params): string | undefined {
+    return undefined
   }
 
   protected startTimeout(seconds = 0) {
