@@ -1,4 +1,4 @@
-import { useCache, useDebug } from '../utils'
+import { useDebug, useSessionCache } from '../utils'
 import { UseCaseError, type UseCase } from './UseCase'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
@@ -29,7 +29,7 @@ const debug = useDebug('fetch')
 export abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
   protected abortController: AbortController | undefined
 
-  protected cache = useCache({ defaultTTL: this.ttl })
+  protected cache = useSessionCache({ defaultTTL: this.ttl })
 
   protected timer: NodeJS.Timeout | undefined
 

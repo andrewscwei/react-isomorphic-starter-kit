@@ -1,4 +1,4 @@
-type CacheOptions = {
+type SessionCacheOptions = {
   /**
    * The default TTL (in seconds) to use if one is not specified upon setting a
    * value.
@@ -6,25 +6,25 @@ type CacheOptions = {
   defaultTTL?: number
 }
 
-type CacheItem<T> = {
+type SessionCacheItem<T> = {
   timestamp: number
   ttl: number
   value: T
 }
 
-type CacheAdapter = {
+type SessionCacheAdapter = {
   getValue: <T>(key: string) => T | undefined
   invalidate: (key: string) => void
   setValue: <T>(value: T, key: string, ttl?: number) => T
 }
 
-const storage = typeof window !== 'undefined' ? window.localStorage : undefined
+const storage = typeof window !== 'undefined' ? window.sessionStorage : undefined
 
 function invalidate(key: string) {
   storage?.removeItem(key)
 }
 
-function isStale<T>(item: CacheItem<T>): boolean {
+function isStale<T>(item: SessionCacheItem<T>): boolean {
   const { timestamp, ttl } = item
 
   return (Date.now() - timestamp) / 1000 >= ttl
@@ -34,7 +34,7 @@ function getValue<T>(key: string): T | undefined {
   const res = storage?.getItem(key)
   if (!res) return undefined
 
-  const item = JSON.parse(res) as CacheItem<T>
+  const item = JSON.parse(res) as SessionCacheItem<T>
   if (!item) return undefined
 
   if (isStale(item)) {
@@ -63,11 +63,11 @@ function setValue<T>(value: T, key: string, ttl: number): T {
  * Returns a simple caching interface for getting, setting and invalidating a
  * value from the browser's session storage.
  *
- * @param options See {@link CacheOptions}.
+ * @param options See {@link SessionCacheOptions}.
  *
  * @returns The interface.
  */
-export function useCache({ defaultTTL = 300 }: CacheOptions = {}): CacheAdapter {
+export function useSessionCache({ defaultTTL = 300 }: SessionCacheOptions = {}): SessionCacheAdapter {
   return {
     getValue,
     invalidate,

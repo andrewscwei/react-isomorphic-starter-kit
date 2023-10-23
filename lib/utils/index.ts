@@ -1,5 +1,7 @@
 export * from './joinURL'
 export * from './rethrow'
+export * from './settledOrUndefined'
 export * from './tryOrUndefined'
 export * from './useCache'
 export * from './useDebug'
+export * from './useSessionCache'
