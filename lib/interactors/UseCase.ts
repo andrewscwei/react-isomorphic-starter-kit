@@ -35,4 +35,10 @@ export namespace UseCaseError {
 
     return error
   }
+
+  export function isCancelled(error: any) {
+    if ('status' in error) return error.status === 503
+
+    return false
+  }
 }

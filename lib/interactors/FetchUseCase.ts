@@ -140,7 +140,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
       const payload = await this.request(url, { headers, params: transformedParams })
 
-      debug(`[${useCaseName}] Running fetch use case...`, `OK (${Math.round(performance.now() - t0)}ms)`)
+      debug(`[${useCaseName}] Running fetch use case...`, `OK (${Math.round(performance.now() - t0)}ms)`, payload)
 
       const transformedResult = this.transformResult(payload)
 
@@ -193,7 +193,8 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       throw Error(`[${res.status}] ${res.statusText}`)
     }
 
-    const payload = await res.json()
+    const text = await res.text()
+    const payload = text ? JSON.parse(text) : {}
 
     return payload
   }

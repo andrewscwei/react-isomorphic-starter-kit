@@ -58,7 +58,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
         ...customMetadata,
       },
       resolveAssetPath,
-    }, render?.({ context, routes: handler.dataRoutes }))
+    }, render?.({ context, request: req, routes: handler.dataRoutes }))
 
     const { pipe } = renderToPipeableStream(root, {
       onShellReady() {

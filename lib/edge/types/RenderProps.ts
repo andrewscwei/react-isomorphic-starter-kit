@@ -12,6 +12,11 @@ export type RenderProps = {
   context: StaticHandlerContext
 
   /**
+   * The invoking {@link Request}.
+   */
+  request: Request
+
+  /**
    * Array of {@link RouteObject} to render in the static application router.
    */
   routes: RouteObject[]

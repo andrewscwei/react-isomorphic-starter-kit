@@ -55,7 +55,7 @@ export function renderRoot(render: (props: RenderProps) => JSX.Element, { metada
         ...customMetadata,
       },
       resolveAssetPath,
-    }, render?.({ context, routes: handler.dataRoutes }))
+    }, render?.({ context, request, routes: handler.dataRoutes }))
 
     const stream = await renderToReadableStream(root)
 
