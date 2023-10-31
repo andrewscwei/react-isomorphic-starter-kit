@@ -1,12 +1,11 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
-import { DEBUG } from '../../src/app.conf'
 import { joinURL } from '../utils'
 import { extractURLs } from './helpers'
 import { type SEOConfig } from './types'
 import { type SitemapTags } from './types/SitemapTags'
 
-const { baseURL, buildTime } = __BUILD_ARGS__
+const { baseURL, buildTime, debugEnabled } = __BUILD_ARGS__
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
@@ -23,7 +22,7 @@ export async function generateSitemap(routes: RouteObject[], {
   const urls = urlsProvider ? await urlsProvider(routes) : extractURLs(routes).filter(urlFilter)
   const builder = new XMLBuilder({
     ignoreAttributes: false,
-    format: DEBUG,
+    format: debugEnabled,
   })
   const xml = builder.build({
     'urlset': {
