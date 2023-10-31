@@ -1,5 +1,6 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
+import { DEBUG } from '../../src/app.conf'
 import { joinURL } from '../utils'
 import { extractURLs } from './helpers'
 import { type SEOConfig } from './types'
@@ -20,10 +21,19 @@ export async function generateSitemap(routes: RouteObject[], {
   urlFilter = t => true,
 }: SEOConfig = {}) {
   const urls = urlsProvider ? await urlsProvider(routes) : extractURLs(routes).filter(urlFilter)
-  const builder = new XMLBuilder()
+  const builder = new XMLBuilder({
+    ignoreAttributes: false,
+    format: DEBUG,
+  })
   const xml = builder.build({
     'urlset': {
-      url: urls.map(t => {
+      '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
+      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
+      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
+      '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
+      '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
+      '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
+      'url': urls.map(t => {
         const defaultTags: Partial<SitemapTags> = {
           lastmod: buildTime,
           changefreq: 'daily',
