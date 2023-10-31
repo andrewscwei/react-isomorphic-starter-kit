@@ -13,6 +13,7 @@ const config: Config = {
     __BUILD_ARGS__: buildArgs,
   },
   moduleNameMapper: {
+    '^@lib(.*)$': '<rootDir>/lib$1',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/ui/assets/__mocks__/files.ts',
     '\\.css$': 'identity-obj-proxy',
   },

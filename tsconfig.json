@@ -20,6 +20,9 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "./build",
+    "paths": {
+      "@lib/*": ["./lib/*"]
+    },
     "pretty": true,
     "removeComments": true,
     "resolveJsonModule": true,

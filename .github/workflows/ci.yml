@@ -9,7 +9,7 @@ jobs:
     uses: andrewscwei/workflows/.github/workflows/node-build.yml@master
     secrets: inherit
     with:
-      test-command: npm run test:ts && npm test
+      test-command: npm run test:unit && npm test
   notify:
     name: Notify
     needs: [build]

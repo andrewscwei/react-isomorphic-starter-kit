@@ -1,4 +1,4 @@
-import { useDebug } from '../../lib/utils'
+import { useDebug } from '@lib/utils/useDebug'
 
 const debug = useDebug(undefined, 'worker')
 

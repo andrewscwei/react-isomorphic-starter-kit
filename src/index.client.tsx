@@ -2,12 +2,12 @@
  * @file Client entry file.
  */
 
+import { initClient } from '@lib/dom'
+import { useDebug } from '@lib/utils/useDebug'
 import React from 'react'
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 import Worker from 'worker-loader!./workers/web'
-import { initClient } from '../lib/dom'
-import { useDebug } from '../lib/utils'
 import { config as i18nConf } from './i18n.conf'
 import { config as routesConf } from './routes.conf'
 import { App } from './ui/App'

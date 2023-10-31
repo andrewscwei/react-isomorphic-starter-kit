@@ -2,10 +2,10 @@
  * @file Edge entry file.
  */
 
+import { renderRoot, serveRobots, serveSitemap } from '@lib/edge'
+import { generateLocalizedRoutes } from '@lib/i18n'
 import React from 'react'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { renderRoot, serveRobots, serveSitemap } from '../lib/edge'
-import { generateLocalizedRoutes } from '../lib/i18n'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import { config as i18nConf } from './i18n.conf'
 import { config as routesConf } from './routes.conf'

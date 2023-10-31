@@ -1,4 +1,4 @@
-import { FetchUseCase } from '../../lib/interactors'
+import { FetchUseCase } from '@lib/interactors'
 
 export type Quote = {
   author: string

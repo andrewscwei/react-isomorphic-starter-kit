@@ -2,8 +2,8 @@
  * @file I18n config.
  */
 
-import { loadTranslations, type I18nConfig } from '../lib/i18n'
-import { tryOrUndefined } from '../lib/utils'
+import { loadTranslations, type I18nConfig } from '@lib/i18n'
+import { tryOrUndefined } from '@lib/utils/tryOrUndefined'
 import { LOCALE_CHANGE_STRATEGY } from './app.conf'
 
 const { defaultLocale } = __BUILD_ARGS__

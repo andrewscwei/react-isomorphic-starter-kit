@@ -1,4 +1,4 @@
-import { joinURL } from '../../utils'
+import { joinURL } from '../../utils/joinURL'
 import { type ResolveAssetPath } from '../types'
 
 type Options = {

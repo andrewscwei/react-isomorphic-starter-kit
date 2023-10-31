@@ -1,7 +1,7 @@
+import { useMetaTags } from '@lib/dom'
+import { useLocalizedString } from '@lib/i18n'
 import React from 'react'
 import { useLoaderData } from 'react-router'
-import { useMetaTags } from '../../../../lib/dom'
-import { useLocalizedString } from '../../../../lib/i18n'
 import { type Quote } from '../../../useCases/GetQuote'
 import styles from './index.module.css'
 

@@ -2,9 +2,9 @@
  * @file Server entry file.
  */
 
+import { initServer } from '@lib/server'
 import React from 'react'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
-import { initServer } from '../lib/server'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import { config as i18nConf } from './i18n.conf'
 import { config as routesConf } from './routes.conf'

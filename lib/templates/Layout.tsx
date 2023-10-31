@@ -3,7 +3,7 @@
  */
 
 import React, { type PropsWithChildren } from 'react'
-import { joinURL } from '../utils'
+import { joinURL } from '../utils/joinURL'
 import { type Metadata, type ResolveAssetPath } from './types'
 
 type Props = PropsWithChildren<{

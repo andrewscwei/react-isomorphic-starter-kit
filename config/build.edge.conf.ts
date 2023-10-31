@@ -117,6 +117,9 @@ const config: Configuration = {
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      '@lib': buildArgs.libDir,
+    },
   },
   stats: {
     colors: true,

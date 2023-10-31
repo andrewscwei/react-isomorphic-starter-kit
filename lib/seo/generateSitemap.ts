@@ -1,6 +1,6 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
-import { joinURL } from '../utils'
+import { joinURL } from '../utils/joinURL'
 import { extractURLs } from './helpers'
 import { type SEOConfig } from './types'
 import { type SitemapTags } from './types/SitemapTags'

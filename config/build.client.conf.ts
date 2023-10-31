@@ -136,6 +136,7 @@ const config: Configuration = {
     new MiniCSSExtractPlugin({
       chunkFilename: buildArgs.skipOptimizations ? '[id].css' : '[id].[chunkhash].css',
       filename: buildArgs.skipOptimizations ? '[name].css' : '[name].[chunkhash].css',
+      ignoreOrder: true,
     }),
     new ForkTSCheckerPlugin(),
     new DefinePlugin({
@@ -164,6 +165,9 @@ const config: Configuration = {
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      '@lib': buildArgs.libDir,
+    },
   },
   stats: {
     colors: true,
