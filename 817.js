@@ -1,0 +1,2 @@
+"use strict";exports.id=817,exports.ids=[817],exports.modules={817:(t,e,n)=>{n.r(e),n.d(e,{Component:()=>a});var o=n(114),i=n(236),s=n(689),l=n.n(s);const r={title:"Af1hMy74gJQ9LGZwKGaq h1"};function a(){var t=(0,i.useLocalizedString)();return(0,o.useMetaTags)({title:t("window-title-not-found")}),l().createElement("main",null,l().createElement("h1",{className:r.title},t("not-found-title")))}}};
+//# sourceMappingURL=817.js.map
