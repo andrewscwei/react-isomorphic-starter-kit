@@ -27,9 +27,9 @@ const config: Configuration = {
       exclude: /node_modules/,
       test: /\.[jt]sx?$/,
       use: [{
-        loader: 'babel-loader',
+        loader: 'esbuild-loader',
         options: {
-          cacheDirectory: true,
+          target: 'es2015',
         },
       }],
     }, {

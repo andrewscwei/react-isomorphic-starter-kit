@@ -32,10 +32,9 @@ const config: Configuration = {
       exclude: /node_modules/,
       test: /\.[jt]sx?$/,
       use: [{
-        loader: 'babel-loader',
+        loader: 'esbuild-loader',
         options: {
-          cacheDirectory: true,
-          plugins: isDev ? [require.resolve('react-refresh/babel')] : [],
+          target: 'es2015',
         },
       }],
     }, ...[true/* CSS modules */, false/* Non-CSS modules */].map(isModules => ({
