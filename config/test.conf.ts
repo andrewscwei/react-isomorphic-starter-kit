@@ -2,7 +2,7 @@
  * @file Jest config.
  */
 
-import type { Config } from 'jest'
+import { type Config } from 'jest'
 import path from 'path'
 import * as buildArgs from './build.args'
 

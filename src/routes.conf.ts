@@ -2,7 +2,7 @@
  * @file Routes config.
  */
 
-import type { RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router'
 import { ErrorBoundary } from './ui/pages/ErrorBoundary'
 
 export const config: RouteObject[] = [{

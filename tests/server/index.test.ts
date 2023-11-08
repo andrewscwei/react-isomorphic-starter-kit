@@ -1,4 +1,4 @@
-import type { Express } from 'express'
+import { type Express } from 'express'
 import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
