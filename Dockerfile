@@ -1,5 +1,5 @@
 # Builds the app with dev dependencies included.
-FROM node:18.8.0 AS dev
+FROM node:21.0.0 AS dev
 
 ARG BASE_PATH
 ARG BASE_URL
@@ -40,7 +40,7 @@ RUN npm prune --production
 
 
 # Final production build.
-FROM node:18.8.0-slim AS release
+FROM node:21.0.0-slim AS release
 
 ENV NODE_ENV=production
 

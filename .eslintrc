@@ -117,12 +117,12 @@
           "PascalCase",
           "UPPER_CASE"
         ],
-        "leadingUnderscore": "allowDouble",
+        "leadingUnderscore": "allowSingleOrDouble",
         "selector": [
           "variableLike",
           "property"
         ],
-        "trailingUnderscore": "allowDouble"
+        "trailingUnderscore": "allowSingleOrDouble"
       },
       {
         "format": [
