@@ -2,9 +2,10 @@
  * @file Webpack config for compiling the edge worker.
  */
 
+import { EsbuildPlugin } from 'esbuild-loader'
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import path from 'path'
-import { BannerPlugin, DefinePlugin, WatchIgnorePlugin, optimize, type Configuration } from 'webpack'
+import { BannerPlugin, WatchIgnorePlugin, optimize, type Configuration } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import nodeExternals from 'webpack-node-externals'
 import * as buildArgs from './build.args'
@@ -90,9 +91,11 @@ const config: Configuration = {
     new optimize.LimitChunkCountPlugin({
       maxChunks: 1,
     }),
-    new DefinePlugin({
-      __BUILD_ARGS__: JSON.stringify(buildArgs),
-      __ASSET_MANIFEST__: JSON.stringify(getAssetManifest(path.join(buildArgs.outputDir, buildArgs.assetManifestFile))),
+    new EsbuildPlugin({
+      define: {
+        __BUILD_ARGS__: JSON.stringify(buildArgs),
+        __ASSET_MANIFEST__: JSON.stringify(getAssetManifest(path.join(buildArgs.outputDir, buildArgs.assetManifestFile))),
+      },
     }),
     ...buildArgs.useSourceMaps ? [
       new BannerPlugin({
