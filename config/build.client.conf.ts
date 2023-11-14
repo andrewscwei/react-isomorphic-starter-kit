@@ -9,7 +9,7 @@ import { EsbuildPlugin } from 'esbuild-loader'
 import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import path from 'path'
-import { EnvironmentPlugin, HotModuleReplacementPlugin, type Configuration } from 'webpack'
+import { DefinePlugin, EnvironmentPlugin, HotModuleReplacementPlugin, type Configuration } from 'webpack'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { WebpackManifestPlugin as ManifestPlugin } from 'webpack-manifest-plugin'
 import * as buildArgs from './build.args'
@@ -136,10 +136,8 @@ const config: Configuration = {
       ignoreOrder: true,
     }),
     new ForkTSCheckerPlugin(),
-    new EsbuildPlugin({
-      define: {
-        __BUILD_ARGS__: JSON.stringify(buildArgs),
-      },
+    new DefinePlugin({
+      __BUILD_ARGS__: JSON.stringify(buildArgs),
     }),
     new EnvironmentPlugin({
       NODE_ENV: 'production',
