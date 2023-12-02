@@ -8,6 +8,11 @@ import { type Metadata, type ResolveAssetPath } from './types'
 
 type Props = PropsWithChildren<{
   /**
+   * Custom scripts to be injected.
+   */
+  customScripts?: JSX.Element
+
+  /**
    * Specifies whether CSS <link> tags should be injected.
    */
   injectStyles: boolean
@@ -34,6 +39,7 @@ const { defaultLocale, publicURL } = __BUILD_ARGS__
  */
 export function Layout({
   children,
+  customScripts,
   injectStyles,
   metadata,
   resolveAssetPath = t => t,
@@ -97,6 +103,8 @@ export function Layout({
         {injectStyles && <link rel='stylesheet' href={resolveAssetPath('/styles.css')}/>}
 
         <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
+
+        {customScripts}
       </head>
       <body>
         <div id='root'>

@@ -16,6 +16,11 @@ import { type RenderProps } from './types'
 
 type Options = {
   /**
+   * Custom scripts to inject into the application root.
+   */
+  customScripts?: (props: RenderProps) => JSX.Element | undefined
+
+  /**
    * Configuration for i18n (see {@link I18nConfig}).
    */
   i18n: I18nConfig
@@ -41,7 +46,7 @@ const { baseURL, basePath, publicPath } = __BUILD_ARGS__
  *
  * @returns The request handler.
  */
-export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { metadata, i18n, routes }: Options): RequestHandler {
+export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undefined, { customScripts, metadata, i18n, routes }: Options): RequestHandler {
   return async (req, res) => {
     const handler = createStaticHandler(routes, { basename: basePath })
     const context = await handler.query(createFetchRequest(req))
@@ -51,6 +56,7 @@ export function renderRoot(render: ((props: RenderProps) => JSX.Element) | undef
     const resolveAssetPath = createResolveAssetPath({ publicPath, manifest: __ASSET_MANIFEST__ })
     const customMetadata = await createMetadata(context, { baseURL, i18n, routes })
     const root = createElement(Layout, {
+      customScripts: customScripts?.({ context, request: req, routes: handler.dataRoutes }),
       injectStyles: render !== undefined,
       metadata: {
         ...metadata,

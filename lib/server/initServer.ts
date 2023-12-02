@@ -13,6 +13,11 @@ import { type RenderProps } from './types'
 
 type Config = {
   /**
+   * Custom scripts to inject into the application root.
+   */
+  customScripts?: (props: RenderProps) => JSX.Element | undefined
+
+  /**
    * Configuration for i18n (see {@link I18nConfig}).
    */
   i18n?: I18nConfig
@@ -53,6 +58,7 @@ const isTest = process.env.NODE_ENV === 'test'
  * @returns The Express server.
  */
 export function initServer(render?: (props: RenderProps) => JSX.Element, {
+  customScripts,
   i18n = { defaultLocale, localeChangeStrategy: 'path', translations: { [defaultLocale]: {} } },
   middleware = [],
   metadata = {},
@@ -82,6 +88,7 @@ export function initServer(render?: (props: RenderProps) => JSX.Element, {
   }
 
   app.use(renderRoot(isDev ? undefined : render, {
+    customScripts,
     metadata,
     i18n,
     routes: localizedRoutes,
