@@ -3,7 +3,7 @@ import { useLocalizedString } from '@lib/i18n'
 import React from 'react'
 import { useLoaderData } from 'react-router'
 import { type Quote } from '../../../useCases/GetQuote'
-import styles from './index.module.css'
+import * as styles from './index.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()

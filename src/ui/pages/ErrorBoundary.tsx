@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouteError } from 'react-router'
-import styles from './ErrorBoundary.module.css'
+import * as styles from './ErrorBoundary.module.css'
 
 export function ErrorBoundary() {
   const error = useRouteError() as Error

@@ -1,7 +1,7 @@
 import { useLocalizedPath, useLocalizedString } from '@lib/i18n'
 import React, { type HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
-import styles from './Header.module.css'
+import * as styles from './Header.module.css'
 
 type Props = HTMLAttributes<HTMLElement>
 

@@ -1,7 +1,7 @@
 import { useMetaTags } from '@lib/dom'
 import { useLocalizedString } from '@lib/i18n'
 import React from 'react'
-import styles from './index.module.css'
+import * as styles from './index.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
