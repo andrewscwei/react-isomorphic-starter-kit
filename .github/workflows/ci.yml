@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: andrewscwei/workflows/.github/workflows/node-build.yml@master
+    uses: andrewscwei/workflows/.github/workflows/node-build.yml@v1
     secrets: inherit
     with:
       test-command: npm run test:unit && npm test
@@ -16,7 +16,7 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: andrewscwei/telegram-action@v1.0.0
+      - uses: andrewscwei/telegram-action@v1
         with:
           success: ${{ needs.build.result == 'success' }}
           cancelled: ${{ needs.build.result == 'cancelled' }}
