@@ -8,7 +8,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 
 1. [React Router](https://reacttraining.com/react-router/)
 2. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
-3. [TypeScript](https://www.typescriptlang.org/) + [Babel](https://babeljs.io/) + [ESLint](https://eslint.org/)
+3. [TypeScript](https://www.typescriptlang.org/) + [ESLint](https://eslint.org/)
 4. [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/)
 5. [webpack](https://webpack.js.org/)
 6. [Docker](https://docker.com) config
