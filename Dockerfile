@@ -21,6 +21,7 @@ COPY lib ./lib
 COPY src ./src
 COPY tests ./tests
 COPY ts*.json ./
+COPY .babelrc ./
 COPY .eslintrc ./
 COPY .stylelintrc ./
 
