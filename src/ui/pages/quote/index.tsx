@@ -14,7 +14,7 @@ export function Component() {
   return (
     <main>
       {quote && <span className={styles.title}>{ltxt('quote-title')}</span>}
-      {quote?.text && <span className={styles.quote}>{ltxt('quote-text', { text: quote.text })}</span>}
+      {quote?.text && <span id='quote' className={styles.quote}>{ltxt('quote-text', { text: quote.text })}</span>}
       {quote?.author && <span className={styles.author}>{ltxt('quote-author', { author: quote.author })}</span>}
     </main>
   )

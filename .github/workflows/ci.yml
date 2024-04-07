@@ -6,10 +6,37 @@ on:
 jobs:
   build:
     name: Build
-    uses: andrewscwei/workflows/.github/workflows/node-build.yml@v1
-    secrets: inherit
-    with:
-      test-command: npm run test:unit && npm test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime:
+          - server
+          - static
+          - edge
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-npm-cache-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install Node modules
+        run: npm install
+      - name: Unit test
+        run: npm run test:unit
+      - name: Build
+        run: npm run build:${{ matrix.runtime }}
+      - name: E2E test
+        run: npm run test:${{ matrix.runtime }}
   notify:
     name: Notify
     needs: [build]
