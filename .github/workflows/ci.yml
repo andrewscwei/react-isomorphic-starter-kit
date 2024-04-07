@@ -31,6 +31,8 @@ jobs:
             ${{ runner.os }}-
       - name: Install Node modules
         run: npm install
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - name: Unit test
         run: npm run test:unit
       - name: Build
