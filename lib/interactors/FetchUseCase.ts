@@ -111,7 +111,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
     return error
   }
 
-  async run(params: Partial<Params> = {}, { skipCache = false, timeout = 5 }: Options = {}): Promise<Result> {
+  async run(params: Partial<Params> = {}, { skipCache = true, timeout = 5 }: Options = {}): Promise<Result> {
     const t0 = performance.now()
 
     this.cancel()
