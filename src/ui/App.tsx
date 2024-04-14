@@ -8,7 +8,7 @@ type Props = PropsWithChildren
 
 const { publicPath } = __BUILD_ARGS__
 
-export function App({ children }: Props) {
+export function App({ children }: Readonly<Props>) {
   useFavicon({
     icon: {
       darkImage: joinURL(publicPath, 'favicon-dark.svg'),

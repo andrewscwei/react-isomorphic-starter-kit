@@ -40,7 +40,7 @@ export async function initClient(render: (props: RenderProps) => JSX.Element, {
   window.__VERSION__ = __BUILD_ARGS__.version
 
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
-  const container = document.getElementById(containerId ?? 'root')
+  const container = window.document.getElementById(containerId ?? 'root')
 
   if (!container) throw console.warn(`No container with ID <${containerId}> found`)
 

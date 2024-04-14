@@ -7,57 +7,32 @@ import { updateElementAttributes } from './updateElementAttributes'
  * @param description The description.
  * @param deps Additional dependencies.
  */
-export function useDocumentDescription(description: string, deps?: DependencyList) {
-  if (typeof document === 'undefined') return
+export function useDocumentDescription(description?: string, deps?: DependencyList) {
+  useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'name', value: 'description' },
+    { name: 'content', value: description ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [description, ...deps ?? []])
 
-  const metaTags = [{
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'name',
-      value: 'description',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: description,
-    },
-  }, {
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'property',
-      value: 'og:description',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: description,
-    },
-  }, {
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'property',
-      value: 'og:image:alt',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: description,
-    },
-  }, {
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'property',
-      value: 'twitter:description',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: description,
-    },
-  }]
+  useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'property', value: 'og:description' },
+    { name: 'content', value: description ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [description, ...deps ?? []])
 
-  for (const tag of metaTags) {
-    useEffect(() => updateElementAttributes(tag.tagName, [
-      { key: true, ...tag.keyAttribute },
-      { ...tag.updateAttribute },
-    ], {
-      parent: document.head,
-    }), [description, ...deps ?? []])
-  }
+  useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'property', value: 'og:image:alt' },
+    { name: 'content', value: description ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [description, ...deps ?? []])
+
+  useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'property', value: 'twitter:description' },
+    { name: 'content', value: description ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [description, ...deps ?? []])
 }

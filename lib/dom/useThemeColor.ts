@@ -8,26 +8,10 @@ import { updateElementAttributes } from './updateElementAttributes'
  * @param deps Additional dependencies.
  */
 export function useThemeColor(color: string, deps?: DependencyList) {
-  if (typeof document === 'undefined') return
-
-  const metaTags = [{
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'name',
-      value: 'theme-color',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: color,
-    },
-  }]
-
-  for (const tag of metaTags) {
-    useEffect(() => updateElementAttributes(tag.tagName, [
-      { key: true, ...tag.keyAttribute },
-      { ...tag.updateAttribute },
-    ], {
-      parent: document.head,
-    }), [color, ...deps ?? []])
-  }
+  useEffect(() => updateElementAttributes('meta', [
+    { key: true, name: 'name', value: 'theme-color' },
+    { name: 'content', value: color },
+  ], {
+    parent: window.document.head,
+  }), [color, ...deps ?? []])
 }

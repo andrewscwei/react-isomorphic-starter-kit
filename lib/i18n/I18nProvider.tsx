@@ -58,6 +58,8 @@ export function I18nProvider({
 
       break
     }
+    case 'path':
+    case 'query':
     default: {
       const { pathname, search, hash } = useLocation()
       const url = `${pathname}${search}${hash}`

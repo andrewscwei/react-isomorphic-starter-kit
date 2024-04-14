@@ -43,7 +43,7 @@ export function Layout({
   injectStyles,
   metadata,
   resolveAssetPath = t => t,
-}: Props) {
+}: Readonly<Props>) {
   const baseTitle = metadata.baseTitle
   const pageDescription = metadata.description
   const pageLocale = metadata.locale ?? defaultLocale

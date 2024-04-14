@@ -30,12 +30,7 @@ export function getLocalizedURL(url: string, locale: string, { defaultLocale, re
         if (!parts.query) return url
 
         const searchParams = new URLSearchParams(parts.query)
-        if (searchParams.get('locale')) {
-          searchParams.set('locale', targetLocale)
-        }
-        else {
-          searchParams.set('locale', targetLocale)
-        }
+        searchParams.set('locale', targetLocale)
 
         return constructURL({ ...parts, query: searchParams.toString() })
       }

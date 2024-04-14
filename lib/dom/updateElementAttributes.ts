@@ -30,16 +30,17 @@ type Undo = () => void
  *
  * @returns A function that undoes the updates.
  */
-export function updateElementAttributes(tagName: string, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
-  if (typeof document === 'undefined') return () => {}
+export function updateElementAttributes(tagName: string | undefined, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
+  if (typeof window === 'undefined' || !tagName) return () => {}
 
   const keyAttributes = attributes.filter(t => t.key === true)
   if (keyAttributes.length === 0) throw Error('Missing key attribute(s)')
 
-  const oldElement = document.querySelector(`${tagName}${keyAttributes.map(({ name, value }) => `[${name}="${value}"]`).join('')}`)
+  const keyAttributesSelector = keyAttributes.map(({ name, value }) => `[${name}="${value}"]`).join('')
+  const oldElement = window.document.querySelector(`${tagName}${keyAttributesSelector}`)
   if (!oldElement && autoCreate !== true) return () => {}
 
-  const newElement = oldElement ?? document.createElement(tagName)
+  const newElement = oldElement ?? window.document.createElement(tagName)
   const diffs: Attribute[] = []
 
   attributes.forEach(({ name, value }) => {
@@ -55,7 +56,7 @@ export function updateElementAttributes(tagName: string, attributes: Attribute[]
     }
   }
   else {
-    const parentElement = parent ?? document.body
+    const parentElement = parent ?? window.document.body
 
     parentElement.appendChild(newElement)
 

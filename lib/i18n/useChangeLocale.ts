@@ -21,6 +21,8 @@ export function useChangeLocale() {
         type: '@i18n/CHANGE_LOCALE',
       })
     }
+    case 'path':
+    case 'query':
     default: {
       const { pathname, search, hash } = useLocation()
       const path = `${pathname}${search}${hash}`

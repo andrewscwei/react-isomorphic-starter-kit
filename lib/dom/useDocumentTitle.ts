@@ -7,46 +7,29 @@ import { updateElementAttributes } from './updateElementAttributes'
  * @param title The title.
  * @param deps Additional dependencies.
  */
-export function useDocumentTitle(title: string, deps?: DependencyList) {
-  if (typeof document === 'undefined') return
-
+export function useDocumentTitle(title?: string, deps?: DependencyList) {
   useEffect(() => {
-    const prevTitle = document.title
-    document.title = title
+    if (typeof window === 'undefined') return
+
+    const prevTitle = window.document.title
+    window.document.title = title ?? ''
 
     return () => {
-      document.title = prevTitle
+      window.document.title = prevTitle
     }
   }, [title, ...deps ?? []])
 
-  const metaTags = [{
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'name',
-      value: 'og:title',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: title,
-    },
-  }, {
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'name',
-      value: 'twitter:title',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: title,
-    },
-  }]
+  useEffect(() => updateElementAttributes(title !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'name', value: 'og:title' },
+    { name: 'content', value: title ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [title, ...deps ?? []])
 
-  for (const tag of metaTags) {
-    useEffect(() => updateElementAttributes(tag.tagName, [
-      { key: true, ...tag.keyAttribute },
-      { ...tag.updateAttribute },
-    ], {
-      parent: document.head,
-    }), [title, ...deps ?? []])
-  }
+  useEffect(() => updateElementAttributes(title !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'name', value: 'twitter:title' },
+    { name: 'content', value: title ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [title, ...deps ?? []])
 }

@@ -42,9 +42,12 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
           ...localizedRoutes ?? [],
         ]
       }
-      default: {
+      case 'query':
+      case 'auto':
+      case 'domain':
+      case 'custom':
+      default:
         return [route]
-      }
     }
   }
   else if (children !== undefined) {

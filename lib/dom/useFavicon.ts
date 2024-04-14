@@ -36,14 +36,14 @@ export function useFavicon({
   icon,
   maskIcon,
 }: Params) {
-  if (typeof window === 'undefined' || typeof document === 'undefined') return
-
   const matchMedia = typeof window.matchMedia !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
   const [isDarkMode, setIsDarkMode] = useState<boolean>(matchMedia?.matches === true)
 
   const colorSchemeChangeHandler = (event: MediaQueryListEvent) => setIsDarkMode(event.matches)
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     matchMedia?.addEventListener('change', colorSchemeChangeHandler)
 
     return () => {
@@ -69,7 +69,7 @@ export function useFavicon({
     name: 'color',
     value: maskIcon.color,
   }] : []], {
-    parent: document.head,
+    parent: window.document.head,
     autoCreate: !!maskIcon?.image,
   }), [maskIcon])
 
@@ -91,7 +91,7 @@ export function useFavicon({
     name: 'href',
     value: icon.darkImage,
   }] : []], {
-    parent: document.head,
+    parent: window.document.head,
     autoCreate: !!icon?.defaultImage,
   }), [isDarkMode, icon])
 
@@ -113,7 +113,7 @@ export function useFavicon({
     name: 'href',
     value: alternateIcon.darkImage,
   }] : []], {
-    parent: document.head,
+    parent: window.document.head,
     autoCreate: !!alternateIcon?.defaultImage,
   }), [isDarkMode, alternateIcon])
 }

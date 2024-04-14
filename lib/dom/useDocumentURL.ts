@@ -7,37 +7,18 @@ import { updateElementAttributes } from './updateElementAttributes'
  * @param url The URL.
  * @param deps Additional dependencies.
  */
-export function useDocumentURL(url: string, deps?: DependencyList) {
-  if (typeof document === 'undefined') return
+export function useDocumentURL(url?: string, deps?: DependencyList) {
+  useEffect(() => updateElementAttributes(url !== undefined ? 'link' : undefined, [
+    { key: true, name: 'rel', value: 'canonical' },
+    { name: 'href', value: url ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [url, ...deps ?? []])
 
-  const metaTags = [{
-    tagName: 'link',
-    keyAttribute: {
-      name: 'rel',
-      value: 'canonical',
-    },
-    updateAttribute: {
-      name: 'href',
-      value: url,
-    },
-  }, {
-    tagName: 'meta',
-    keyAttribute: {
-      name: 'property',
-      value: 'og:url',
-    },
-    updateAttribute: {
-      name: 'content',
-      value: url,
-    },
-  }]
-
-  for (const tag of metaTags) {
-    useEffect(() => updateElementAttributes(tag.tagName, [
-      { key: true, ...tag.keyAttribute },
-      { ...tag.updateAttribute },
-    ], {
-      parent: document.head,
-    }), [url, ...deps ?? []])
-  }
+  useEffect(() => updateElementAttributes(url !== undefined ? 'meta' : undefined, [
+    { key: true, name: 'property', value: 'og:url' },
+    { name: 'content', value: url ?? '' },
+  ], {
+    parent: window.document.head,
+  }), [url, ...deps ?? []])
 }

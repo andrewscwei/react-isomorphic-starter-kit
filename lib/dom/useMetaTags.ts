@@ -27,7 +27,7 @@ type Params = {
  * @param deps Additional dependencies.
  */
 export function useMetaTags({ title, description, url }: Params, deps?: DependencyList) {
-  if (title) useDocumentTitle(title, deps)
-  if (description) useDocumentDescription(description, deps)
-  if (url) useDocumentURL(url, deps)
+  useDocumentTitle(title, deps)
+  useDocumentDescription(description, deps)
+  useDocumentURL(url, deps)
 }
