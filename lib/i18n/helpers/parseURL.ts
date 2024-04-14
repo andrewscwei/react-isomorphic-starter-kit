@@ -8,8 +8,8 @@ import { type URLParts } from '../types'
  * @returns The resulting {@link URLParts}.
  */
 export function parseURL(url: string): URLParts {
-  const regex = /((?:(.*):\/\/)?((?:[A-Za-z0-9-]+\.?)+)?(?::([0-9]+))?)([^?#]*)(?:\?([^#]*))?(?:#(.*))?/
-  const parts = url.match(regex)
+  const regex = /((?:(.*):\/\/)?((?:[A-Za-z0-9-]+\.?)+)?(?::(\d+))?)([^?#]*)(?:\?([^#]*))?(?:#(.*))?/
+  const parts = regex.exec(url)
 
   if (!parts) return {}
 

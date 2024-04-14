@@ -12,6 +12,8 @@ export function useChangeLocale() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
+  const navigate = useNavigate()
+  const { pathname, search, hash } = useLocation()
   const { localeChangeStrategy } = context.state
 
   switch (localeChangeStrategy) {
@@ -24,9 +26,7 @@ export function useChangeLocale() {
     case 'path':
     case 'query':
     default: {
-      const { pathname, search, hash } = useLocation()
       const path = `${pathname}${search}${hash}`
-      const navigate = useNavigate()
 
       return (locale: string) => {
         const newPath = getLocalizedURL(path, locale, createResolveLocaleOptions(context.state))

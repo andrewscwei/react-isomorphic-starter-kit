@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
+import React, { createContext, useMemo, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
@@ -40,49 +40,64 @@ export function I18nProvider({
   localeChangeStrategy = 'path',
   translations = {},
 }: I18nProviderProps) {
-  const config = { defaultLocale, localeChangeStrategy, translations }
-
-  let state: I18nState
-  let dispatch: Dispatch<I18nChangeLocaleAction> | undefined
-
   switch (localeChangeStrategy) {
-    case 'action': {
-      [state, dispatch] = useReducer(reducer, {
-        localeChangeStrategy,
-        defaultLocale,
-        locale: defaultLocale,
-        translations,
-        getLocalizedPath: createGetLocalizedPath(defaultLocale, config),
-        getLocalizedString: createGetLocalizedString(defaultLocale, config),
-      })
-
-      break
-    }
+    case 'action':
+      return I18nActionProvider({ children, defaultLocale, localeChangeStrategy, translations })
     case 'path':
     case 'query':
-    default: {
-      const { pathname, search, hash } = useLocation()
-      const url = `${pathname}${search}${hash}`
-      const res = resolveLocaleFromURL(url, createResolveLocaleOptions(config))
-      if (!res) console.warn(`Unable to infer locale from path <${url}>`)
-
-      const locale = res?.locale ?? defaultLocale
-
-      state = {
-        localeChangeStrategy,
-        defaultLocale,
-        locale,
-        translations,
-        getLocalizedPath: createGetLocalizedPath(locale, config),
-        getLocalizedString: createGetLocalizedString(locale, config),
-      }
-    }
+    default:
+      return I18nPathProvider({ children, defaultLocale, localeChangeStrategy, translations })
   }
+}
+
+const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, translations }: PropsWithChildren<I18nConfig>) => {
+  const config = { defaultLocale, localeChangeStrategy, translations }
+
+  const [state, dispatch] = useReducer(reducer, {
+    localeChangeStrategy,
+    defaultLocale,
+    locale: defaultLocale,
+    translations,
+    getLocalizedPath: createGetLocalizedPath(defaultLocale, config),
+    getLocalizedString: createGetLocalizedString(defaultLocale, config),
+  })
+
+  const value = useMemo(() => ({ state, dispatch }), [state, dispatch])
 
   useDocumentLocale(state.locale)
 
   return (
-    <I18nContext.Provider value={{ state, dispatch }}>
+    <I18nContext.Provider value={value}>
+      {children}
+    </I18nContext.Provider>
+  )
+}
+
+const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, translations }: PropsWithChildren<I18nConfig>) => {
+  const config = { defaultLocale, localeChangeStrategy, translations }
+
+  const { pathname, search, hash } = useLocation()
+  const url = `${pathname}${search}${hash}`
+  const res = resolveLocaleFromURL(url, createResolveLocaleOptions(config))
+  if (!res) console.warn(`Unable to infer locale from path <${url}>`)
+
+  const locale = res?.locale ?? defaultLocale
+
+  const state: I18nState = {
+    localeChangeStrategy,
+    defaultLocale,
+    locale,
+    translations,
+    getLocalizedPath: createGetLocalizedPath(locale, config),
+    getLocalizedString: createGetLocalizedString(locale, config),
+  }
+
+  const value = useMemo(() => ({ state }), [state])
+
+  useDocumentLocale(state.locale)
+
+  return (
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   )

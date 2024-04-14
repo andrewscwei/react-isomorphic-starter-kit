@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useDebug } from '../utils/useDebug'
+import { createDebug } from '../utils/createDebug'
 import { type Interactor } from './Interactor'
 import { UseCaseError, type UseCase } from './UseCase'
 
@@ -29,7 +29,7 @@ type Options<Result> = {
   onSuccess?: (result: Result) => void
 }
 
-const debug = useDebug()
+const debug = createDebug()
 
 /**
  * Hook for interacting with a {@link UseCase}.

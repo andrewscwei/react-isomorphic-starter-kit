@@ -1,5 +1,5 @@
-import { useDebug } from '../utils/useDebug'
-import { useSessionCache } from '../utils/useSessionCache'
+import { createDebug } from '../utils/createDebug'
+import { createSessionCache } from '../utils/createSessionCache'
 import { UseCaseError, type UseCase } from './UseCase'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
@@ -22,7 +22,7 @@ export type Options = {
   timeout?: number
 }
 
-const debug = useDebug('fetch')
+const debug = createDebug('fetch')
 
 /**
  * A {@link UseCase} for fetching data from external API.
@@ -30,7 +30,7 @@ const debug = useDebug('fetch')
 export abstract class FetchUseCase<Params extends Record<string, any>, Result> implements UseCase<Params, Result, Options> {
   protected abortController: AbortController | undefined
 
-  protected cache = useSessionCache({ defaultTTL: this.ttl })
+  protected cache = createSessionCache({ defaultTTL: this.ttl })
 
   protected timer: NodeJS.Timeout | undefined
 

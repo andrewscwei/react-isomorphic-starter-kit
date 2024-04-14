@@ -1,7 +1,7 @@
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { type RouteObject } from 'react-router'
 import { generateLocalizedRoutes, type I18nConfig } from '../i18n'
-import { useDebug } from '../utils/useDebug'
+import { createDebug } from '../utils/createDebug'
 import { loadLazyComponents } from './loadLazyComponents'
 import { type RenderProps } from './types'
 
@@ -22,7 +22,7 @@ type Config = {
   routes: RouteObject[]
 }
 
-const debug = useDebug(undefined, 'app')
+const debug = createDebug(undefined, 'app')
 
 /**
  * Initializes the client application.

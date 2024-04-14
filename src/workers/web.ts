@@ -1,6 +1,6 @@
-import { useDebug } from '@lib/utils/useDebug'
+import { createDebug } from '@lib/utils/createDebug'
 
-const debug = useDebug(undefined, 'worker')
+const debug = createDebug(undefined, 'worker')
 
 self.addEventListener('message', event => {
   if (event.origin !== __BUILD_ARGS__.publicURL) return

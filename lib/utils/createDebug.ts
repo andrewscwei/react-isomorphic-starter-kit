@@ -13,7 +13,7 @@ if (debugEnabled && typeof window !== 'undefined') window.localStorage.debug = d
  *
  * @returns A {@link debug} instance.
  */
-export function useDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
+export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
   if (debugEnabled) {
     const namespace = [thread, ...subnamespace.split(':').filter(Boolean)].join(':')
     if (typeof window === 'undefined') debug.enable(namespace)
