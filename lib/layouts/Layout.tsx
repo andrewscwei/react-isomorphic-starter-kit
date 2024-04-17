@@ -1,5 +1,5 @@
 /**
- * @file Base HTML template for all pages.
+ * @file Base HTML layout for all pages.
  */
 
 import React, { type PropsWithChildren } from 'react'

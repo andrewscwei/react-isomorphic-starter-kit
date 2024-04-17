@@ -7,7 +7,7 @@ import { renderToReadableStream } from 'react-dom/server'
 import { type RouteObject } from 'react-router'
 import { createStaticHandler } from 'react-router-dom/server'
 import { type I18nConfig } from '../i18n'
-import { Layout, createMetadata, createResolveAssetPath, type Metadata } from '../templates'
+import { Layout, createMetadata, createResolveAssetPath, type Metadata } from '../layouts'
 import { type RenderProps } from './types'
 
 type Options = {
