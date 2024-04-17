@@ -41,7 +41,6 @@ export function resolveLocaleFromURL(url: string, { defaultLocale, resolver, res
 
 function manualResolveLocaleFromURL(url: string, { resolver, supportedLocales = [] }: Omit<Required<ResolveLocaleOptions>, 'defaultLocale' | 'resolveStrategy'>): Result | undefined {
   const parts = parseURL(url)
-
   const matchedLocale = resolver?.(parts)
 
   if (matchedLocale && supportedLocales.indexOf(matchedLocale) >= 0) return { locale: matchedLocale, resolveStrategy: 'custom' }
@@ -51,7 +50,6 @@ function manualResolveLocaleFromURL(url: string, { resolver, supportedLocales = 
 
 function autoResolveLocaleFromURL(url: string, { resolveStrategy, supportedLocales }: Omit<ResolveLocaleOptions, 'defaultLocale' | 'resolver'>): Result | undefined {
   const parts = parseURL(url)
-
   const matchedLocaleFromHost = parts.host?.split('.').filter(t => t)[0] as Locale
   const matchedLocaleFromPath = parts.path?.split('/').filter(t => t)[0] as Locale
   const matchedLocaleFromQuery = new URLSearchParams(parts.query).get('locale') as Locale
