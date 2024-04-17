@@ -11,17 +11,17 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 3. [TypeScript](https://www.typescriptlang.org/) + [ESLint](https://eslint.org/)
 4. [Jest](https://jestjs.io/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
 5. [Playwright](https://playwright.dev/) for E2E testing
-5. [webpack](https://webpack.js.org/)
-6. [Docker](https://docker.com) config
-7. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
-8. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
-9. Building for [Express](https://expressjs.com/) with server-side rendering
-10. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
-11. Building for a static app with prerendering (example on GitHub Pages)
-12. Data prefetching and caching
-13. Web workers
-14. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
-15. Code quality analysis with [SonarQube](https://www.sonarsource.com/products/sonarqube/)
+6. [webpack](https://webpack.js.org/)
+7. [Docker](https://docker.com) config
+8. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
+9. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
+10. Building for [Express](https://expressjs.com/) with server-side rendering
+11. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
+12. Building for a static app with prerendering (example on GitHub Pages)
+13. Data prefetching and caching
+14. Web workers
+15. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
+16. Code quality analysis with [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 
 ## Usage
 
