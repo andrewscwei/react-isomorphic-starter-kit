@@ -2,6 +2,9 @@
 .env
 .env.*
 
+# Secrets
+.key
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -14,6 +17,7 @@ Thumbs.db
 # Temporary files
 .tmp/
 .data/
+.cache/
 
 # Compiled sources
 build/
