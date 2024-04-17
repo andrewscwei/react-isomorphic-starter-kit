@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? 'null' : 'html',
   use: {
-    baseURL: 'http://127.0.0.1:8080',
+    baseURL: 'http://localhost:8080',
     trace: 'on-first-retry',
   },
   projects: [{
@@ -29,7 +29,7 @@ export default defineConfig({
   }],
   webServer: {
     command: `npm run start:${process.env.RUNTIME || 'server'}`,
-    url: 'http://127.0.0.1:8080',
+    url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
   },
 })
