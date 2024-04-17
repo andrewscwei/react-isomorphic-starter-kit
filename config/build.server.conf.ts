@@ -71,6 +71,7 @@ const config: Configuration = {
     __filename: false,
   },
   optimization: {
+    minimize: !buildArgs.skipOptimizations,
     nodeEnv: false,
   },
   output: {

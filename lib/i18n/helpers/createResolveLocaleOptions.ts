@@ -1,4 +1,4 @@
-import { type I18nConfig, type ResolveLocaleOptions } from '../types'
+import { type I18nConfig, type Locale, type ResolveLocaleOptions } from '../types'
 
 /**
  * Creates {@link ResolveLocaleOptions} from {@link I18nConfig}.
@@ -9,7 +9,7 @@ import { type I18nConfig, type ResolveLocaleOptions } from '../types'
  */
 export function createResolveLocaleOptions({ defaultLocale, localeChangeStrategy, translations }: I18nConfig): ResolveLocaleOptions {
   const resolveStrategy = localeChangeStrategy === 'path' ? 'path' : 'query'
-  const supportedLocales = Object.keys(translations)
+  const supportedLocales = Object.keys(translations) as Locale[]
 
   if (supportedLocales.indexOf(defaultLocale) < 0) console.warn(`Provided supported locales do not contain the default locale <${defaultLocale}>`)
 

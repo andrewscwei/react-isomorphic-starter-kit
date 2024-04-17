@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 /**
  * @file Build arguments computed at buildtime and passed to both server and
  *       client runtime environments as global variable `__BUILD_ARGS__`.
@@ -59,7 +60,7 @@ export const publicPath = process.env.PUBLIC_PATH ?? basePath
 /**
  * Default locale.
  */
-export const defaultLocale = process.env.DEFAULT_LOCALE ?? 'en'
+export const defaultLocale = (process.env.DEFAULT_LOCALE ?? 'en') as import('../lib/i18n/types').Locale
 
 /**
  * Lib directory.

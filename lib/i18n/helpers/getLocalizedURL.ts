@@ -1,8 +1,7 @@
-import { type ResolveLocaleOptions } from '../types'
+import { type Locale, type ResolveLocaleOptions } from '../types'
 import { constructURL } from './constructURL'
 import { getUnlocalizedURL } from './getUnlocalizedURL'
 import { parseURL } from './parseURL'
-import { resolveLocaleFromURL } from './resolveLocaleFromURL'
 
 /**
  * Returns the localized version of a URL.
@@ -13,8 +12,7 @@ import { resolveLocaleFromURL } from './resolveLocaleFromURL'
  *
  * @returns The localized URL.
  */
-export function getLocalizedURL(url: string, locale: string, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
-  const currLocaleInfo = resolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
+export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
   const parts = parseURL(url)
   const targetLocale = sanitizeLocale(locale, { defaultLocale, resolveStrategy, supportedLocales })
 
@@ -22,49 +20,29 @@ export function getLocalizedURL(url: string, locale: string, { defaultLocale, re
 
   if (targetLocale === defaultLocale) return getUnlocalizedURL(url, { defaultLocale, resolveStrategy, supportedLocales })
 
-  if (currLocaleInfo) {
-    switch (currLocaleInfo.resolveStrategy) {
-      case 'domain':
-        return constructURL({ ...parts, host: parts.host ? `${targetLocale}.${parts.host.split('.').filter(t => t).slice(1).join('.')}` : undefined })
-      case 'query': {
-        if (!parts.query) return url
+  switch (resolveStrategy) {
+    case 'domain':
+      return constructURL({ ...parts, host: parts.host ? `${targetLocale}.${parts.host}` : undefined })
+    case 'query': {
+      const searchParams = new URLSearchParams(parts.query)
 
-        const searchParams = new URLSearchParams(parts.query)
+      if (targetLocale === defaultLocale) {
+        searchParams.delete('locale')
+      }
+      else {
         searchParams.set('locale', targetLocale)
-
-        return constructURL({ ...parts, query: searchParams.toString() })
       }
-      case 'path':
-      case 'auto':
-      default:
-        return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t).slice(1)].join('/') : undefined })
-    }
-  }
-  else {
-    switch (resolveStrategy) {
-      case 'domain':
-        return constructURL({ ...parts, host: parts.host ? `${targetLocale}.${parts.host}` : undefined })
-      case 'query': {
-        const searchParams = new URLSearchParams(parts.query)
 
-        if (targetLocale === defaultLocale) {
-          searchParams.delete('locale')
-        }
-        else {
-          searchParams.set('locale', targetLocale)
-        }
-
-        return constructURL({ ...parts, query: searchParams.toString() })
-      }
-      case 'path':
-      case 'auto':
-      default:
-        return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t)].join('/') : undefined })
+      return constructURL({ ...parts, query: searchParams.toString() })
     }
+    case 'path':
+    case 'auto':
+    default:
+      return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t)].join('/') : undefined })
   }
 }
 
-function sanitizeLocale(locale: string, { defaultLocale, supportedLocales }: ResolveLocaleOptions): string | undefined {
+function sanitizeLocale(locale: Locale, { defaultLocale, supportedLocales }: ResolveLocaleOptions): Locale | undefined {
   if (supportedLocales) {
     if (locale && supportedLocales.indexOf(locale) >= 0) return locale
     if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) return defaultLocale

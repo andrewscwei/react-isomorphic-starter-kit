@@ -36,7 +36,7 @@ export function useFavicon({
   icon,
   maskIcon,
 }: Params) {
-  const matchMedia = typeof window.matchMedia !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
+  const matchMedia = (typeof window !== 'undefined' && typeof window.matchMedia !== 'undefined') ? window.matchMedia('(prefers-color-scheme: dark)') : undefined
   const [isDarkMode, setIsDarkMode] = useState<boolean>(matchMedia?.matches === true)
 
   const colorSchemeChangeHandler = (event: MediaQueryListEvent) => setIsDarkMode(event.matches)

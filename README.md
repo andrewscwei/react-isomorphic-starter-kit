@@ -9,7 +9,8 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 1. [React Router](https://reacttraining.com/react-router/)
 2. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
 3. [TypeScript](https://www.typescriptlang.org/) + [ESLint](https://eslint.org/)
-4. [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/)
+4. [Jest](https://jestjs.io/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
+5. [Playwright](https://playwright.dev/) for E2E testing
 5. [webpack](https://webpack.js.org/)
 6. [Docker](https://docker.com) config
 7. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
@@ -20,6 +21,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 12. Data prefetching and caching
 13. Web workers
 14. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
+15. Code quality analysis with [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 
 ## Usage
 

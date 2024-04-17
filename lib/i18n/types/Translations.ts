@@ -8,4 +8,4 @@ export type Translation = { [key: string]: Translation | string }
 /**
  * Dictionary of translations.
  */
-export type Translations = Record<Locale, Translation>
+export type Translations = { [key in Locale]?: Translation }

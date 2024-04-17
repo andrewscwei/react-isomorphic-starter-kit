@@ -2,23 +2,29 @@ import React, { createContext, useMemo, useReducer, type Dispatch, type PropsWit
 import { useLocation } from 'react-router'
 import { useDocumentLocale } from '../dom'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers'
-import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig } from './types'
+import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig, type Locale } from './types'
 
 type I18nState = I18nConfig & {
   getLocalizedPath: GetLocalizedPath
   getLocalizedString: GetLocalizedString
-  locale: string
+  locale: Locale
 }
 
 type I18nContextValue = {
-  dispatch?: Dispatch<I18nChangeLocaleAction>
+  dispatch?: Dispatch<I18nAction>
   state: I18nState
 }
 
 type I18nProviderProps = PropsWithChildren<Partial<I18nConfig>>
 
+type I18nAction = I18nChangeLocaleAction | I18nResetLocaleAction
+
+type I18nResetLocaleAction = {
+  type: '@i18n/RESET_LOCALE'
+}
+
 type I18nChangeLocaleAction = {
-  locale: string
+  locale: Locale
   type: '@i18n/CHANGE_LOCALE'
 }
 
@@ -103,13 +109,19 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, trans
   )
 }
 
-const reducer: Reducer<I18nState, I18nChangeLocaleAction> = (state, action) => {
+const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
   switch (action.type) {
     case '@i18n/CHANGE_LOCALE':
       return {
         ...state,
         locale: action.locale,
         getLocalizedString: createGetLocalizedString(action.locale, state),
+      }
+    case '@i18n/RESET_LOCALE':
+      return {
+        ...state,
+        locale: state.defaultLocale,
+        getLocalizedString: createGetLocalizedString(state.defaultLocale, state),
       }
     default:
       return state
