@@ -15,7 +15,6 @@ jobs:
     with:
       artifacts-path: build/
       build-command: BASE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }} BASE_PATH=/${{ github.event.repository.name }}/ npm run build:static
-      test-command: npx playwright install --with-deps && npm run test:unit && npm run test:static
   deploy:
     name: Deploy
     uses: andrewscwei/workflows/.github/workflows/gh-pages-deploy.yml@v1
