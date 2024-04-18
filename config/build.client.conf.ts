@@ -47,7 +47,7 @@ const config: Configuration = {
           importLoaders: 1,
           modules: (() => {
             if (isModules) {
-              if (isDev) return { localIdentName: '[name]-[local]-[hash:base64:5]' }
+              if (!buildArgs.forceHydration && isDev) return { localIdentName: '[name]-[local]-[hash:base64:5]' }
 
               return true
             }

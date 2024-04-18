@@ -94,6 +94,11 @@ export const useBundleAnalyzer = process.env.npm_config_analyze === 'true'
 export const skipOptimizations = process.env.NODE_ENV === 'development' || process.env.npm_config_raw === 'true'
 
 /**
+ * Specifies whether the client should always try to hydrate.
+ */
+export const forceHydration = process.env.FORCE_HYDRATION === 'true' || process.env.npm_config_hydrate === 'true'
+
+/**
  * File name of the generated asset manifest.
  */
 export const assetManifestFile = 'asset-manifest.json'

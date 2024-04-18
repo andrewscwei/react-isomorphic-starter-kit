@@ -87,7 +87,7 @@ export function initServer(render?: (props: RenderProps) => JSX.Element, {
     app.use(...middleware)
   }
 
-  app.use(renderRoot(isDev ? undefined : render, {
+  app.use(renderRoot((!__BUILD_ARGS__.forceHydration && isDev) ? undefined : render, {
     customScripts,
     metadata,
     i18n,

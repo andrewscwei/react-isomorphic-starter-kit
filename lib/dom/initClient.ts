@@ -49,7 +49,7 @@ export async function initClient(render: (props: RenderProps) => JSX.Element, {
   const app = render({ routes: localizedRoutes })
   let root
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!__BUILD_ARGS__.forceHydration && process.env.NODE_ENV === 'development') {
     root = createRoot(container)
     root.render(app)
   }
