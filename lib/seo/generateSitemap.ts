@@ -25,7 +25,7 @@ export async function generateSitemap(routes: RouteObject[], {
     format: debugEnabled,
   })
   const xml = builder.build({
-    'urlset': {
+    urlset: {
       '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
       '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
       '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
@@ -42,7 +42,7 @@ export async function generateSitemap(routes: RouteObject[], {
         if (typeof t === 'string') {
           return {
             ...defaultTags,
-            'loc': joinURL(baseURL, t),
+            loc: joinURL(baseURL, t),
           }
         }
         else {

@@ -21,7 +21,6 @@ export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worke
     return debug(namespace)
   }
   else {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {}
   }
 }

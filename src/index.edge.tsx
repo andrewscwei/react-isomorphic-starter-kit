@@ -20,7 +20,7 @@ export const handleSitemap = serveSitemap({ routes: localizedRoutes, seo: seoCon
 
 export const handleRoot = renderRoot(({ context, routes }) => (
   <App>
-    <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
+    <StaticRouterProvider context={context} router={createStaticRouter(routes, context)}/>
   </App>
 ), {
   i18n: i18nConf,

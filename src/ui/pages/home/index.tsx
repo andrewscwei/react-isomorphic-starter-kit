@@ -16,9 +16,10 @@ export function Component() {
         <section>
           <h1 className={styles.title}>{ltxt('hello')}</h1>
           <code className={styles.version}>{__BUILD_ARGS__.version}</code>
-          <span>{ltxt('description') }</span>
+          <span>{ltxt('description')}</span>
         </section>
       </div>
     </main>
   )
 }
+

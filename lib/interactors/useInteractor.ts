@@ -46,7 +46,7 @@ export default function useInteractor<UseCaseParams, UseCaseResult, UseCaseOptio
     onCancel,
     onError,
     onSuccess,
-  }: Options<UseCaseResult> = {}
+  }: Options<UseCaseResult> = {},
 ): Interactor<UseCaseParams, UseCaseResult> {
   const totalRunCountRef = useRef(0)
   const runningCountRef = useRef(0)

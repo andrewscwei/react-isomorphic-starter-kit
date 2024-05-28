@@ -134,23 +134,23 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 
 ### `v10.0.0`
 
-- Removed styled-components in favor of CSS modules
-- Removed Redux in favor of Context API
-- Updated how assets are imported
-- Relocated `locales` directory
-- Created reusable workflows for CI/CD
-- Added interactors
-- Added `I18nProvider`
+-   Removed styled-components in favor of CSS modules
+-   Removed Redux in favor of Context API
+-   Updated how assets are imported
+-   Relocated `locales` directory
+-   Created reusable workflows for CI/CD
+-   Added interactors
+-   Added `I18nProvider`
 
 ### `v12.0.0`
 
-- Decoupled boilerplate architectural code to `src/base`
+-   Decoupled boilerplate architectural code to `src/base`
 
 ### `v13.0.0`
 
-- Restructured folders
+-   Restructured folders
 
 ### `v14.0.0`
 
-- Moved boilerplate code to `lib/`
-- Replaced `react-helmet-async` with custom solution in `lib/`
+-   Moved boilerplate code to `lib/`
+-   Replaced `react-helmet-async` with custom solution in `lib/`

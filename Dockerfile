@@ -1,5 +1,7 @@
-# Builds the app with dev dependencies included.
-FROM node:21.0.0 AS dev
+################################################################################
+# Development build
+################################################################################
+FROM node:22.2.0 AS dev
 
 ARG BASE_PATH
 ARG BASE_URL
@@ -22,25 +24,22 @@ COPY src ./src
 COPY tests ./tests
 COPY ts*.json ./
 COPY .babelrc ./
-COPY .eslintrc ./
+COPY eslint.config.mjs ./
 COPY .stylelintrc ./
 
 RUN npm run build
 
-
-# Rebuilds the app with unit tests included.
-FROM dev AS test
-
-COPY tests ./tests
-
-# Strips dev dependencies from the dev build.
+################################################################################
+# Production build
+################################################################################
 FROM dev AS prod
 
 RUN npm prune --production
 
-
-# Final production build.
-FROM node:21.0.0-slim AS release
+################################################################################
+# Release build
+################################################################################
+FROM node:22.2.0-alpine AS release
 
 ENV NODE_ENV=production
 

@@ -23,7 +23,10 @@ type Result = {
  *
  * @returns The result of the resolution if successful, `undefined` otherwise.
  */
-export function resolveLocaleFromURL(url: string, { defaultLocale, resolver, resolveStrategy = 'auto', supportedLocales = [] }: Partial<ResolveLocaleOptions> = {}): Result | undefined {
+export function resolveLocaleFromURL(url: string, {
+  defaultLocale,
+  resolver, resolveStrategy = 'auto', supportedLocales = [],
+}: Partial<ResolveLocaleOptions> = {}): Result | undefined {
   const result = resolver
     ? manualResolveLocaleFromURL(url, { resolver, supportedLocales })
     : autoResolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
@@ -39,7 +42,10 @@ export function resolveLocaleFromURL(url: string, { defaultLocale, resolver, res
   }
 }
 
-function manualResolveLocaleFromURL(url: string, { resolver, supportedLocales = [] }: Omit<Required<ResolveLocaleOptions>, 'defaultLocale' | 'resolveStrategy'>): Result | undefined {
+function manualResolveLocaleFromURL(url: string, {
+  resolver,
+  supportedLocales = [],
+}: Omit<Required<ResolveLocaleOptions>, 'defaultLocale' | 'resolveStrategy'>): Result | undefined {
   const parts = parseURL(url)
   const matchedLocale = resolver?.(parts)
 
@@ -48,15 +54,35 @@ function manualResolveLocaleFromURL(url: string, { resolver, supportedLocales = 
   return undefined
 }
 
-function autoResolveLocaleFromURL(url: string, { resolveStrategy, supportedLocales }: Omit<ResolveLocaleOptions, 'defaultLocale' | 'resolver'>): Result | undefined {
+function autoResolveLocaleFromURL(url: string, {
+  resolveStrategy,
+  supportedLocales,
+}: Omit<ResolveLocaleOptions, 'defaultLocale' | 'resolver'>): Result | undefined {
   const parts = parseURL(url)
   const matchedLocaleFromHost = parts.host?.split('.').filter(t => t)[0] as Locale
   const matchedLocaleFromPath = parts.path?.split('/').filter(t => t)[0] as Locale
   const matchedLocaleFromQuery = new URLSearchParams(parts.query).get('locale') as Locale
 
-  if (matchedLocaleFromHost && (resolveStrategy === 'auto' || resolveStrategy === 'domain') && (supportedLocales.indexOf(matchedLocaleFromHost) >= 0)) return { locale: matchedLocaleFromHost, resolveStrategy: 'domain' }
-  if (matchedLocaleFromPath && (resolveStrategy === 'auto' || resolveStrategy === 'path') && (supportedLocales.indexOf(matchedLocaleFromPath) >= 0)) return { locale: matchedLocaleFromPath, resolveStrategy: 'path' }
-  if (matchedLocaleFromQuery && (resolveStrategy === 'auto' || resolveStrategy === 'query') && (supportedLocales.indexOf(matchedLocaleFromQuery) >= 0)) return { locale: matchedLocaleFromQuery, resolveStrategy: 'query' }
+  if (matchedLocaleFromHost && (resolveStrategy === 'auto' || resolveStrategy === 'domain') && (supportedLocales.indexOf(matchedLocaleFromHost) >= 0)) {
+    return {
+      locale: matchedLocaleFromHost,
+      resolveStrategy: 'domain',
+    }
+  }
+
+  if (matchedLocaleFromPath && (resolveStrategy === 'auto' || resolveStrategy === 'path') && (supportedLocales.indexOf(matchedLocaleFromPath) >= 0)) {
+    return {
+      locale: matchedLocaleFromPath,
+      resolveStrategy: 'path',
+    }
+  }
+
+  if (matchedLocaleFromQuery && (resolveStrategy === 'auto' || resolveStrategy === 'query') && (supportedLocales.indexOf(matchedLocaleFromQuery) >= 0)) {
+    return {
+      locale: matchedLocaleFromQuery,
+      resolveStrategy: 'query',
+    }
+  }
 
   return undefined
 }

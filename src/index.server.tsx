@@ -13,7 +13,7 @@ import { App } from './ui/App'
 
 export const server = initServer(({ context, routes }) => (
   <App>
-    <StaticRouterProvider router={createStaticRouter(routes, context)} context={context}/>
+    <StaticRouterProvider context={context} router={createStaticRouter(routes, context)}/>
   </App>
 ), {
   i18n: i18nConf,

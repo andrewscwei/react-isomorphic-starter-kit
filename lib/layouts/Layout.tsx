@@ -56,53 +56,53 @@ export function Layout({
     <html lang={pageLocale}>
       <head>
         <meta charSet='utf-8'/>
-        <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
-        <meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover'/>
-        {pageDescription && <meta name='description' content={pageDescription}/>}
-        {pageThemeColor && <meta name='theme-color' content={pageThemeColor}/>}
+        <meta content='IE=edge' httpEquiv='X-UA-Compatible'/>
+        <meta content='width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover' name='viewport'/>
+        {pageDescription && <meta content={pageDescription} name='description'/>}
+        {pageThemeColor && <meta content={pageThemeColor} name='theme-color'/>}
 
         <title>{pageTitle}</title>
 
-        {pageURL && <link rel='canonical' href={pageURL}/>}
-        <link rel='mask-icon' type='image/svg+xml' href={resolveAssetPath('/mask-icon.svg')} color={pageMaskIconColor}/>
-        <link rel='alternate icon' type='image/png' href={resolveAssetPath('/favicon.png')}/>
-        <link rel='icon' type='image/x-icon' href={resolveAssetPath('/favicon.svg')}/>
-        <link rel='icon' href='data:;base64,iVBORw0KGgo='/>
+        {pageURL && <link href={pageURL} rel='canonical'/>}
+        <link color={pageMaskIconColor} href={resolveAssetPath('/mask-icon.svg')} rel='mask-icon' type='image/svg+xml'/>
+        <link href={resolveAssetPath('/favicon.png')} rel='alternate icon' type='image/png'/>
+        <link href={resolveAssetPath('/favicon.svg')} rel='icon' type='image/x-icon'/>
+        <link href='data:;base64,iVBORw0KGgo=' rel='icon'/>
 
-        <meta name='mobile-web-app-capable' content='yes'/>
-        <meta name='apple-mobile-web-app-capable' content='yes'/>
-        <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
-        {baseTitle && <meta name='apple-mobile-web-app-title' content={baseTitle}/>}
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-57.png')} sizes='57x57'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-60.png')} sizes='60x60'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-72.png')} sizes='72x72'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-76.png')} sizes='76x76'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-114.png')} sizes='114x114'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-120.png')} sizes='120x120'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-144.png')} sizes='144x144'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-152.png')} sizes='152x152'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-180.png')} sizes='180x180'/>
-        <link rel='apple-touch-icon' href={resolveAssetPath('/app-icon-192.png')} sizes='192x192'/>
+        <meta content='yes' name='mobile-web-app-capable'/>
+        <meta content='yes' name='apple-mobile-web-app-capable'/>
+        <meta content='black-translucent' name='apple-mobile-web-app-status-bar-style'/>
+        {baseTitle && <meta content={baseTitle} name='apple-mobile-web-app-title'/>}
+        <link href={resolveAssetPath('/app-icon-57.png')} rel='apple-touch-icon' sizes='57x57'/>
+        <link href={resolveAssetPath('/app-icon-60.png')} rel='apple-touch-icon' sizes='60x60'/>
+        <link href={resolveAssetPath('/app-icon-72.png')} rel='apple-touch-icon' sizes='72x72'/>
+        <link href={resolveAssetPath('/app-icon-76.png')} rel='apple-touch-icon' sizes='76x76'/>
+        <link href={resolveAssetPath('/app-icon-114.png')} rel='apple-touch-icon' sizes='114x114'/>
+        <link href={resolveAssetPath('/app-icon-120.png')} rel='apple-touch-icon' sizes='120x120'/>
+        <link href={resolveAssetPath('/app-icon-144.png')} rel='apple-touch-icon' sizes='144x144'/>
+        <link href={resolveAssetPath('/app-icon-152.png')} rel='apple-touch-icon' sizes='152x152'/>
+        <link href={resolveAssetPath('/app-icon-180.png')} rel='apple-touch-icon' sizes='180x180'/>
+        <link href={resolveAssetPath('/app-icon-192.png')} rel='apple-touch-icon' sizes='192x192'/>
 
-        {baseTitle && <meta property='og:site_name' content={baseTitle}/>}
-        <meta property='og:type' content='website'/>
-        {pageTitle && <meta property='og:title' content={pageTitle}/>}
-        {pageDescription && <meta property='og:description' content={pageDescription}/>}
-        <meta property='og:locale' content={pageLocale}/>
-        {pageURL && <meta property='og:url' content={pageURL}/>}
-        <meta property='og:image' content={joinURL(publicURL, '/og-image.png')}/>
-        {pageDescription && <meta property='og:image:alt' content={pageDescription}/>}
+        {baseTitle && <meta content={baseTitle} property='og:site_name'/>}
+        <meta content='website' property='og:type'/>
+        {pageTitle && <meta content={pageTitle} property='og:title'/>}
+        {pageDescription && <meta content={pageDescription} property='og:description'/>}
+        <meta content={pageLocale} property='og:locale'/>
+        {pageURL && <meta content={pageURL} property='og:url'/>}
+        <meta content={joinURL(publicURL, '/og-image.png')} property='og:image'/>
+        {pageDescription && <meta content={pageDescription} property='og:image:alt'/>}
 
-        <meta name='twitter:card' content='summary_large_image'/>
-        {pageTitle && <meta name='twitter:title' content={pageTitle}/>}
-        {pageDescription && <meta name='twitter:description' content={pageDescription}/>}
-        <meta name='twitter:image' content={joinURL(publicURL, '/twitter-card.png')}/>
+        <meta content='summary_large_image' name='twitter:card'/>
+        {pageTitle && <meta content={pageTitle} name='twitter:title'/>}
+        {pageDescription && <meta content={pageDescription} name='twitter:description'/>}
+        <meta content={joinURL(publicURL, '/twitter-card.png')} name='twitter:image'/>
 
-        <link rel='manifest' href={resolveAssetPath('/manifest.json')}/>
+        <link href={resolveAssetPath('/manifest.json')} rel='manifest'/>
 
-        {injectStyles && <link rel='stylesheet' href={resolveAssetPath('/styles.css')}/>}
+        {injectStyles && <link href={resolveAssetPath('/styles.css')} rel='stylesheet'/>}
 
-        <script defer type='application/javascript' src={resolveAssetPath('/main.js')}></script>
+        <script defer src={resolveAssetPath('/main.js')} type='application/javascript'/>
 
         {customScripts}
       </head>

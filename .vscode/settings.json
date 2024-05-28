@@ -1,8 +1,25 @@
 {
-  "files.trimFinalNewlines": true,
-  "typescript.format.semicolons": "remove",
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit",
     "source.organizeImports": "explicit"
-  }
+  },
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "files.insertFinalNewline": true,
+  "typescript.format.semicolons": "ignore",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.tsdk": "node_modules/typescript/lib",
 }
