@@ -115,7 +115,7 @@ Building a containerized version of the app using the included `Dockerfile`:
 $ npm run ship:build
 
 # Run the image
-$ npm run ship:run
+$ npm run ship
 ```
 
 ## Using as Repository Template
