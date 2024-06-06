@@ -1,41 +1,70 @@
 name: CD
 on:
   push:
-    tags: ["v*"]
-  release:
-    types: [published]
+    branches: [master]
 concurrency:
   group: deploy
   cancel-in-progress: true
 jobs:
   build:
     name: Build
-    uses: andrewscwei/workflows/.github/workflows/node-build.yml@v1
-    secrets: inherit
-    with:
-      artifacts-path: build/
-      build-command: BASE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }} BASE_PATH=/${{ github.event.repository.name }}/ npm run build:static
-      skip-tests: true
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: ${{ steps.build.outputs.artifact-name }}
+      artifact-path: ${{ steps.build.outputs.artifact-path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        id: build
+        uses: andrewscwei/actions/node-build@v1
+        env:
+          BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          BASE_PATH: /${{ github.event.repository.name }}/
+        with:
+          artifact-path: build/
+          build-command: npm run build:static
   deploy:
     name: Deploy
-    uses: andrewscwei/workflows/.github/workflows/gh-pages-deploy.yml@v1
     needs: [build]
-    secrets: inherit
-    with:
-      artifacts-name: ${{ needs.build.outputs.artifacts-name }}
-      artifacts-path: ${{ needs.build.outputs.artifacts-path }}
-      branch-name: gh-pages
-      create-release: true
-      deploy-path: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to GitHub pages
+        uses: andrewscwei/actions/gh-pages-deploy@v1
+        with:
+          artifact-name: ${{ needs.build.outputs.artifact-name }}
+          artifact-path: ${{ needs.build.outputs.artifact-path }}
+          branch-name: gh-pages
+          deploy-path: build
+  release:
+    name: Release
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .node-version
+      - name: Install Node modules
+        run: npm install --workspaces=false
+      - name: Create release
+        run: npx semantic-release
   notify:
     name: Notify
-    needs: [build, deploy]
+    needs: [build, deploy, release]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - uses: andrewscwei/telegram-action@v1
         with:
-          success: ${{ needs.build.result == 'success' && needs.deploy.result == 'success' }}
-          cancelled: ${{ needs.build.result == 'cancelled' || needs.deploy.result == 'cancelled' }}
+          success: ${{ needs.build.result == 'success' && needs.deploy.result == 'success' && needs.release.result == 'success' }}
+          cancelled: ${{ needs.build.result == 'cancelled' || needs.deploy.result == 'cancelled' && needs.release.result == 'cancelled' }}
           bot-token: ${{ secrets.TELEGRAM_DEVOPS_BOT_TOKEN }}
           chat-id: ${{ secrets.TELEGRAM_DEVOPS_CHAT_ID }}

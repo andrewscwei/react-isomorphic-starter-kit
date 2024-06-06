@@ -1,8 +1,8 @@
 name: CI
 on:
+  pull_request:
   push:
-    branches: ["**"]
-    tags-ignore: ["v*"]
+    branches-ignore: [master]
 jobs:
   build:
     name: Build
@@ -16,21 +16,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version-file: .node-version
-      - name: Install Node modules
-        run: npm install
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-      - name: Unit test
-        run: npm run test:unit
       - name: Build
-        run: npm run build:${{ matrix.runtime }}
-      - name: E2E test
-        run: npm run test:${{ matrix.runtime }}
+        uses: andrewscwei/actions/node-build@v1
+        with:
+          prebuild-command: npm run test:unit
+          build-command: npm run build:${{ matrix.runtime }}
+          postbuild-command: npx playwright install --with-deps && npm run test:${{ matrix.runtime }}
+          artifact-path: build/
+          artifact-name: ${{ matrix.runtime }}
   notify:
     name: Notify
     needs: [build]
