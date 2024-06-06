@@ -4,7 +4,6 @@
 
 import { initClient } from '@lib/dom'
 import { createDebug } from '@lib/utils/createDebug'
-import React from 'react'
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 import Worker from 'worker-loader!./workers/web'

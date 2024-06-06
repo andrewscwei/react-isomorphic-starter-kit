@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouteError } from 'react-router'
 import * as styles from './ErrorBoundary.module.css'
 

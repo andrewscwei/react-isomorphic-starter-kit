@@ -1,6 +1,6 @@
 import { useFavicon } from '@lib/dom'
 import { joinURL } from '@lib/utils/joinURL'
-import React, { StrictMode, type PropsWithChildren } from 'react'
+import { StrictMode, type PropsWithChildren } from 'react'
 import './styles/global.css'
 import './styles/theme.css'
 

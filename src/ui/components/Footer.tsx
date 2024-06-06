@@ -1,5 +1,5 @@
 import { useChangeLocale, useLocalizedString, useResetLocale } from '@lib/i18n'
-import React, { type HTMLAttributes } from 'react'
+import { type HTMLAttributes } from 'react'
 import $$GitHubLogo from '../assets/images/github-logo.svg'
 import * as styles from './Footer.module.css'
 

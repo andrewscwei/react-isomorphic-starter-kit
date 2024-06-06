@@ -10,18 +10,20 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": [
-      "es6",
-      "dom",
+      "ES6",
+      "DOM",
       "WebWorker"
     ],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "noImplicitAny": true,
     "outDir": "./build",
     "paths": {
-      "@lib/*": ["./lib/*"]
+      "@lib/*": [
+        "./lib/*"
+      ]
     },
     "pretty": true,
     "removeComments": true,
@@ -31,7 +33,7 @@
     "sourceRoot": "/",
     "strict": true,
     "strictNullChecks": true,
-    "target": "es5"
+    "target": "ES5"
   },
   "exclude": [
     "node_modules",

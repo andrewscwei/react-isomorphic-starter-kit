@@ -1,4 +1,4 @@
-import React, { type HTMLAttributes } from 'react'
+import { type HTMLAttributes } from 'react'
 import $$ReactLogo from '../assets/svgs/react-logo.svg'
 import * as styles from './ReactLogo.module.css'
 

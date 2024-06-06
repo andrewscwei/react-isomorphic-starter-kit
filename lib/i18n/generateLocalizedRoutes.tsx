@@ -1,4 +1,3 @@
-import React from 'react'
 import { Outlet, type RouteObject } from 'react-router'
 import { joinURL } from '../utils/joinURL'
 import { I18nProvider } from './I18nProvider'

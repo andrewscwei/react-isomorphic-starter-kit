@@ -17,12 +17,12 @@ repos:
         types:
           - ts
   - repo: https://github.com/awebdeveloper/pre-commit-stylelint
-    rev: '0.0.2'
+    rev: "0.0.2"
     hooks:
       - id: stylelint
         name: Lint CSS files
         additional_dependencies:
-          - 'stylelint@16.6.0'
+          - "stylelint@16.6.0"
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
     hooks:
@@ -30,4 +30,4 @@ repos:
         name: Lint commit message
         stages: [commit-msg]
         additional_dependencies:
-          - '@commitlint/config-conventional'
+          - "@commitlint/config-conventional"

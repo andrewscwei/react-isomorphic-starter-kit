@@ -2,7 +2,7 @@
  * @file Base HTML layout for all pages.
  */
 
-import React, { type PropsWithChildren } from 'react'
+import { type PropsWithChildren } from 'react'
 import { joinURL } from '../utils/joinURL'
 import { type Metadata, type ResolveAssetPath } from './types'
 

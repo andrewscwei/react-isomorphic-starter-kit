@@ -1,6 +1,5 @@
 import { useMetaTags } from '@lib/dom'
 import { useLocalizedString } from '@lib/i18n'
-import React from 'react'
 import { ReactLogo } from '../../components/ReactLogo'
 import * as styles from './index.module.css'
 
