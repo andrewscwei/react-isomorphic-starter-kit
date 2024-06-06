@@ -53,7 +53,7 @@ jobs:
           cache: npm
           node-version-file: .node-version
       - name: Install Node modules
-        run: npm install --workspaces=false
+        run: npm install
       - name: Create release
         run: npx semantic-release
   notify:
