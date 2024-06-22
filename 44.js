@@ -1,0 +1,2 @@
+"use strict";exports.id=44,exports.ids=[44],exports.modules={44:(t,e,n)=>{n.r(e),n.d(e,{Component:()=>d});var s=n(732),o=n(770),i=n(406),r="Af1hMy74gJQ9LGZwKGaq h1";function d(){const t=(0,i.useLocalizedString)();return(0,o.useMetaTags)({title:t("window-title-not-found")}),(0,s.jsx)("main",{children:(0,s.jsx)("h1",{className:r,children:t("not-found-title")})})}}};
+//# sourceMappingURL=44.js.map
