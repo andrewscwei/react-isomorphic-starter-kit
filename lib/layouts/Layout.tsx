@@ -28,7 +28,7 @@ type Props = PropsWithChildren<{
   resolveAssetPath?: ResolveAssetPath
 }>
 
-const { defaultLocale, publicURL } = __BUILD_ARGS__
+const { defaultLocale, publicURL } = import.meta.env.BUILD_ARGS
 
 /**
  * Renders the JSX of the application root.

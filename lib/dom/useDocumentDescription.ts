@@ -30,7 +30,7 @@ export function useDocumentDescription(description?: string, deps?: DependencyLi
   }), [description, ...deps ?? []])
 
   useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
-    { key: true, name: 'property', value: 'twitter:description' },
+    { key: true, name: 'name', value: 'twitter:description' },
     { name: 'content', value: description ?? '' },
   ], {
     parent: window.document.head,

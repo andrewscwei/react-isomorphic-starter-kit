@@ -1,4 +1,6 @@
 .root {
+  --icon-diameter: 2.6rem;
+
   align-items: center;
   bottom: 0;
   box-sizing: border-box;
@@ -13,11 +15,11 @@
 .nav {
   flex-grow: 1;
 
-  > a {
+  >a {
     display: block;
-    height: 2.2rem;
+    height: var(--icon-diameter);
     transition: all .2s ease-out;
-    width: 2.2rem;
+    width: var(--icon-diameter);
 
     @media (hover: hover) {
       &:hover {
@@ -31,18 +33,19 @@
   align-items: center;
   background: var(--color-dark-grey);
   border: none;
+  border-radius: calc(var(--icon-diameter) / 2);
   color: var(--color-white);
   cursor: pointer;
   display: flex;
   font-family: var(--font-body);
   font-size: 1.2rem;
-  height: 2.2rem;
+  height: var(--icon-diameter);
   justify-content: center;
-  line-height: 2.2rem;
+  line-height: var(--icon-diameter);
   outline: none;
   text-decoration: none;
   transition: all .2s ease-out;
-  width: 2.2rem;
+  width: var(--icon-diameter);
 
   &:not(:last-child) {
     margin-right: 1rem;

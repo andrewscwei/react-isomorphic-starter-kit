@@ -1,9 +1,5 @@
 import debug from 'debug'
 
-const { debugChannels, debugEnabled } = __BUILD_ARGS__
-
-if (debugEnabled && typeof window !== 'undefined') window.localStorage.debug = debugChannels.map(t => `${t}*`).join(',')
-
 /**
  * Returns an instance of {@link debug} decorated by the specified arguments.
  *
@@ -14,13 +10,19 @@ if (debugEnabled && typeof window !== 'undefined') window.localStorage.debug = d
  * @returns A {@link debug} instance.
  */
 export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
-  if (debugEnabled) {
-    const namespace = [thread, ...subnamespace.split(':').filter(Boolean)].join(':')
-    if (typeof window === 'undefined') debug.enable(namespace)
-
-    return debug(namespace)
+  if (process.env.NODE_ENV === 'production') {
+    return () => {}
   }
   else {
-    return () => {}
+    const namespace = [thread, ...subnamespace.split(':').filter(Boolean)].join(':')
+
+    if (typeof window === 'undefined') {
+      debug.enable(namespace)
+    }
+    else {
+      window.localStorage.debug = [(window.localStorage.debug ?? ''), namespace].join(',')
+    }
+
+    return debug(namespace)
   }
 }

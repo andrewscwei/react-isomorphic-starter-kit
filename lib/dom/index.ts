@@ -1,6 +1,4 @@
-export * from './initClient'
 export * from './loadLazyComponents'
-export * from './types'
 export * from './updateElementAttributes'
 export * from './useDocumentDescription'
 export * from './useDocumentLocale'

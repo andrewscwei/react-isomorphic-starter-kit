@@ -1,5 +1,4 @@
 import { useEffect, type DependencyList } from 'react'
-import { updateElementAttributes } from './updateElementAttributes'
 
 /**
  * Hook for updating relevant locale meta tags in the document head.
@@ -8,18 +7,6 @@ import { updateElementAttributes } from './updateElementAttributes'
  * @param deps Additional dependencies.
  */
 export function useDocumentLocale(locale: string, deps?: DependencyList) {
-  useEffect(() => updateElementAttributes('meta', [{
-    name: 'property',
-    value: 'og:locale',
-    key: true,
-  }, {
-    name: 'content',
-    value: locale,
-  }], {
-    parent: window.document.head,
-    autoCreate: false,
-  }), [locale, ...deps ?? []])
-
   useEffect(() => {
     if (typeof window === 'undefined') return
 
