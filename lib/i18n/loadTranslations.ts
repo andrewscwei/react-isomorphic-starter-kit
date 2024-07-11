@@ -3,29 +3,26 @@ import { type Translations } from './types'
 /**
  * Loads translations from a directory via Webpack `RequireContext`.
  *
- * @param ctx See {@link __WebpackModuleApi.RequireContext}.
+ * @param sources The translation files.
  *
  * @returns The translations dictionary.
  */
-export function loadTranslations(ctx: __WebpackModuleApi.RequireContext): Translations {
+export function loadTranslations(sources: Record<string, any>): Translations {
   const translations: Translations = {}
 
-  try {
-    for (const key of ctx.keys()) {
-      const phrases = ctx(key)
-      const parts = key.replace('./', '').split('/')
+  for (const key in sources) {
+    if (!Object.prototype.hasOwnProperty.call(sources, key)) continue
 
-      let t: any = translations
+    const phrases = sources[key].default
+    const parts = key.replace('./locales', '').split('/').filter(Boolean)
 
-      for (const part of parts) {
-        const subkey = part.replace('.json', '')
-        t[subkey] = part.endsWith('.json') ? phrases : {}
-        t = t[subkey]
-      }
+    let t: any = translations
+
+    for (const part of parts) {
+      const subkey = part.replace('.json', '')
+      t[subkey] = part.endsWith('.json') ? phrases : {}
+      t = t[subkey]
     }
-  }
-  catch (err) {
-    console.error('Loading translations...', 'ERR', err)
   }
 
   return translations

@@ -15,7 +15,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const config: Configuration = {
   devtool: buildArgs.useSourceMaps ? 'eval-source-map' : 'source-map',
   entry: {
-    index: path.join(buildArgs.inputDir, 'index.server.tsx'),
+    index: path.join(buildArgs.inputDir, 'main.server.tsx'),
   },
   externals: [
     nodeExternals(),

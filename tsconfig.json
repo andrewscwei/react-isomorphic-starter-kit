@@ -12,12 +12,13 @@
     "inlineSources": true,
     "jsx": "react-jsx",
     "lib": [
-      "ES6",
+      "ES2020",
       "DOM",
+      "DOM.Iterable",
       "WebWorker"
     ],
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "noImplicitAny": true,
     "outDir": "./build",
     "paths": {
@@ -33,7 +34,10 @@
     "sourceRoot": "/",
     "strict": true,
     "strictNullChecks": true,
-    "target": "ES5"
+    "target": "ES2020",
+    "types": [
+      "vitest/globals"
+    ]
   },
   "exclude": [
     "node_modules",

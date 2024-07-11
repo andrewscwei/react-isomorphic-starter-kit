@@ -32,7 +32,7 @@ type Options = {
   routes: RouteObject[]
 }
 
-const { basePath, baseURL, publicPath } = __BUILD_ARGS__
+const { basePath, baseURL, publicPath } = import.meta.env.BUILD_ARGS
 
 /**
  * Creates a {@link Request} handler that returns a {@link Response} containing

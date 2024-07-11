@@ -31,7 +31,7 @@ export interface UseCase<Params, Result, Options> {
 export namespace UseCaseError {
   export const CANCELLED = (message: string = 'Use case cancelled') => {
     const error = Error(message)
-    error.status = 503
+    Object.defineProperty(error, 'status', { value: 503 })
 
     return error
   }
