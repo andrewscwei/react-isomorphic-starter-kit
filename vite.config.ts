@@ -1,6 +1,6 @@
 import PostCSSPurgeCSS from '@fullhuman/postcss-purgecss'
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import path from 'node:path'
 import PostCSSImportPlugin from 'postcss-import'
 import PostCSSPresetEnvPlugin from 'postcss-preset-env'
 import { loadEnv } from 'vite'
@@ -24,10 +24,10 @@ const parseBuildArgs = (env: Record<string, string>) => ({
   VERSION: packageInfo.version,
 })
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const buildArgs = parseBuildArgs(env)
-  const rootDir = path.resolve(__dirname, 'src')
+  const rootDir = __dirname
   const isDev = env.NODE_ENV === 'development'
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
   const useSourceMaps = isDev
@@ -36,14 +36,18 @@ export default defineConfig(({ mode }) => {
   return {
     root: rootDir,
     base: buildArgs.PUBLIC_PATH,
-    publicDir: path.resolve(rootDir, 'static'),
+    publicDir: isSsrBuild ? false : path.resolve(rootDir, 'src/static'),
     build: {
       cssMinify: skipOptimizations ? false : 'esbuild',
+      emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
-      outDir: path.resolve(__dirname, 'build'),
+      outDir: isSsrBuild ? path.resolve(rootDir, 'build') : path.resolve(rootDir, 'build'),
       reportCompressedSize: true,
       sourcemap: useSourceMaps,
       target: 'esnext',
+      rollupOptions: isSsrBuild ? {
+        input: path.resolve(rootDir, 'src/main.server.tsx'),
+      } : {},
     },
     css: {
       modules: {
@@ -61,10 +65,10 @@ export default defineConfig(({ mode }) => {
           ...isDev ? [] : [
             PostCSSPurgeCSS({
               content: [
-                path.resolve(rootDir, '**/*.html'),
-                path.resolve(rootDir, '**/*.tsx'),
-                path.resolve(rootDir, '**/*.ts'),
-                path.resolve(rootDir, '**/*.module.css'),
+                path.resolve(rootDir, 'src/**/*.html'),
+                path.resolve(rootDir, 'src/**/*.tsx'),
+                path.resolve(rootDir, 'src/**/*.ts'),
+                path.resolve(rootDir, 'src/**/*.module.css'),
               ],
               safelist: [
                 /^_[A-Za-z0-9-_]{5}$/,
@@ -84,20 +88,23 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       svgr(),
-      createHtmlPlugin({
-        minify: !skipOptimizations,
-        entry: path.resolve(rootDir, 'main.client.tsx'),
-        inject: {
-          data: {
-            buildArgs,
-            resolveURL: (subpath: string) => path.join(buildArgs.PUBLIC_URL, subpath),
+      ...isSsrBuild ? [] : [
+        createHtmlPlugin({
+          minify: !skipOptimizations,
+          entry: path.resolve(rootDir, 'src/main.client.tsx'),
+          template: 'src/index.html',
+          inject: {
+            data: {
+              buildArgs,
+              resolveURL: (subpath: string) => path.join(buildArgs.PUBLIC_URL, subpath),
+            },
           },
-        },
-      }),
+        }),
+      ],
     ],
     resolve: {
       alias: {
-        '@lib': path.resolve(__dirname, 'lib'),
+        '@lib': path.resolve(rootDir, 'lib'),
       },
     },
     server: {
@@ -106,7 +113,7 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       coverage: {
-        reportsDirectory: path.resolve(__dirname, 'coverage'),
+        reportsDirectory: path.resolve(rootDir, 'coverage'),
         provider: 'v8',
       },
       reporters: ['default'],

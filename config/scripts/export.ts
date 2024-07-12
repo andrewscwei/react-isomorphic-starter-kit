@@ -5,8 +5,8 @@
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 import { XMLParser } from 'fast-xml-parser'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import request from 'supertest'
 import * as buildArgs from '../build.args'
 

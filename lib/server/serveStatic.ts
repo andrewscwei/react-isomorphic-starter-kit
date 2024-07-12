@@ -1,21 +1,24 @@
 import express, { Router } from 'express'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
 
-const PUBLIC_PATH = process.env.PUBLIC_PATH ?? '/'
+type Options = {
+  publicPath?: string
+}
 
 /**
  * Creates an Express router for serving local static files and adding expire
  * headers.
  *
+ * @param path - Path to the static files.
+ *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export function serveStatic() {
+export function serveStatic(path: string, { publicPath = '/' }: Options = {}) {
   const router = Router()
-  const localPublicPath = path.join(__dirname, PUBLIC_PATH)
 
-  if (fs.existsSync(localPublicPath)) {
-    router.use(PUBLIC_PATH, express.static(localPublicPath, {
+  if (fs.existsSync(path)) {
+    router.use(publicPath, express.static(path, {
+      index: false,
       setHeaders: res => {
         const duration = 1000 * 60 * 60 * 24 * 365 * 10
         res.setHeader('Expires', new Date(Date.now() + duration).toUTCString())

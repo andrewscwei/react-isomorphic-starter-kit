@@ -7,11 +7,11 @@ import { generateLocalizedRoutes } from '@lib/i18n'
 import { StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
 import { DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf'
 import { i18n } from './i18n.conf'
-import { routes } from './routes.conf'
+import { routes as routesConfig } from './routes.conf'
 import { seo } from './seo.conf'
 import { App } from './ui/App'
 
-const localizedRoutes = generateLocalizedRoutes(routes, i18n)
+const localizedRoutes = generateLocalizedRoutes(routesConfig, i18n)
 
 export const handleRobots = serveRobots({ routes: localizedRoutes, seo })
 
