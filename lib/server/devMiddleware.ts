@@ -11,17 +11,19 @@ import { Transform } from 'node:stream'
 import { createServer } from 'vite'
 import { createDebug } from '../utils/createDebug'
 import { createFetchRequest } from './createFetchRequest'
+import { type MetadataFunction } from './MetadataFunction'
 import { type RenderFunction } from './RenderFunction'
 
 type Options = {
   basePath?: string
   entryPath: string
+  publicURL?: string
   templatePath: string
 }
 
 const ABORT_DELAY_MS = 10_000
 
-export async function devMiddleware({ basePath = '/', entryPath, templatePath }: Options) {
+export async function devMiddleware({ basePath = '/', entryPath, publicURL, templatePath }: Options) {
   const debug = createDebug(undefined, 'server')
   const router = Router()
   const vite = await createServer({
@@ -34,13 +36,18 @@ export async function devMiddleware({ basePath = '/', entryPath, templatePath }:
 
   router.use('*', async (req, res) => {
     try {
-      const templateStr = fs.readFileSync(templatePath, 'utf-8')
-      const template = await vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), templateStr)
-      const { render } = await vite.ssrLoadModule(entryPath) as { render: RenderFunction }
+      const [template, module] = await Promise.all([
+        vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), fs.readFileSync(templatePath, 'utf-8')),
+        vite.ssrLoadModule(entryPath),
+      ])
 
       let error: unknown
 
-      const { pipe, abort } = await render(createFetchRequest(req), {
+      const request = createFetchRequest(req)
+      const { metadata: getMetadata, render } = module as { metadata: MetadataFunction; render: RenderFunction }
+      const metadata = await getMetadata(request)
+
+      const { pipe, abort } = await render(request, {
         onError(err) {
           error = err
         },
@@ -61,14 +68,24 @@ export async function devMiddleware({ basePath = '/', entryPath, templatePath }:
             },
           })
 
-          const [htmlStart, htmlEnd] = template.split('<div id="root">')
+          const parts = template.split('<!-- APP_HTML -->')
+          const end = parts[1]
+          const start = parts[0]
+            .replace(/<!-- BASE_TITLE -->/g, metadata.baseTitle ?? '')
+            .replace(/<!-- DESCRIPTION -->/g, metadata.description ?? '')
+            .replace(/<!-- LOCALE -->/g, metadata.locale ?? '')
+            .replace(/<!-- MASK_ICON_COLOR -->/g, metadata.maskIconColor ?? '')
+            .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
+            .replace(/<!-- TITLE -->/g, metadata.title ?? '')
+            .replace(/<!-- URL -->/g, metadata.url ?? '')
+            .replace(/<!-- PUBLIC_URL -->/g, publicURL ?? '/')
 
-          res.write(`${htmlStart}<div id="root">`)
+          res.write(start)
 
           transformStream.on('finish', () => {
             debug(`Rendering ${req.originalUrl}...`, 'OK')
 
-            res.end(htmlEnd)
+            res.end(end)
           })
 
           pipe(transformStream)
