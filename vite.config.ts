@@ -41,13 +41,10 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       cssMinify: skipOptimizations ? false : 'esbuild',
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
-      outDir: isSsrBuild ? path.resolve(rootDir, 'build') : path.resolve(rootDir, 'build'),
+      outDir: isSsrBuild ? path.resolve(rootDir, 'build/server') : path.resolve(rootDir, 'build/client'),
       reportCompressedSize: true,
       sourcemap: useSourceMaps,
       target: 'esnext',
-      rollupOptions: isSsrBuild ? {
-        input: path.resolve(rootDir, 'src/main.server.tsx'),
-      } : {},
     },
     css: {
       modules: {
@@ -88,19 +85,17 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       react(),
       svgr(),
-      ...isSsrBuild ? [] : [
-        createHtmlPlugin({
-          minify: !skipOptimizations,
-          entry: path.resolve(rootDir, 'src/main.client.tsx'),
-          template: 'src/index.html',
-          inject: {
-            data: {
-              buildArgs,
-              resolveURL: (subpath: string) => path.join(buildArgs.PUBLIC_URL, subpath),
-            },
+      createHtmlPlugin({
+        minify: !skipOptimizations,
+        entry: path.resolve(rootDir, 'src/main.client.tsx'),
+        template: 'src/index.html',
+        inject: {
+          data: {
+            buildArgs,
+            resolveURL: (subpath: string) => path.join(buildArgs.PUBLIC_URL, subpath),
           },
-        }),
-      ],
+        },
+      }),
     ],
     resolve: {
       alias: {

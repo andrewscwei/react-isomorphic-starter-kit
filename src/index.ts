@@ -23,10 +23,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 else {
   app.use(ssrMiddleware({
-    entryPath: path.resolve(__dirname, '../build/main.server.js'),
+    entryPath: path.resolve(__dirname, '../build/server/main.server.js'),
     publicPath: PUBLIC_PATH,
-    staticPath: path.resolve(__dirname, '../build'),
-    templatePath: path.resolve(__dirname, '../build/index.html'),
+    staticPath: path.resolve(__dirname, '../build/client'),
+    templatePath: path.resolve(__dirname, '../build/client/index.html'),
   }))
 }
 
