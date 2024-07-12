@@ -1,42 +1,33 @@
-import { generateLocalizedRoutes } from '@lib/i18n'
-import { devMiddleware } from '@lib/server'
-import { handle500 } from '@lib/server/handle500'
+import { devMiddleware, handle500, ssrMiddleware } from '@lib/server'
 import { createDebug } from '@lib/utils/createDebug'
 import express from 'express'
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { i18n } from './i18n.conf'
-import { routes } from './routes.conf'
+import path from 'node:path'
+import url from 'node:url'
+import { BASE_PATH, PUBLIC_PATH } from './app.conf'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const debug = createDebug(undefined, 'server')
 const port = process.env.PORT ?? '8080'
 const app = express()
-const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
 // app.use(serveRobots({ routes: localizedRoutes, seo }))
 // app.use(serveSitemap({ routes: localizedRoutes, seo }))
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(await devMiddleware({
-    routes: localizedRoutes,
+    basePath: BASE_PATH,
     entryPath: path.resolve(__dirname, 'main.server.tsx'),
     templatePath: path.resolve(__dirname, 'index.html'),
   }))
 }
 else {
-// app.use(renderRoot(render, {
-//   customScripts: undefined,
-//   metadata: {
-//     description: DESCRIPTION,
-//     maskIconColor: MASK_ICON_COLOR,
-//     themeColor: THEME_COLOR,
-//     title: TITLE,
-//   },
-//   i18n,
-//   routes: localizedRoutes,
-// }))
+  app.use(ssrMiddleware({
+    entryPath: path.resolve(__dirname, '../build/main.server.js'),
+    publicPath: PUBLIC_PATH,
+    staticPath: path.resolve(__dirname, '../build'),
+    templatePath: path.resolve(__dirname, '../build/index.html'),
+  }))
 }
 
 app.use(handle500())

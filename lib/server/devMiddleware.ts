@@ -1,58 +1,52 @@
 /**
- * @file Express middleware for server-side rendering of React views.
+ * @file Express middleware for server-side rendering of React views during
+ *       development.
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 
 import { Router } from 'express'
-import { readFile } from 'fs/promises'
-import { type RouteObject } from 'react-router'
-import { createStaticHandler } from 'react-router-dom/server'
-import { Transform } from 'stream'
+import fs from 'node:fs'
+import { Transform } from 'node:stream'
 import { createServer } from 'vite'
-import { createFetchRequest } from './helpers'
-import { type RenderFunc } from './types'
-
-const BASE_URL = process.env.BASE_URL ?? ''
-const BASE_PATH = process.env.BASE_PATH ?? '/'
+import { createDebug } from '../utils/createDebug'
+import { createFetchRequest } from './createFetchRequest'
+import { type RenderFunction } from './RenderFunction'
 
 type Options = {
+  basePath?: string
   entryPath: string
-  routes: RouteObject[]
   templatePath: string
 }
 
-export async function devMiddleware({ entryPath, routes, templatePath }: Options) {
+const ABORT_DELAY_MS = 10_000
+
+export async function devMiddleware({ basePath = '/', entryPath, templatePath }: Options) {
+  const debug = createDebug(undefined, 'server')
   const router = Router()
   const vite = await createServer({
     server: { middlewareMode: true },
     appType: 'custom',
-    base: BASE_PATH,
+    base: basePath,
   })
 
   router.use(vite.middlewares)
 
   router.use('*', async (req, res) => {
-    const handler = createStaticHandler(routes, { basename: BASE_PATH })
-    const context = await handler.query(createFetchRequest(req))
-
-    if (context instanceof Response) return res.redirect(context.status, context.headers.get('Location') ?? '')
-
     try {
-      const url = req.originalUrl.replace(BASE_PATH, '')
-      // const customMetadata = await createMetadata(context, { baseURL: BASE_URL, i18n, routes })
-      const raw = await readFile(templatePath, 'utf-8')
-      const template = await vite.transformIndexHtml(url, raw)
-      const { render } = await vite.ssrLoadModule(entryPath) as { render: RenderFunc }
-      // const { manifest, template, render: renderToPipeableStream } = render({ context, request: req, routes: handler.dataRoutes })
+      const templateStr = fs.readFileSync(templatePath, 'utf-8')
+      const template = await vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), templateStr)
+      const { render } = await vite.ssrLoadModule(entryPath) as { render: RenderFunction }
 
       let error: unknown
 
-      const { pipe, abort } = render({ context, routes: handler.dataRoutes }, {
+      const { pipe, abort } = await render(createFetchRequest(req), {
         onError(err) {
           error = err
         },
         onShellError() {
+          debug(`Rendering ${req.originalUrl}...`, 'ERR', 'Shell error')
+
           res.setHeader('content-type', 'text/html')
           res.sendStatus(500)
         },
@@ -61,7 +55,7 @@ export async function devMiddleware({ entryPath, routes, templatePath }: Options
           res.setHeader('content-type', 'text/html')
 
           const transformStream = new Transform({
-            transform(chunk, encoding, callback) {
+            transform: (chunk, encoding, callback) => {
               res.write(chunk, encoding)
               callback()
             },
@@ -72,14 +66,20 @@ export async function devMiddleware({ entryPath, routes, templatePath }: Options
           res.write(`${htmlStart}<div id="root">`)
 
           transformStream.on('finish', () => {
+            debug(`Rendering ${req.originalUrl}...`, 'OK')
+
             res.end(htmlEnd)
           })
 
           pipe(transformStream)
         },
       })
+
+      setTimeout(() => abort(), ABORT_DELAY_MS)
     }
     catch (err) {
+      debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+
       if (err instanceof Error) {
         vite.ssrFixStacktrace(err)
         res.status(500).send(err.stack)
