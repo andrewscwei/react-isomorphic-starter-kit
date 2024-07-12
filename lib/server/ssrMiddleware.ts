@@ -7,23 +7,25 @@
 
 import compression from 'compression'
 import { Router } from 'express'
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import { Transform } from 'node:stream'
 import { createDebug } from '../utils/createDebug'
 import { createFetchRequest } from './createFetchRequest'
+import { type MetadataFunction } from './MetadataFunction'
 import { type RenderFunction } from './RenderFunction'
 import { serveStatic } from './serveStatic'
 
 type Options = {
   entryPath: string
   publicPath?: string
+  publicURL?: string
   staticPath?: string
   templatePath: string
 }
 
 const ABORT_DELAY_MS = 10_000
 
-export function ssrMiddleware({ entryPath, templatePath, publicPath, staticPath }: Options) {
+export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, staticPath }: Options) {
   const debug = createDebug(undefined, 'server')
   const router = Router()
 
@@ -35,10 +37,16 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, staticPath 
 
   router.use(async (req, res) => {
     try {
-      const template = fs.readFileSync(templatePath, 'utf-8')
-      const { render } = await import(entryPath) as { render: RenderFunction }
+      const [template, module] = await Promise.all([
+        fs.readFile(templatePath, 'utf-8'),
+        import(entryPath),
+      ])
 
       let error: unknown
+
+      const request = createFetchRequest(req)
+      const { metadata: getMetadata, render } = module as { metadata: MetadataFunction; render: RenderFunction }
+      const metadata = await getMetadata(request)
 
       const { pipe, abort } = await render(createFetchRequest(req), {
         onError(err) {
@@ -61,14 +69,24 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, staticPath 
             },
           })
 
-          const [htmlStart, htmlEnd] = template.split('<div id="root">')
+          const parts = template.split('<!-- APP_HTML -->')
+          const end = parts[1]
+          const start = parts[0]
+            .replace(/<!-- BASE_TITLE -->/g, metadata.baseTitle ?? '')
+            .replace(/<!-- DESCRIPTION -->/g, metadata.description ?? '')
+            .replace(/<!-- LOCALE -->/g, metadata.locale ?? '')
+            .replace(/<!-- MASK_ICON_COLOR -->/g, metadata.maskIconColor ?? '')
+            .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
+            .replace(/<!-- TITLE -->/g, metadata.title ?? '')
+            .replace(/<!-- URL -->/g, metadata.url ?? '')
+            .replace(/<!-- PUBLIC_URL -->/g, publicURL ?? '/')
 
-          res.write(`${htmlStart}<div id="root">`)
+          res.write(start)
 
           transformStream.on('finish', () => {
             debug(`Rendering ${req.originalUrl}...`, 'OK')
 
-            res.end(htmlEnd)
+            res.end(end)
           })
 
           pipe(transformStream)
