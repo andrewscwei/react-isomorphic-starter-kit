@@ -9,23 +9,28 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 1. [React Router](https://reacttraining.com/react-router/)
 2. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
 3. [TypeScript](https://www.typescriptlang.org/) + [ESLint](https://eslint.org/)
-4. [Jest](https://jestjs.io/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
-5. [Playwright](https://playwright.dev/) for E2E testing
-6. [webpack](https://webpack.js.org/)
+4. [Vite](https://vitejs.dev/)
+5. [Vitest](https://vitest.dev/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
+6. [Playwright](https://playwright.dev/) for E2E testing
 7. [Docker](https://docker.com) config
 8. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
 9. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
 10. Building for [Express](https://expressjs.com/) with server-side rendering
 11. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
 12. Building for a static app with prerendering (example on GitHub Pages)
-13. Data prefetching and caching
-14. Web workers
+13. Web workers
 15. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
 16. Code quality analysis with [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 
 ## Usage
 
 ```sh
+# Install pre-commit
+$ brew install pre-commit # or pip install pre-commit
+
+# Install Playwright browsers
+$ npx playwright install
+
 # Install dependencies
 $ npm install
 
@@ -39,9 +44,6 @@ $ npm run test:unit
 In any of the `build` or `build:*` scripts, you can add the following arguments for additional diagnosis details of the build process:
 
 ```sh
-# Analyzes the size the generated bundle(s) and displays a visual report in the default browser
-$ npm run build:server --analyze
-
 # Omits HTML/CSS/JS compressions during build
 $ npm run build:server --raw
 ```
@@ -129,28 +131,3 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 5. Edit resources in `res/`, then ensure to replace the generated assets in `src/static/`
 6. Edit files in `src/ui/`
 7. Edit translations in `src/locales/`
-
-## Breaking Changes
-
-### `v10.0.0`
-
--   Removed styled-components in favor of CSS modules
--   Removed Redux in favor of Context API
--   Updated how assets are imported
--   Relocated `locales` directory
--   Created reusable workflows for CI/CD
--   Added interactors
--   Added `I18nProvider`
-
-### `v12.0.0`
-
--   Decoupled boilerplate architectural code to `src/base`
-
-### `v13.0.0`
-
--   Restructured folders
-
-### `v14.0.0`
-
--   Moved boilerplate code to `lib/`
--   Replaced `react-helmet-async` with custom solution in `lib/`
