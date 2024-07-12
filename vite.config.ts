@@ -38,6 +38,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     publicDir: isSsrBuild ? false : path.resolve(rootDir, 'static'),
     build: {
       cssMinify: skipOptimizations ? false : 'esbuild',
+      cssCodeSplit: false,
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
       outDir: isSsrBuild ? path.resolve(__dirname, 'build/server') : path.resolve(__dirname, 'build/client'),
