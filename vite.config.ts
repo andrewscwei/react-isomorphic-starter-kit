@@ -37,8 +37,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     base: buildArgs.PUBLIC_PATH,
     publicDir: isSsrBuild ? false : path.resolve(rootDir, 'static'),
     build: {
-      cssMinify: skipOptimizations ? false : 'esbuild',
       cssCodeSplit: false,
+      cssMinify: skipOptimizations ? false : 'esbuild',
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
       outDir: isSsrBuild ? path.resolve(__dirname, 'build/server') : path.resolve(__dirname, 'build/client'),
@@ -85,17 +85,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       react(),
       svgr(),
-      // createHtmlPlugin({
-      //   minify: !skipOptimizations,
-      //   entry: path.resolve(rootDir, 'src/main.client.tsx'),
-      //   template: 'src/index.html',
-      //   inject: {
-      //     data: {
-      //       buildArgs,
-      //       resolveURL: (subpath: string) => path.join(buildArgs.PUBLIC_URL, subpath),
-      //     },
-      //   },
-      // }),
     ],
     resolve: {
       alias: {
