@@ -1,4 +1,4 @@
-import { devMiddleware, ssrMiddleware } from '@lib/server'
+import { devMiddleware, ssrMiddleware } from '@lib/ssr'
 import { createDebug } from '@lib/utils/createDebug'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'

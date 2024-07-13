@@ -1,8 +1,8 @@
 import { matchRoutes, type RouteObject } from 'react-router'
 import { type StaticHandlerContext } from 'react-router-dom/server'
-import { type Metadata } from '..'
-import { createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL, type I18nConfig } from '../../i18n'
-import { joinURL } from '../../utils/joinURL'
+import { createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL, type I18nConfig } from '../i18n'
+import { joinURL } from '../utils/joinURL'
+import { type Metadata } from './Metadata'
 
 type Options = {
   /**
