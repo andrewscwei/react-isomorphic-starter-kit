@@ -1,57 +1,68 @@
-import { type Request } from 'express'
+import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
-import { injectMetadata, type Metadata } from '../layouts'
+import { injectMetadata } from '../layouts'
+import { createDebug } from '../utils/createDebug'
+import { createFetchRequest } from './createFetchRequest'
+import { type RenderFunction } from './RenderFunction'
 
-type Options = {
-  metadata: Metadata
+type Params = {
+  render: RenderFunction
   template: string
   timeout?: number
-  stream: (options: RenderToPipeableStreamOptions) => PipeableStream
-  onEnd: (htmlEnd: string) => void
-  onError: (err: unknown) => void
-  onProgress: (htmlChunk: any, encoding: BufferEncoding) => void
-  onStart: (htmlStart: string) => void
 }
 
-export function renderRoot(req: Request, {
-  metadata,
-  stream,
+const debug = createDebug(undefined, 'server')
+
+export function renderRoot({
+  render,
   template,
   timeout = 10_000,
-  onEnd,
-  onError,
-  onProgress,
-  onStart,
-}: Options) {
-  const html = injectMetadata(template, metadata)
+}: Params): RequestHandler {
+  return async (req, res, next) => {
+    const fetchRequest = createFetchRequest(req)
+    const { metadata, stream } = await render(fetchRequest)
+    const html = injectMetadata(template, metadata)
 
-  let error: unknown
+    let error: unknown
 
-  const { pipe, abort } = stream({
-    onError(err) {
-      error = err
-    },
-    onShellError() {
-      onError(error)
-    },
-    onShellReady() {
-      if (error) return onError(error)
+    const { pipe, abort } = stream({
+      onError(err) {
+        error = err
+      },
+      onShellError() {
+        debug(`Rendering ${req.originalUrl}...`, 'ERR', error)
 
-      const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
-      const transformStream = new Transform({
-        transform: (chunk, encoding, callback) => {
-          onProgress(chunk, encoding)
-          callback()
-        },
-      })
+        res.setHeader('content-type', 'application/json')
+        res.status(500).send({ error })
+      },
+      onShellReady() {
+        if (error) {
+          res.setHeader('content-type', 'application/json')
+          res.status(500).send({ error })
 
-      transformStream.on('finish', () => onEnd(htmlEnd))
+          return
+        }
 
-      onStart(htmlStart)
-      pipe(transformStream)
-    },
-  })
+        const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
+        const transformStream = new Transform({
+          transform: (chunk, encoding, callback) => {
+            res.write(chunk, encoding)
+            callback()
+          },
+        })
 
-  setTimeout(() => abort(), timeout)
+        transformStream.on('finish', () => {
+          debug(`Rendering ${req.originalUrl}...`, 'OK')
+          res.end(htmlEnd)
+        })
+
+        res.setHeader('content-type', 'text/html')
+        res.status(200)
+        res.write(htmlStart)
+        pipe(transformStream)
+      },
+    })
+
+    setTimeout(() => abort(), timeout)
+  }
 }

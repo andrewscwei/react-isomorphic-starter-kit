@@ -10,9 +10,9 @@ import { Router } from 'express'
 import { minify } from 'html-minifier-terser'
 import fs from 'node:fs/promises'
 import { createDebug } from '../utils/createDebug'
-import { createFetchRequest } from './createFetchRequest'
-import { type RenderFunction } from './RenderFunction'
+import { renderRobots } from './renderRobots'
 import { renderRoot } from './renderRoot'
+import { renderSitemap } from './renderSitemap'
 import { serveStatic } from './serveStatic'
 
 type Options = {
@@ -33,7 +33,7 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, 
     router.use(serveStatic(staticPath, { publicPath }))
   }
 
-  router.use(async (req, res) => {
+  router.use(async (req, res, next) => {
     try {
       const [template, module] = await Promise.all([
         fs.readFile(templatePath, 'utf-8').then(t => minify(t, {
@@ -43,33 +43,22 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, 
         import(entryPath),
       ])
 
-      const fetchRequest = createFetchRequest(req)
-      const render = module.render as RenderFunction
-      const { metadata, stream } = await render(fetchRequest)
+      const { render, robots, sitemap } = module
 
-      renderRoot(req, {
-        metadata,
-        template,
-        stream,
-        onStart: htmlStart => {
-          res.status(200)
-          res.write(htmlStart)
-        },
-        onProgress: (htmlChunk, encoding) => {
-          res.write(htmlChunk, encoding)
-        },
-        onEnd: htmlEnd => {
-          debug(`Rendering ${req.originalUrl}...`, 'OK')
-          res.end(htmlEnd)
-        },
-        onError: err => {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
-
-          res.status(500)
-          res.setHeader('content-type', 'text/html')
-          res.send({ error: err })
-        },
-      })
+      switch (req.url) {
+        case '/robots.txt':
+          renderRobots(robots)(req, res, next)
+          return
+        case '/sitemap.xml':
+          renderSitemap(sitemap)(req, res, next)
+          return
+        default: {
+          renderRoot({
+            render,
+            template,
+          })(req, res, next)
+        }
+      }
     }
     catch (err) {
       debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
