@@ -1,30 +1,50 @@
-/**
- * @file Express middleware for server-side rendering of React views during
- *       production.
- *
- * @see {@link https://reactjs.org/docs/react-dom-server.html}
- */
-
 import compression from 'compression'
 import { Router } from 'express'
 import { minify } from 'html-minifier-terser'
 import fs from 'node:fs/promises'
 import { createDebug } from '../utils/createDebug'
-import { renderRobots } from './renderRobots'
+import { type Module } from './Module'
 import { renderRoot } from './renderRoot'
-import { renderSitemap } from './renderSitemap'
+import { serveRobots } from './serveRobots'
+import { serveSitemap } from './serveSitemap'
 import { serveStatic } from './serveStatic'
 
-type Options = {
+type Params = {
+  /**
+   * Path to the entry module.
+   */
   entryPath: string
-  publicPath?: string
-  publicURL?: string
-  staticPath?: string
+
+  /**
+   * Path to the HTML template.
+   */
   templatePath: string
 }
 
-export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, staticPath }: Options) {
-  const debug = createDebug(undefined, 'server')
+type Options = {
+  /**
+   * Public path for static assets.
+   */
+  publicPath?: string
+
+  /**
+   * Path for static assets in the file system.
+   */
+  staticPath?: string
+}
+
+const debug = createDebug(undefined, 'server')
+
+/**
+ * Middleware for server-side rendering of React views during production.
+ *
+ * @param entryPath Path to the entry module.
+ * @param templatePath Path to the HTML template.
+ * @param options See {@link Options}.
+ *
+ * @see {@link https://reactjs.org/docs/react-dom-server.html}
+ */
+export function ssrMiddleware({ entryPath, templatePath }: Params, { publicPath, staticPath }: Options) {
   const router = Router()
 
   router.use(compression())
@@ -43,20 +63,15 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, 
         import(entryPath),
       ])
 
-      const { render, robots, sitemap } = module
-
       switch (req.url) {
         case '/robots.txt':
-          renderRobots(robots)(req, res, next)
+          serveRobots(module as Module)(req, res, next)
           return
         case '/sitemap.xml':
-          renderSitemap(sitemap)(req, res, next)
+          serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot({
-            render,
-            template,
-          })(req, res, next)
+          renderRoot(module as Module, template)(req, res, next)
         }
       }
     }

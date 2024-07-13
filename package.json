@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run start:${RUNTIME:-server}",
+    "prestart:server": "npm run build:server",
     "start:server": "NODE_ENV=production tsx src/index.ts",
     "start:edge": "wrangler pages dev --port=8080 --compatibility-date=2024-06-22 ./build",
     "start:container": "docker run -it --rm -p ${PORT:-8080}:8080 --name app ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest}",

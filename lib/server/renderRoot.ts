@@ -3,21 +3,17 @@ import { Transform } from 'node:stream'
 import { injectMetadata } from '../layouts'
 import { createDebug } from '../utils/createDebug'
 import { createFetchRequest } from './createFetchRequest'
-import { type RenderFunction } from './RenderFunction'
+import { type Module } from './Module'
 
-type Params = {
-  render: RenderFunction
-  template: string
+type Options = {
   timeout?: number
 }
 
 const debug = createDebug(undefined, 'server')
 
-export function renderRoot({
-  render,
-  template,
+export function renderRoot({ render }: Module, template: string, {
   timeout = 10_000,
-}: Params): RequestHandler {
+}: Options = {}): RequestHandler {
   return async (req, res, next) => {
     const fetchRequest = createFetchRequest(req)
     const { metadata, stream } = await render(fetchRequest)

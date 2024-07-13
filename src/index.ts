@@ -1,33 +1,36 @@
-import { devMiddleware, handle500, ssrMiddleware } from '@lib/server'
+import { devMiddleware, ssrMiddleware } from '@lib/server'
 import { createDebug } from '@lib/utils/createDebug'
-import express from 'express'
-import path from 'node:path'
-import url from 'node:url'
+import express, { type ErrorRequestHandler } from 'express'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { BASE_PATH, PUBLIC_PATH } from './app.conf'
 
-const __filename = url.fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 const debug = createDebug(undefined, 'server')
 const port = process.env.PORT ?? '8080'
 const app = express()
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(await devMiddleware({
+    entryPath: resolve(__dirname, 'main.server.tsx'),
+    templatePath: resolve(__dirname, 'index.html'),
+  }, {
     basePath: BASE_PATH,
-    entryPath: path.resolve(__dirname, 'main.server.tsx'),
-    templatePath: path.resolve(__dirname, 'index.html'),
   }))
 }
 else {
   app.use(ssrMiddleware({
-    entryPath: path.resolve(__dirname, '../build/server/main.server.js'),
+    entryPath: resolve(__dirname, '../build/server/main.server.js'),
+    templatePath: resolve(__dirname, '../build/client/index.html'),
+  }, {
     publicPath: PUBLIC_PATH,
-    staticPath: path.resolve(__dirname, '../build/client'),
-    templatePath: path.resolve(__dirname, '../build/client/index.html'),
+    staticPath: resolve(__dirname, '../build/client'),
   }))
 }
 
-app.use(handle500())
+app.use(((err, req, res) => {
+  res.status(err.status || 500).send(err)
+}) as ErrorRequestHandler)
 
 app.listen(port)
   .on('error', (error: NodeJS.ErrnoException) => {
