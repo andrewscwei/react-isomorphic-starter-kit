@@ -18,7 +18,7 @@
     "build": "npm run build:${RUNTIME:-server}",
     "build:static": "vite build --ssrManifest",
     "build:server": "vite build --ssr main.server.tsx && vite build --ssrManifest",
-    "build:edge": "cross-env-shell BUILD_NUMBER=${BUILD_NUMBER:-$(git rev-parse --short HEAD)} \"npm run bundle:client && npm run bundle:edge\"",
+    "build:edge": "vite build --ssr main.edge.tsx && vite build --ssrManifest",
     "build:container": "docker build -t ${IMAGE_NAME:-app}:${IMAGE_TAG:-latest} .",
     "test": "npm run test:${RUNTIME:-server}",
     "test:server": "RUNTIME=server playwright test",

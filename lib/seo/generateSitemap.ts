@@ -1,9 +1,9 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
 import { joinURL } from '../utils/joinURL'
-import { extractURLs } from './helpers'
-import { type SEOConfig } from './types'
-import { type SitemapTags } from './types/SitemapTags'
+import { extractURLs } from './extractURLs'
+import { type SEOConfig } from './SEOConfig'
+import { type SitemapTags } from './SitemapTags'
 
 const BASE_URL = process.env.BASE_URL ?? ''
 const BUILD_TIME = process.env.BUILD_TIME ?? new Date().toISOString()

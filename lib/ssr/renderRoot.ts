@@ -1,6 +1,6 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { injectMetadata } from '../layouts'
+import { injectMetadata } from '../seo'
 import { createDebug } from '../utils/createDebug'
 import { createFetchRequest } from './createFetchRequest'
 import { type Module } from './Module'
