@@ -2,29 +2,43 @@ import { Router } from 'express'
 import fs from 'node:fs'
 import { createServer } from 'vite'
 import { createDebug } from '../utils/createDebug'
-import { renderRobots } from './renderRobots'
+import { type Module } from './Module'
 import { renderRoot } from './renderRoot'
-import { renderSitemap } from './renderSitemap'
+import { serveRobots } from './serveRobots'
+import { serveSitemap } from './serveSitemap'
 
-type Options = {
-  basePath?: string
+type Params = {
+  /**
+   * Path to the entry module.
+   */
   entryPath: string
-  publicURL?: string
+
+  /**
+   * Path to the HTML template.
+   */
   templatePath: string
 }
 
+type Options = {
+  /**
+   * Base path for the server.
+   */
+  basePath?: string
+}
+
+const debug = createDebug(undefined, 'server')
+
 /**
- * Express middleware for server-side rendering of React views during
- * development.
+ * Middleware for server-side rendering of React views during development.
  *
+ * @param params See {@link Params}.
  * @param options See {@link Options}.
  *
  * @returns The middleware.
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-export async function devMiddleware({ basePath = '/', entryPath, publicURL, templatePath }: Options) {
-  const debug = createDebug(undefined, 'server')
+export async function devMiddleware({ entryPath, templatePath }: Params, { basePath = '/' }: Options = {}) {
   const router = Router()
   const vite = await createServer({
     server: { middlewareMode: true },
@@ -41,20 +55,15 @@ export async function devMiddleware({ basePath = '/', entryPath, publicURL, temp
         vite.ssrLoadModule(entryPath),
       ])
 
-      const { render, robots, sitemap } = module
-
       switch (req.url) {
         case '/robots.txt':
-          renderRobots(robots)(req, res, next)
+          serveRobots(module as Module)(req, res, next)
           return
         case '/sitemap.xml':
-          renderSitemap(sitemap)(req, res, next)
+          serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot({
-            render,
-            template,
-          })(req, res, next)
+          renderRoot(module as Module, template)(req, res, next)
         }
       }
     }

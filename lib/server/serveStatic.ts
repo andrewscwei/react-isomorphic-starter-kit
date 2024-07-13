@@ -6,10 +6,10 @@ type Options = {
 }
 
 /**
- * Creates an Express router for serving local static files and adding expire
- * headers.
+ * Creates a router for serving local static files and adding expire headers.
  *
- * @param path - Path to the static files.
+ * @param path Path to the static files.
+ * @param options See {@link Options}.
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
