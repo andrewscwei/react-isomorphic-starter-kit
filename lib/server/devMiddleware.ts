@@ -2,9 +2,9 @@ import { Router } from 'express'
 import fs from 'node:fs'
 import { createServer } from 'vite'
 import { createDebug } from '../utils/createDebug'
-import { type RenderFunction } from './RenderFunction'
-import { createFetchRequest } from './createFetchRequest'
+import { renderRobots } from './renderRobots'
 import { renderRoot } from './renderRoot'
+import { renderSitemap } from './renderSitemap'
 
 type Options = {
   basePath?: string
@@ -35,41 +35,28 @@ export async function devMiddleware({ basePath = '/', entryPath, publicURL, temp
   router.use(vite.middlewares)
 
   router.use(async (req, res, next) => {
-    res.setHeader('content-type', 'text/html')
-
     try {
       const [template, module] = await Promise.all([
         vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), fs.readFileSync(templatePath, 'utf-8')),
         vite.ssrLoadModule(entryPath),
       ])
 
-      const fetchRequest = createFetchRequest(req)
-      const render = module.render as RenderFunction
-      const { metadata, stream } = await render(fetchRequest)
+      const { render, robots, sitemap } = module
 
-      renderRoot(req, {
-        metadata,
-        template,
-        stream,
-        onStart: htmlStart => {
-          res.status(200)
-          res.write(htmlStart)
-        },
-        onProgress: (htmlChunk, encoding) => {
-          res.write(htmlChunk, encoding)
-        },
-        onEnd: htmlEnd => {
-          debug(`Rendering ${req.originalUrl}...`, 'OK')
-          res.end(htmlEnd)
-        },
-        onError: err => {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
-
-          res.status(500)
-          res.setHeader('content-type', 'text/html')
-          res.send({ error: err })
-        },
-      })
+      switch (req.url) {
+        case '/robots.txt':
+          renderRobots(robots)(req, res, next)
+          return
+        case '/sitemap.xml':
+          renderSitemap(sitemap)(req, res, next)
+          return
+        default: {
+          renderRoot({
+            render,
+            template,
+          })(req, res, next)
+        }
+      }
     }
     catch (err) {
       debug(`Rendering ${req.originalUrl}...`, 'ERR', err)

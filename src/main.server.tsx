@@ -5,7 +5,7 @@
 import { generateLocalizedRoutes } from '@lib/i18n'
 import { createMetadata } from '@lib/layouts'
 import { generateRobots, generateSitemap } from '@lib/seo'
-import { type RenderFunction, type RobotsHandler, type SitemapHandler } from '@lib/server'
+import { type RenderFunction, type RobotsBuilder, type SitemapBuilder } from '@lib/server'
 import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
 import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from './app.conf'
@@ -16,13 +16,9 @@ import { App } from './ui/App'
 
 const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
-export const robots: RobotsHandler = async (req: Request) => {
-  return generateRobots(localizedRoutes, seo)
-}
+export const robots: RobotsBuilder = () => generateRobots(localizedRoutes, seo)
 
-export const sitemap: SitemapHandler = async (req: Request) => {
-  return generateSitemap(localizedRoutes, seo)
-}
+export const sitemap: SitemapBuilder = () => generateSitemap(localizedRoutes, seo)
 
 export const render: RenderFunction = async req => {
   const handler = createStaticHandler(localizedRoutes, { basename: BASE_PATH })
