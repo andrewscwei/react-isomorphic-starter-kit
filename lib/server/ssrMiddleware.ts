@@ -9,11 +9,10 @@ import compression from 'compression'
 import { Router } from 'express'
 import { minify } from 'html-minifier-terser'
 import fs from 'node:fs/promises'
-import { Transform } from 'node:stream'
 import { createDebug } from '../utils/createDebug'
 import { createFetchRequest } from './createFetchRequest'
-import { type MetadataFunction } from './MetadataFunction'
 import { type RenderFunction } from './RenderFunction'
+import { renderRoot } from './renderRoot'
 import { serveStatic } from './serveStatic'
 
 type Options = {
@@ -23,8 +22,6 @@ type Options = {
   staticPath?: string
   templatePath: string
 }
-
-const ABORT_DELAY_MS = 10_000
 
 export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, staticPath }: Options) {
   const debug = createDebug(undefined, 'server')
@@ -46,58 +43,33 @@ export function ssrMiddleware({ entryPath, templatePath, publicPath, publicURL, 
         import(entryPath),
       ])
 
-      let error: unknown
+      const fetchRequest = createFetchRequest(req)
+      const render = module.render as RenderFunction
+      const { metadata, stream } = await render(fetchRequest)
 
-      const request = createFetchRequest(req)
-      const { metadata: getMetadata, render } = module as { metadata: MetadataFunction; render: RenderFunction }
-      const metadata = await getMetadata(request)
-
-      const { pipe, abort } = await render(createFetchRequest(req), {
-        onError(err) {
-          error = err
+      renderRoot(req, {
+        metadata,
+        template,
+        stream,
+        onStart: htmlStart => {
+          res.status(200)
+          res.write(htmlStart)
         },
-        onShellError() {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', 'Shell error')
-
-          res.setHeader('content-type', 'text/html')
-          res.sendStatus(500)
+        onProgress: (htmlChunk, encoding) => {
+          res.write(htmlChunk, encoding)
         },
-        onShellReady() {
-          res.status(error ? 500 : 200)
+        onEnd: htmlEnd => {
+          debug(`Rendering ${req.originalUrl}...`, 'OK')
+          res.end(htmlEnd)
+        },
+        onError: err => {
+          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+
+          res.status(500)
           res.setHeader('content-type', 'text/html')
-
-          const transformStream = new Transform({
-            transform(chunk, encoding, callback) {
-              res.write(chunk, encoding)
-              callback()
-            },
-          })
-
-          const parts = template.split('<!-- APP_HTML -->')
-          const end = parts[1]
-          const start = parts[0]
-            .replace(/<!-- BASE_TITLE -->/g, metadata.baseTitle ?? '')
-            .replace(/<!-- DESCRIPTION -->/g, metadata.description ?? '')
-            .replace(/<!-- LOCALE -->/g, metadata.locale ?? '')
-            .replace(/<!-- MASK_ICON_COLOR -->/g, metadata.maskIconColor ?? '')
-            .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
-            .replace(/<!-- TITLE -->/g, metadata.title ?? '')
-            .replace(/<!-- URL -->/g, metadata.url ?? '')
-            .replace(/<!-- PUBLIC_URL -->/g, publicURL ?? '/')
-
-          res.write(start)
-
-          transformStream.on('finish', () => {
-            debug(`Rendering ${req.originalUrl}...`, 'OK')
-
-            res.end(end)
-          })
-
-          pipe(transformStream)
+          res.send({ error: err })
         },
       })
-
-      setTimeout(() => abort(), ABORT_DELAY_MS)
     }
     catch (err) {
       debug(`Rendering ${req.originalUrl}...`, 'ERR', err)

@@ -1,18 +1,10 @@
-/**
- * @file Express middleware for server-side rendering of React views during
- *       development.
- *
- * @see {@link https://reactjs.org/docs/react-dom-server.html}
- */
-
 import { Router } from 'express'
 import fs from 'node:fs'
-import { Transform } from 'node:stream'
 import { createServer } from 'vite'
 import { createDebug } from '../utils/createDebug'
-import { createFetchRequest } from './createFetchRequest'
-import { type MetadataFunction } from './MetadataFunction'
 import { type RenderFunction } from './RenderFunction'
+import { createFetchRequest } from './createFetchRequest'
+import { renderRoot } from './renderRoot'
 
 type Options = {
   basePath?: string
@@ -21,8 +13,16 @@ type Options = {
   templatePath: string
 }
 
-const ABORT_DELAY_MS = 10_000
-
+/**
+ * Express middleware for server-side rendering of React views during
+ * development.
+ *
+ * @param options See {@link Options}.
+ *
+ * @returns The middleware.
+ *
+ * @see {@link https://reactjs.org/docs/react-dom-server.html}
+ */
 export async function devMiddleware({ basePath = '/', entryPath, publicURL, templatePath }: Options) {
   const debug = createDebug(undefined, 'server')
   const router = Router()
@@ -34,65 +34,42 @@ export async function devMiddleware({ basePath = '/', entryPath, publicURL, temp
 
   router.use(vite.middlewares)
 
-  router.use('*', async (req, res) => {
+  router.use(async (req, res, next) => {
+    res.setHeader('content-type', 'text/html')
+
     try {
       const [template, module] = await Promise.all([
         vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), fs.readFileSync(templatePath, 'utf-8')),
         vite.ssrLoadModule(entryPath),
       ])
 
-      let error: unknown
+      const fetchRequest = createFetchRequest(req)
+      const render = module.render as RenderFunction
+      const { metadata, stream } = await render(fetchRequest)
 
-      const request = createFetchRequest(req)
-      const { metadata: getMetadata, render } = module as { metadata: MetadataFunction; render: RenderFunction }
-      const metadata = await getMetadata(request)
-
-      const { pipe, abort } = await render(request, {
-        onError(err) {
-          error = err
+      renderRoot(req, {
+        metadata,
+        template,
+        stream,
+        onStart: htmlStart => {
+          res.status(200)
+          res.write(htmlStart)
         },
-        onShellError() {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', 'Shell error')
-
-          res.setHeader('content-type', 'text/html')
-          res.sendStatus(500)
+        onProgress: (htmlChunk, encoding) => {
+          res.write(htmlChunk, encoding)
         },
-        onShellReady() {
-          res.status(error ? 500 : 200)
+        onEnd: htmlEnd => {
+          debug(`Rendering ${req.originalUrl}...`, 'OK')
+          res.end(htmlEnd)
+        },
+        onError: err => {
+          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+
+          res.status(500)
           res.setHeader('content-type', 'text/html')
-
-          const transformStream = new Transform({
-            transform: (chunk, encoding, callback) => {
-              res.write(chunk, encoding)
-              callback()
-            },
-          })
-
-          const parts = template.split('<!-- APP_HTML -->')
-          const end = parts[1]
-          const start = parts[0]
-            .replace(/<!-- BASE_TITLE -->/g, metadata.baseTitle ?? '')
-            .replace(/<!-- DESCRIPTION -->/g, metadata.description ?? '')
-            .replace(/<!-- LOCALE -->/g, metadata.locale ?? '')
-            .replace(/<!-- MASK_ICON_COLOR -->/g, metadata.maskIconColor ?? '')
-            .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
-            .replace(/<!-- TITLE -->/g, metadata.title ?? '')
-            .replace(/<!-- URL -->/g, metadata.url ?? '')
-            .replace(/<!-- PUBLIC_URL -->/g, publicURL ?? '/')
-
-          res.write(start)
-
-          transformStream.on('finish', () => {
-            debug(`Rendering ${req.originalUrl}...`, 'OK')
-
-            res.end(end)
-          })
-
-          pipe(transformStream)
+          res.send({ error: err })
         },
       })
-
-      setTimeout(() => abort(), ABORT_DELAY_MS)
     }
     catch (err) {
       debug(`Rendering ${req.originalUrl}...`, 'ERR', err)

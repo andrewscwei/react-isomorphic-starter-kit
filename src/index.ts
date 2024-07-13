@@ -11,9 +11,6 @@ const debug = createDebug(undefined, 'server')
 const port = process.env.PORT ?? '8080'
 const app = express()
 
-// app.use(serveRobots({ routes: localizedRoutes, seo }))
-// app.use(serveSitemap({ routes: localizedRoutes, seo }))
-
 if (process.env.NODE_ENV !== 'production') {
   app.use(await devMiddleware({
     basePath: BASE_PATH,
