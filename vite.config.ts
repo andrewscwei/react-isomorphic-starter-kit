@@ -46,6 +46,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       sourcemap: useSourceMaps,
       target: 'esnext',
     },
+    ssr: {
+      noExternal: [
+        '@remix-run/router',
+        'react-router-dom',
+        'react-router',
+      ],
+    },
     css: {
       modules: {
         localsConvention: 'camelCaseOnly',
