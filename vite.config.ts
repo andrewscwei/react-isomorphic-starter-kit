@@ -41,7 +41,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       cssMinify: skipOptimizations ? false : 'esbuild',
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
-      outDir: isSsrBuild ? path.resolve(__dirname, 'build/server') : path.resolve(__dirname, 'build/client'),
+      outDir: path.resolve(__dirname, 'build'),
       reportCompressedSize: true,
       sourcemap: useSourceMaps,
       target: 'esnext',
