@@ -3,7 +3,7 @@
  */
 
 import { generateLocalizedRoutes } from '@lib/i18n'
-import { createMetadata, generateRobots, generateSitemap } from '@lib/seo'
+import { generateMetadata, generateRobots, generateSitemap } from '@lib/seo'
 import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
 import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from './app.conf'
@@ -26,7 +26,7 @@ export const render = async (req: Request) => {
   const context = await handler.query(req)
   if (context instanceof Response) throw Error('Redirect response from static handler')
 
-  const metadata = await createMetadata(context, { baseURL: BASE_URL, i18n, routes: localizedRoutes })
+  const metadata = await generateMetadata(context, { baseURL: BASE_URL, i18n, routes: localizedRoutes })
 
   return {
     metadata: {

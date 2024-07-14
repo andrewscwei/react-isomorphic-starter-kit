@@ -1,5 +1,5 @@
-export * from './createMetadata'
 export * from './extractURLs'
+export * from './generateMetadata'
 export * from './generateRobots'
 export * from './generateSitemap'
 export * from './injectMetadata'

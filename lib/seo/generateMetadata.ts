@@ -22,14 +22,14 @@ type Options = {
 }
 
 /**
- * Creates route specific metadata.
+ * Generate route specific metadata.
  *
  * @param context The {@link StaticHandlerContext}.
  * @param options See {@link Options}.
  *
  * @returns The {@link Metadata}.
  */
-export async function createMetadata(context: StaticHandlerContext, { baseURL, i18n, routes }: Options): Promise<Metadata> {
+export async function generateMetadata(context: StaticHandlerContext, { baseURL, i18n, routes }: Options): Promise<Metadata> {
   const url = context.location.pathname
   const resolveResult = resolveLocaleFromURL(url, createResolveLocaleOptions(i18n))
   const matchedRoutes = (matchRoutes(routes, url) ?? []).reverse()

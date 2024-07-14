@@ -1,7 +1,3 @@
-/**
- * @file Server entry file.
- */
-
 import { injectMetadata } from '../seo'
 import { type Module } from './Module'
 
