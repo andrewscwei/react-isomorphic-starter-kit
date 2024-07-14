@@ -5,8 +5,10 @@ import { extractURLs } from './extractURLs'
 import { type SEOConfig } from './SEOConfig'
 import { type SitemapTags } from './SitemapTags'
 
-const BASE_URL = process.env.BASE_URL ?? ''
-const BUILD_TIME = process.env.BUILD_TIME ?? new Date().toISOString()
+type Options = {
+  baseURL?: string
+  modifiedAt?: string
+}
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
@@ -19,7 +21,10 @@ const BUILD_TIME = process.env.BUILD_TIME ?? new Date().toISOString()
 export async function generateSitemap(routes: RouteObject[], {
   urlsProvider,
   urlFilter = t => true,
-}: SEOConfig = {}) {
+}: SEOConfig = {}, {
+  baseURL = '',
+  modifiedAt = new Date().toISOString(),
+}: Options = {}) {
   const urls = urlsProvider ? await urlsProvider(routes) : extractURLs(routes).filter(urlFilter)
   const builder = new XMLBuilder({
     ignoreAttributes: false,
@@ -35,7 +40,7 @@ export async function generateSitemap(routes: RouteObject[], {
       '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
       'url': urls.map(t => {
         const defaultTags: Partial<SitemapTags> = {
-          lastmod: BUILD_TIME,
+          lastmod: modifiedAt,
           changefreq: 'daily',
           priority: '0.7',
         }
@@ -43,7 +48,7 @@ export async function generateSitemap(routes: RouteObject[], {
         if (typeof t === 'string') {
           return {
             ...defaultTags,
-            loc: joinURL(BASE_URL, t),
+            loc: joinURL(baseURL, t),
           }
         }
         else {
@@ -51,7 +56,7 @@ export async function generateSitemap(routes: RouteObject[], {
 
           return {
             ...defaultTags,
-            loc: joinURL(BASE_URL, loc),
+            loc: joinURL(baseURL, loc),
             ...tags,
           }
         }

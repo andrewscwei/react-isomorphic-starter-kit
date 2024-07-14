@@ -1,7 +1,9 @@
-import { handleRobots } from '../build'
+import { robots } from '../build/server/main.edge'
 
 export const onRequest: PagesFunction = async ({ request }) => {
-  const response = await handleRobots(request)
+  const res = await robots()
 
-  return response
+  return new Response(res, {
+    headers: { 'content-type': 'text/plain' },
+  })
 }
