@@ -18,12 +18,11 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY config ./config
 COPY lib ./lib
 COPY src ./src
 COPY tests ./tests
 COPY ts*.json ./
-COPY .babelrc ./
+COPY vite.config.ts ./
 COPY eslint.config.mjs ./
 COPY .stylelintrc ./
 
