@@ -8,9 +8,9 @@ import { XMLParser } from 'fast-xml-parser'
 import fs from 'node:fs'
 import path from 'node:path'
 import request from 'supertest'
-import * as buildArgs from '../build.args'
 
-const { assetManifestFile, baseURL } = buildArgs
+const baseURL = process.env.BASE_URL ?? ''
+
 const publicDir = path.join(__dirname, '../../build')
 const { server: app } = require(publicDir)
 
@@ -72,7 +72,7 @@ async function generate404() {
 }
 
 async function cleanup() {
-  const files = [assetManifestFile, 'index.js']
+  const files = ['index.js']
 
   for (const file of files) {
     fs.rmSync(path.join(publicDir, file))
