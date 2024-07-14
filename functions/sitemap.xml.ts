@@ -1,4 +1,4 @@
-import { sitemap } from '../build/server/main.edge'
+import { sitemap } from '../build/main.edge'
 
 export const onRequest: PagesFunction = async ({ request }) => {
   const res = await sitemap()

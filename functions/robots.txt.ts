@@ -1,4 +1,4 @@
-import { robots } from '../build/server/main.edge'
+import { robots } from '../build/main.edge'
 
 export const onRequest: PagesFunction = async ({ request }) => {
   const res = await robots()
