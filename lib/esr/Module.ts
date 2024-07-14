@@ -1,8 +1,8 @@
-import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
 import { type Metadata } from '../seo'
 
 /**
- * Type defining the entry module for server-side rendering.
+ * Type defining the entry module for edge-side rendering.
  */
 export type Module = {
   /**
@@ -11,7 +11,7 @@ export type Module = {
    *
    * @param request The request.
    *
-   * @returns The metadata and the pipeable stream factory.
+   * @returns The metadata and the readable stream factory.
    */
   render: (request: Request) => Promise<{
     /**
@@ -20,13 +20,13 @@ export type Module = {
     metadata: Metadata
 
     /**
-     * Function for rendering the view into a pipeable stream.
+     * Function for rendering the view into a readable stream.
      *
-     * @param options See {@link RenderToPipeableStreamOptions}.
+     * @param options See {@link RenderToReadableStreamOptions}.
      *
-     * @returns The pipeable stream.
+     * @returns The readable stream.
      */
-    stream: (options?: RenderToPipeableStreamOptions) => PipeableStream
+    stream: (options?: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
   }>
 
   /**

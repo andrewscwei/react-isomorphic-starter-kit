@@ -16,14 +16,17 @@ const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
 export const robots = () => generateRobots(localizedRoutes, seo)
 
-export const sitemap = () => generateSitemap(localizedRoutes, seo)
+export const sitemap = () => generateSitemap(localizedRoutes, seo, {
+  baseURL: BASE_URL,
+  modifiedAt: new Date().toISOString(),
+})
 
 export const render = async (req: Request) => {
   const handler = createStaticHandler(localizedRoutes, { basename: BASE_PATH })
   const context = await handler.query(req)
   if (context instanceof Response) throw Error('Redirect response from static handler')
 
-  const customMetadata = await createMetadata(context, { baseURL: BASE_URL, i18n, routes: localizedRoutes })
+  const metadata = await createMetadata(context, { baseURL: BASE_URL, i18n, routes: localizedRoutes })
 
   return {
     metadata: {
@@ -33,9 +36,9 @@ export const render = async (req: Request) => {
       publicURL: PUBLIC_URL,
       themeColor: THEME_COLOR,
       title: TITLE,
-      ...customMetadata,
+      ...metadata,
     },
-    stream: (options: RenderToPipeableStreamOptions) => renderToPipeableStream(
+    stream: (options: RenderToPipeableStreamOptions = {}) => renderToPipeableStream(
       (
         <App>
           <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
