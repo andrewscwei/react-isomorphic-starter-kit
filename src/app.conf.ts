@@ -53,3 +53,8 @@ export const DEFAULT_LOCALE = (env.VITE_DEFAULT_LOCALE ?? 'en') as Locale
  * 3. `query`: Locale is changed by altering the query parameters of the URL.
  */
 export const LOCALE_CHANGE_STRATEGY = 'path'
+
+/**
+ * Sources of locale files.
+ */
+export const LOCALE_SOURCES = import.meta.glob('./locales/**/*.json', { eager: true })

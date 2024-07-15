@@ -12,7 +12,7 @@ export type SEOConfig = {
    *
    * @returns `robots.txt` content.
    */
-  robotsProvider?: (routes: RouteObject[]) => Promise<string>
+  robotsProvider: (routes: RouteObject[]) => Promise<string>
 
   /**
    * Custom function to provide URLs or sitemap tags for generating the sitemap.
@@ -21,14 +21,5 @@ export type SEOConfig = {
    *
    * @returns Array of URLs or tags to use for generating the sitemap.
    */
-  urlsProvider?: (routes: RouteObject[]) => Promise<(string | SitemapTags)[]>
-
-  /**
-   * Filter for each URL.
-   *
-   * @param url URL iteratee.
-   *
-   * @returns `true` to include the URL, `false` to exclude.
-   */
-  urlFilter?: (url: string) => boolean
+  urlsProvider: (routes: RouteObject[]) => Promise<(string | SitemapTags)[]>
 }
