@@ -17,7 +17,7 @@
     "prebuild:edge": "npm run lint && npm run clean",
     "prebuild:server": "npm run lint && npm run clean",
     "build": "npm run build:${RUNTIME:-server}",
-    "build:static": "vite build && vite build --ssr main.server.tsx && tsc -p tsconfig.node.json && NODE_ENV=production dotenv -- tsx scripts/export.ts",
+    "build:static": "vite build && vite build --ssr main.server.tsx && tsc -p tsconfig.node.json && NODE_ENV=production dotenv -- tsx scripts/prerender.ts",
     "build:server": "vite build && vite build --ssr main.server.tsx && tsc -p tsconfig.node.json",
     "build:edge": "vite build && vite build --ssr main.edge.tsx",
     "test": "npm run test:${RUNTIME:-server}",
