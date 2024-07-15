@@ -14,8 +14,8 @@ if (process.env.NODE_ENV !== 'production') {
   const { devMiddleware } = await import('./lib/ssr/index.js')
 
   app.use(await devMiddleware({
-    entryPath: resolve(__dirname, 'main.server.tsx'),
-    templatePath: resolve(__dirname, 'index.html'),
+    entryPath: resolve(__dirname, 'src/main.server.tsx'),
+    templatePath: resolve(__dirname, 'src/index.html'),
   }, {
     basePath: BASE_PATH,
   }))
@@ -54,6 +54,11 @@ app.listen(port)
   .on('listening', () => {
     debug('Starting app...', 'OK')
   })
+
+process.on('SIGINT', reason => {
+  debug(`Received ${reason}, shutting down...`)
+  process.exit(0)
+})
 
 process.on('unhandledRejection', reason => {
   console.error('Unhandled Promise rejection:', reason)

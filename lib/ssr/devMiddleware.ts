@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import fs from 'node:fs'
-import { createServer } from 'vite'
 import { createDebug } from '../utils/createDebug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
@@ -40,6 +39,7 @@ const debug = createDebug(undefined, 'server')
  */
 export async function devMiddleware({ entryPath, templatePath }: Params, { basePath = '/' }: Options = {}) {
   const router = Router()
+  const { createServer } = await import ('vite')
   const vite = await createServer({
     server: { middlewareMode: true },
     appType: 'custom',
