@@ -24,9 +24,11 @@ export function defineConfig({
   localeChangeStrategy = 'path',
   sources,
 }: Params): I18nConfig {
+  const translations = loadTranslations(sources)
+
   return {
     defaultLocale,
     localeChangeStrategy,
-    translations: loadTranslations(sources),
+    translations: Object.keys(translations).length > 0 ? translations : { [defaultLocale]: {} },
   }
 }
