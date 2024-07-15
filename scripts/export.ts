@@ -2,22 +2,23 @@
  * @file Generates a static site from the built server application.
  */
 
-/* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+/* eslint-disable no-console */
 
 import { XMLParser } from 'fast-xml-parser'
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import request from 'supertest'
 
-const baseURL = process.env.BASE_URL ?? ''
-
-const publicDir = path.join(__dirname, '../../build')
-const { server: app } = require(publicDir)
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const baseURL = process.env.BASE_URL ?? '/'
+const outDir = path.resolve(__dirname, '../build')
+const { default: app } = await import(path.resolve(outDir, 'index.js'))
 
 async function generateSitemap() {
   try {
     const { text: str } = await request(app).get('/sitemap.xml')
-    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), str)
+    fs.writeFileSync(path.resolve(outDir, 'sitemap.xml'), str)
 
     console.log('Generating sitemap... OK')
   }
@@ -30,7 +31,7 @@ async function generateSitemap() {
 async function generateRobots() {
   try {
     const { text: str } = await request(app).get('/robots.txt')
-    fs.writeFileSync(path.join(publicDir, 'robots.txt'), str)
+    fs.writeFileSync(path.resolve(outDir, 'robots.txt'), str)
 
     console.log('Generating robots.txt... OK')
   }
@@ -42,14 +43,14 @@ async function generateRobots() {
 
 async function generatePages() {
   const parser = new XMLParser()
-  const sitemapFile = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf-8')
+  const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
   const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(baseURL, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
 
   for (const url of urls) {
     try {
       const { text: html } = await request(app).get(url)
-      const file = path.join(publicDir, url, ...path.extname(url) ? [] : ['index.html'])
+      const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
 
@@ -64,7 +65,7 @@ async function generatePages() {
 
 async function generate404() {
   const { text: html } = await request(app).get('/404')
-  const file = path.join(publicDir, '404.html')
+  const file = path.resolve(outDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
 
@@ -72,11 +73,25 @@ async function generate404() {
 }
 
 async function cleanup() {
-  const files = ['index.js']
+  const files = fs.readdirSync(outDir)
+  const removeExtensions = ['.js', '.d.ts']
 
-  for (const file of files) {
-    fs.rmSync(path.join(publicDir, file))
-  }
+  files.forEach(file => {
+    if (removeExtensions.includes(path.extname(file))) {
+      const filePath = path.resolve(outDir, file)
+
+      fs.unlink(filePath, err => {
+        if (err) {
+          console.error(`Error deleting file ${filePath}: ${err}`)
+          return
+        }
+
+        console.log(`File deleted: ${filePath}`)
+      })
+    }
+  })
+
+  fs.rmdirSync(path.resolve(outDir, 'lib'), { recursive: true })
 }
 
 async function main() {

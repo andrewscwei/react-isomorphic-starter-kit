@@ -41,6 +41,11 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       reportCompressedSize: true,
       sourcemap: useSourceMaps,
       target: 'esnext',
+      rollupOptions: {
+        output: {
+          chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
+        },
+      },
     },
     ssr: {
       noExternal: [

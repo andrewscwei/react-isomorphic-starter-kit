@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "composite": true,
     "jsx": "react-jsx",
     "lib": [
       "ES2020",
