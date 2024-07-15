@@ -3,8 +3,19 @@ import { type I18nConfig } from './types/I18nConfig.js'
 import { type Locale } from './types/Locale.js'
 
 type Params = {
+  /**
+   * @see {@link I18nConfig.defaultLocale}
+   */
   defaultLocale?: Locale
+
+  /**
+   * @see {@link I18nConfig.localeChangeStrategy}
+   */
   localeChangeStrategy?: 'action' | 'path' | 'query'
+
+  /**
+   * Dictionary of locale file sources.
+   */
   sources: Record<string, any>
 }
 
