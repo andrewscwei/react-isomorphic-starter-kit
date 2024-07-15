@@ -31,7 +31,8 @@
     "build"
   ],
   "include": [
-    "src/**/*.tsx?"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "references": [
     {

@@ -19,6 +19,7 @@ RUN npm install
 COPY lib ./lib
 COPY src ./src
 COPY tests ./tests
+COPY index.ts ./
 COPY ts*.json ./
 COPY vite.config.ts ./
 COPY eslint.config.mjs ./

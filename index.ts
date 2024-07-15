@@ -1,7 +1,6 @@
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { devMiddleware, ssrMiddleware } from './lib/ssr/index.js'
 import { createDebug } from './lib/utils/createDebug.js'
 
 const BASE_PATH = process.env.BASE_PATH ?? '/'
@@ -12,6 +11,8 @@ const port = process.env.PORT ?? '8080'
 const app = express()
 
 if (process.env.NODE_ENV !== 'production') {
+  const { devMiddleware } = await import('./lib/ssr/index.js')
+
   app.use(await devMiddleware({
     entryPath: resolve(__dirname, 'main.server.tsx'),
     templatePath: resolve(__dirname, 'index.html'),
@@ -20,9 +21,11 @@ if (process.env.NODE_ENV !== 'production') {
   }))
 }
 else {
+  const { ssrMiddleware } = await import('./lib/ssr/index.js')
+
   app.use(ssrMiddleware({
-    entryPath: resolve(__dirname, './main.server.js'),
-    templatePath: resolve(__dirname, './index.html'),
+    entryPath: resolve(__dirname, 'main.server.js'),
+    templatePath: resolve(__dirname, 'index.html'),
   }, {
     basePath: BASE_PATH,
     staticPath: __dirname,
@@ -56,3 +59,5 @@ process.on('unhandledRejection', reason => {
   console.error('Unhandled Promise rejection:', reason)
   process.exit(1)
 })
+
+export default app
