@@ -2,8 +2,6 @@
  * @file Runtime application config.
  */
 
-import { type Locale } from '@lib/i18n/index.js'
-
 const env = typeof import.meta.env !== 'undefined' ? import.meta.env : process.env as ImportMetaEnv
 
 /**
@@ -40,21 +38,3 @@ export const THEME_COLOR = '#15141a'
  * Value for the `color` attribute of the `mask-icon` meta tag.
  */
 export const MASK_ICON_COLOR = '#000'
-
-/**
- * Default locale.
- */
-export const DEFAULT_LOCALE = (env.VITE_DEFAULT_LOCALE ?? 'en') as Locale
-
-/**
- * Specifies how locale will be changed:
- * 1. `action`: Locale is changed by dispatching an action.
- * 2. `path`: Locale is changed by altering the path of the URL.
- * 3. `query`: Locale is changed by altering the query parameters of the URL.
- */
-export const LOCALE_CHANGE_STRATEGY = 'path'
-
-/**
- * Sources of locale files.
- */
-export const LOCALE_SOURCES = import.meta.glob('./locales/**/*.json', { eager: true })
