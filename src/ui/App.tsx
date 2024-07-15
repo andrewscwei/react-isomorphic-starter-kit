@@ -1,7 +1,7 @@
-import { useFavicon, useThemeColor } from '@lib/dom'
-import { joinURL } from '@lib/utils/joinURL'
+import { useFavicon, useThemeColor } from '@lib/dom/index.js'
+import { joinURL } from '@lib/utils/joinURL.js'
 import { StrictMode, type PropsWithChildren } from 'react'
-import { BASE_URL, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf'
+import { BASE_URL, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf.js'
 import './styles/global.css'
 import './styles/theme.css'
 

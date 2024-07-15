@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router'
-import { Footer } from '../components/Footer'
-import { Header } from '../components/Header'
+import { Footer } from '../components/Footer.js'
+import { Header } from '../components/Header.js'
 
 export function Component() {
   return (

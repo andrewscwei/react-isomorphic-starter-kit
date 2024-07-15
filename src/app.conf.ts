@@ -2,7 +2,7 @@
  * @file Runtime application config.
  */
 
-import { type Locale } from '@lib/i18n'
+import { type Locale } from '@lib/i18n/index.js'
 
 const env = typeof import.meta.env !== 'undefined' ? import.meta.env : process.env as ImportMetaEnv
 
@@ -15,16 +15,6 @@ export const BASE_URL = env.BASE_URL
  * Base path of the router (i.e. the `basename` property).
  */
 export const BASE_PATH = env.BASE_PATH
-
-/**
- * Absolute public URL for static assets.
- */
-export const PUBLIC_URL = env.PUBLIC_URL
-
-/**
- * Public path for static assets.
- */
-export const PUBLIC_PATH = env.PUBLIC_PATH
 
 /**
  * App version.

@@ -2,8 +2,8 @@
  * @file I18n config.
  */
 
-import { loadTranslations, type I18nConfig } from '@lib/i18n'
-import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from './app.conf'
+import { loadTranslations, type I18nConfig } from '@lib/i18n/index.js'
+import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from './app.conf.js'
 
 const sources = import.meta.glob('./locales/**/*.json', { eager: true })
 

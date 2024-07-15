@@ -3,7 +3,7 @@
  */
 
 import { type RouteObject } from 'react-router'
-import { ErrorBoundary } from './ui/pages/ErrorBoundary'
+import { ErrorBoundary } from './ui/pages/ErrorBoundary.js'
 
 export const routes: RouteObject[] = [{
   id: 'root',

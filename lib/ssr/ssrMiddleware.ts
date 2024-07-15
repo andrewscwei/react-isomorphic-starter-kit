@@ -23,9 +23,9 @@ type Params = {
 
 type Options = {
   /**
-   * Public path for static assets.
+   * Base path for static assets.
    */
-  publicPath?: string
+  basePath?: string
 
   /**
    * Path for static assets in the file system.
@@ -44,13 +44,13 @@ const debug = createDebug(undefined, 'server')
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-export function ssrMiddleware({ entryPath, templatePath }: Params, { publicPath, staticPath }: Options) {
+export function ssrMiddleware({ entryPath, templatePath }: Params, { basePath, staticPath }: Options) {
   const router = Router()
 
   router.use(compression())
 
   if (staticPath) {
-    router.use(serveStatic(staticPath, { publicPath }))
+    router.use(serveStatic(staticPath, { basePath }))
   }
 
   router.use(async (req, res, next) => {

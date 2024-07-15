@@ -2,15 +2,15 @@
  * @file Edge entry file.
  */
 
-import { generateLocalizedRoutes } from '@lib/i18n'
-import { generateMetadata, generateRobots, generateSitemap } from '@lib/seo'
+import { generateLocalizedRoutes } from '@lib/i18n/index.js'
+import { generateMetadata, generateRobots, generateSitemap } from '@lib/seo/index.js'
 import { renderToReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
 import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server'
-import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, PUBLIC_URL, THEME_COLOR, TITLE } from './app.conf'
-import { i18n } from './i18n.conf'
-import { routes as routesConfig } from './routes.conf'
-import { seo } from './seo.conf'
-import { App } from './ui/App'
+import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf.js'
+import { i18n } from './i18n.conf.js'
+import { routes as routesConfig } from './routes.conf.js'
+import { seo } from './seo.conf.js'
+import { App } from './ui/App.js'
 
 const localizedRoutes = generateLocalizedRoutes(routesConfig, i18n)
 
@@ -31,9 +31,9 @@ export const render = async (req: Request) => {
   return {
     metadata: {
       baseTitle: TITLE,
+      baseURL: BASE_URL,
       description: DESCRIPTION,
       maskIconColor: MASK_ICON_COLOR,
-      publicURL: PUBLIC_URL,
       themeColor: THEME_COLOR,
       title: TITLE,
       ...metadata,

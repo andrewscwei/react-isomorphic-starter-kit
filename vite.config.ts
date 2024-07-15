@@ -15,10 +15,6 @@ const parseBuildArgs = (env: Record<string, string>) => ({
   BASE_URL: env.BASE_URL ?? '',
   // Build number
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
-  // Public path for static assets
-  PUBLIC_PATH: env.PUBLIC_PATH ?? env.BASE_PATH ?? '/',
-  // Absolute public URL for static assets
-  PUBLIC_URL: env.PUBLIC_URL ?? env.BASE_URL ?? '',
   // Version number
   VERSION: packageInfo.version,
 })
@@ -34,7 +30,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
 
   return {
     root: rootDir,
-    base: buildArgs.PUBLIC_PATH,
+    base: buildArgs.BASE_PATH,
     publicDir: isSsrBuild ? false : path.resolve(rootDir, 'static'),
     build: {
       cssCodeSplit: false,
