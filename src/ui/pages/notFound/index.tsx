@@ -1,13 +1,14 @@
-import { useMetaTags } from '@lib/dom/index.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import styles from './index.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
 
-  useMetaTags({
+  useMeta({
     title: ltxt('window-title-not-found'),
     description: ltxt('description'),
+    url: window.location.hostname + window.location.pathname,
   })
 
   return (

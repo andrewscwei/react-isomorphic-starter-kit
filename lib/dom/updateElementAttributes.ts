@@ -1,6 +1,6 @@
 type Attribute = {
   name: string
-  value: string
+  value?: string
   key?: boolean
 }
 
@@ -36,14 +36,14 @@ export function updateElementAttributes(tagName: string | undefined, attributes:
   const keyAttributes = attributes.filter(t => t.key === true)
   if (keyAttributes.length === 0) throw Error('Missing key attribute(s)')
 
-  const keyAttributesSelector = keyAttributes.map(({ name, value }) => `[${name}="${value}"]`).join('')
+  const keyAttributesSelector = keyAttributes.map(({ name, value = '' }) => `[${name}="${value}"]`).join('')
   const oldElement = window.document.querySelector(`${tagName}${keyAttributesSelector}`)
   if (!oldElement && autoCreate !== true) return () => {}
 
   const newElement = oldElement ?? window.document.createElement(tagName)
   const diffs: Attribute[] = []
 
-  attributes.forEach(({ name, value }) => {
+  attributes.forEach(({ name, value = '' }) => {
     const oldVal = newElement.getAttribute(name)
 
     if (oldVal && oldVal !== value) diffs.push({ name, value: oldVal })
@@ -52,7 +52,7 @@ export function updateElementAttributes(tagName: string | undefined, attributes:
 
   if (oldElement) {
     return () => {
-      diffs.forEach(({ name, value }) => oldElement.setAttribute(name, value))
+      diffs.forEach(({ name, value = '' }) => oldElement.setAttribute(name, value))
     }
   }
   else {

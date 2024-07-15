@@ -38,3 +38,8 @@ export const THEME_COLOR = '#15141a'
  * Value for the `color` attribute of the `mask-icon` meta tag.
  */
 export const MASK_ICON_COLOR = '#000'
+
+/**
+ * Default locale.
+ */
+export const DEFAULT_LOCALE = env.VITE_DEFAULT_LOCALE ?? 'en'
