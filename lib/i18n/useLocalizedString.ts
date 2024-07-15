@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { I18nContext } from './I18nProvider'
+import { I18nContext } from './I18nProvider.js'
 
 /**
  * Hook for retrieving the string localizing function for the current locale.

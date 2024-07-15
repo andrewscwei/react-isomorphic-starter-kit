@@ -1,5 +1,5 @@
-import { type ResolveLocaleOptions } from '../types'
-import { getLocalizedURL } from './getLocalizedURL'
+import { type ResolveLocaleOptions } from '../types/index.js'
+import { getLocalizedURL } from './getLocalizedURL.js'
 
 /**
  * Returns all localized versions of a URL based on the provided

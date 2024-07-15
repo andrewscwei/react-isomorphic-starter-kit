@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { createDebug } from '../utils/createDebug'
-import { type Interactor } from './Interactor'
-import { UseCaseError, type UseCase } from './UseCase'
+import { createDebug } from '../utils/createDebug.js'
+import { type Interactor } from './Interactor.js'
+import { UseCaseError, type UseCase } from './UseCase.js'
 
 type Options<Result> = {
   /**

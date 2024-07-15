@@ -1,2 +1,2 @@
-export * from './Module'
-export * from './renderRoot'
+export * from './Module.js'
+export * from './renderRoot.js'

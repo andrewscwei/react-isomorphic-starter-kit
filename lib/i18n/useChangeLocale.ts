@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { I18nContext } from './I18nProvider'
-import { createResolveLocaleOptions, getLocalizedURL } from './helpers'
-import { type Locale } from './types'
+import { createResolveLocaleOptions, getLocalizedURL } from './helpers/index.js'
+import { type Locale } from './types/index.js'
 
 /**
  * Hook for retrieving the change locale function.

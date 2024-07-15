@@ -1,5 +1,5 @@
 import { type RouteObject } from 'react-router'
-import { type SEOConfig } from './SEOConfig'
+import { type SEOConfig } from './SEOConfig.js'
 
 /**
  * Generates plain text `robots.txt` from the provided configuration.

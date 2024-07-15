@@ -1,5 +1,5 @@
-import { injectMetadata } from '../seo'
-import { type Module } from './Module'
+import { injectMetadata } from '../seo/index.js'
+import { type Module } from './Module.js'
 
 export function renderRoot({ render }: Module, template: string) {
   return async (req: Request, path: string) => {

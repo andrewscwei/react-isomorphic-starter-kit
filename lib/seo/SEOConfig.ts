@@ -1,5 +1,5 @@
 import { type RouteObject } from 'react-router'
-import { type SitemapTags } from './SitemapTags'
+import { type SitemapTags } from './SitemapTags.js'
 
 /**
  * SEO configuration.

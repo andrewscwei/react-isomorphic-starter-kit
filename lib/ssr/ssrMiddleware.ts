@@ -2,12 +2,12 @@ import compression from 'compression'
 import { Router } from 'express'
 import { minify } from 'html-minifier-terser'
 import fs from 'node:fs/promises'
-import { createDebug } from '../utils/createDebug'
-import { type Module } from './Module'
-import { renderRoot } from './renderRoot'
-import { serveRobots } from './serveRobots'
-import { serveSitemap } from './serveSitemap'
-import { serveStatic } from './serveStatic'
+import { createDebug } from '../utils/createDebug.js'
+import { type Module } from './Module.js'
+import { renderRoot } from './renderRoot.js'
+import { serveRobots } from './serveRobots.js'
+import { serveSitemap } from './serveSitemap.js'
+import { serveStatic } from './serveStatic.js'
 
 type Params = {
   /**

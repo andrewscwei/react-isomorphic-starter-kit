@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { updateElementAttributes } from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes.js'
 
 type Params = {
   /**

@@ -1,6 +1,6 @@
-import { createDebug } from '../utils/createDebug'
-import { createSessionCache } from '../utils/createSessionCache'
-import { UseCaseError, type UseCase } from './UseCase'
+import { createDebug } from '../utils/createDebug.js'
+import { createSessionCache } from '../utils/createSessionCache.js'
+import { UseCaseError, type UseCase } from './UseCase.js'
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 

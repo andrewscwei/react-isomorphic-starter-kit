@@ -1,5 +1,5 @@
 import { useEffect, type DependencyList } from 'react'
-import { updateElementAttributes } from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes.js'
 
 /**
  * Hook for updating the theme color meta tag in the document head.

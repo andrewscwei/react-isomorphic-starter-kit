@@ -1,5 +1,5 @@
-import { type Locale } from './Locale'
-import { type Translations } from './Translations'
+import { type Locale } from './Locale.js'
+import { type Translations } from './Translations.js'
 
 /**
  * Configuration for i18n behavior.

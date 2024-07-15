@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import fs from 'node:fs'
 import { createServer } from 'vite'
-import { createDebug } from '../utils/createDebug'
-import { type Module } from './Module'
-import { renderRoot } from './renderRoot'
-import { serveRobots } from './serveRobots'
-import { serveSitemap } from './serveSitemap'
+import { createDebug } from '../utils/createDebug.js'
+import { type Module } from './Module.js'
+import { renderRoot } from './renderRoot.js'
+import { serveRobots } from './serveRobots.js'
+import { serveSitemap } from './serveSitemap.js'
 
 type Params = {
   /**
