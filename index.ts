@@ -1,8 +1,8 @@
-import { devMiddleware, ssrMiddleware } from '@lib/ssr/index.js'
-import { createDebug } from '@lib/utils/createDebug.js'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { devMiddleware, ssrMiddleware } from './lib/ssr/index.js'
+import { createDebug } from './lib/utils/createDebug.js'
 
 const BASE_PATH = process.env.BASE_PATH ?? '/'
 
@@ -25,7 +25,7 @@ else {
     templatePath: resolve(__dirname, './index.html'),
   }, {
     basePath: BASE_PATH,
-    staticPath: resolve(__dirname, BASE_PATH),
+    staticPath: __dirname,
   }))
 }
 
