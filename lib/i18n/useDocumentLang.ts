@@ -1,17 +1,17 @@
 import { useEffect, type DependencyList } from 'react'
 
 /**
- * Hook for updating relevant locale meta tags in the document head.
+ * Hook for updating document language in the document head.
  *
- * @param locale The locale.
+ * @param lang The language.
  * @param deps Additional dependencies.
  */
-export function useDocumentLocale(locale: string, deps?: DependencyList) {
+export function useDocumentLang(lang: string, deps?: DependencyList) {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const prevVal = window.document.documentElement.getAttribute('lang')
-    const newVal = locale
+    const newVal = lang
 
     window.document.documentElement.setAttribute('lang', newVal)
 
@@ -23,5 +23,5 @@ export function useDocumentLocale(locale: string, deps?: DependencyList) {
         window.document.documentElement.removeAttribute('lang')
       }
     }
-  }, [locale, ...deps ?? []])
+  }, [lang, ...deps ?? []])
 }

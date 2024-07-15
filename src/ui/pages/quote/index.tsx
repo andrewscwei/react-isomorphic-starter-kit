@@ -1,4 +1,4 @@
-import { useMetaTags } from '@lib/dom/index.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { useLoaderData } from 'react-router'
 import { type Quote } from '../../../useCases/GetQuote.js'
@@ -8,9 +8,10 @@ export function Component() {
   const ltxt = useLocalizedString()
   const quote = useLoaderData() as Quote
 
-  useMetaTags({
+  useMeta({
     title: ltxt('window-title-quote'),
     description: ltxt('description'),
+    url: window.location.hostname + window.location.pathname,
   })
 
   return (

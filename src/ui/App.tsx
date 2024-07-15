@@ -1,15 +1,13 @@
-import { useFavicon, useThemeColor } from '@lib/dom/index.js'
+import { useFavicon } from '@lib/dom/index.js'
 import { joinURL } from '@lib/utils/joinURL.js'
 import { StrictMode, type PropsWithChildren } from 'react'
-import { BASE_URL, MASK_ICON_COLOR, THEME_COLOR } from '../app.conf.js'
+import { BASE_URL, MASK_ICON_COLOR } from '../app.conf.js'
 import './styles/global.css'
 import './styles/theme.css'
 
 type Props = PropsWithChildren
 
 export function App({ children }: Readonly<Props>) {
-  useThemeColor(THEME_COLOR)
-
   useFavicon({
     maskIcon: {
       color: MASK_ICON_COLOR,
