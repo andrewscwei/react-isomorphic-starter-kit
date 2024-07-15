@@ -2,13 +2,11 @@
  * @file I18n config.
  */
 
-import { loadTranslations, type I18nConfig } from '@lib/i18n/index.js'
+import { defineConfig } from '@lib/i18n/index.js'
 import { DEFAULT_LOCALE, LOCALE_CHANGE_STRATEGY } from './app.conf.js'
 
-const sources = import.meta.glob('./locales/**/*.json', { eager: true })
-
-export const i18n: I18nConfig = {
+export const i18n = defineConfig({
   defaultLocale: DEFAULT_LOCALE,
   localeChangeStrategy: LOCALE_CHANGE_STRATEGY,
-  translations: loadTranslations(sources),
-}
+  sources: import.meta.glob('./locales/**/*.json', { eager: true }),
+})

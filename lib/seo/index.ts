@@ -1,3 +1,4 @@
+export * from './defineConfig.js'
 export * from './extractURLs.js'
 export * from './generateMetadata.js'
 export * from './generateRobots.js'

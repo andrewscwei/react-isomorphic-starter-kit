@@ -1,7 +1,6 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
 import { joinURL } from '../utils/joinURL.js'
-import { extractURLs } from './extractURLs.js'
 import { type SEOConfig } from './SEOConfig.js'
 import { type SitemapTags } from './SitemapTags.js'
 
@@ -20,12 +19,11 @@ type Options = {
  */
 export async function generateSitemap(routes: RouteObject[], {
   urlsProvider,
-  urlFilter = t => true,
-}: SEOConfig = {}, {
+}: SEOConfig, {
   baseURL = '',
   modifiedAt = new Date().toISOString(),
 }: Options = {}) {
-  const urls = urlsProvider ? await urlsProvider(routes) : extractURLs(routes).filter(urlFilter)
+  const urls = await urlsProvider(routes)
   const builder = new XMLBuilder({
     ignoreAttributes: false,
     format: true,

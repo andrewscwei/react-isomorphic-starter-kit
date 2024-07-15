@@ -1,3 +1,4 @@
+export * from './defineConfig.js'
 export * from './generateLocalizedRoutes.js'
 export * from './helpers/index.js'
 export * from './I18nProvider.js'

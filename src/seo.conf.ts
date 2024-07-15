@@ -1,5 +1,5 @@
-import { type SEOConfig } from '@lib/seo/index.js'
+import { defineConfig, type SEOConfig } from '@lib/seo/index.js'
 
-export const seo: SEOConfig = {
-  urlFilter: url => !url.endsWith('*'),
-}
+export const seo: SEOConfig = defineConfig({
+
+})

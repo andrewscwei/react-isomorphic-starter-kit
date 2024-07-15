@@ -11,6 +11,6 @@ import { type SEOConfig } from './SEOConfig.js'
  */
 export async function generateRobots(routes: RouteObject[], {
   robotsProvider,
-}: SEOConfig = {}) {
-  return robotsProvider ? robotsProvider(routes) : 'User-agent: * Disallow:'
+}: SEOConfig) {
+  return robotsProvider(routes)
 }
