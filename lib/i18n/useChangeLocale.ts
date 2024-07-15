@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { I18nContext } from './I18nProvider'
+import { I18nContext } from './I18nProvider.js'
 import { createResolveLocaleOptions, getLocalizedURL } from './helpers/index.js'
 import { type Locale } from './types/index.js'
 
