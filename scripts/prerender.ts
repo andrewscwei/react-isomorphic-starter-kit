@@ -45,7 +45,7 @@ async function generatePages() {
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const urls = sitemap.urlset.url.map((t: any) => t.loc?.replace(baseURL, '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const urls = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
 
   for (const url of urls) {
     try {

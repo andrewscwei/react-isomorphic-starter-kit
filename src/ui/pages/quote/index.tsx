@@ -11,7 +11,7 @@ export function Component() {
   useMeta({
     title: ltxt('window-title-quote'),
     description: ltxt('description'),
-    url: window.location.hostname + window.location.pathname,
+    url: typeof window === 'undefined' ? undefined : window.location.hostname + window.location.pathname,
   })
 
   return (
