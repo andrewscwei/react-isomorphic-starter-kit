@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "composite": true,
+    "declaration": true,
     "jsx": "react-jsx",
     "lib": [
       "ES2020",
@@ -28,7 +28,6 @@
     "build"
   ],
   "include": [
-    "index.ts",
-    "lib/**/*"
+    "index.ts"
   ]
 }

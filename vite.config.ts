@@ -105,10 +105,9 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     test: {
       coverage: {
-        reportsDirectory: path.resolve(__dirname, 'coverage'),
+        reporter: ['text-summary'],
         provider: 'v8',
       },
-      reporters: ['default'],
       globals: true,
       environment: 'jsdom',
     },
