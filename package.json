@@ -12,7 +12,7 @@
     "clean": "rimraf build",
     "dev": "npm run dev:${RUNTIME:-server}",
     "dev:server": "tsx -r dotenv/config .",
-    "dev:edge": "wrangler pages dev --port=${PORT:-8080} --compatibility-date=2024-06-22 ./src/static",
+    "dev:edge": "npm run clean && concurrently \"vite build -w\" \"vite build -w --ssr main.edge.tsx\" \"wait-on build/main.edge.js && wrangler pages dev --port=${PORT:-8080} --compatibility-date=2024-06-22 ./build\"",
     "prebuild:static": "npm run lint && npm run clean",
     "prebuild:edge": "npm run lint && npm run clean",
     "prebuild:server": "npm run lint && npm run clean",
