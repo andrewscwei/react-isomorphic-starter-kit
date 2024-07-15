@@ -1,6 +1,6 @@
-import { type GetLocalizedPath, type I18nConfig, type Locale } from '../types'
-import { createResolveLocaleOptions } from './createResolveLocaleOptions'
-import { getLocalizedURL } from './getLocalizedURL'
+import { type GetLocalizedPath, type I18nConfig, type Locale } from '../types/index.js'
+import { createResolveLocaleOptions } from './createResolveLocaleOptions.js'
+import { getLocalizedURL } from './getLocalizedURL.js'
 
 /**
  * Creates a function for getting the localized version of a URL in the target

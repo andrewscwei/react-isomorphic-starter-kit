@@ -1,6 +1,6 @@
 import 'react-router'
 import { type StaticHandlerContext } from 'react-router-dom/server'
-import { type Metadata } from './layouts'
+import { type Metadata } from './seo/index.js'
 
 declare module 'react-router' {
   export interface IndexRouteObject {

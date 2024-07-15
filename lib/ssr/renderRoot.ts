@@ -1,9 +1,9 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { injectMetadata } from '../seo'
-import { createDebug } from '../utils/createDebug'
-import { createFetchRequest } from './createFetchRequest'
-import { type Module } from './Module'
+import { injectMetadata } from '../seo/index.js'
+import { createDebug } from '../utils/createDebug.js'
+import { createFetchRequest } from './createFetchRequest.js'
+import { type Module } from './Module.js'
 
 type Options = {
   timeout?: number

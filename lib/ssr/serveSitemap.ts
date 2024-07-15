@@ -1,5 +1,5 @@
 import { type RequestHandler } from 'express'
-import { type Module } from './Module'
+import { type Module } from './Module.js'
 
 /**
  * Request handler for serving the sitemap.

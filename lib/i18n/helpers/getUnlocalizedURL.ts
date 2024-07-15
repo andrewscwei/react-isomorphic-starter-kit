@@ -1,7 +1,7 @@
-import { type ResolveLocaleOptions } from '../types'
-import { constructURL } from './constructURL'
-import { parseURL } from './parseURL'
-import { resolveLocaleFromURL } from './resolveLocaleFromURL'
+import { type ResolveLocaleOptions } from '../types/index.js'
+import { constructURL } from './constructURL.js'
+import { parseURL } from './parseURL.js'
+import { resolveLocaleFromURL } from './resolveLocaleFromURL.js'
 
 /**
  * Returns the unlocalized version of a URL.

@@ -1,7 +1,7 @@
 import { type DependencyList } from 'react'
-import { useDocumentDescription } from './useDocumentDescription'
-import { useDocumentTitle } from './useDocumentTitle'
-import { useDocumentURL } from './useDocumentURL'
+import { useDocumentDescription } from './useDocumentDescription.js'
+import { useDocumentTitle } from './useDocumentTitle.js'
+import { useDocumentURL } from './useDocumentURL.js'
 
 type Params = {
   /**

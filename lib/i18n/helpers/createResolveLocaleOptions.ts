@@ -1,4 +1,4 @@
-import { type I18nConfig, type Locale, type ResolveLocaleOptions } from '../types'
+import { type I18nConfig, type Locale, type ResolveLocaleOptions } from '../types/index.js'
 
 /**
  * Creates {@link ResolveLocaleOptions} from {@link I18nConfig}.

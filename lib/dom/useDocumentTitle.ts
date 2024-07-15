@@ -1,5 +1,5 @@
 import { useEffect, type DependencyList } from 'react'
-import { updateElementAttributes } from './updateElementAttributes'
+import { updateElementAttributes } from './updateElementAttributes.js'
 
 /**
  * Hook for updating relevant title meta tags in the document head.

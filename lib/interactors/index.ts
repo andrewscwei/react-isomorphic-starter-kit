@@ -1,4 +1,4 @@
-export * from './FetchUseCase'
-export type * from './Interactor'
-export * from './UseCase'
-export * from './useInteractor'
+export * from './FetchUseCase.js'
+export type * from './Interactor.js'
+export * from './UseCase.js'
+export * from './useInteractor.js'

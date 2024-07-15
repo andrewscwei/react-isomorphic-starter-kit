@@ -1,4 +1,4 @@
-import { type URLParts } from '../types'
+import { type URLParts } from '../types/index.js'
 
 /**
  * Parses a URL into {@link URLParts}.

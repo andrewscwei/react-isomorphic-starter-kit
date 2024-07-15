@@ -1,4 +1,4 @@
-import { type Metadata } from './Metadata'
+import { type Metadata } from './Metadata.js'
 
 export function injectMetadata(template: string, metadata: Metadata) {
   return template
