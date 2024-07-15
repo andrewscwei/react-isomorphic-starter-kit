@@ -28,6 +28,7 @@
     "build"
   ],
   "include": [
-    "index.ts"
+    "index.ts",
+    "lib"
   ]
 }
