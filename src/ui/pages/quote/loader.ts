@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs } from 'react-router'
-import { GetQuote } from '../../../useCases/GetQuote'
+import { GetQuote } from '../../../useCases/GetQuote.js'
 
 export async function loader({ request, context, params }: LoaderFunctionArgs) {
   return new GetQuote().run()

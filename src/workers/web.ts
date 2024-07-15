@@ -1,4 +1,4 @@
-import { createDebug } from '@lib/utils/createDebug'
+import { createDebug } from '@lib/utils/createDebug.js'
 
 const debug = createDebug(undefined, 'worker')
 

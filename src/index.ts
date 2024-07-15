@@ -1,9 +1,10 @@
-import { devMiddleware, ssrMiddleware } from '@lib/ssr'
-import { createDebug } from '@lib/utils/createDebug'
+import { devMiddleware, ssrMiddleware } from '@lib/ssr/index.js'
+import { createDebug } from '@lib/utils/createDebug.js'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BASE_PATH, PUBLIC_PATH } from './app.conf'
+
+const BASE_PATH = process.env.BASE_PATH ?? '/'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const debug = createDebug(undefined, 'server')
@@ -20,11 +21,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 else {
   app.use(ssrMiddleware({
-    entryPath: resolve(__dirname, '../build/main.server.js'),
-    templatePath: resolve(__dirname, '../build/index.html'),
+    entryPath: resolve(__dirname, './main.server.js'),
+    templatePath: resolve(__dirname, './index.html'),
   }, {
-    publicPath: PUBLIC_PATH,
-    staticPath: resolve(__dirname, '../build'),
+    basePath: BASE_PATH,
+    staticPath: resolve(__dirname, BASE_PATH),
   }))
 }
 

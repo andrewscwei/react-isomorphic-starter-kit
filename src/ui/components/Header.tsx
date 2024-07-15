@@ -1,4 +1,4 @@
-import { useLocalizedPath, useLocalizedString } from '@lib/i18n'
+import { useLocalizedPath, useLocalizedString } from '@lib/i18n/index.js'
 import { type HTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Header.module.css'

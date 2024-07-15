@@ -2,19 +2,19 @@
  * @file Client entry file.
  */
 
-import { loadLazyComponents } from '@lib/dom'
-import { generateLocalizedRoutes } from '@lib/i18n'
-import { createDebug } from '@lib/utils/createDebug'
-import { rethrow } from '@lib/utils/rethrow'
+import { loadLazyComponents } from '@lib/dom/index.js'
+import { generateLocalizedRoutes } from '@lib/i18n/index.js'
+import { createDebug } from '@lib/utils/createDebug.js'
+import { rethrow } from '@lib/utils/rethrow.js'
 import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
-import { BASE_PATH } from './app.conf'
-import { i18n } from './i18n.conf'
-import { routes } from './routes.conf'
-import { App } from './ui/App'
-import WebWorker from './workers/web?worker'
+import { BASE_PATH } from './app.conf.js'
+import { i18n } from './i18n.conf.js'
+import { routes } from './routes.conf.js'
+import { App } from './ui/App.js'
+import WebWorker from './workers/web.js?worker'
 
 const debug = createDebug()
 

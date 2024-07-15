@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 import fs from 'node:fs'
 
 type Options = {
-  publicPath?: string
+  basePath?: string
 }
 
 /**
@@ -13,11 +13,11 @@ type Options = {
  *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export function serveStatic(path: string, { publicPath = '/' }: Options = {}) {
+export function serveStatic(path: string, { basePath = '/' }: Options = {}) {
   const router = Router()
 
   if (fs.existsSync(path)) {
-    router.use(publicPath, express.static(path, {
+    router.use(basePath, express.static(path, {
       index: false,
       setHeaders: res => {
         const duration = 1000 * 60 * 60 * 24 * 365 * 10

@@ -12,6 +12,11 @@ export type Metadata = {
   baseTitle?: string
 
   /**
+   * The base URL of the public assets.
+   */
+  baseURL?: string
+
+  /**
    * The description of the current page of the application.
    */
   description?: string
@@ -25,11 +30,6 @@ export type Metadata = {
    * The color of the mask icon (i.e. in <link rel='mask-icon'>).
    */
   maskIconColor?: string
-
-  /**
-   * The base URL of the public assets.
-   */
-  publicURL?: string
 
   /**
    * The theme color (i.e. in <meta name='theme-color'>).
