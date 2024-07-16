@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/index.js'
+import { useMeta } from '@lib/dom/useMeta.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { useLoaderData } from 'react-router'
 import { type Quote } from '../../../useCases/GetQuote.js'
@@ -11,7 +11,6 @@ export function Component() {
   useMeta({
     title: ltxt('window-title-quote'),
     description: ltxt('description'),
-    url: typeof window === 'undefined' ? undefined : window.location.hostname + window.location.pathname,
   })
 
   return (

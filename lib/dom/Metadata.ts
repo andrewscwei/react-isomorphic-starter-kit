@@ -46,4 +46,35 @@ export type Metadata = {
    * The URL of the current page of the application.
    */
   url?: string
+
+  /**
+   * The Apple meta tags.
+   */
+  apple?: {
+    statusBarStyle?: 'default' | 'black' | 'black-translucent'
+    title?: string
+  }
+
+  /**
+   * The Open Graph meta tags.
+   */
+  openGraph?: {
+    description?: string
+    image?: string
+    imageAlt?: string
+    siteName?: string
+    title?: string
+    type?: string
+    url?: string
+  }
+
+  /**
+   * The Twitter meta tags.
+   */
+  twitter?: {
+    card?: 'summary_large_image' | 'summary' | 'app' | 'player'
+    description?: string
+    image?: string
+    title?: string
+  }
 }

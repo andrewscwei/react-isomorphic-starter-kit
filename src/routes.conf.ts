@@ -13,15 +13,12 @@ export const routes: RouteObject[] = [{
     path: '/',
     index: true,
     lazy: () => import('./ui/pages/home'),
-    metadata: async (context, { ltxt }) => ({ title: ltxt('window-title-home') }),
   }, {
     path: '/quote',
     lazy: () => import('./ui/pages/quote'),
-    metadata: async (context, { ltxt }) => ({ title: ltxt('window-title-quote') }),
     loader: async args => (await import('./ui/pages/quote/loader')).loader(args),
   }, {
     path: '*',
     lazy: () => import('./ui/pages/notFound'),
-    metadata: async (context, { ltxt }) => ({ title: ltxt('window-title-not-found') }),
   }],
 }]

@@ -1,4 +1,4 @@
-import { createContext, useMemo, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
+import { createContext, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
 import { useLocation } from 'react-router'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers/index.js'
 import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig, type Locale } from './types/index.js'
@@ -14,8 +14,6 @@ type I18nContextValue = {
   dispatch?: Dispatch<I18nAction>
   state: I18nState
 }
-
-type I18nProviderProps = PropsWithChildren<Partial<I18nConfig>>
 
 type I18nAction = I18nChangeLocaleAction | I18nResetLocaleAction
 
@@ -36,7 +34,7 @@ type I18nChangeLocaleAction = {
  *   - If set to `query`, the locale is inferred from the search parameter
  *     `locale` in the current path
  *
- * @param props See {@link I18nProviderProps}.
+ * @param props See {@link I18nConfig}.
  *
  * @returns The context provider.
  */
@@ -45,7 +43,7 @@ export function I18nProvider({
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
   translations = {},
-}: I18nProviderProps) {
+}: PropsWithChildren<Partial<I18nConfig>>) {
   switch (localeChangeStrategy) {
     case 'action':
       return I18nActionProvider({ children, defaultLocale, localeChangeStrategy, translations })
@@ -68,12 +66,10 @@ const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, tra
     getLocalizedString: createGetLocalizedString(defaultLocale, config),
   })
 
-  const value = useMemo(() => ({ state, dispatch }), [state, dispatch])
-
   useDocumentLang(state.locale)
 
   return (
-    <I18nContext.Provider value={value}>
+    <I18nContext.Provider value={{ state, dispatch }}>
       {children}
     </I18nContext.Provider>
   )
@@ -98,12 +94,10 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, trans
     getLocalizedString: createGetLocalizedString(locale, config),
   }
 
-  const value = useMemo(() => ({ state }), [state])
-
   useDocumentLang(state.locale)
 
   return (
-    <I18nContext.Provider value={value}>
+    <I18nContext.Provider value={{ state }}>
       {children}
     </I18nContext.Provider>
   )

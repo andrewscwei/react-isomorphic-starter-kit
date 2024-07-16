@@ -1,10 +1,8 @@
 import { useEffect, type DependencyList } from 'react'
+import { type Metadata } from './Metadata.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
 
-type Params = {
-  statusBarStyle?: 'default' | 'black' | 'black-translucent'
-  title?: string
-}
+type Params = Metadata['apple']
 
 type Options = {
   auto?: boolean

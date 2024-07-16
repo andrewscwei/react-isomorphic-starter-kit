@@ -1,4 +1,7 @@
+export * from './injectMetadata.js'
 export * from './loadLazyComponents.js'
+export * from './Metadata.js'
+export * from './MetaProvider.js'
 export * from './updateElementAttributes.js'
 export * from './useFavicon.js'
 export * from './useMeta.js'

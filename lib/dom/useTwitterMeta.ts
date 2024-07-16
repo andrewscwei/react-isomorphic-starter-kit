@@ -1,12 +1,8 @@
 import { useEffect, type DependencyList } from 'react'
+import { type Metadata } from './Metadata.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
 
-type Params = {
-  card?: 'summary_large_image' | 'summary' | 'app' | 'player'
-  description?: string
-  image?: string
-  title?: string
-}
+type Params = Metadata['twitter']
 
 type Options = {
   auto?: boolean

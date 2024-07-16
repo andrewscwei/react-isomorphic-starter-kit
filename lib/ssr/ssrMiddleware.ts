@@ -46,12 +46,8 @@ const debug = createDebug(undefined, 'server')
  */
 export function ssrMiddleware({ entryPath, templatePath }: Params, { basePath, staticPath }: Options) {
   const router = Router()
-
   router.use(compression())
-
-  if (staticPath) {
-    router.use(serveStatic(staticPath, { basePath }))
-  }
+  if (staticPath) router.use(serveStatic(staticPath, { basePath }))
 
   router.use(async (req, res, next) => {
     try {

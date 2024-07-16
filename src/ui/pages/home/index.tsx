@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/index.js'
+import { useMeta } from '@lib/dom/useMeta.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { VERSION } from '../../../app.conf.js'
 import { ReactLogo } from '../../components/ReactLogo.js'
@@ -10,7 +10,6 @@ export function Component() {
   useMeta({
     title: ltxt('window-title-home'),
     description: ltxt('description'),
-    url: typeof window === 'undefined' ? undefined : window.location.hostname + window.location.pathname,
   })
 
   return (
