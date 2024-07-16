@@ -14,7 +14,6 @@ type Params = {
    */
   maskIcon?: {
     image?: string
-    color?: string
   }
   /**
    * Default favicon (for <link rel='icon'>).
@@ -64,10 +63,6 @@ export function useFavicon({
   ...maskIcon?.image ? [{
     name: 'href',
     value: maskIcon.image,
-  }] : [],
-  ...maskIcon?.color ? [{
-    name: 'color',
-    value: maskIcon.color,
   }] : []], {
     parent: window.document.head,
     autoCreate: !!maskIcon?.image,

@@ -9,7 +9,6 @@ export function Component() {
 
   useMeta({
     title: ltxt('window-title-home'),
-    description: ltxt('description'),
   })
 
   return (

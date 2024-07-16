@@ -20,26 +20,14 @@ export const BASE_PATH = env.BASE_PATH
 export const VERSION = `v${env.VERSION}+build.${env.BUILD_NUMBER}`
 
 /**
- * Fallback app title.
- */
-export const TITLE = 'React Isomorphic Starter Kit'
-
-/**
- * Fallback app description.
- */
-export const DESCRIPTION = 'React isomorphic app starter kit'
-
-/**
- * Value for the `theme-color` meta tag.
- */
-export const THEME_COLOR = '#15141a'
-
-/**
- * Value for the `color` attribute of the `mask-icon` meta tag.
- */
-export const MASK_ICON_COLOR = '#000'
-
-/**
  * Default locale.
  */
 export const DEFAULT_LOCALE = env.VITE_DEFAULT_LOCALE ?? 'en'
+
+export const METADATA = {
+  baseTitle: 'React Isomorphic Starter Kit',
+  description: 'React isomorphic app starter kit',
+  maskIconColor: '#000',
+  themeColor: '#15141a',
+  title: 'React Isomorphic Starter Kit',
+}

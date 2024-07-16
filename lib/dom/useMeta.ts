@@ -1,6 +1,6 @@
-import { joinURL } from '@lib/utils/joinURL.js'
 import { useContext, useEffect, type DependencyList } from 'react'
 import { useLocation } from 'react-router'
+import { joinURL } from '../utils/joinURL.js'
 import { type Metadata } from './Metadata.js'
 import { MetaContext } from './MetaProvider.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
@@ -38,8 +38,8 @@ function assign<T extends Record<string, any>>(target: T, assignee: T) {
 export function useMeta(metadata: Metadata, {
   auto = false,
 }: Options = {}, deps?: DependencyList) {
-  const { baseTitle, description, themeColor, title, url, apple = {}, openGraph = {}, twitter = {} } = metadata
   const context = useContext(MetaContext)
+  const { baseTitle, description, themeColor, title, url, apple = {}, openGraph = {}, twitter = {} } = metadata
   const location = useLocation()
 
   if (context?.context) {
@@ -48,6 +48,23 @@ export function useMeta(metadata: Metadata, {
       ...metadata,
     })
   }
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !metadata.locale) return
+
+    const prevVal = window.document.documentElement.getAttribute('lang')
+
+    window.document.documentElement.setAttribute('lang', metadata.locale)
+
+    return () => {
+      if (prevVal) {
+        window.document.documentElement.setAttribute('lang', prevVal)
+      }
+      else {
+        window.document.documentElement.removeAttribute('lang')
+      }
+    }
+  }, [metadata.locale, ...deps ?? []])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
