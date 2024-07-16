@@ -1,5 +1,5 @@
 import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
-import { type Metadata } from '../seo/index.js'
+import { type Metadata } from '../dom/Metadata.js'
 
 /**
  * Type defining the entry module for edge-side rendering.

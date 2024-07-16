@@ -1,4 +1,4 @@
-import { injectMetadata } from '@lib/dom/index.js'
+import { injectMetadata } from '../dom/index.js'
 import { type Module } from './Module.js'
 
 export function renderRoot({ render }: Module, template: string) {

@@ -8,13 +8,13 @@ import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { generateRobots, generateSitemap } from '@lib/seo/index.js'
 import { renderToReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
-import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf.js'
+import { BASE_PATH, BASE_URL, METADATA } from './app.conf.js'
 import { i18n } from './i18n.conf.js'
-import { routes as routesConfig } from './routes.conf.js'
+import { routes } from './routes.conf.js'
 import { seo } from './seo.conf.js'
 import { App } from './ui/App.js'
 
-const localizedRoutes = generateLocalizedRoutes(routesConfig, i18n)
+const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
 export const robots = () => generateRobots(localizedRoutes, seo)
 
@@ -30,12 +30,8 @@ export const render = async (req: Request, metadata?: Metadata, options: RenderT
   if (context instanceof Response) throw context
 
   const defaultMetadata: Metadata = {
-    baseTitle: TITLE,
+    ...METADATA,
     baseURL: BASE_URL,
-    description: DESCRIPTION,
-    maskIconColor: MASK_ICON_COLOR,
-    themeColor: THEME_COLOR,
-    title: TITLE,
     url: BASE_URL,
   }
 

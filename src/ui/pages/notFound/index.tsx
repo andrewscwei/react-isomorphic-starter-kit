@@ -7,7 +7,6 @@ export function Component() {
 
   useMeta({
     title: ltxt('window-title-not-found'),
-    description: ltxt('description'),
   })
 
   return (

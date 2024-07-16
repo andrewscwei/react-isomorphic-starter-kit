@@ -10,7 +10,6 @@ export function Component() {
 
   useMeta({
     title: ltxt('window-title-quote'),
-    description: ltxt('description'),
   })
 
   return (

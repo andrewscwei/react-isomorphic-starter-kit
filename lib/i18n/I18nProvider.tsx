@@ -2,7 +2,6 @@ import { createContext, useReducer, type Dispatch, type PropsWithChildren, type 
 import { useLocation } from 'react-router'
 import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './helpers/index.js'
 import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig, type Locale } from './types/index.js'
-import { useDocumentLang } from './useDocumentLang.js'
 
 type I18nState = I18nConfig & {
   getLocalizedPath: GetLocalizedPath
@@ -66,8 +65,6 @@ const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, tra
     getLocalizedString: createGetLocalizedString(defaultLocale, config),
   })
 
-  useDocumentLang(state.locale)
-
   return (
     <I18nContext.Provider value={{ state, dispatch }}>
       {children}
@@ -93,8 +90,6 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, trans
     getLocalizedPath: createGetLocalizedPath(locale, config),
     getLocalizedString: createGetLocalizedString(locale, config),
   }
-
-  useDocumentLang(state.locale)
 
   return (
     <I18nContext.Provider value={{ state }}>
