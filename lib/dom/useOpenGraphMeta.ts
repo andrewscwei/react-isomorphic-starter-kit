@@ -1,15 +1,8 @@
 import { useEffect, type DependencyList } from 'react'
+import { type Metadata } from './Metadata.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
 
-type Params = {
-  description?: string
-  image?: string
-  imageAlt?: string
-  siteName?: string
-  title?: string
-  type?: string
-  url?: string
-}
+type Params = Metadata['openGraph']
 
 type Options = {
   auto?: boolean

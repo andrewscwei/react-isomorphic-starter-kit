@@ -6,28 +6,15 @@ import { type Metadata } from '../seo/index.js'
  */
 export type Module = {
   /**
-   * Returns view specific metadata and render function for the provided
-   * request.
+   * Function for rendering the view into a pipeable stream.
    *
    * @param request The request.
+   * @param metadata The metadata context.
+   * @param options See {@link RenderToPipeableStreamOptions}.
    *
-   * @returns The metadata and the pipeable stream factory.
+   * @returns The pipeable stream.
    */
-  render: (request: Request) => Promise<{
-    /**
-     * The view metadata for the current request.
-     */
-    metadata: Metadata
-
-    /**
-     * Function for rendering the view into a pipeable stream.
-     *
-     * @param options See {@link RenderToPipeableStreamOptions}.
-     *
-     * @returns The pipeable stream.
-     */
-    stream: (options?: RenderToPipeableStreamOptions) => PipeableStream
-  }>
+  render: (request: Request, metadata?: Metadata, options?: RenderToPipeableStreamOptions) => Promise<PipeableStream>
 
   /**
    * Returns the content of the `robots.txt` file.

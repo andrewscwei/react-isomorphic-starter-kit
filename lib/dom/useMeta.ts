@@ -1,53 +1,32 @@
-import { useEffect, type DependencyList } from 'react'
+import { joinURL } from '@lib/utils/joinURL.js'
+import { useContext, useEffect, type DependencyList } from 'react'
+import { useLocation } from 'react-router'
+import { type Metadata } from './Metadata.js'
+import { MetaContext } from './MetaProvider.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
 import { useAppleMeta } from './useAppleMeta.js'
 import { useOpenGraphMeta } from './useOpenGraphMeta.js'
 import { useTwitterMeta } from './useTwitterMeta.js'
 
-type Params = {
-  /**
-   * The base title of the application.
-   */
-  baseTitle?: string
-
-  /**
-   * The document title.
-   */
-  title?: string
-
-  /**
-   * The document description.
-   */
-  description?: string
-
-  /**
-   * The theme color.
-   */
-  themeColor?: string
-
-  /**
-   * The document URL.
-   */
-  url?: string
-
-  /**
-   * The Apple meta tags (see {@link useAppleMeta}).
-   */
-  apple?: Parameters<typeof useAppleMeta>[0]
-
-  /**
-   * The Open Graph meta tags (see {@link useOpenGraphMeta}).
-   */
-  openGraph?: Parameters<typeof useOpenGraphMeta>[0]
-
-  /**
-   * The Twitter meta tags (see {@link useTwitterMeta}).
-   */
-  twitter?: Parameters<typeof useTwitterMeta>[0]
-}
-
 type Options = {
   auto?: boolean
+}
+
+function assign<T extends Record<string, any>>(target: T, assignee: T) {
+  for (const key in assignee) {
+    if (Object.prototype.hasOwnProperty.call(assignee, key) === false) continue
+
+    const assignedValue = assignee[key]
+
+    if (assignedValue === undefined || assignedValue === null) continue
+
+    if (typeof assignedValue === 'object') {
+      assign(target[key], assignedValue)
+    }
+    else {
+      target[key] = assignedValue
+    }
+  }
 }
 
 /**
@@ -56,18 +35,20 @@ type Options = {
  * @param params See {@link Params}.
  * @param deps Additional dependencies.
  */
-export function useMeta({
-  baseTitle,
-  description,
-  themeColor,
-  title,
-  url,
-  apple = {},
-  openGraph = {},
-  twitter = {},
-}: Params, {
+export function useMeta(metadata: Metadata, {
   auto = false,
 }: Options = {}, deps?: DependencyList) {
+  const { baseTitle, description, themeColor, title, url, apple = {}, openGraph = {}, twitter = {} } = metadata
+  const context = useContext(MetaContext)
+  const location = useLocation()
+
+  if (context?.context) {
+    assign(context.context, {
+      url: joinURL(location.pathname, context.default.baseURL ?? ''),
+      ...metadata,
+    })
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') return
 

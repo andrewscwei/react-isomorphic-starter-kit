@@ -38,7 +38,6 @@ const debug = createDebug(undefined, 'server')
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 export async function devMiddleware({ entryPath, templatePath }: Params, { basePath = '/' }: Options = {}) {
-  const router = Router()
   const { createServer } = await import ('vite')
   const vite = await createServer({
     server: { middlewareMode: true },
@@ -46,6 +45,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, { baseP
     base: basePath,
   })
 
+  const router = Router()
   router.use(vite.middlewares)
 
   router.use(async (req, res, next) => {

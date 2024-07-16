@@ -2,8 +2,10 @@
  * @file Server entry file.
  */
 
+import { type Metadata } from '@lib/dom/Metadata.js'
+import { MetaProvider } from '@lib/dom/MetaProvider.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
-import { generateMetadata, generateRobots, generateSitemap } from '@lib/seo/index.js'
+import { generateRobots, generateSitemap } from '@lib/seo/index.js'
 import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
 import { BASE_PATH, BASE_URL, DESCRIPTION, MASK_ICON_COLOR, THEME_COLOR, TITLE } from './app.conf.js'
@@ -21,29 +23,29 @@ export const sitemap = () => generateSitemap(localizedRoutes, seo, {
   modifiedAt: new Date().toISOString(),
 })
 
-export const render = async (req: Request) => {
+export const render = async (req: Request, metadata?: Metadata, options: RenderToPipeableStreamOptions = {}) => {
   const handler = createStaticHandler(localizedRoutes, { basename: BASE_PATH })
   const context = await handler.query(req)
-  if (context instanceof Response) throw Error('Redirect response from static handler')
 
-  const metadata = await generateMetadata(context, { baseURL: BASE_URL, i18n, routes: localizedRoutes })
+  if (context instanceof Response) throw context
 
-  return {
-    metadata: {
-      baseTitle: TITLE,
-      baseURL: BASE_URL,
-      description: DESCRIPTION,
-      maskIconColor: MASK_ICON_COLOR,
-      themeColor: THEME_COLOR,
-      title: TITLE,
-      ...metadata,
-    },
-    stream: (options: RenderToPipeableStreamOptions = {}) => renderToPipeableStream(
-      (
-        <App>
-          <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
-        </App>
-      ), options,
-    ),
+  const defaultMetadata: Metadata = {
+    baseTitle: TITLE,
+    baseURL: BASE_URL,
+    description: DESCRIPTION,
+    maskIconColor: MASK_ICON_COLOR,
+    themeColor: THEME_COLOR,
+    title: TITLE,
+    url: BASE_URL,
   }
+
+  return renderToPipeableStream(
+    (
+      <App>
+        <MetaProvider context={metadata} default={defaultMetadata}>
+          <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
+        </MetaProvider>
+      </App>
+    ), options,
+  )
 }

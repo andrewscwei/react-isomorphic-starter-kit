@@ -6,7 +6,6 @@ import { loadLazyComponents } from '@lib/dom/index.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { createDebug } from '@lib/utils/createDebug.js'
 import { rethrow } from '@lib/utils/rethrow.js'
-import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
@@ -36,11 +35,9 @@ async function main() {
 
   hydrateRoot(
     container, (
-      <StrictMode>
-        <App>
-          <RouterProvider router={createBrowserRouter(localizedRoutes, { basename: BASE_PATH })}/>
-        </App>
-      </StrictMode>
+      <App>
+        <RouterProvider router={createBrowserRouter(localizedRoutes, { basename: BASE_PATH })}/>
+      </App>
     ),
   )
 
