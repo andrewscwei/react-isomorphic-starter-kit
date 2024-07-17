@@ -1,9 +1,11 @@
 import PostCSSPurgeCSS from '@fullhuman/postcss-purgecss'
 import react from '@vitejs/plugin-react'
+import { minify } from 'html-minifier-terser'
+import fs from 'node:fs'
 import path from 'node:path'
 import PostCSSImportPlugin from 'postcss-import'
 import PostCSSPresetEnvPlugin from 'postcss-preset-env'
-import { loadEnv } from 'vite'
+import { loadEnv, type Plugin } from 'vite'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 import packageInfo from './package.json'
@@ -93,6 +95,31 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       react(),
       svgr(),
+      ...isDev ? [] : [{
+        name: 'html-minifier-terser',
+        enforce: 'post',
+        apply: 'build',
+        async closeBundle() {
+          const outDir = path.resolve(__dirname, 'build')
+          const files = fs.readdirSync(outDir)
+
+          for (const file of files) {
+            if (file.endsWith('.html')) {
+              const filePath = path.join(outDir, file)
+              const html = fs.readFileSync(filePath, 'utf8')
+              const minifiedHtml = await minify(html, {
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true,
+              })
+
+              fs.writeFileSync(filePath, minifiedHtml, 'utf8')
+            }
+          }
+        },
+      } as Plugin],
     ],
     resolve: {
       alias: {
