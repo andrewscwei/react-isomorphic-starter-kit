@@ -36,10 +36,15 @@ export function renderRoot({ render }: Module, template: string) {
       })
     }
     catch (err) {
-      return new Response(JSON.stringify({ error: err }), {
-        headers: { 'content-type': 'application/json' },
-        status: 500,
-      })
+      if (err instanceof Response) {
+        return err
+      }
+      else {
+        return new Response(JSON.stringify({ error: err }), {
+          headers: { 'content-type': 'application/json' },
+          status: 500,
+        })
+      }
     }
   }
 }
