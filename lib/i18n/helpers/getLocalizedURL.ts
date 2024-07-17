@@ -37,8 +37,15 @@ export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, re
     }
     case 'path':
     case 'auto':
-    default:
-      return constructURL({ ...parts, path: parts.path ? [targetLocale, ...parts.path.split('/').filter(t => t)].join('/') : undefined })
+    default: {
+      const pathParts = parts.path?.split('/').filter(t => t)
+      if (pathParts && supportedLocales.includes(pathParts[0] as Locale)) pathParts.shift()
+
+      return constructURL({
+        ...parts,
+        path: pathParts ? [targetLocale, ...pathParts].join('/') : undefined,
+      })
+    }
   }
 }
 
