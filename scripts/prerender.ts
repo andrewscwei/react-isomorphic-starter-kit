@@ -47,13 +47,13 @@ async function generatePages() {
   const sitemap = parser.parse(sitemapFile)
   const urls = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
   const agent = request(app)
+  const outputs: Record<string, string> = {}
 
   for (const url of urls) {
     try {
       const { text: html } = await agent.get(url)
       const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
-      fs.mkdirSync(path.dirname(file), { recursive: true })
-      fs.writeFileSync(file, html)
+      outputs[file] = html
 
       console.log(`Generating ${url}... OK: ${file}`)
     }
@@ -61,6 +61,11 @@ async function generatePages() {
       console.log(`Generating ${url}... ERR: ${err}`)
       throw err
     }
+  }
+
+  for (const [file, html] of Object.entries(outputs)) {
+    fs.mkdirSync(path.dirname(file), { recursive: true })
+    fs.writeFileSync(file, html)
   }
 }
 
@@ -78,7 +83,7 @@ async function cleanup() {
   const removeExtensions = ['.js', '.d.ts']
 
   files.forEach(file => {
-    if (removeExtensions.includes(path.extname(file))) {
+    if (removeExtensions.find(t => file.endsWith(t))) {
       const filePath = path.resolve(outDir, file)
 
       fs.unlink(filePath, err => {
