@@ -61,7 +61,7 @@ export function renderRoot({ render }: Module, template: string, { timeout = 10_
     }
     catch (err) {
       if (err instanceof Response) {
-        return res.redirect(err.status, err.headers.get('Location') ?? '')
+        res.redirect(err.status, err.headers.get('Location') ?? '')
       }
       else {
         next(err)
