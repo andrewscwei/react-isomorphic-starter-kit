@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import request from 'supertest'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const baseURL = process.env.BASE_URL ?? '/'
+const baseURL = process.env.BASE_URL ?? ''
 const outDir = path.resolve(__dirname, '../build')
 const { default: app } = await import(path.resolve(outDir, 'index.js'))
 
@@ -20,10 +20,10 @@ async function generateSitemap() {
     const { text: str } = await request(app).get('/sitemap.xml')
     fs.writeFileSync(path.resolve(outDir, 'sitemap.xml'), str)
 
-    console.log('Generating sitemap... OK')
+    console.log('Generating sitemap.xml... OK')
   }
   catch (err) {
-    console.log(`Generating sitemap... ERR: ${err}`)
+    console.log(`Generating sitemap.xml... ERR: ${err}`)
     throw err
   }
 }
@@ -46,10 +46,11 @@ async function generatePages() {
   const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
   const urls = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const agent = request(app)
 
   for (const url of urls) {
     try {
-      const { text: html } = await request(app).get(url)
+      const { text: html } = await agent.get(url)
       const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
       fs.mkdirSync(path.dirname(file), { recursive: true })
       fs.writeFileSync(file, html)
@@ -69,7 +70,7 @@ async function generate404() {
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
 
-  console.log(`Generating <${file}>... OK`)
+  console.log(`Generating 404.html... OK: ${file}`)
 }
 
 async function cleanup() {
