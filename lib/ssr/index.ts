@@ -1,6 +1,7 @@
 export * from './createFetchRequest.js'
 export * from './devMiddleware.js'
 export * from './Module.js'
+export * from './RenderFunction.js'
 export * from './renderRoot.js'
 export * from './serveRobots.js'
 export * from './serveSitemap.js'
