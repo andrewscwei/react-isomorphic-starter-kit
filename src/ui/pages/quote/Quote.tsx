@@ -2,7 +2,7 @@ import { useMeta } from '@lib/dom/useMeta.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { useLoaderData } from 'react-router'
 import { type Quote } from '../../../useCases/GetQuote.js'
-import styles from './index.module.css'
+import styles from './Quote.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()

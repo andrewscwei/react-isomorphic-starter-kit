@@ -2,7 +2,7 @@ import { useMeta } from '@lib/dom/useMeta.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { VERSION } from '../../../app.conf.js'
 import { ReactLogo } from '../../components/ReactLogo.js'
-import styles from './index.module.css'
+import styles from './Home.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
