@@ -6,7 +6,8 @@ import { type Metadata } from '@lib/dom/Metadata.js'
 import { MetaProvider } from '@lib/dom/MetaProvider.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { generateRobots, generateSitemap } from '@lib/seo/index.js'
-import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+import { type RenderFunction } from '@lib/ssr/RenderFunction.js'
+import { renderToPipeableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
 import { BASE_PATH, BASE_URL, METADATA } from './app.conf.js'
 import { i18n } from './i18n.conf.js'
@@ -23,7 +24,7 @@ export const sitemap = () => generateSitemap(localizedRoutes, seo, {
   modifiedAt: new Date().toISOString(),
 })
 
-export const render = async (req: Request, metadata?: Metadata, options: RenderToPipeableStreamOptions = {}) => {
+export const render: RenderFunction = async (req, metadata, options = {}) => {
   const handler = createStaticHandler(localizedRoutes, { basename: BASE_PATH })
   const context = await handler.query(req)
 

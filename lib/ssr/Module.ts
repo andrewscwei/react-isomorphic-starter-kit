@@ -1,20 +1,13 @@
-import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
-import { type Metadata } from '../dom/Metadata.js'
+import { type RenderFunction } from './RenderFunction.js'
 
 /**
  * Type defining the entry module for server-side rendering.
  */
 export type Module = {
   /**
-   * Function for rendering the view into a pipeable stream.
-   *
-   * @param request The request.
-   * @param metadata The metadata context.
-   * @param options See {@link RenderToPipeableStreamOptions}.
-   *
-   * @returns The pipeable stream.
+   * See {@link RenderFunction}.
    */
-  render: (request: Request, metadata?: Metadata, options?: RenderToPipeableStreamOptions) => Promise<PipeableStream>
+  render: RenderFunction
 
   /**
    * Returns the content of the `robots.txt` file.
