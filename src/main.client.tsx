@@ -31,7 +31,7 @@ async function render() {
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
   const container = window.document.getElementById('root') ?? rethrow('Invalid application root')
 
-  await loadLazyComponents(localizedRoutes)
+  await loadLazyComponents(localizedRoutes, { basePath: BASE_PATH })
 
   hydrateRoot(
     container, (
