@@ -24,6 +24,9 @@ export const VERSION = `v${env.VERSION}+build.${env.BUILD_NUMBER}`
  */
 export const DEFAULT_LOCALE = env.VITE_DEFAULT_LOCALE ?? 'en'
 
+/**
+ * Default metadata.
+ */
 export const METADATA = {
   baseTitle: 'React Isomorphic Starter Kit',
   description: 'React isomorphic app starter kit',

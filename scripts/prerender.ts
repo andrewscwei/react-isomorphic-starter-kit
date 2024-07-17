@@ -9,9 +9,11 @@ import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
+import { joinURL } from '../lib/utils/joinURL.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''
+const basePath = process.env.BASE_PATH ?? '/'
 const outDir = path.resolve(__dirname, '../build')
 const { default: app } = await import(path.resolve(outDir, 'index.js'))
 
@@ -51,7 +53,7 @@ async function generatePages() {
 
   for (const url of urls) {
     try {
-      const { text: html } = await agent.get(url)
+      const { text: html } = await agent.get(joinURL(basePath, url))
       const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
       outputs[file] = html
 
@@ -70,7 +72,7 @@ async function generatePages() {
 }
 
 async function generate404() {
-  const { text: html } = await request(app).get('/404')
+  const { text: html } = await request(app).get(joinURL(basePath, '/404'))
   const file = path.resolve(outDir, '404.html')
   fs.mkdirSync(path.dirname(file), { recursive: true })
   fs.writeFileSync(file, html)
