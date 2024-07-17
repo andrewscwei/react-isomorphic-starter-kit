@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run start:${RUNTIME:-server}",
-    "start:static": "vite preview --port ${PORT:-8080}",
+    "start:static": "serve build -p ${PORT:-8080}",
     "start:server": "node build",
     "start:edge": "wrangler pages dev --port=${PORT:-8080} --compatibility-date=2024-06-22 ./build",
     "clean": "rimraf build",
@@ -73,6 +73,7 @@
     "postcss-preset-env": "^9.6.0",
     "rimraf": "^6.0.1",
     "semantic-release": "^24.0.0",
+    "serve": "^14.2.3",
     "stylelint": "^16.7.0",
     "supertest": "^7.0.0",
     "tsx": "^4.16.2",
