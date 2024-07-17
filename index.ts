@@ -8,10 +8,10 @@ import { fileURLToPath } from 'node:url'
 import { createDebug } from './lib/utils/createDebug.js'
 
 const BASE_PATH = process.env.BASE_PATH ?? '/'
+const PORT = process.env.PORT ?? '8080'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const debug = createDebug(undefined, 'server')
-const port = process.env.PORT ?? '8080'
 const app = express()
 
 if (process.env.NODE_ENV === 'development') {
@@ -40,16 +40,16 @@ app.use(((err, req, res) => {
   res.status(err.status || 500).send(err)
 }) as ErrorRequestHandler)
 
-app.listen(port)
+app.listen(PORT)
   .on('error', (error: NodeJS.ErrnoException) => {
     if (error.syscall !== 'listen') throw error
 
     switch (error.code) {
       case 'EACCES':
-        debug(`Port ${port} requires elevated privileges`)
+        debug(`Port ${PORT} requires elevated privileges`)
         process.exit(1)
       case 'EADDRINUSE':
-        debug(`Port ${port} is already in use`)
+        debug(`Port ${PORT} is already in use`)
         process.exit(1)
       default:
         throw error
