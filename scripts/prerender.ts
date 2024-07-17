@@ -10,12 +10,20 @@ import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
 import { joinURL } from '../lib/utils/joinURL.js'
+import { DEFAULT_LOCALE } from '../src/app.conf.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''
 const basePath = process.env.BASE_PATH ?? '/'
 const outDir = path.resolve(__dirname, '../build')
 const { default: app } = await import(path.resolve(outDir, 'index.js'))
+
+function getLocales() {
+  const files = fs.readdirSync(path.resolve(__dirname, '../src/locales'), { recursive: true, withFileTypes: true })
+  const locales = files.filter(f => !f.isFile() || path.extname(f.name) === '.json').map(f => f.name.replace('.json', ''))
+
+  return locales
+}
 
 async function generateSitemap() {
   try {
@@ -47,15 +55,17 @@ async function generatePages() {
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const urls = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const locales = getLocales()
+  const pageURLs = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const notFoundURLs = locales.map(t => t === DEFAULT_LOCALE ? '/404' : `/${t}/404`)
   const agent = request(app)
-  const outputs: Record<string, string> = {}
+  const writables: Record<string, string> = {}
 
-  for (const url of urls) {
+  for (const url of pageURLs) {
     try {
       const { text: html } = await agent.get(joinURL(basePath, url))
       const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
-      outputs[file] = html
+      writables[file] = html
 
       console.log(`Generating ${url}... OK: ${file}`)
     }
@@ -65,19 +75,24 @@ async function generatePages() {
     }
   }
 
-  for (const [file, html] of Object.entries(outputs)) {
+  for (const url of notFoundURLs) {
+    try {
+      const { text: html } = await agent.get(joinURL(basePath, url))
+      const file = path.join(outDir, `${url}.html`)
+      writables[file] = html
+
+      console.log(`Generating ${url}... OK: ${file}`)
+    }
+    catch (err) {
+      console.log(`Generating ${url}... ERR: ${err}`)
+      throw err
+    }
+  }
+
+  for (const [file, html] of Object.entries(writables)) {
     fs.mkdirSync(path.dirname(file), { recursive: true })
     fs.writeFileSync(file, html)
   }
-}
-
-async function generate404() {
-  const { text: html } = await request(app).get(joinURL(basePath, '/404'))
-  const file = path.resolve(outDir, '404.html')
-  fs.mkdirSync(path.dirname(file), { recursive: true })
-  fs.writeFileSync(file, html)
-
-  console.log(`Generating 404.html... OK: ${file}`)
 }
 
 async function cleanup() {
@@ -106,7 +121,6 @@ async function main() {
   await generateSitemap()
   await generateRobots()
   await generatePages()
-  await generate404()
   await cleanup()
 
   process.exit()
