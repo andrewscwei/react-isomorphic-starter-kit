@@ -14,7 +14,7 @@ const debug = createDebug(undefined, 'server')
 const port = process.env.PORT ?? '8080'
 const app = express()
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   const { devMiddleware } = await import('./lib/ssr/index.js')
 
   app.use(await devMiddleware({
