@@ -1,6 +1,5 @@
 import compression from 'compression'
 import { Router } from 'express'
-import { minify } from 'html-minifier-terser'
 import fs from 'node:fs/promises'
 import { createDebug } from '../utils/createDebug.js'
 import { type Module } from './Module.js'
@@ -52,10 +51,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, { basePath, s
   router.use(async (req, res, next) => {
     try {
       const [template, module] = await Promise.all([
-        fs.readFile(templatePath, 'utf-8').then(t => minify(t, {
-          collapseWhitespace: true,
-          removeComments: false,
-        })),
+        fs.readFile(templatePath, 'utf-8'),
         import(entryPath),
       ])
 
