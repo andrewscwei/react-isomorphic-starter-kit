@@ -10,7 +10,7 @@ import debug from 'debug'
  * @returns A {@link debug} instance.
  */
 export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV !== 'development') {
     return () => {}
   }
   else {
