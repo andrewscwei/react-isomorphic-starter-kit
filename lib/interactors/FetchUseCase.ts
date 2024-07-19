@@ -79,7 +79,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    * Transforms the input parameters of this use case prior to passing them to
    * the request query or body, depending on the request method.
    *
-   * @param params - The input parameters of this use case.
+   * @param params The input parameters of this use case.
    *
    * @returns The transformed parameters to be used to make the request.
    */
@@ -91,7 +91,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    * Transforms the payload of the response prior to returning it as a result of
    * the execution of this use case.
    *
-   * @param payload - The response payload.
+   * @param payload The response payload.
    *
    * @returns The transformed result.
    */
@@ -103,7 +103,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
    * Transforms any error encountered during the execution of this use case
    * prior to emitting it.
    *
-   * @param error - The error.
+   * @param error The error.
    *
    * @returns The transformed error.
    */
@@ -225,7 +225,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
   /**
    * Returns the endpoint of this {@link FetchUseCase}.
    *
-   * @param params - The input parameters of this use case.
+   * @param params The input parameters of this use case.
    *
    * @return The endpoint.
    */

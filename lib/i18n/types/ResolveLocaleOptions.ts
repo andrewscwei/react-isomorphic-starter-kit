@@ -1,5 +1,4 @@
 import { type Locale } from './Locale.js'
-import { type URLParts } from './URLParts.js'
 
 /**
  * Options that determine how locales are resolved from a URL.
@@ -33,12 +32,9 @@ export type ResolveLocaleOptions = {
   /**
    * Custom resolver function.
    *
-   * @param protocol - The matched protocol of the provided url, if available.
-   * @param host - The matched host of the provided url, if available.
-   * @param port - The matched port of the provided url, if available.
-   * @param path - The matched path of the provided url, if available.
+   * @param url The URL to resolve.
    *
    * @returns The resolved locale.
    */
-  resolver?: (urlParts: URLParts) => Locale | undefined
+  resolver?: (url: string) => Locale | undefined
 }

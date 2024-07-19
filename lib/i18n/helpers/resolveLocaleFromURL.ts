@@ -46,8 +46,7 @@ function manualResolveLocaleFromURL(url: string, {
   resolver,
   supportedLocales = [],
 }: Omit<Required<ResolveLocaleOptions>, 'defaultLocale' | 'resolveStrategy'>): Result | undefined {
-  const parts = parseURL(url)
-  const matchedLocale = resolver?.(parts)
+  const matchedLocale = resolver?.(url)
 
   if (matchedLocale && supportedLocales.indexOf(matchedLocale) >= 0) return { locale: matchedLocale, resolveStrategy: 'custom' }
 

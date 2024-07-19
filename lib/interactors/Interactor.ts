@@ -20,7 +20,7 @@ export interface Interactor<UseCaseParams, UseCaseResult> {
   /**
    * Runs the use case.
    *
-   * @param params - The input parameters of the use case.
+   * @param params The input parameters of the use case.
    */
   run: (params?: Partial<UseCaseParams>) => Promise<void>
 

@@ -12,8 +12,8 @@ export interface UseCase<Params, Result, Options> {
   /**
    * Runs this use case.
    *
-   * @param params - The input parameters for running this use case.
-   * @param options - Options for running this use case.
+   * @param params The input parameters for running this use case.
+   * @param options Options for running this use case.
    *
    * @throws If validation fails for the input parameters.
    */

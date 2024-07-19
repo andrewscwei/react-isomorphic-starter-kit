@@ -17,14 +17,14 @@ type Options<Result> = {
   /**
    * Handler invoked when the use case fails while running.
    *
-   * @param error - The error encountered while running the use case.
+   * @param error The error encountered while running the use case.
    */
   onError?: (error: Error) => void
 
   /**
    * Handler invoked when the use case runs successfully.
    *
-   * @param result - The result of the successful use case interaction.
+   * @param result The result of the successful use case interaction.
    */
   onSuccess?: (result: Result) => void
 }
