@@ -1,5 +1,4 @@
 import { Outlet, type RouteObject } from 'react-router'
-import { joinURL } from '../utils/joinURL.js'
 import { I18nProvider } from './I18nProvider.js'
 import { createResolveLocaleOptions } from './helpers/index.js'
 import { type I18nConfig } from './types/index.js'
@@ -34,7 +33,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   if (path !== undefined) {
     switch (resolveStrategy) {
       case 'path': {
-        const localizedRoutes = supportedLocales?.filter(t => t !== defaultLocale).map(t => ({ ...route, path: joinURL(`/${t}`, path) }))
+        const localizedRoutes = supportedLocales?.filter(l => l !== defaultLocale).map(l => ({ ...route, path: `/${l}${path.startsWith('/') ? path : `/${path}`}` }))
 
         return [
           route,
