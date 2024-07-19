@@ -1,6 +1,5 @@
 import { useContext, useEffect, type DependencyList } from 'react'
 import { useLocation } from 'react-router'
-import { joinURL } from '../utils/joinURL.js'
 import { type Metadata } from './Metadata.js'
 import { MetaContext } from './MetaProvider.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
@@ -44,7 +43,7 @@ export function useMeta(metadata: Metadata, {
 
   if (context?.context) {
     assign(context.context, {
-      url: joinURL(location.pathname, context.default.baseURL ?? ''),
+      url: `${context.default.baseURL ?? ''}${location.pathname.startsWith('/') ? location.pathname : `/${location.pathname}`}`,
       ...metadata,
     })
   }
