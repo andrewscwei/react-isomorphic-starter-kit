@@ -1,3 +1,7 @@
 {
-  "typescript.preferences.importModuleSpecifierEnding": "js"
+  "files.exclude": {
+    ".wrangler/": true,
+    "coverage/": true,
+    "test-results/": true
+  }
 }
