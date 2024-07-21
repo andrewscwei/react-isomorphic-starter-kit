@@ -10,7 +10,6 @@ import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
 import { joinURL } from '../lib/utils/joinURL.js'
-import { DEFAULT_LOCALE } from '../src/app.config.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''
@@ -56,8 +55,8 @@ async function generatePages() {
   const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
   const locales = getLocales()
-  const pageURLs = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
-  const notFoundURLs = locales.map(t => t === DEFAULT_LOCALE ? '/404' : `/${t}/404`)
+  const pageURLs: string[] = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
+  const notFoundURLs = pageURLs.map(url => new RegExp(`^/(${locales.join('|')})?/?$`).test(url) ? joinURL(url, '404') : undefined).filter(t => t !== undefined)
   const agent = request(app)
   const writables: Record<string, string> = {}
 
