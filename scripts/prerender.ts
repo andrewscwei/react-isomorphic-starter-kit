@@ -16,7 +16,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''
 const basePath = process.env.BASE_PATH ?? '/'
 const outDir = path.resolve(__dirname, '../build')
-const { default: app } = await import(path.resolve(outDir, 'index.js'))
+const { app } = await import(path.resolve(outDir, 'index.js'))
 
 function getLocales() {
   const files = fs.readdirSync(path.resolve(__dirname, '../src/locales'), { recursive: true, withFileTypes: true })

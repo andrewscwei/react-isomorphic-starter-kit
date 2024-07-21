@@ -12,7 +12,8 @@ const PORT = process.env.PORT ?? '8080'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const debug = createDebug(undefined, 'server')
-const app = express()
+
+export const app = express()
 
 if (process.env.NODE_ENV === 'development') {
   const { devMiddleware } = await import('./lib/ssr/index.js')
@@ -59,14 +60,5 @@ app.listen(PORT)
     debug('Starting app...', 'OK')
   })
 
-process.on('SIGINT', reason => {
-  debug(`Received ${reason}, shutting down...`)
-  process.exit(0)
-})
-
-process.on('unhandledRejection', reason => {
-  console.error('Unhandled Promise rejection:', reason)
-  process.exit(1)
-})
-
-export default app
+process.on('SIGINT', () => process.exit(0))
+process.on('SIGTERM', () => process.exit(0))
