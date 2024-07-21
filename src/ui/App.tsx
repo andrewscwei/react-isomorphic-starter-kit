@@ -1,7 +1,7 @@
 import { useFavicon } from '@lib/dom/index.js'
 import { joinURL } from '@lib/utils/joinURL.js'
 import { StrictMode, type PropsWithChildren } from 'react'
-import { BASE_PATH } from '../app.conf.js'
+import { BASE_PATH } from '../app.config.js'
 import './styles/global.css'
 import './styles/theme.css'
 

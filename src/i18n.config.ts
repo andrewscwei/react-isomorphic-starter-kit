@@ -3,7 +3,7 @@
  */
 
 import { defineConfig, type Locale } from '@lib/i18n/index.js'
-import { DEFAULT_LOCALE } from './app.conf.js'
+import { DEFAULT_LOCALE } from './app.config.js'
 
 export const i18n = defineConfig({
   defaultLocale: DEFAULT_LOCALE as Locale,
