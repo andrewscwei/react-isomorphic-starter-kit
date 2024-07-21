@@ -2,9 +2,8 @@
  * @file Edge entry file.
  */
 
-import { type Metadata } from '@lib/dom/Metadata.js'
-import { MetaProvider } from '@lib/dom/MetaProvider.js'
-import { type RenderFunction } from '@lib/esr/RenderFunction.js'
+import { MetaProvider, type Metadata } from '@lib/dom/index.js'
+import { type RenderFunction } from '@lib/esr/index.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { generateRobots, generateSitemap } from '@lib/seo/index.js'
 import { renderToReadableStream } from 'react-dom/server'

@@ -2,6 +2,8 @@
  * @file Application config.
  */
 
+import { type Locale } from '@lib/i18n'
+
 const env = typeof import.meta.env !== 'undefined' ? import.meta.env : process.env as ImportMetaEnv
 
 /** URL of the app. */
@@ -14,7 +16,7 @@ export const BASE_PATH = env.BASE_PATH
 export const VERSION = `v${env.VERSION}+build.${env.BUILD_NUMBER}`
 
 /** Default locale. */
-export const DEFAULT_LOCALE = env.VITE_DEFAULT_LOCALE ?? 'en'
+export const DEFAULT_LOCALE: Locale = env.DEFAULT_LOCALE
 
 /** Default metadata. */
 export const METADATA = {

@@ -127,7 +127,7 @@ When using `react-isomorphic-starter-kit` as a template, follow these steps to s
 1. Replace `LICENSE` file
 2. Edit `README.md`
 3. Edit fields in `package.json`
-4. Edit fields in `src/app.conf.ts`
+4. Edit fields in `src/app.config.ts`
 5. Edit resources in `res/`, then ensure to replace the generated assets in `src/static/`
 6. Edit files in `src/ui/`
 7. Edit translations in `src/locales/`

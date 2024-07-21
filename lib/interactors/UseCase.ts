@@ -29,12 +29,7 @@ export interface UseCase<Params, Result, Options> {
  * Namespace containing common {@link UseCase} errors.
  */
 export namespace UseCaseError {
-  export const CANCELLED = (message: string = 'Use case cancelled') => {
-    const error = Error(message)
-    Object.defineProperty(error, 'status', { value: 503 })
-
-    return error
-  }
+  export const CANCELLED = Error('Use case cancelled')
 
   export function isCancelled(error: any) {
     if ('status' in error) return error.status === 503

@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "lib": [
-      "ES2020",
-      "DOM",
       "DOM.Iterable",
+      "DOM",
+      "ES2020",
       "WebWorker"
     ],
     "module": "ESNext",
@@ -17,7 +16,6 @@
         "./lib/*"
       ]
     },
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
@@ -27,11 +25,11 @@
     ]
   },
   "exclude": [
-    "node_modules",
-    "build"
+    "build",
+    "node_modules"
   ],
   "include": [
-    "src",
-    "lib"
+    "lib",
+    "src"
   ]
 }

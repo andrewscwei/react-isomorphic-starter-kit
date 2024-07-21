@@ -10,7 +10,7 @@ import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
 import { joinURL } from '../lib/utils/joinURL.js'
-import { DEFAULT_LOCALE } from '../src/app.conf.js'
+import { DEFAULT_LOCALE } from '../src/app.config.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''

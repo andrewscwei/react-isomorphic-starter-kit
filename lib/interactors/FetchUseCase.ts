@@ -155,7 +155,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       if ((err as any).name === 'AbortError') {
         debug(`[${useCaseName}] Running fetch use case...`, `CANCEL (${Math.round(performance.now() - t0)}ms)`, err)
 
-        throw UseCaseError.CANCELLED(`Use case [${useCaseName}] cancelled`)
+        throw UseCaseError.CANCELLED
       }
 
       debug(`[${useCaseName}] Running fetch use case...`, `ERR (${Math.round(performance.now() - t0)}ms)`, err)

@@ -1,31 +1,24 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "diagnostics": true,
     "jsx": "react-jsx",
     "lib": [
-      "ES2020",
       "DOM",
-      "DOM.Iterable"
+      "ES2020"
     ],
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "outDir": "build",
-    "paths": {
-      "@lib/*": [
-        "./lib/*"
-      ]
-    },
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
     "target": "ES2020"
   },
   "exclude": [
-    "node_modules",
-    "build"
+    "build",
+    "node_modules"
   ],
   "include": [
     "index.ts",

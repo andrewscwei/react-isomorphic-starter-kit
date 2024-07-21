@@ -11,13 +11,10 @@ import { defineConfig } from 'vitest/config'
 import packageInfo from './package.json'
 
 const parseBuildArgs = (env: Record<string, string>) => ({
-  // Base path of the router (i.e. the `basename` property)
   BASE_PATH: env.BASE_PATH ?? '/',
-  // Base URL of the app
   BASE_URL: env.BASE_URL ?? '',
-  // Build number
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
-  // Version number
+  DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   VERSION: packageInfo.version,
 })
 
