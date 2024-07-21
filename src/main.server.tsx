@@ -2,13 +2,13 @@
  * @file Server entry file.
  */
 
-import { MetaProvider, type Metadata } from '@lib/dom/index.js'
+import { MetaProvider } from '@lib/dom/index.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { generateRobots, generateSitemap } from '@lib/seo/index.js'
 import { type RenderFunction } from '@lib/ssr/index.js'
 import { renderToPipeableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server'
-import { BASE_PATH, BASE_URL, METADATA } from './app.config.js'
+import { BASE_PATH, BASE_URL, DEFAULT_METADATA } from './app.config.js'
 import { i18n } from './i18n.config.js'
 import { routes } from './routes.config.js'
 import { seo } from './seo.config.js'
@@ -29,16 +29,10 @@ export const render: RenderFunction = async (req, metadata, options = {}) => {
 
   if (context instanceof Response) throw context
 
-  const defaultMetadata: Metadata = {
-    ...METADATA,
-    baseURL: BASE_URL,
-    url: BASE_URL,
-  }
-
   return renderToPipeableStream(
     (
       <App>
-        <MetaProvider context={metadata} default={defaultMetadata}>
+        <MetaProvider context={metadata} default={DEFAULT_METADATA}>
           <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
         </MetaProvider>
       </App>

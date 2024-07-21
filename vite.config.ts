@@ -15,6 +15,15 @@ const parseBuildArgs = (env: Record<string, string>) => ({
   BASE_URL: env.BASE_URL ?? '',
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
+  DEFAULT_METADATA: {
+    baseTitle: 'React Isomorphic Starter Kit',
+    baseURL: env.BASE_URL ?? '',
+    description: 'React isomorphic app starter kit',
+    maskIconColor: '#000',
+    themeColor: '#15141a',
+    title: 'React Isomorphic Starter Kit',
+    url: env.BASE_URL ?? '',
+  },
   VERSION: packageInfo.version,
 })
 

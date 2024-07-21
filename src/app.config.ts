@@ -2,27 +2,17 @@
  * @file Application config.
  */
 
-import { type Locale } from '@lib/i18n'
-
-const env = typeof import.meta.env !== 'undefined' ? import.meta.env : process.env as ImportMetaEnv
-
 /** URL of the app. */
-export const BASE_URL = env.BASE_URL
+export const BASE_URL = import.meta.env.BASE_URL
 
 /** Base path of the router (i.e. the `basename` property). */
-export const BASE_PATH = env.BASE_PATH
+export const BASE_PATH = import.meta.env.BASE_PATH
 
 /** App version. */
-export const VERSION = `v${env.VERSION}+build.${env.BUILD_NUMBER}`
+export const VERSION = `v${import.meta.env.VERSION}+build.${import.meta.env.BUILD_NUMBER}`
 
 /** Default locale. */
-export const DEFAULT_LOCALE: Locale = env.DEFAULT_LOCALE
+export const DEFAULT_LOCALE = import.meta.env.DEFAULT_LOCALE
 
 /** Default metadata. */
-export const METADATA = {
-  baseTitle: 'React Isomorphic Starter Kit',
-  description: 'React isomorphic app starter kit',
-  maskIconColor: '#000',
-  themeColor: '#15141a',
-  title: 'React Isomorphic Starter Kit',
-}
+export const DEFAULT_METADATA = import.meta.env.DEFAULT_METADATA
