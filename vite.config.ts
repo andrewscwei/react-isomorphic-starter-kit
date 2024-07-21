@@ -140,6 +140,10 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         provider: 'v8',
       },
       globals: true,
+      include: [
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
+      ],
       environment: 'jsdom',
     },
   }
