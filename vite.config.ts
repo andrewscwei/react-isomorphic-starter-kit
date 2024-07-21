@@ -6,7 +6,6 @@ import path from 'node:path'
 import PostCSSImportPlugin from 'postcss-import'
 import PostCSSPresetEnvPlugin from 'postcss-preset-env'
 import { loadEnv, type Plugin } from 'vite'
-import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 import packageInfo from './package.json'
 
@@ -100,7 +99,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     plugins: [
       react(),
-      svgr(),
       ...isDev ? [] : [{
         name: 'html-minifier-terser',
         enforce: 'post',
