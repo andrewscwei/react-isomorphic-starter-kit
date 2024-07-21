@@ -40,7 +40,7 @@
     "scan": "dotenv -- sh -c 'sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN'"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240712.0",
+    "@cloudflare/workers-types": "^4.20240718.0",
     "@eslint/js": "^9.7.0",
     "@fullhuman/postcss-purgecss": "^6.0.0",
     "@playwright/test": "^1.45.2",
@@ -66,7 +66,7 @@
     "dotenv-cli": "^7.4.2",
     "eslint": "^9.7.0",
     "html-minifier-terser": "^7.2.0",
-    "jsdom": "^24.1.0",
+    "jsdom": "^24.1.1",
     "nodemon": "^3.1.4",
     "postcss-import": "^16.1.0",
     "postcss-loader": "^8.1.1",
@@ -82,7 +82,7 @@
     "vite": "^5.3.4",
     "vitest": "^2.0.3",
     "wait-on": "^7.2.0",
-    "wrangler": "^3.65.0"
+    "wrangler": "^3.65.1"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -91,8 +91,8 @@
     "fast-xml-parser": "^4.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "^6.25.0",
-    "react-router-dom": "^6.25.0",
+    "react-router": "^6.25.1",
+    "react-router-dom": "^6.25.1",
     "sprintf-js": "^1.1.3"
   }
 }
