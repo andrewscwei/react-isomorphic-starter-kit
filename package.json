@@ -13,7 +13,7 @@
     "dev": "npm run dev:${RUNTIME:-server}",
     "dev:static": "NODE_ENV=development vite dev --port ${PORT:-8080}",
     "dev:server": "NODE_ENV=development nodemon --exec 'tsx -r dotenv/config' -V -w index.ts -e ts .",
-    "dev:edge": "npm run clean && NODE_ENV=development concurrently \"vite build -w\" \"vite build -w --ssr main.edge.tsx\" \"wait-on build/main.edge.js && wrangler pages dev --port=${PORT:-8080} --compatibility-date=2024-06-22 ./build\"",
+    "dev:edge": "npm run clean && NODE_ENV=development concurrently \"vite build -w\" \"vite build -w --ssr main.edge.tsx\" \"wait-on build/main.edge.js build/index.html && wrangler pages dev --port=${PORT:-8080} --compatibility-date=2024-06-22 ./build\"",
     "prebuild:static": "npm run lint && npm run clean",
     "prebuild:server": "npm run lint && npm run clean",
     "prebuild:edge": "npm run lint && npm run clean",
