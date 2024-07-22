@@ -139,12 +139,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         reporter: ['text-summary'],
         provider: 'v8',
       },
+      environment: 'happy-dom',
       globals: true,
       include: [
         '**/*.spec.ts',
         '**/*.spec.tsx',
       ],
-      environment: 'jsdom',
+      setupFiles: 'dotenv/config',
     },
   }
 })
