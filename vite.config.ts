@@ -12,6 +12,7 @@ import packageInfo from './package.json'
 const parseBuildArgs = (env: Record<string, string>) => ({
   BASE_PATH: env.BASE_PATH ?? '/',
   BASE_URL: env.BASE_URL ?? '',
+  BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   DEFAULT_METADATA: {
