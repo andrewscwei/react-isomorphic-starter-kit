@@ -31,6 +31,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   const buildArgs = parseBuildArgs(env)
   const rootDir = path.resolve(__dirname, 'src')
   const isDev = env.NODE_ENV === 'development'
+  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
   const useSourceMaps = isDev
   const port = Number(env.PORT ?? 8080)
@@ -55,11 +56,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       },
     },
     ssr: {
-      noExternal: [
-        '@remix-run/router',
-        'react-router-dom',
-        'react-router',
-      ],
+      target: isEdge ? 'webworker' : 'node',
     },
     css: {
       modules: {
