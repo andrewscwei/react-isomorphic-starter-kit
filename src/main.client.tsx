@@ -28,7 +28,6 @@ function work() {
     worker.terminate()
   })
 }
-
 await loadLazyComponents(localizedRoutes, { basePath: BASE_PATH })
 
 hydrateRoot(
