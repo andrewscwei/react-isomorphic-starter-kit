@@ -16,6 +16,8 @@ import { App } from './ui/App.js'
 import WebWorker from './workers/web.js?worker'
 
 const debug = createDebug()
+const container = window.document.getElementById('root') ?? rethrow('Invalid application root')
+const localizedRoutes = generateLocalizedRoutes(routes, i18n)
 
 function work() {
   const worker = new WebWorker()
@@ -27,22 +29,16 @@ function work() {
   })
 }
 
-async function render() {
-  const localizedRoutes = generateLocalizedRoutes(routes, i18n)
-  const container = window.document.getElementById('root') ?? rethrow('Invalid application root')
+await loadLazyComponents(localizedRoutes, { basePath: BASE_PATH })
 
-  await loadLazyComponents(localizedRoutes, { basePath: BASE_PATH })
+hydrateRoot(
+  container, (
+    <App>
+      <RouterProvider router={createBrowserRouter(localizedRoutes, { basename: BASE_PATH })}/>
+    </App>
+  ),
+)
 
-  hydrateRoot(
-    container, (
-      <App>
-        <RouterProvider router={createBrowserRouter(localizedRoutes, { basename: BASE_PATH })}/>
-      </App>
-    ),
-  )
+debug('Initializing client...', 'OK')
 
-  debug('Initializing client...', 'OK')
-}
-
-render()
 work()
