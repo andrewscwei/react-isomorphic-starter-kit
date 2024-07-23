@@ -5,10 +5,10 @@ const IS_DEV = process.env.NODE_ENV === 'development'
 
 if (DEBUG || IS_DEV) {
   if (typeof window !== 'undefined') {
-    window.localStorage.debug = IS_DEV ? 'app*' : DEBUG
+    window.localStorage.debug = IS_DEV ? '*' : DEBUG
   }
   else {
-    debug.enable(IS_DEV ? 'app*' : DEBUG ?? '')
+    debug.enable(IS_DEV ? '*' : (DEBUG ?? ''))
   }
 }
 
