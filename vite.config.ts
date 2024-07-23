@@ -33,19 +33,19 @@ export default defineConfig(({ mode, isSsrBuild }) => {
 
   const env = loadEnv(mode, process.cwd(), '')
   const buildArgs = parseBuildArgs(env)
-  const rootDir = path.resolve(__dirname, 'src')
+  const srcDir = path.resolve(__dirname, 'src')
+  const outDir = path.resolve(__dirname, 'build')
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
 
   return {
-    root: rootDir,
     base: buildArgs.BASE_PATH,
-    publicDir: isSsrBuild ? false : path.resolve(rootDir, 'static'),
+    publicDir: isSsrBuild ? false : path.resolve(srcDir, 'static'),
     build: {
       cssCodeSplit: false,
       cssMinify: skipOptimizations ? false : 'esbuild',
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
-      outDir: path.resolve(__dirname, 'build'),
+      outDir,
       reportCompressedSize: true,
       sourcemap: isDev ? 'inline' : false,
       target: 'esnext',
@@ -74,10 +74,10 @@ export default defineConfig(({ mode, isSsrBuild }) => {
           ...isDev ? [] : [
             PostCSSPurgeCSS({
               content: [
-                path.resolve(rootDir, '**/*.html'),
-                path.resolve(rootDir, '**/*.tsx'),
-                path.resolve(rootDir, '**/*.ts'),
-                path.resolve(rootDir, '**/*.module.css'),
+                path.resolve(srcDir, '**/*.html'),
+                path.resolve(srcDir, '**/*.tsx'),
+                path.resolve(srcDir, '**/*.ts'),
+                path.resolve(srcDir, '**/*.module.css'),
               ],
               safelist: [
                 /^_[A-Za-z0-9-_]{5}$/,
@@ -89,7 +89,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       },
     },
     define: {
-      'import.meta.env.DEBUG': JSON.stringify(env.DEBUG),
+      'process.env.DEBUG': JSON.stringify(env.DEBUG),
       ...Object.keys(buildArgs).reduce((acc, key) => ({
         ...acc,
         [`import.meta.env.${key}`]: JSON.stringify(buildArgs[key]),
@@ -102,7 +102,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         enforce: 'post',
         apply: 'build',
         closeBundle: async () => {
-          const outDir = path.resolve(__dirname, 'build')
           const files = fs.readdirSync(outDir)
 
           for (const file of files) {
