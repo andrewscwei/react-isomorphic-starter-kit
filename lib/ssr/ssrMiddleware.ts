@@ -30,6 +30,11 @@ type Options = {
    * Path for static assets in the file system.
    */
   staticPath?: string
+
+  /**
+   * Replacements to apply to the template.
+   */
+  templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
 const debug = createDebug(undefined, 'server')
@@ -43,7 +48,11 @@ const debug = createDebug(undefined, 'server')
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-export function ssrMiddleware({ entryPath, templatePath }: Params, { basePath, staticPath }: Options) {
+export function ssrMiddleware({ entryPath, templatePath }: Params, {
+  basePath,
+  staticPath,
+  templateReplacements = [],
+}: Options) {
   const router = Router()
   router.use(compression())
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
@@ -63,7 +72,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, { basePath, s
           serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot(module as Module, template)(req, res, next)
+          renderRoot(module as Module, template, { templateReplacements })(req, res, next)
         }
       }
     }

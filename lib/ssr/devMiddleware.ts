@@ -23,6 +23,11 @@ type Options = {
    * Base path for the server.
    */
   basePath?: string
+
+  /**
+   * Replacements to apply to the template.
+   */
+  templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
 const debug = createDebug(undefined, 'server')
@@ -37,7 +42,10 @@ const debug = createDebug(undefined, 'server')
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-export async function devMiddleware({ entryPath, templatePath }: Params, { basePath = '/' }: Options = {}) {
+export async function devMiddleware({ entryPath, templatePath }: Params, {
+  basePath = '/',
+  templateReplacements = [],
+}: Options = {}) {
   const { createServer } = await import ('vite')
   const vite = await createServer({
     server: { middlewareMode: true },
@@ -63,7 +71,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, { baseP
           serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot(module as Module, template)(req, res, next)
+          renderRoot(module as Module, template, { templateReplacements })(req, res, next)
         }
       }
     }

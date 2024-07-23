@@ -1,7 +1,7 @@
 import { type Metadata } from './Metadata.js'
 
-export function injectMetadata(template: string, metadata: Metadata) {
-  return template
+export function injectMetadata(template: string, metadata: Metadata, replacements: { regex: RegExp; replaceValue: string }[] = []): string {
+  const injected = template
     .replace(/<!-- BASE_TITLE -->/g, metadata.baseTitle ?? '')
     .replace(/<!-- BASE_URL -->/g, metadata.baseURL ?? '/')
     .replace(/<!-- DESCRIPTION -->/g, metadata.description ?? '')
@@ -10,4 +10,6 @@ export function injectMetadata(template: string, metadata: Metadata) {
     .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
     .replace(/<!-- TITLE -->/g, metadata.title ?? '')
     .replace(/<!-- URL -->/g, metadata.url ?? '')
+
+  return replacements.reduce((acc, { regex, replaceValue }) => acc.replace(regex, replaceValue), injected)
 }

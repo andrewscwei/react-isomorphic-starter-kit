@@ -6,12 +6,16 @@ import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 
 type Options = {
+  templateReplacements?: { regex: RegExp; replaceValue: string }[]
   timeout?: number
 }
 
 const debug = createDebug(undefined, 'server')
 
-export function renderRoot({ render }: Module, template: string, { timeout = 10_000 }: Options = {}): RequestHandler {
+export function renderRoot({ render }: Module, template: string, {
+  timeout = 10_000,
+  templateReplacements = [],
+}: Options = {}): RequestHandler {
   return async (req, res, next) => {
     try {
       const metadata = {}
@@ -36,7 +40,7 @@ export function renderRoot({ render }: Module, template: string, { timeout = 10_
             return
           }
 
-          const html = injectMetadata(template, metadata)
+          const html = injectMetadata(template, metadata, templateReplacements)
           const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
           const transformStream = new Transform({
             transform: (chunk, encoding, callback) => {

@@ -1,7 +1,13 @@
 import { injectMetadata } from '../dom/index.js'
 import { type Module } from './Module.js'
 
-export function renderRoot({ render }: Module, template: string) {
+type Options = {
+  templateReplacements?: { regex: RegExp; replaceValue: string }[]
+}
+
+export function renderRoot({ render }: Module, template: string, {
+  templateReplacements = [],
+}: Options = {}) {
   return async (req: Request, path: string) => {
     try {
       const metadata = {}
@@ -9,7 +15,7 @@ export function renderRoot({ render }: Module, template: string) {
       const readableStream = new ReadableStream({
         start: async controller => {
           try {
-            const html = injectMetadata(template, metadata)
+            const html = injectMetadata(template, metadata, templateReplacements)
             const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
             controller.enqueue(new TextEncoder().encode(htmlStart))
 
