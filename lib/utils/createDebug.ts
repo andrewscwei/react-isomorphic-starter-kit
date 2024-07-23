@@ -21,7 +21,7 @@ if (DEBUG || IS_DEV) {
  *
  * @returns A {@link debug} instance.
  */
-export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' = 'app') {
+export function createDebug(subnamespace = '', thread: 'app' | 'server' | 'worker' | 'test' = 'app') {
   const namespace = [thread, ...subnamespace.split(':').filter(Boolean)].join(':')
 
   if (DEBUG || IS_DEV) {
