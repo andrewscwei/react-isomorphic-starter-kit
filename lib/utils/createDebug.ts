@@ -1,7 +1,7 @@
 import debug from 'debug'
 
-const DEBUG = process.env.DEBUG
-const IS_DEV = process.env.NODE_ENV === 'development'
+const DEBUG = typeof process === 'undefined' ? '' : process.env.DEBUG
+const IS_DEV = typeof process === 'undefined' ? false : process.env.NODE_ENV === 'development'
 
 if (DEBUG || IS_DEV) {
   if (typeof window !== 'undefined') {
