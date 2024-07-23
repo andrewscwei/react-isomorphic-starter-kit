@@ -20,7 +20,6 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 12. Building for a static app with prerendering (example on GitHub Pages)
 13. Web workers
 15. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
-16. Code quality analysis with [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 
 ## Usage
 

@@ -28,14 +28,13 @@ const parseBuildArgs = (env: Record<string, string>) => ({
 })
 
 export default defineConfig(({ mode, isSsrBuild }) => {
+  const isDev = mode === 'development'
+  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
+
   const env = loadEnv(mode, process.cwd(), '')
   const buildArgs = parseBuildArgs(env)
   const rootDir = path.resolve(__dirname, 'src')
-  const isDev = env.NODE_ENV === 'development'
-  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
-  const useSourceMaps = isDev
-  const port = Number(env.PORT ?? 8080)
 
   return {
     root: rootDir,
@@ -48,7 +47,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       minify: skipOptimizations ? false : 'esbuild',
       outDir: path.resolve(__dirname, 'build'),
       reportCompressedSize: true,
-      sourcemap: useSourceMaps,
+      sourcemap: isDev ? 'inline' : false,
       target: 'esnext',
       rollupOptions: {
         output: {
@@ -90,6 +89,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       },
     },
     define: {
+      'import.meta.env.DEBUG': JSON.stringify(env.DEBUG),
       ...Object.keys(buildArgs).reduce((acc, key) => ({
         ...acc,
         [`import.meta.env.${key}`]: JSON.stringify(buildArgs[key]),
@@ -130,7 +130,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     server: {
       host: 'localhost',
-      port,
+      port: Number(env.PORT ?? 8080),
     },
     test: {
       coverage: {
