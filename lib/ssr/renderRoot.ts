@@ -1,7 +1,7 @@
+import debug from 'debug'
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
 import { injectMetadata } from '../dom/index.js'
-import { createDebug } from '../utils/createDebug.js'
 import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 
@@ -10,7 +10,7 @@ type Options = {
   timeout?: number
 }
 
-const debug = createDebug(undefined, 'server')
+const log = debug('server')
 
 export function renderRoot({ render }: Module, template: string, {
   timeout = 10_000,
@@ -27,7 +27,7 @@ export function renderRoot({ render }: Module, template: string, {
           error = err
         },
         onShellError() {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', error)
+          log(`Rendering ${req.originalUrl}...`, 'ERR', error)
 
           res.setHeader('content-type', 'application/json')
           res.status(500).send({ error })
@@ -50,7 +50,7 @@ export function renderRoot({ render }: Module, template: string, {
           })
 
           transformStream.on('finish', () => {
-            debug(`Rendering ${req.originalUrl}...`, 'OK')
+            log(`Rendering ${req.originalUrl}...`, 'OK')
             res.end(htmlEnd)
           })
 

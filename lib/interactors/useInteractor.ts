@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { createDebug } from '../utils/createDebug.js'
 import { type Interactor } from './Interactor.js'
 import { UseCaseError, type UseCase } from './UseCase.js'
 
@@ -29,8 +28,6 @@ type Options<Result> = {
   onSuccess?: (result: Result) => void
 }
 
-const debug = createDebug()
-
 /**
  * Hook for interacting with a {@link UseCase}.
  *
@@ -54,7 +51,6 @@ export default function useInteractor<UseCaseParams, UseCaseResult, UseCaseOptio
   const [isRunning, setIsRunning] = useState(false)
   const [result, setResult] = useState<UseCaseResult | undefined>(defaultValue)
   const useCase = useMemo(() => new UseCaseClass(), [])
-  const useCaseName = useCase.constructor.name
 
   const invalidateTotalRunCount = () => {
     setTotalRunCount(totalRunCountRef.current)
@@ -76,8 +72,6 @@ export default function useInteractor<UseCaseParams, UseCaseResult, UseCaseOptio
   }
 
   const run = async (params: Partial<UseCaseParams> = {}, options?: UseCaseOptions) => {
-    debug(`Interacting with use case <${useCaseName}>...`)
-
     setResult(undefined)
 
     totalRunCountRef.current++
@@ -88,18 +82,14 @@ export default function useInteractor<UseCaseParams, UseCaseResult, UseCaseOptio
 
     await useCase.run(params, options)
       .then(res => {
-        debug(`Interacting with use case <${useCaseName}>...`, 'OK', res)
-
         setResult(res)
         onSuccess?.(res)
       })
       .catch(err => {
         if (err === UseCaseError.CANCELLED) {
-          debug(`Interacting with use case <${useCaseName}>...`, 'CANCEL')
           onCancel?.()
         }
         else {
-          debug(`Interacting with use case <${useCaseName}>...`, 'ERR', err)
           onError?.(err)
         }
       })

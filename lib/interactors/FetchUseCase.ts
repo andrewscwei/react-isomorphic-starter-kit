@@ -1,4 +1,3 @@
-import { createDebug } from '../utils/createDebug.js'
 import { createSessionCache } from '../utils/createSessionCache.js'
 import { UseCaseError, type UseCase } from './UseCase.js'
 
@@ -21,8 +20,6 @@ export type Options = {
    */
   timeout?: number
 }
-
-const debug = createDebug('fetch')
 
 /**
  * A {@link UseCase} for fetching data from external API.
@@ -112,8 +109,6 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
   }
 
   async run(params: Partial<Params> = {}, { skipCache = true, timeout = 5 }: Options = {}): Promise<Result> {
-    const t0 = performance.now()
-
     this.cancel()
     this.abortController = new AbortController()
 
@@ -126,8 +121,6 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       if (cachedResult) return cachedResult
     }
 
-    const useCaseName = this.name
-
     try {
       const headers = this.getHeaders(params)
       const url = new URL(this.getEndpoint(params))
@@ -137,12 +130,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
       this.startTimeout(timeout)
 
-      debug(`[${useCaseName}] Running fetch use case...`)
-
       const payload = await this.request(url, { headers, params: transformedParams })
-
-      debug(`[${useCaseName}] Running fetch use case...`, `OK (${Math.round(performance.now() - t0)}ms)`, payload)
-
       const transformedResult = this.transformResult(payload)
 
       if (cacheKey) {
@@ -152,13 +140,7 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
       return transformedResult
     }
     catch (err) {
-      if ((err as any).name === 'AbortError') {
-        debug(`[${useCaseName}] Running fetch use case...`, `CANCEL (${Math.round(performance.now() - t0)}ms)`, err)
-
-        throw UseCaseError.CANCELLED
-      }
-
-      debug(`[${useCaseName}] Running fetch use case...`, `ERR (${Math.round(performance.now() - t0)}ms)`, err)
+      if ((err as any).name === 'AbortError') throw UseCaseError.CANCELLED
 
       const error = this.transformError(err)
 
@@ -212,7 +194,6 @@ export abstract class FetchUseCase<Params extends Record<string, any>, Result> i
 
     this.timer = setTimeout(() => {
       this.abortController?.abort()
-      debug(`[${this.name}] Running fetch use case...`, 'ERR', `Timed out after ${seconds} seconds`)
     }, seconds * 1000)
   }
 

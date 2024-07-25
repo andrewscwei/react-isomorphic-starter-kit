@@ -1,7 +1,7 @@
 import compression from 'compression'
+import debug from 'debug'
 import { Router } from 'express'
 import fs from 'node:fs/promises'
-import { createDebug } from '../utils/createDebug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
 import { serveRobots } from './serveRobots.js'
@@ -37,7 +37,7 @@ type Options = {
   templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
-const debug = createDebug(undefined, 'server')
+const log = debug('server')
 
 /**
  * Middleware for server-side rendering of React views during production.
@@ -77,7 +77,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
       }
     }
     catch (err) {
-      debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+      log(`Rendering ${req.originalUrl}...`, 'ERR', err)
 
       if (err instanceof Error) {
         res.status(500).send(err.stack)

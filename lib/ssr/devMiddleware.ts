@@ -1,6 +1,6 @@
+import debug from 'debug'
 import { Router } from 'express'
 import fs from 'node:fs'
-import { createDebug } from '../utils/createDebug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
 import { serveRobots } from './serveRobots.js'
@@ -30,7 +30,7 @@ type Options = {
   templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
-const debug = createDebug(undefined, 'server')
+const log = debug('server')
 
 /**
  * Middleware for server-side rendering of React views during development.
@@ -76,7 +76,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
       }
     }
     catch (err) {
-      debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+      log(`Rendering ${req.originalUrl}...`, 'ERR', err)
 
       if (err instanceof Error) {
         vite.ssrFixStacktrace(err)
