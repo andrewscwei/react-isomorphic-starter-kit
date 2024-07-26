@@ -1,6 +1,6 @@
-import { debug } from '@lib/utils/debug.js'
 import { Router } from 'express'
 import fs from 'node:fs'
+import { debug } from '../utils/debug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
 import { serveRobots } from './serveRobots.js'

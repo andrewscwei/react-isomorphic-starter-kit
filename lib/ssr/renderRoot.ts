@@ -1,7 +1,7 @@
-import { debug } from '@lib/utils/debug.js'
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
 import { injectMetadata } from '../dom/index.js'
+import { debug } from '../utils/debug.js'
 import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 
