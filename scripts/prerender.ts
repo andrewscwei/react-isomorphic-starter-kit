@@ -2,13 +2,12 @@
  * @file Generates a static site from the built server application.
  */
 
-/* eslint-disable no-console */
-
 import { XMLParser } from 'fast-xml-parser'
 import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
+import { debug } from '../lib/utils/debug.js'
 import { joinURL } from '../lib/utils/joinURL.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -29,10 +28,10 @@ async function generateSitemap() {
     const { text: str } = await request(app).get('/sitemap.xml')
     fs.writeFileSync(path.resolve(outDir, 'sitemap.xml'), str)
 
-    console.log('Generating sitemap.xml... OK')
+    debug('Generating sitemap.xml...', 'OK')
   }
   catch (err) {
-    console.log(`Generating sitemap.xml... ERR: ${err}`)
+    debug('Generating sitemap.xml...', 'ERR', err)
     throw err
   }
 }
@@ -42,10 +41,10 @@ async function generateRobots() {
     const { text: str } = await request(app).get('/robots.txt')
     fs.writeFileSync(path.resolve(outDir, 'robots.txt'), str)
 
-    console.log('Generating robots.txt... OK')
+    debug('Generating robots.txt...', 'OK')
   }
   catch (err) {
-    console.log(`Generating robots.txt... ERR: ${err}`)
+    debug('Generating robots.txt...', 'ERR', err)
     throw err
   }
 }
@@ -66,10 +65,10 @@ async function generatePages() {
       const file = path.join(outDir, url, ...path.extname(url) ? [] : ['index.html'])
       writables[file] = html
 
-      console.log(`Generating ${url}... OK: ${file}`)
+      debug(`Generating ${url}...`, 'OK', file)
     }
     catch (err) {
-      console.log(`Generating ${url}... ERR: ${err}`)
+      debug(`Generating ${url}...`, 'ERR', err)
       throw err
     }
   }
@@ -80,10 +79,10 @@ async function generatePages() {
       const file = path.join(outDir, `${url}.html`)
       writables[file] = html
 
-      console.log(`Generating ${url}... OK: ${file}`)
+      debug(`Generating ${url}...`, 'OK', file)
     }
     catch (err) {
-      console.log(`Generating ${url}... ERR: ${err}`)
+      debug(`Generating ${url}...`, 'ERR', err)
       throw err
     }
   }
@@ -108,7 +107,7 @@ async function cleanup() {
           return
         }
 
-        console.log(`File deleted: ${filePath}`)
+        debug(`Cleaning up file ${filePath}...`, 'OK')
       })
     }
   })
@@ -124,10 +123,5 @@ async function main() {
 
   process.exit()
 }
-
-process.on('unhandledRejection', reason => {
-  console.error('Prerendering app... ERR:', reason)
-  process.exit(1)
-})
 
 main()
