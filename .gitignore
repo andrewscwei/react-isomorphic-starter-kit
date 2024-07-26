@@ -48,6 +48,7 @@ coverage
 
 # CloudFlare
 .wrangler
+*.vars
 
 # Playwright
 test-results/
