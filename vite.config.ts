@@ -14,6 +14,7 @@ const parseBuildArgs = (env: Record<string, string>) => ({
   BASE_URL: env.BASE_URL ?? '',
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
+  DEBUG_MODE: env.DEBUG_MODE ?? '',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   DEFAULT_METADATA: {
     baseTitle: 'React Isomorphic Starter Kit',
@@ -49,7 +50,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       minify: skipOptimizations ? false : 'esbuild',
       outDir,
       reportCompressedSize: true,
-      sourcemap: isDev ? 'inline' : false,
+      sourcemap: isDev ? 'inline' : isEdge,
       target: 'esnext',
       rollupOptions: {
         output: {

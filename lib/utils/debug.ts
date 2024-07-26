@@ -3,13 +3,21 @@ import createDebug from 'debug'
 const SSR = typeof window === 'undefined'
 const CLIENT_SYMBOL = '🤖'
 const SERVER_SYMBOL = '⛅️'
+const WORKER_SYMBOL = '🦾'
 const TEST_SYMBOL = '👾'
 
 export const debug = (() => {
   if (SSR) {
-    createDebug.enable(`${SERVER_SYMBOL}*`)
+    if (typeof importScripts === 'undefined') {
+      createDebug.enable(`${SERVER_SYMBOL}*`)
 
-    return createDebug(SERVER_SYMBOL)
+      return createDebug(SERVER_SYMBOL)
+    }
+    else {
+      createDebug.enable(`${WORKER_SYMBOL}*`)
+
+      return createDebug(WORKER_SYMBOL)
+    }
   }
   else if (import.meta.env.TEST) {
     if (import.meta.env.DEBUG_MODE === 'true') {
