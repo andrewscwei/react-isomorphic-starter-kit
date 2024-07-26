@@ -2,16 +2,15 @@
  * @file Server.
  */
 
-import debug from 'debug'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { debug } from './lib/utils/debug.js'
 
 const BASE_PATH = process.env.BASE_PATH ?? '/'
 const PORT = process.env.PORT ?? '8080'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const log = debug('server')
 
 export const app = express()
 
@@ -47,17 +46,17 @@ app.listen(PORT)
 
     switch (error.code) {
       case 'EACCES':
-        log(`Port ${PORT} requires elevated privileges`)
+        debug(`Port ${PORT} requires elevated privileges`)
         process.exit(1)
       case 'EADDRINUSE':
-        log(`Port ${PORT} is already in use`)
+        debug(`Port ${PORT} is already in use`)
         process.exit(1)
       default:
         throw error
     }
   })
   .on('listening', () => {
-    log('Starting app...', 'OK')
+    debug('Starting app...', 'OK')
   })
 
 process.on('SIGINT', () => process.exit(0))

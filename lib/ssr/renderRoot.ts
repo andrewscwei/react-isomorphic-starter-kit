@@ -1,4 +1,4 @@
-import debug from 'debug'
+import { debug } from '@lib/utils/debug.js'
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
 import { injectMetadata } from '../dom/index.js'
@@ -9,8 +9,6 @@ type Options = {
   templateReplacements?: { regex: RegExp; replaceValue: string }[]
   timeout?: number
 }
-
-const log = debug('server')
 
 export function renderRoot({ render }: Module, template: string, {
   timeout = 10_000,
@@ -27,7 +25,7 @@ export function renderRoot({ render }: Module, template: string, {
           error = err
         },
         onShellError() {
-          log(`Rendering ${req.originalUrl}...`, 'ERR', error)
+          debug(`Rendering ${req.originalUrl}...`, 'ERR', error)
 
           res.setHeader('content-type', 'application/json')
           res.status(500).send({ error })
@@ -50,7 +48,7 @@ export function renderRoot({ render }: Module, template: string, {
           })
 
           transformStream.on('finish', () => {
-            log(`Rendering ${req.originalUrl}...`, 'OK')
+            debug(`Rendering ${req.originalUrl}...`, 'OK')
             res.end(htmlEnd)
           })
 

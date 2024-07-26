@@ -4,8 +4,8 @@
 
 import { loadLazyComponents } from '@lib/dom/index.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
+import { debug } from '@lib/utils/debug.js'
 import { rethrow } from '@lib/utils/rethrow.js'
-import debug from 'debug'
 import { hydrateRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
@@ -15,16 +15,12 @@ import { routes } from './routes.config.js'
 import { App } from './ui/App.js'
 import WebWorker from './workers/web.js?worker'
 
-const log = debug('app')
-
-if (import.meta.env.DEV) window.localStorage.debug = 'app*'
-
 function work() {
   const worker = new WebWorker()
   worker.postMessage({ message: 'Marco' })
   worker.addEventListener('message', event => {
     const message = event.data.message
-    log('Receiving message from worker...', 'OK', message)
+    debug('Receiving message from worker...', 'OK', message)
     worker.terminate()
   })
 }
@@ -43,7 +39,7 @@ async function render() {
     ),
   )
 
-  log('Initializing client...', 'OK')
+  debug('Initializing client...', 'OK')
 }
 
 render()
