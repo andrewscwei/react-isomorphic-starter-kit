@@ -1,15 +1,17 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const CI = !!process.env.CI
+const PORT = process.env.PORT || '8080'
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  forbidOnly: CI,
+  retries: CI ? 2 : 0,
+  workers: CI ? 1 : undefined,
   reporter: 'list',
-  timeout: 60000,
   use: {
-    baseURL: 'http://localhost:8080',
+    baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
   },
   projects: [{
@@ -30,7 +32,7 @@ export default defineConfig({
   }],
   webServer: {
     command: `npm run start:${process.env.RUNTIME || 'server'}`,
-    url: 'http://localhost:8080',
-    reuseExistingServer: !process.env.CI,
+    url: `http://localhost:${PORT}`,
+    reuseExistingServer: CI,
   },
 })

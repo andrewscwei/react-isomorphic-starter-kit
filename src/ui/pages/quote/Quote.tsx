@@ -1,12 +1,11 @@
 import { useMeta } from '@lib/dom/useMeta.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { useLoaderData } from 'react-router'
-import { type Quote } from '../../../useCases/GetQuote.js'
 import styles from './Quote.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
-  const quote = useLoaderData() as Quote
+  const quote: any = useLoaderData()
 
   useMeta({
     title: ltxt('window-title-quote'),
