@@ -18,6 +18,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Build
         uses: andrewscwei/actions/node-build@v1
+        env:
+          BUILD_NUMBER: ${{ github.sha }}
         with:
           prebuild-command: npm run test:unit
           build-command: npm run build:${{ matrix.runtime }}
