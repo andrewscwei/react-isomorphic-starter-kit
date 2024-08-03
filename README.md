@@ -13,13 +13,12 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 5. [Vitest](https://vitest.dev/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
 6. [Playwright](https://playwright.dev/) for E2E testing
 7. [Docker](https://docker.com) config
-8. [nodemon](https://github.com/remy/nodemon) + Hot module replacement (in development)
-9. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
-10. Building for [Express](https://expressjs.com/) with server-side rendering
-11. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
-12. Building for a static app with prerendering (example on GitHub Pages)
-13. Web workers
-15. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
+8. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
+9. Building for [Express](https://expressjs.com/) with server-side rendering
+10. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
+11. Building for a static app with prerendering (example on GitHub Pages)
+12. Web workers
+13. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
 
 ## Usage
 
