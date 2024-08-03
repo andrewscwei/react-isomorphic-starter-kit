@@ -1,0 +1,1 @@
+async function e(){return fetch("https://type.fit/api/quotes").then(t=>t.json()).then(t=>t[Math.floor(Math.random()*t.length)])}async function a({request:t,context:n,params:o}){return e()}export{a as loader};
