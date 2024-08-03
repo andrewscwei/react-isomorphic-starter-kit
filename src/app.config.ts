@@ -10,6 +10,6 @@ export const DEV = import.meta.env.DEV
 export const DEBUG_MODE = !!import.meta.env.DEBUG_MODE
 export const DEFAULT_LOCALE = import.meta.env.DEFAULT_LOCALE
 export const DEFAULT_METADATA = import.meta.env.DEFAULT_METADATA
-export const VERSION = `v${import.meta.env.VERSION}+build.${import.meta.env.BUILD_NUMBER}`
+export const VERSION = `v${import.meta.env.VERSION}+build.${import.meta.env.BUILD_NUMBER.slice(0, 7)}`
 
 /** App config */
