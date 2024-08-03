@@ -1,6 +1,5 @@
 import { useMeta } from '@lib/dom/useMeta.js'
-import { useLocale } from '@lib/i18n/useLocale.js'
-import { useLocalizedString } from '@lib/i18n/useLocalizedString.js'
+import { useLocale, useLocalizedString } from '@lib/i18n/index.js'
 import { Outlet } from 'react-router'
 import { Footer } from '../components/Footer.js'
 import { Header } from '../components/Header.js'

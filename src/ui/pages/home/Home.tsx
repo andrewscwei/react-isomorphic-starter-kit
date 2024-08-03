@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/useMeta.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { VERSION } from '../../../app.config.js'
 import { ReactLogo } from '../../components/ReactLogo.js'

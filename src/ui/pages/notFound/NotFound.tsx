@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/useMeta.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import styles from './NotFound.module.css'
 

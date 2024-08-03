@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/useMeta.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { useLoaderData } from 'react-router'
 import styles from './Quote.module.css'
