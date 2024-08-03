@@ -5,7 +5,7 @@ type Options = {
   templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
-export function renderRoot({ render }: Module, template: string, {
+export function renderRoot({ localData, render }: Module, template: string, {
   templateReplacements = [],
 }: Options = {}) {
   return async (req: Request, path: string) => {
@@ -15,7 +15,8 @@ export function renderRoot({ render }: Module, template: string, {
       const readableStream = new ReadableStream({
         start: async controller => {
           try {
-            const html = injectMetadata(template, metadata, templateReplacements)
+            const locals = localData ? await localData(req) : {}
+            const html = injectMetadata(template, metadata, templateReplacements).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
             const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
             controller.enqueue(new TextEncoder().encode(htmlStart))
 

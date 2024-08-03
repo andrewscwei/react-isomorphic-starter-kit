@@ -1,9 +1,15 @@
+import { type LocalDataFunction } from './LocalDataFunction.js'
 import { type RenderFunction } from './RenderFunction.js'
 
 /**
  * Type defining the entry module for server-side rendering.
  */
 export type Module = {
+  /**
+   * See {@link LocalDataFunction}.
+   */
+  localData?: LocalDataFunction
+
   /**
    * See {@link RenderFunction}.
    */

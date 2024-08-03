@@ -10,7 +10,7 @@ type Options = {
   timeout?: number
 }
 
-export function renderRoot({ render }: Module, template: string, {
+export function renderRoot({ localData, render }: Module, template: string, {
   timeout = 10_000,
   templateReplacements = [],
 }: Options = {}): RequestHandler {
@@ -18,6 +18,8 @@ export function renderRoot({ render }: Module, template: string, {
     try {
       const metadata = {}
       const fetchRequest = createFetchRequest(req)
+      const locals = localData ? await localData(fetchRequest) : {}
+
       let error: unknown
 
       const { pipe, abort } = await render(fetchRequest, metadata, {
@@ -38,7 +40,7 @@ export function renderRoot({ render }: Module, template: string, {
             return
           }
 
-          const html = injectMetadata(template, metadata, templateReplacements)
+          const html = injectMetadata(template, metadata, templateReplacements).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
           const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
           const transformStream = new Transform({
             transform: (chunk, encoding, callback) => {
