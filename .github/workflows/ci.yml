@@ -21,7 +21,7 @@ jobs:
         env:
           BUILD_NUMBER: ${{ github.sha }}
         with:
-          prebuild-command: npm run test:unit
+          prebuild-command: npm run unit
           build-command: npm run build:${{ matrix.runtime }}
           postbuild-command: npx playwright install --with-deps && npm run test:${{ matrix.runtime }}
           artifact-path: build/

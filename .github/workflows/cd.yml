@@ -16,7 +16,7 @@ jobs:
         id: build
         uses: andrewscwei/actions/node-build@v1
         with:
-          prebuild-command: npm run test:unit
+          prebuild-command: npm run unit
           build-command: npm run build:static
           postbuild-command: npx playwright install --with-deps && npm run test:static
   deploy:

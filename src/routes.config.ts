@@ -14,10 +14,6 @@ export const routes: RouteObject[] = [{
     index: true,
     lazy: () => import('./ui/pages/home/Home.js'),
   }, {
-    path: '/quote',
-    lazy: () => import('./ui/pages/quote/Quote.js'),
-    loader: async args => (await import('./ui/pages/quote/Quote.loader.js')).loader(args),
-  }, {
     path: '*',
     lazy: () => import('./ui/pages/notFound/NotFound.js'),
   }],
