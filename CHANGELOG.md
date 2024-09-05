@@ -1,3 +1,15 @@
+# [18.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v17.0.0...v18.0.0) (2024-09-05)
+
+
+### Features
+
+* Upgrade dependencies and remove Quote page ([99ccd9c](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/99ccd9c2ad14009ec0825960d5b158b1d89f9f00))
+
+
+### BREAKING CHANGES
+
+* Removed Quote page
+
 # [17.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v16.1.0...v17.0.0) (2024-08-03)
 
 
