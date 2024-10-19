@@ -7,17 +7,19 @@ import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import request from 'supertest'
-import { debug } from '../lib/utils/debug.js'
-import { joinURL } from '../lib/utils/joinURL.js'
+import { debug } from '../utils/debug.js'
+import { joinURL } from '../utils/joinURL.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const baseURL = process.env.BASE_URL ?? ''
 const basePath = process.env.BASE_PATH ?? '/'
-const outDir = path.resolve(__dirname, '../build')
-const { app } = await import(path.resolve(outDir, 'index.js'))
+const outDir = path.resolve(__dirname, '../../build')
+const localesDir = path.resolve(__dirname, '../../src/locales')
+const serverFile = path.resolve(__dirname, './', 'server.ts')
+const { app } = await import(serverFile)
 
 function getLocales() {
-  const files = fs.readdirSync(path.resolve(__dirname, '../src/locales'), { recursive: true, withFileTypes: true })
+  const files = fs.readdirSync(localesDir, { recursive: true, withFileTypes: true })
   const locales = files.filter(f => !f.isFile() || path.extname(f.name) === '.json').map(f => f.name.replace('.json', ''))
 
   return locales
@@ -111,8 +113,6 @@ async function cleanup() {
       })
     }
   })
-
-  fs.rmdirSync(path.resolve(outDir, 'lib'), { recursive: true })
 }
 
 async function main() {

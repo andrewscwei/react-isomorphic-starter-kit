@@ -1,4 +1,4 @@
-import { useMeta } from '@lib/dom/useMeta.js'
+import { useMeta } from '@lib/dom/index.js'
 import { useLocale, useLocalizedString } from '@lib/i18n/index.js'
 import { Outlet } from 'react-router'
 import { Footer } from '../components/Footer.js'
