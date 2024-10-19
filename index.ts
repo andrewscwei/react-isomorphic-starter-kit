@@ -2,6 +2,7 @@
  * @file Server.
  */
 
+import compression from 'compression'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -13,6 +14,8 @@ const PORT = process.env.PORT ?? '8080'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export const app = express()
+
+app.use(compression())
 
 if (process.env.NODE_ENV === 'development') {
   const { devMiddleware } = await import('./lib/ssr/index.js')

@@ -1,4 +1,3 @@
-import compression from 'compression'
 import { Router } from 'express'
 import fs from 'node:fs/promises'
 import { debug } from '../utils/debug.js'
@@ -52,7 +51,6 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
   templateReplacements = [],
 }: Options) {
   const router = Router()
-  router.use(compression())
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
 
   router.use(async (req, res, next) => {

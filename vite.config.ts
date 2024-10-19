@@ -1,10 +1,8 @@
-import PostCSSPurgeCSS from '@fullhuman/postcss-purgecss'
 import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
 import { minify } from 'html-minifier-terser'
 import fs from 'node:fs'
 import path from 'node:path'
-import PostCSSImportPlugin from 'postcss-import'
-import PostCSSPresetEnvPlugin from 'postcss-preset-env'
 import { loadEnv, type Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
 import packageInfo from './package.json'
@@ -68,26 +66,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       },
       postcss: {
         plugins: [
-          PostCSSImportPlugin(),
-          PostCSSPresetEnvPlugin({
-            features: {
-              'nesting-rules': true,
-            },
-          }),
-          ...isDev ? [] : [
-            PostCSSPurgeCSS({
-              content: [
-                path.resolve(rootDir, '**/*.html'),
-                path.resolve(rootDir, '**/*.tsx'),
-                path.resolve(rootDir, '**/*.ts'),
-                path.resolve(rootDir, '**/*.module.css'),
-              ],
-              safelist: [
-                /^_[A-Za-z0-9-_]{5}$/,
-              ],
-              defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) ?? [],
-            }),
-          ],
+          autoprefixer(),
         ],
       },
     },

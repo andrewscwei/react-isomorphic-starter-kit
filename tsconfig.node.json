@@ -5,7 +5,7 @@
     "jsx": "react-jsx",
     "lib": [
       "DOM",
-      "ES2020",
+      "ESNext",
       "WebWorker"
     ],
     "module": "NodeNext",

@@ -14,11 +14,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Build
         id: build
-        uses: andrewscwei/actions/node-build@v1
+        uses: andrewscwei/actions/node-build@v2
         with:
           prebuild-command: npm run unit
           build-command: npm run build:static
-          postbuild-command: npx playwright install --with-deps && npm run test:static
+      - name: Test
+        run: npx playwright install --with-deps && npm run test:static
   deploy:
     name: Deploy
     needs: [build]
@@ -43,7 +44,7 @@ jobs:
       - name: Release
         run: npx semantic-release
       - name: Deploy to GitHub pages
-        uses: andrewscwei/actions/gh-pages-deploy@v1
+        uses: andrewscwei/actions/gh-pages-deploy@v2
         env:
           BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
           BASE_PATH: /${{ github.event.repository.name }}/
