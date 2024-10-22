@@ -1,31 +1,52 @@
+#!/usr/bin/env ts-node
+
 /**
  * @file Generates a static site from the built server application.
  */
 
+import express, { type Express } from 'express'
 import { XMLParser } from 'fast-xml-parser'
+import minimist from 'minimist'
 import fs from 'node:fs'
-import path, { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 import request from 'supertest'
-import { debug } from '../utils/debug.js'
-import { joinURL } from '../utils/joinURL.js'
+import { ssrMiddleware } from '../../ssr/index.js'
+import { debug } from '../../utils/debug.js'
+import { joinURL } from '../../utils/joinURL.js'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const baseURL = process.env.BASE_URL ?? ''
-const basePath = process.env.BASE_PATH ?? '/'
-const outDir = path.resolve(__dirname, '../../build')
-const localesDir = path.resolve(__dirname, '../../src/locales')
-const serverFile = path.resolve(__dirname, './', 'server.ts')
-const { app } = await import(serverFile)
+const cwd = process.cwd()
+const {
+  e: entry,
+  l: locales,
+  o = 'build/',
+  p: basePath = process.env.BASE_PATH ?? '/',
+  t: template,
+  u: baseURL = process.env.BASE_URL ?? '',
+} = minimist(process.argv.slice(2))
 
-function getLocales() {
+function getSupportedLocales({ localesDir = '' }) {
   const files = fs.readdirSync(localesDir, { recursive: true, withFileTypes: true })
-  const locales = files.filter(f => !f.isFile() || path.extname(f.name) === '.json').map(f => f.name.replace('.json', ''))
+  const supportedLocales = files
+    .filter(f => !f.isFile() || path.extname(f.name) === '.json')
+    .map(f => f.name.replace('.json', ''))
 
-  return locales
+  return supportedLocales
 }
 
-async function generateSitemap() {
+function createServer({ entryPath = '', templatePath = '' }) {
+  const server = express()
+
+  server.use(ssrMiddleware({
+    entryPath,
+    templatePath,
+  }, {
+    basePath,
+  }))
+
+  return server
+}
+
+async function generateSitemap(app: Express, { outDir = '' }) {
   try {
     const { text: str } = await request(app).get('/sitemap.xml')
     fs.writeFileSync(path.resolve(outDir, 'sitemap.xml'), str)
@@ -38,7 +59,7 @@ async function generateSitemap() {
   }
 }
 
-async function generateRobots() {
+async function generateRobots(app: Express, { outDir = '' }) {
   try {
     const { text: str } = await request(app).get('/robots.txt')
     fs.writeFileSync(path.resolve(outDir, 'robots.txt'), str)
@@ -51,13 +72,13 @@ async function generateRobots() {
   }
 }
 
-async function generatePages() {
+async function generatePages(app: Express, { outDir = '', localesDir = '' }) {
   const parser = new XMLParser()
   const sitemapFile = fs.readFileSync(path.resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const locales = getLocales()
+  const supportedLocales = getSupportedLocales({ localesDir })
   const pageURLs: string[] = sitemap.urlset.url.map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map((t: string) => t.startsWith('/') ? t : `/${t}`)
-  const notFoundURLs = pageURLs.map(url => new RegExp(`^/(${locales.join('|')})?/?$`).test(url) ? joinURL(url, '404') : undefined).filter(t => t !== undefined)
+  const notFoundURLs = pageURLs.map(url => new RegExp(`^/(${supportedLocales.join('|')})?/?$`).test(url) ? joinURL(url, '404') : undefined).filter(t => t !== undefined)
   const agent = request(app)
   const writables: Record<string, string> = {}
 
@@ -95,7 +116,7 @@ async function generatePages() {
   }
 }
 
-async function cleanup() {
+async function cleanup({ outDir = '' }) {
   const files = fs.readdirSync(outDir)
   const removeExtensions = ['.js', '.d.ts']
 
@@ -116,12 +137,19 @@ async function cleanup() {
 }
 
 async function main() {
-  await generateSitemap()
-  await generateRobots()
-  await generatePages()
-  await cleanup()
+  const outDir = path.resolve(cwd, o)
+  const entryPath = path.resolve(cwd, entry)
+  const templatePath = path.resolve(cwd, template)
+  const localesDir = path.resolve(cwd, locales)
 
-  process.exit()
+  const app = createServer({ entryPath, templatePath })
+
+  await generateSitemap(app, { outDir })
+  await generateRobots(app, { outDir })
+  await generatePages(app, { localesDir, outDir })
+  await cleanup({ outDir })
+
+  process.exit(0)
 }
 
 main()

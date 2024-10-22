@@ -49,7 +49,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
   basePath,
   staticPath,
   templateReplacements = [],
-}: Options) {
+}: Options = {}) {
   const router = Router()
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
 
