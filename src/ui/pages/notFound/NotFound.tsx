@@ -1,6 +1,5 @@
 import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
-import styles from './NotFound.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
@@ -11,7 +10,7 @@ export function Component() {
 
   return (
     <main>
-      <h1 className={styles.title}>{ltxt('not-found-title')}</h1>
+      <h1>{ltxt('not-found-title')}</h1>
     </main>
   )
 }

@@ -7,7 +7,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 ## Features
 
 1. [React Router](https://reacttraining.com/react-router/)
-2. [CSS Modules](https://github.com/css-modules/css-modules) + [PostCSS](https://postcss.org/) + [PurgeCSS](https://purgecss.com/) + [StyleLint](https://stylelint.io/)
+2. [PostCSS](https://postcss.org/) + [StyleLint](https://stylelint.io/)
 3. [TypeScript](https://www.typescriptlang.org/) + [ESLint](https://eslint.org/)
 4. [Vite](https://vitejs.dev/)
 5. [Vitest](https://vitest.dev/)/[React Testing Library](https://testing-library.com/docs/react-testing-library/) for unit testing
@@ -16,7 +16,7 @@ This is an **experimental** starter kit for a React universal/isomorphic app.
 8. Custom i18n solution using [`sprintf-js`](https://www.npmjs.com/package/sprintf-js)
 9. Building for [Express](https://expressjs.com/) with server-side rendering
 10. Building for [Cloudflare Pages](https://pages.cloudflare.com/) with edge-side rending
-11. Building for a static app with prerendering (example on GitHub Pages)
+11. Building for a static app with prerendering (example on [GitHub Pages](https://andrewscwei.github.io/react-isomorphic-starter-kit/))
 12. Web workers
 13. CI/CD workflows with [GitHub Actions](https://github.com/features/actions)
 

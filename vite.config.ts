@@ -26,6 +26,35 @@ const parseBuildArgs = (env: Record<string, string>) => ({
   VERSION: packageInfo.version,
 })
 
+const htmlMinifier = ({ outDir }): Plugin => {
+  return {
+    name: 'html-minifier-terser',
+    enforce: 'post',
+    apply: 'build',
+    closeBundle: async () => {
+      if (!fs.existsSync(outDir)) return
+
+      const files = fs.readdirSync(outDir)
+
+      for (const file of files) {
+        if (file.endsWith('.html')) {
+          const filePath = path.join(outDir, file)
+          const html = fs.readFileSync(filePath, 'utf8')
+          const minifiedHtml = await minify(html, {
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true,
+          })
+
+          fs.writeFileSync(filePath, minifiedHtml, 'utf8')
+        }
+      }
+    },
+  }
+}
+
 export default defineConfig(({ mode, isSsrBuild }) => {
   const isDev = mode === 'development'
   const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
@@ -60,10 +89,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       target: isEdge ? 'webworker' : 'node',
     },
     css: {
-      modules: {
-        localsConvention: 'camelCaseOnly',
-        generateScopedName: isDev ? '[name]_[local]_[hash:base64:5]' : '_[hash:base64:5]',
-      },
       postcss: {
         plugins: [
           autoprefixer(),
@@ -78,7 +103,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     plugins: [
       react(),
-      htmlMinifier({ outDir, isEnabled: !isDev }),
+      ...isDev ? [] : [htmlMinifier({ outDir })],
     ],
     resolve: {
       alias: {
@@ -104,34 +129,3 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
   }
 })
-
-function htmlMinifier({ outDir, isEnabled }: { outDir: string; isEnabled: boolean }): Plugin | undefined {
-  if (!isEnabled) return undefined
-
-  return {
-    name: 'html-minifier-terser',
-    enforce: 'post',
-    apply: 'build',
-    closeBundle: async () => {
-      if (!fs.existsSync(outDir)) return
-
-      const files = fs.readdirSync(outDir)
-
-      for (const file of files) {
-        if (file.endsWith('.html')) {
-          const filePath = path.join(outDir, file)
-          const html = fs.readFileSync(filePath, 'utf8')
-          const minifiedHtml = await minify(html, {
-            collapseWhitespace: true,
-            removeRedundantAttributes: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            useShortDoctype: true,
-          })
-
-          fs.writeFileSync(filePath, minifiedHtml, 'utf8')
-        }
-      }
-    },
-  }
-}

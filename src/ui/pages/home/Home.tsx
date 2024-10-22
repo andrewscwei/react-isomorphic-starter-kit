@@ -2,7 +2,6 @@ import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
 import { VERSION } from '../../../app.config.js'
 import { ReactLogo } from '../../components/ReactLogo.js'
-import styles from './Home.module.css'
 
 export function Component() {
   const ltxt = useLocalizedString()
@@ -13,11 +12,11 @@ export function Component() {
 
   return (
     <main>
-      <div className={styles.content}>
-        <ReactLogo className={styles.logo}/>
+      <div className='content'>
+        <ReactLogo/>
         <section>
-          <h1 className={styles.title}>{ltxt('hello')}</h1>
-          <code className={styles.version}>{VERSION}</code>
+          <h1>{ltxt('hello')}</h1>
+          <code style={{ marginBottom: '1rem' }}>{VERSION}</code>
           <span>{ltxt('description')}</span>
         </section>
       </div>

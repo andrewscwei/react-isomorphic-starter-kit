@@ -1,4 +1,0 @@
-.title {
-  composes: h1 from global;
-  max-width: 60rem;
-}
