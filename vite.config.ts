@@ -78,30 +78,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     plugins: [
       react(),
-      ...isDev ? [] : [{
-        name: 'html-minifier-terser',
-        enforce: 'post',
-        apply: 'build',
-        closeBundle: async () => {
-          const files = fs.readdirSync(outDir)
-
-          for (const file of files) {
-            if (file.endsWith('.html')) {
-              const filePath = path.join(outDir, file)
-              const html = fs.readFileSync(filePath, 'utf8')
-              const minifiedHtml = await minify(html, {
-                collapseWhitespace: true,
-                removeRedundantAttributes: true,
-                removeScriptTypeAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                useShortDoctype: true,
-              })
-
-              fs.writeFileSync(filePath, minifiedHtml, 'utf8')
-            }
-          }
-        },
-      } as Plugin],
+      htmlMinifier({ outDir, isEnabled: !isDev }),
     ],
     resolve: {
       alias: {
@@ -127,3 +104,34 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
   }
 })
+
+function htmlMinifier({ outDir, isEnabled }: { outDir: string; isEnabled: boolean }): Plugin | undefined {
+  if (!isEnabled) return undefined
+
+  return {
+    name: 'html-minifier-terser',
+    enforce: 'post',
+    apply: 'build',
+    closeBundle: async () => {
+      if (!fs.existsSync(outDir)) return
+
+      const files = fs.readdirSync(outDir)
+
+      for (const file of files) {
+        if (file.endsWith('.html')) {
+          const filePath = path.join(outDir, file)
+          const html = fs.readFileSync(filePath, 'utf8')
+          const minifiedHtml = await minify(html, {
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true,
+          })
+
+          fs.writeFileSync(filePath, minifiedHtml, 'utf8')
+        }
+      }
+    },
+  }
+}
