@@ -1,0 +1,1 @@
+import{j as n}from"./index-CQ9r357y.js";import{u as o,a as e}from"./DTWzQTRh.js";function s(){const t=o();return e({title:t("window-title-not-found")}),n.jsx("main",{children:n.jsx("h1",{children:t("not-found-title")})})}export{s as Component};
