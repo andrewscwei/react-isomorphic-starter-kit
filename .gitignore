@@ -21,6 +21,7 @@ Thumbs.db
 
 # Compiled sources
 build/
+.gh-pages/
 
 # Packages
 *.7z

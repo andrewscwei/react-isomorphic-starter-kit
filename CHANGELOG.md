@@ -1,16 +1,3 @@
-# [19.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v18.0.0...v19.0.0) (2024-10-23)
-
-
-### Features
-
-* Improve prerender script ([ba21035](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/ba210354bec76b7204481371497b6521d7892dd0))
-* Remove CSS modules ([5bf7e62](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/5bf7e627b54d0c0fbb0a5f31d8d5e188f2192106))
-
-
-### BREAKING CHANGES
-
-* API changes to prerender script
-
 # [18.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v17.0.0...v18.0.0) (2024-09-05)
 
 ### Features
