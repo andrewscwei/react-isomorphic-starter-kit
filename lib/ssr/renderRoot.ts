@@ -20,46 +20,41 @@ export function renderRoot({ localData, render }: Module, template: string, {
       const fetchRequest = createFetchRequest(req)
       const locals = localData ? await localData(fetchRequest) : {}
 
-      let error: unknown
+      let streamEnd = ''
 
       const { pipe, abort } = await render(fetchRequest, metadata, {
         onError(err) {
-          error = err
+          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
         },
         onShellError() {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', error)
-
-          res.setHeader('content-type', 'application/json')
-          res.status(500).send({ error })
+          res.sendStatus(500)
         },
         onShellReady() {
-          if (error) {
-            res.setHeader('content-type', 'application/json')
-            res.status(500).send({ error })
-
-            return
-          }
-
           const html = injectMetadata(template, metadata, templateReplacements).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
           const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
-          const transformStream = new Transform({
-            transform: (chunk, encoding, callback) => {
-              res.write(chunk, encoding)
-              callback()
-            },
-          })
 
-          transformStream.on('finish', () => {
-            debug(`Rendering ${req.originalUrl}...`, 'OK')
-            res.end(htmlEnd)
-          })
+          streamEnd = htmlEnd
 
           res.setHeader('content-type', 'text/html')
           res.status(200)
           res.write(htmlStart)
-          pipe(transformStream)
         },
       })
+
+      const transformStream = new Transform({
+        transform: (chunk, encoding, callback) => {
+          res.write(chunk, encoding)
+          callback()
+        },
+      })
+
+      transformStream.on('finish', () => {
+        debug(`Rendering ${req.originalUrl}...`, 'OK')
+
+        res.end(streamEnd)
+      })
+
+      pipe(transformStream)
 
       setTimeout(() => abort(), timeout)
     }
