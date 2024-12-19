@@ -1,3 +1,17 @@
+# [20.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v19.0.0...v20.0.0) (2024-12-19)
+
+
+### Build System
+
+* Upgrade dependencies ([14ba97b](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/14ba97b13766709c8feef6e5334102bca26f3a0c))
+* Upgrade dependencies ([c090ef6](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/c090ef6aaf429baaef4470c46a915dad45179a26))
+
+
+### BREAKING CHANGES
+
+* Upgraded to React v19
+* Upgraded to React Router v7
+
 # [19.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v18.0.0...v19.0.0) (2024-10-25)
 
 
