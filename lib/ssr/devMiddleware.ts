@@ -44,7 +44,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   basePath = '/',
   templateReplacements = [],
 }: Options = {}) {
-  const { createServer } = await import ('vite')
+  const { createServer } = await import('vite')
   const vite = await createServer({
     server: { middlewareMode: true },
     appType: 'custom',
