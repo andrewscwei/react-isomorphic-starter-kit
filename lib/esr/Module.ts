@@ -1,19 +1,21 @@
-import { type LocalDataFunction } from './LocalDataFunction.js'
-import { type RenderFunction } from './RenderFunction.js'
+import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
+import { type Metadata } from '../dom/Metadata.js'
 
 /**
  * Type defining the entry module for edge-side rendering.
  */
 export type Module = {
   /**
-   * See {@link LocalDataFunction}.
+   * Populates local data on each request. The returned data will be JSON
+   * stringified and available in the client-side JavaScript as
+   * `window.__localData`.
    */
-  localData?: LocalDataFunction
+  localData?: (request: Request) => Promise<any>
 
   /**
-   * See {@link RenderFunction}.
+   * Renders the view into a readable stream and returns it.
    */
-  render: RenderFunction
+  render: (request: Request, metadata?: Metadata, options?: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
 
   /**
    * Returns the content of the `robots.txt` file.
