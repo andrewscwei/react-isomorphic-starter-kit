@@ -20,7 +20,7 @@ export const debug = (() => {
     }
   }
   else if (import.meta.env.TEST) {
-    if (import.meta.env.DEBUG_MODE === 'true') {
+    if (import.meta.env.DEBUG === 'true') {
       createDebug.enable(`${TEST_SYMBOL}*`)
     }
 
@@ -29,7 +29,7 @@ export const debug = (() => {
   else {
     createDebug.disable()
 
-    if (import.meta.env.DEV || import.meta.env.DEBUG_MODE === 'true') {
+    if (import.meta.env.DEV || import.meta.env.DEBUG === 'true') {
       createDebug.enable(`${CLIENT_SYMBOL}*`)
     }
 

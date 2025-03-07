@@ -78,7 +78,7 @@ const defineArgs = (env: Record<string, string>) => ({
   BASE_URL: env.BASE_URL ?? '',
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
-  DEBUG_MODE: env.DEBUG_MODE ?? '',
+  DEBUG: env.DEBUG ?? '',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   DEFAULT_METADATA: {
     baseTitle: 'React Isomorphic Starter Kit',
