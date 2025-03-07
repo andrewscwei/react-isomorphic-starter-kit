@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html lang="<!-- LOCALE -->">
   <head>
-    <meta charSet="utf-8" />
+    <meta charset="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=2.0,viewport-fit=cover" />
     <meta name="description" content="<!-- DESCRIPTION -->" />
-    <meta name='theme-color' content="<!-- THEME_COLOR -->" />
+    <meta name="theme-color" content="<!-- THEME_COLOR -->" />
+
+    <!-- IF_NOINDEX -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- END_IF_NOINDEX -->
 
     <title><!-- TITLE --></title>
 
-    <link rel="canonical" href="<!-- URL -->" />
     <link rel="mask-icon" type="image/svg+xml" href="/mask-icon.svg" color="<!-- MASK_ICON_COLOR -->" />
     <link rel="alternate icon" type="image/png" href="/favicon.png" />
     <link rel="icon" type="image/x-icon" href="/favicon.svg" />
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
 
+    <!-- IF_INDEX -->
+    <link rel="canonical" href="<!-- CANONICAL_URL -->" />
+
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="<!-- BASE_TITLE -->" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-57.png" sizes="57x57" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-60.png" sizes="60x60" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-72.png" sizes="72x72" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-76.png" sizes="76x76" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-114.png" sizes="114x114" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-120.png" sizes="120x120" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-144.png" sizes="144x144" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-152.png" sizes="152x152" />
     <link rel="apple-touch-icon" type="image/png" href="/app-icon-180.png" sizes="180x180" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-192.png" sizes="192x192" />
 
     <meta property="og:site_name" content="<!-- BASE_TITLE -->" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="<!-- TITLE -->" />
     <meta property="og:description" content="<!-- DESCRIPTION -->" />
-    <meta property="og:url" content="<!-- URL -->" />
+    <meta property="og:url" content="<!-- CANONICAL_URL -->" />
     <meta property="og:image" content="<!-- BASE_URL -->og-image.png" />
     <meta property="og:image:alt" content="<!-- DESCRIPTION -->" />
 
@@ -44,6 +41,7 @@
     <meta name="twitter:image" content="<!-- BASE_URL -->twitter-card.png" />
 
     <link rel="manifest" href="/manifest.json" />
+    <!-- END_IF_INDEX -->
   </head>
   <body>
     <div id="root"><!-- APP_HTML --></div>

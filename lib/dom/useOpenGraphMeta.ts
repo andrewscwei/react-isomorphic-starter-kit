@@ -1,57 +1,81 @@
-import { useEffect, type DependencyList } from 'react'
+import { type DependencyList } from 'react'
 import { type Metadata } from './Metadata.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
+import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['openGraph']
 
 type Options = {
   auto?: boolean
+  isEnabled?: boolean
 }
 
-export function useOpenGraphMeta(params: Params = {}, { auto = true }: Options = {}, deps?: DependencyList) {
-  const description = params.description
-  const image = params.image
-  const imageAlt = params.imageAlt ?? (auto ? params.description : undefined)
-  const siteName = params.siteName
-  const title = params.title
-  const type = params.type ?? (auto ? 'website' : undefined)
-  const url = params.url ?? ((auto && typeof window !== 'undefined') ? window.location.href : undefined)
+export function useOpenGraphMeta(
+  params: Params = {},
+  { auto = true, isEnabled = true }: Options = {},
+  deps: DependencyList = [],
+) {
+  const description = isEnabled ? params.description : undefined
+  const image = isEnabled ? params.image : undefined
+  const imageAlt = isEnabled ? params.imageAlt ?? (auto ? params.description : undefined) : undefined
+  const siteName = isEnabled ? params.siteName : undefined
+  const title = isEnabled ? params.title : undefined
+  const type = isEnabled ? params.type ?? (auto ? 'website' : undefined) : undefined
+  const url = isEnabled ? params.url : undefined
 
-  const updateOptions: Parameters<typeof updateElementAttributes>[2] = { autoCreate: auto, parent: typeof window !== 'undefined' ? window.document.head : undefined }
-  const getTagName = (value?: string): Parameters<typeof updateElementAttributes>[0] => value === undefined ? undefined : 'meta'
-
-  useEffect(() => updateElementAttributes(getTagName(description), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:description' },
     { name: 'content', value: description },
-  ], updateOptions), [description, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [description, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(image), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:image' },
     { name: 'content', value: image },
-  ], updateOptions), [image, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [image, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(imageAlt), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:image:alt' },
     { name: 'content', value: imageAlt },
-  ], updateOptions), [imageAlt, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [imageAlt, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(siteName), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:site_name' },
     { name: 'content', value: siteName },
-  ], updateOptions), [siteName, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [siteName, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(title), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:title' },
     { name: 'content', value: title },
-  ], updateOptions), [title, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [title, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(type), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:type' },
     { name: 'content', value: type },
-  ], updateOptions), [type, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [type, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(url), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:url' },
     { name: 'content', value: url },
-  ], updateOptions), [url, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [url, ...deps])
 }

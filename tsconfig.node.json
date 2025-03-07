@@ -1,3 +1,4 @@
+// TypeScript config for index.ts.
 {
   "compilerOptions": {
     "declaration": true,

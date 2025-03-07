@@ -1,27 +1,56 @@
-import { useEffect, type DependencyList } from 'react'
+import { type DependencyList } from 'react'
 import { type Metadata } from './Metadata.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
+import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['apple']
 
 type Options = {
   auto?: boolean
+  isEnabled?: boolean
 }
 
-export function useAppleMeta(params: Params = {}, { auto = true }: Options = {}, deps?: DependencyList) {
-  const title = params.title
-  const statusBarStyle = params.statusBarStyle ?? (auto ? 'default' : undefined)
+export function useAppleMeta(
+  params: Params = {},
+  { auto = true, isEnabled = true }: Options = {},
+  deps: DependencyList = [],
+) {
+  const title = isEnabled ? params.title : undefined
+  const statusBarStyle = isEnabled ? params.statusBarStyle ?? (auto ? 'default' : undefined) : undefined
+  const webAppCapable = isEnabled ? 'yes' : undefined
+  const icon = isEnabled ? '/app-icon-180.png' : undefined
 
-  const updateOptions: Parameters<typeof updateElementAttributes>[2] = { autoCreate: auto, parent: typeof window !== 'undefined' ? window.document.head : undefined }
-  const getTagName = (value?: string): Parameters<typeof updateElementAttributes>[0] => value === undefined ? undefined : 'meta'
+  useDOMEffect(() => updateElementAttributes('meta', [
+    { key: true, name: 'name', value: 'apple-mobile-web-app-capable' },
+    { name: 'content', value: webAppCapable },
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [webAppCapable, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(statusBarStyle), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-status-bar-style' },
     { name: 'content', value: statusBarStyle },
-  ], updateOptions), [statusBarStyle, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [statusBarStyle, ...deps])
 
-  useEffect(() => updateElementAttributes(getTagName(title), [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-title' },
     { name: 'content', value: title },
-  ], updateOptions), [title, ...deps ?? []])
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [title, ...deps])
+
+  useDOMEffect(() => updateElementAttributes('link', [
+    { key: true, name: 'rel', value: 'apple-touch-icon' },
+    { name: 'type', value: 'image/png' },
+    { name: 'href', value: icon },
+    { name: 'sizes', value: '180x180' },
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [icon, ...deps])
 }

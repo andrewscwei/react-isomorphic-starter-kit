@@ -173,7 +173,13 @@ nav {
   font-size: 1.2rem;
   height: var(--icon-diameter);
   justify-content: center;
+  line-height: var(--icon-diameter);
   width: var(--icon-diameter);
+
+  > img {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .content {

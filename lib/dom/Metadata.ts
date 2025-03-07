@@ -17,6 +17,11 @@ export type Metadata = {
   baseURL?: string
 
   /**
+   * The canonical URL of the current page of the application.
+   */
+  canonicalURL?: string
+
+  /**
    * The description of the current page of the application.
    */
   description?: string
@@ -32,6 +37,12 @@ export type Metadata = {
   maskIconColor?: string
 
   /**
+   * Specifies if the page is not intended to be indexed, hence should including
+   * necessary meta tags. Defaults to `false`.
+   */
+  noIndex?: boolean
+
+  /**
    * The theme color (i.e. in <meta name='theme-color'>).
    */
   themeColor?: string
@@ -41,11 +52,6 @@ export type Metadata = {
    * if unspecified.
    */
   title?: string
-
-  /**
-   * The URL of the current page of the application.
-   */
-  url?: string
 
   /**
    * The Apple meta tags.

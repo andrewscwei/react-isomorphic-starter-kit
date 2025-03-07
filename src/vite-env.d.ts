@@ -1,17 +1,18 @@
 /// <reference types="vite/client" />
 
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-
 interface ImportMetaEnv {
   /* Build args */
-  BASE_PATH: string
-  BASE_URL: string
-  BUILD_TIME: string
-  BUILD_NUMBER: string
-  DEBUG_MODE: string
-  DEFAULT_LOCALE: import('@lib/i18n/index.js').Locale
-  DEFAULT_METADATA: import('@lib/dom/index.js').Metadata
-  VERSION: string
+  readonly BASE_PATH: string
+  readonly BUILD_TIME: string
+  readonly BUILD_NUMBER: string
+  readonly DEBUG_MODE: string
+  readonly DEFAULT_LOCALE: string
+  readonly DEFAULT_METADATA: Record<string, string>
+  readonly VERSION: string
 
   /* App env */
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
 }

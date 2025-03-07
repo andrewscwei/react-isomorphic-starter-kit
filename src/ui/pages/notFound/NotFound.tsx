@@ -1,16 +1,14 @@
-import { useMeta } from '@lib/dom/index.js'
 import { useLocalizedString } from '@lib/i18n/index.js'
+import { Page } from '../../containers/Page.js'
 
 export function Component() {
   const ltxt = useLocalizedString()
 
-  useMeta({
-    title: ltxt('window-title-not-found'),
-  })
-
   return (
-    <main>
-      <h1>{ltxt('not-found-title')}</h1>
-    </main>
+    <Page metadata={{ noIndex: true, title: ltxt('not-found-title') }}>
+      <main>
+        <h1>{ltxt('not-found-title')}</h1>
+      </main>
+    </Page>
   )
 }

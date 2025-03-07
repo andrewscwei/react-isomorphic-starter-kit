@@ -9,7 +9,7 @@ export function injectMetadata(template: string, metadata: Metadata, replacement
     .replace(/<!-- MASK_ICON_COLOR -->/g, metadata.maskIconColor ?? '')
     .replace(/<!-- THEME_COLOR -->/g, metadata.themeColor ?? '')
     .replace(/<!-- TITLE -->/g, metadata.title ?? '')
-    .replace(/<!-- URL -->/g, metadata.url ?? '')
+    .replace(/<!-- CANONICAL_URL -->/g, metadata.canonicalURL ?? '')
 
   return replacements.reduce((acc, { regex, replaceValue }) => acc.replace(regex, replaceValue), injected)
 }

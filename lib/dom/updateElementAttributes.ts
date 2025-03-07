@@ -6,15 +6,21 @@ type Attribute = {
 
 type Options = {
   /**
-   * Speicifies whether the DOM element should be created if it does not already
+   * Specifies whether the DOM element should be created if it does not already
    * exist.
    */
   autoCreate?: boolean
 
   /**
-   * The parent node to appened the created DOM element to, if applicable.
+   * Specifies whether the DOM element should be destroyed if the value of any
+   * of the specified attributes is invalid.
    */
-  parent?: Node
+  autoDestroy?: boolean
+
+  /**
+   * The parent node to append to the created DOM element to, if applicable.
+   */
+  parent?: HTMLElement
 }
 
 type Undo = () => void
@@ -30,38 +36,56 @@ type Undo = () => void
  *
  * @returns A function that undoes the updates.
  */
-export function updateElementAttributes(tagName: string | undefined, attributes: Attribute[], { parent, autoCreate = true }: Options = {}): Undo {
-  if (typeof window === 'undefined' || !tagName) return () => {}
+export function updateElementAttributes(
+  tagName: string,
+  attributes: Attribute[],
+  { autoCreate = true, autoDestroy = true, parent }: Options = {},
+): Undo {
+  if (typeof window === 'undefined') return () => {}
 
+  const noop = () => {}
   const keyAttributes = attributes.filter(t => t.key === true)
-  if (keyAttributes.length === 0) throw Error('Missing key attribute(s)')
 
-  const keyAttributesSelector = keyAttributes.map(({ name, value = '' }) => `[${name}="${value}"]`).join('')
-  const oldElement = window.document.querySelector(`${tagName}${keyAttributesSelector}`)
-  if (!oldElement && autoCreate !== true) return () => {}
+  if (keyAttributes.length === 0) throw Error('Need at least one key attribute')
 
-  const newElement = oldElement ?? window.document.createElement(tagName)
-  const diffs: Attribute[] = []
+  const selector = keyAttributes.map(({ name, value = '' }) => `[${name}="${value}"]`).join('')
+  const parentElement = parent ?? window.document.head
+  const existingElement = parentElement.querySelector(`${tagName}${selector}`)
+  const shouldDestroy = !attributes.every(({ value }) => !!value)
 
-  attributes.forEach(({ name, value = '' }) => {
-    const oldVal = newElement.getAttribute(name)
+  if (shouldDestroy) {
+    if (!existingElement || autoDestroy !== true) return noop
 
-    if (oldVal && oldVal !== value) diffs.push({ name, value: oldVal })
-    newElement.setAttribute(name, value)
-  })
+    parentElement.removeChild(existingElement)
 
-  if (oldElement) {
     return () => {
-      diffs.forEach(({ name, value = '' }) => oldElement.setAttribute(name, value))
+      parentElement.appendChild(existingElement)
     }
   }
   else {
-    const parentElement = parent ?? window.document.body
+    if (!existingElement && autoCreate !== true) return noop
 
-    parentElement.appendChild(newElement)
+    const newElement = existingElement ?? window.document.createElement(tagName)
+    const diffs: Attribute[] = []
 
-    return () => {
-      parentElement.removeChild(newElement)
+    attributes.forEach(({ name, value = '' }) => {
+      const oldVal = newElement.getAttribute(name)
+
+      if (oldVal && oldVal !== value) diffs.push({ name, value: oldVal })
+      newElement.setAttribute(name, value)
+    })
+
+    if (existingElement) {
+      return () => {
+        diffs.forEach(({ name, value = '' }) => existingElement.setAttribute(name, value))
+      }
+    }
+    else {
+      parentElement.appendChild(newElement)
+
+      return () => {
+        parentElement.removeChild(newElement)
+      }
     }
   }
 }

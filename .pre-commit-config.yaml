@@ -7,22 +7,20 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-added-large-files
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.17.0
+  - repo: local
     hooks:
-      - id: eslint
+      - id: lint
         name: Lint TypeScript/React files
-        entry: eslint
-        language: node
-        types:
-          - ts
-  - repo: https://github.com/awebdeveloper/pre-commit-stylelint
-    rev: "0.0.2"
+        entry: npx eslint
+        language: system
+        files: \.(js|cjs|mjs|jsx|ts|cts|mts|tsx)$
+  - repo: local
     hooks:
       - id: stylelint
-        name: Lint CSS files
-        additional_dependencies:
-          - "stylelint@16.12.0"
+        name: Lint styles
+        entry: npx stylelint
+        language: system
+        files: \.(css)$
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
     hooks:

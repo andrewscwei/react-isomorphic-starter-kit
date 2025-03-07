@@ -1,10 +1,9 @@
-import { useContext, useEffect, type DependencyList } from 'react'
-import { useLocation } from 'react-router'
-import { joinURL } from '../utils/joinURL.js'
+import { useContext, type DependencyList } from 'react'
 import { type Metadata } from './Metadata.js'
 import { MetaContext } from './MetaProvider.js'
 import { updateElementAttributes } from './updateElementAttributes.js'
 import { useAppleMeta } from './useAppleMeta.js'
+import { useDOMEffect } from './useDOMEffect.js'
 import { useOpenGraphMeta } from './useOpenGraphMeta.js'
 import { useTwitterMeta } from './useTwitterMeta.js'
 
@@ -36,25 +35,24 @@ function assign<T extends Record<string, any>>(target: T, assignee: T) {
  * @param deps Additional dependencies.
  */
 export function useMeta(metadata: Metadata, {
-  auto = false,
-}: Options = {}, deps?: DependencyList) {
+  auto = true,
+}: Options = {}, deps: DependencyList = []) {
   const context = useContext(MetaContext)
-  const { baseTitle, description, themeColor, title, url, apple = {}, openGraph = {}, twitter = {} } = metadata
-  const location = useLocation()
+  const { baseTitle, canonicalURL, description, locale, noIndex, title, themeColor, apple, openGraph, twitter } = metadata
 
-  if (context?.context) {
-    assign(context.context, {
-      url: joinURL(context.default.baseURL ?? '', location.pathname),
-      ...metadata,
-    })
+  if (context?.current) {
+    assign(context.current, { ...metadata })
   }
 
-  useEffect(() => {
-    if (typeof window === 'undefined' || !metadata.locale) return
-
+  useDOMEffect(() => {
     const prevVal = window.document.documentElement.getAttribute('lang')
 
-    window.document.documentElement.setAttribute('lang', metadata.locale)
+    if (locale) {
+      window.document.documentElement.setAttribute('lang', locale)
+    }
+    else {
+      window.document.documentElement.removeAttribute('lang')
+    }
 
     return () => {
       if (prevVal) {
@@ -64,11 +62,9 @@ export function useMeta(metadata: Metadata, {
         window.document.documentElement.removeAttribute('lang')
       }
     }
-  }, [metadata.locale, ...deps ?? []])
+  }, [locale, ...deps])
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
+  useDOMEffect(() => {
     const prevTitle = window.document.title
 
     if (title !== undefined) window.document.title = title ?? ''
@@ -76,30 +72,48 @@ export function useMeta(metadata: Metadata, {
     return () => {
       window.document.title = prevTitle
     }
-  }, [title, ...deps ?? []])
+  }, [title, ...deps])
 
-  useEffect(() => updateElementAttributes(description !== undefined ? 'meta' : undefined, [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'description' },
     { name: 'content', value: description ?? '' },
-  ], {
-    parent: window.document.head,
-  }), [description, ...deps ?? []])
+  ]), [description, ...deps])
 
-  useEffect(() => updateElementAttributes(url !== undefined ? 'link' : undefined, [
+  useDOMEffect(() => updateElementAttributes('meta', [
+    { key: true, name: 'name', value: 'robots' },
+    { name: 'content', value: noIndex ? 'noindex, nofollow' : undefined },
+  ]), [noIndex, ...deps])
+
+  useDOMEffect(() => updateElementAttributes('link', [
+    { key: true, name: 'rel', value: 'manifest' },
+    { name: 'href', value: noIndex ? undefined : '/manifest.json' },
+  ]), [noIndex, ...deps])
+
+  useDOMEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'canonical' },
-    { name: 'href', value: url ?? '' },
-  ], {
-    parent: window.document.head,
-  }), [url, ...deps ?? []])
+    { name: 'href', value: noIndex ? undefined : canonicalURL },
+  ]), [canonicalURL, noIndex, ...deps])
 
-  useEffect(() => updateElementAttributes(themeColor !== undefined ? 'meta' : undefined, [
+  useDOMEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'theme-color' },
-    { name: 'content', value: themeColor },
-  ], {
-    parent: window.document.head,
-  }), [themeColor, ...deps ?? []])
+    { name: 'content', value: noIndex ? undefined : themeColor },
+  ]), [themeColor, noIndex, ...deps])
 
-  useAppleMeta({ title, ...apple }, { auto }, deps)
-  useOpenGraphMeta({ description, siteName: baseTitle, title, url, ...openGraph }, { auto }, deps)
-  useTwitterMeta({ description, title, ...twitter }, { auto }, deps)
+  useAppleMeta(
+    { title, ...apple },
+    { auto, isEnabled: !noIndex },
+    [...deps],
+  )
+
+  useOpenGraphMeta(
+    { description, siteName: baseTitle, title, url: canonicalURL, ...openGraph },
+    { auto, isEnabled: !noIndex },
+    [...deps],
+  )
+
+  useTwitterMeta(
+    { description, title, ...twitter },
+    { auto, isEnabled: !noIndex },
+    [...deps],
+  )
 }
