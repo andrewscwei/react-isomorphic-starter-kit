@@ -11,8 +11,8 @@ type Options = {
 }
 
 export function renderRoot({ localData, render }: Module, template: string, {
-  timeout = 10_000,
   templateReplacements = [],
+  timeout = 10_000,
 }: Options = {}): RequestHandler {
   return async (req, res, next) => {
     try {

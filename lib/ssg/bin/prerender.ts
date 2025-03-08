@@ -5,7 +5,7 @@
  */
 
 import minimist from 'minimist'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { cleanup, createServer, generatePages, generateRobots, generateSitemap } from '../src/index.js'
 
 const cwd = process.cwd()
@@ -19,10 +19,10 @@ const {
 } = minimist(process.argv.slice(2))
 
 async function main() {
-  const outDir = path.resolve(cwd, o)
-  const entryPath = path.resolve(cwd, entry)
-  const templatePath = path.resolve(cwd, template)
-  const localesDir = path.resolve(cwd, locales)
+  const outDir = resolve(cwd, o)
+  const entryPath = resolve(cwd, entry)
+  const templatePath = resolve(cwd, template)
+  const localesDir = resolve(cwd, locales)
 
   const app = createServer({ basePath, entryPath, templatePath })
 

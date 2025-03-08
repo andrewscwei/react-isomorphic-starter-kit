@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import fs from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import { debug } from '../utils/debug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
@@ -56,7 +56,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
   router.use(async (req, res, next) => {
     try {
       const [template, module] = await Promise.all([
-        fs.readFile(templatePath, 'utf-8'),
+        readFile(templatePath, 'utf-8'),
         import(entryPath),
       ])
 

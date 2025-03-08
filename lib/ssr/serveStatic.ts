@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import fs from 'node:fs'
+import { existsSync } from 'node:fs'
 
 type Options = {
   basePath?: string
@@ -16,7 +16,7 @@ type Options = {
 export function serveStatic(path: string, { basePath = '/' }: Options = {}) {
   const router = Router()
 
-  if (fs.existsSync(path)) {
+  if (existsSync(path)) {
     router.use(basePath, express.static(path, {
       index: false,
       setHeaders: res => {

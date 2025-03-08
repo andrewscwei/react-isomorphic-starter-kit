@@ -1,5 +1,5 @@
-import fs from 'node:fs'
-import path from 'node:path'
+import { readdir, unlink } from 'node:fs/promises'
+import { extname, resolve } from 'node:path'
 import { debug } from '../../utils/debug.js'
 
 type Options = {
@@ -7,21 +7,20 @@ type Options = {
 }
 
 export async function cleanup({ outDir }: Options) {
-  const files = fs.readdirSync(outDir)
+  const files = await readdir(outDir, { recursive: true })
   const removeExtensions = ['.js', '.d.ts']
 
-  files.forEach(file => {
-    if (removeExtensions.find(t => file.endsWith(t))) {
-      const filePath = path.resolve(outDir, file)
+  Promise.all(files.map(async file => {
+    if (!removeExtensions.find(t => extname(file) === t)) return
 
-      fs.unlink(filePath, err => {
-        if (err) {
-          console.error(`Error deleting file ${filePath}: ${err}`)
-          return
-        }
+    const filePath = resolve(outDir, file)
 
-        debug(`Cleaning up file ${filePath}...`, 'OK')
-      })
+    try {
+      await unlink(filePath)
+      debug(`Cleaning up file ${filePath}...`, 'OK')
     }
-  })
+    catch (err) {
+      console.error(`Error deleting file ${filePath}: ${err}`)
+    }
+  }))
 }

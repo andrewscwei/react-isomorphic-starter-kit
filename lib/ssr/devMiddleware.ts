@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import fs from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { debug } from '../utils/debug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
@@ -57,7 +57,10 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   router.use(async (req, res, next) => {
     try {
       const [template, module] = await Promise.all([
-        vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), fs.readFileSync(templatePath, 'utf-8')),
+        vite.transformIndexHtml(
+          req.originalUrl.replace(basePath, ''),
+          await readFile(templatePath, 'utf-8'),
+        ),
         vite.ssrLoadModule(entryPath),
       ])
 
