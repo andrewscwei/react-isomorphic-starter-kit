@@ -39,9 +39,9 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       target: isEdge ? 'webworker' : 'node',
     },
     define: {
-      ...Object.keys(args).reduce((acc, key) => ({
+      ...Object.entries(args).reduce((acc, [key, value]) => ({
         ...acc,
-        [`import.meta.env.${key}`]: JSON.stringify(args[key]),
+        [`import.meta.env.${key}`]: JSON.stringify(value),
       }), {}),
     },
     plugins: [
@@ -75,20 +75,11 @@ export default defineConfig(({ mode, isSsrBuild }) => {
 
 const defineArgs = (env: Record<string, string>) => ({
   BASE_PATH: env.BASE_PATH ?? '/',
-  BASE_URL: env.BASE_URL ?? '',
+  BASE_URL: (env.BASE_URL ?? '').replace(/\/+$/, ''),
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
   DEBUG: env.DEBUG ?? '',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
-  DEFAULT_METADATA: {
-    baseTitle: 'React Isomorphic Starter Kit',
-    baseURL: env.BASE_URL ?? '',
-    description: 'React isomorphic app starter kit',
-    maskIconColor: '#000',
-    themeColor: '#15141a',
-    title: 'React Isomorphic Starter Kit',
-    url: env.BASE_URL ?? '',
-  },
   VERSION: packageInfo.version,
 })
 

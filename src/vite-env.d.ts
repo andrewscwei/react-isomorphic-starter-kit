@@ -7,7 +7,6 @@ interface ImportMetaEnv {
   readonly BUILD_NUMBER: string
   readonly DEBUG: string
   readonly DEFAULT_LOCALE: string
-  readonly DEFAULT_METADATA: Record<string, string>
   readonly VERSION: string
 
   /* App env */

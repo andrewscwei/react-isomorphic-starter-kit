@@ -12,11 +12,6 @@ export type Metadata = {
   baseTitle?: string
 
   /**
-   * The base URL of the public assets.
-   */
-  baseURL?: string
-
-  /**
    * The canonical URL of the current page of the application.
    */
   canonicalURL?: string
@@ -30,11 +25,6 @@ export type Metadata = {
    * The locale of the current page of the application.
    */
   locale?: string
-
-  /**
-   * The color of the mask icon (i.e. in <link rel='mask-icon'>).
-   */
-  maskIconColor?: string
 
   /**
    * Specifies if the page is not intended to be indexed, hence should including

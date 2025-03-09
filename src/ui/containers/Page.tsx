@@ -19,9 +19,12 @@ export function Page({
   const location = useLocation()
 
   useMeta({
+    baseTitle: ltxt('window-title-home'),
     canonicalURL: joinURL(BASE_URL, location.pathname),
     description: ltxt('description'),
     locale,
+    themeColor: '#15141a',
+    title: ltxt('window-title-home'),
     ...metadata,
   })
 

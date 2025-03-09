@@ -40,8 +40,8 @@ export function useMeta(metadata: Metadata, {
   const context = useContext(MetaContext)
   const { baseTitle, canonicalURL, description, locale, noIndex, title, themeColor, apple, openGraph, twitter } = metadata
 
-  if (context?.current) {
-    assign(context.current, { ...metadata })
+  if (context?.metadata) {
+    assign(context.metadata, { ...metadata })
   }
 
   useDOMEffect(() => {

@@ -4,21 +4,12 @@ import { type Metadata } from './Metadata.js'
 type MetaProviderProps = PropsWithChildren<MetaContextValue>
 
 type MetaContextValue = {
-  current?: Metadata
-  default: Metadata
+  metadata?: Metadata
 }
 
-export function MetaProvider({ children, current, default: defaultValue }: MetaProviderProps) {
-  if (current && Object.keys(current).length === 0) {
-    for (const key in defaultValue) {
-      if (Object.prototype.hasOwnProperty.call(defaultValue, key) === false) continue
-      const typedKey = key as keyof Metadata
-      current[typedKey] = defaultValue[typedKey] as any
-    }
-  }
-
+export function MetaProvider({ children, metadata }: MetaProviderProps) {
   return (
-    <MetaContext.Provider value={{ current, default: defaultValue }}>
+    <MetaContext.Provider value={{ metadata }}>
       {children}
     </MetaContext.Provider>
 
