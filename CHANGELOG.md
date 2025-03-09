@@ -1,3 +1,10 @@
+# [21.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.0.0...v21.1.0) (2025-03-09)
+
+
+### Features
+
+* Minimize dependencies in libs ([0612ee2](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/0612ee23f0bbc5f44e449e2446af1e7e4713c211))
+
 # [21.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v20.0.0...v21.0.0) (2025-03-09)
 
 
