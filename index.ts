@@ -6,7 +6,7 @@ import compression from 'compression'
 import express, { type ErrorRequestHandler } from 'express'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { debug } from './lib/utils/debug.js'
+import { debug } from './lib/debug/index.js'
 
 const BASE_PATH = process.env.BASE_PATH ?? '/'
 const PORT = process.env.PORT ?? '8080'
