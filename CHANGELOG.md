@@ -1,6 +1,24 @@
 # [22.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.1.0...v22.0.0) (2025-03-09)
 
 
+### Bug Fixes
+
+* Fix demo ([2e1e102](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/2e1e10252ef1f47f7509443d2c6d7fb91d9cf331))
+
+
+### Features
+
+* Optimize lib ([9040ddb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/9040ddb27564e7294e7cc885f6105630920ed087))
+
+
+### BREAKING CHANGES
+
+* Renamed lib/utils to lib/debug
+* Removed joinURL
+
+# [22.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.1.0...v22.0.0) (2025-03-09)
+
+
 ### Features
 
 * Optimize lib ([9040ddb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/9040ddb27564e7294e7cc885f6105630920ed087))
