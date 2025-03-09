@@ -1,6 +1,6 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { injectMetadata } from '../dom/index.js'
+import { injectData } from '../dom/index.js'
 import { debug } from '../utils/debug.js'
 import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
@@ -28,8 +28,11 @@ export function renderRoot({ localData, render }: Module, template: string, {
           res.sendStatus(500)
         },
         onShellReady() {
-          const html = injectMetadata(template, metadata).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
-          const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
+          const html = injectData(template, {
+            ...metadata,
+            localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
+          })
+          const [htmlStart, htmlEnd] = html.split(/<!--\s*root\s*-->/)
 
           streamEnd = htmlEnd
 

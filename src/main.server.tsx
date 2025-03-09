@@ -32,7 +32,7 @@ export const render: Module['render'] = async (req, metadata, options = {}) => {
   return renderToPipeableStream(
     (
       <App>
-        <MetaProvider current={metadata}>
+        <MetaProvider metadata={metadata}>
           <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
         </MetaProvider>
       </App>

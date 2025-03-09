@@ -1,4 +1,4 @@
-import { injectMetadata } from '../dom/index.js'
+import { injectData } from '../dom/index.js'
 import { type Module } from './Module.js'
 
 export function renderRoot({ localData, render }: Module, template: string) {
@@ -10,8 +10,11 @@ export function renderRoot({ localData, render }: Module, template: string) {
         start: async controller => {
           try {
             const locals = localData ? await localData(req) : {}
-            const html = injectMetadata(template, metadata).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
-            const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
+            const html = injectData(template, {
+              ...metadata,
+              localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
+            })
+            const [htmlStart, htmlEnd] = html.split(/<!--\s*root\s*-->/)
             controller.enqueue(new TextEncoder().encode(htmlStart))
 
             const reader = stream.getReader()
