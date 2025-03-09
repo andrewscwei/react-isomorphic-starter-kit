@@ -1,13 +1,7 @@
 import { injectMetadata } from '../dom/index.js'
 import { type Module } from './Module.js'
 
-type Options = {
-  templateReplacements?: { regex: RegExp; replaceValue: string }[]
-}
-
-export function renderRoot({ localData, render }: Module, template: string, {
-  templateReplacements = [],
-}: Options = {}) {
+export function renderRoot({ localData, render }: Module, template: string) {
   return async (req: Request, path: string) => {
     try {
       const metadata = {}
@@ -16,7 +10,7 @@ export function renderRoot({ localData, render }: Module, template: string, {
         start: async controller => {
           try {
             const locals = localData ? await localData(req) : {}
-            const html = injectMetadata(template, metadata, templateReplacements).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
+            const html = injectMetadata(template, metadata).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
             const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
             controller.enqueue(new TextEncoder().encode(htmlStart))
 

@@ -29,11 +29,6 @@ type Options = {
    * Path for static assets in the file system.
    */
   staticPath?: string
-
-  /**
-   * Replacements to apply to the template.
-   */
-  templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
 /**
@@ -48,7 +43,6 @@ type Options = {
 export function ssrMiddleware({ entryPath, templatePath }: Params, {
   basePath,
   staticPath,
-  templateReplacements = [],
 }: Options = {}) {
   const router = Router()
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
@@ -68,7 +62,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
           serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot(module as Module, template, { templateReplacements })(req, res, next)
+          renderRoot(module as Module, template)(req, res, next)
         }
       }
     }

@@ -23,11 +23,6 @@ type Options = {
    * Base path for the server.
    */
   basePath?: string
-
-  /**
-   * Replacements to apply to the template.
-   */
-  templateReplacements?: { regex: RegExp; replaceValue: string }[]
 }
 
 /**
@@ -42,7 +37,6 @@ type Options = {
  */
 export async function devMiddleware({ entryPath, templatePath }: Params, {
   basePath = '/',
-  templateReplacements = [],
 }: Options = {}) {
   const { createServer } = await import('vite')
   const vite = await createServer({
@@ -72,7 +66,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
           serveSitemap(module as Module)(req, res, next)
           return
         default: {
-          renderRoot(module as Module, template, { templateReplacements })(req, res, next)
+          renderRoot(module as Module, template)(req, res, next)
         }
       }
     }

@@ -6,12 +6,10 @@ import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 
 type Options = {
-  templateReplacements?: { regex: RegExp; replaceValue: string }[]
   timeout?: number
 }
 
 export function renderRoot({ localData, render }: Module, template: string, {
-  templateReplacements = [],
   timeout = 10_000,
 }: Options = {}): RequestHandler {
   return async (req, res, next) => {
@@ -30,7 +28,7 @@ export function renderRoot({ localData, render }: Module, template: string, {
           res.sendStatus(500)
         },
         onShellReady() {
-          const html = injectMetadata(template, metadata, templateReplacements).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
+          const html = injectMetadata(template, metadata).replace('<!-- LOCAL_DATA -->', `<script>window.__localData=${JSON.stringify(locals)}</script>`)
           const [htmlStart, htmlEnd] = html.split('<!-- APP_HTML -->')
 
           streamEnd = htmlEnd
