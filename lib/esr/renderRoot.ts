@@ -1,4 +1,4 @@
-import { injectData } from '@lib/dom'
+import { injectData } from '../dom/index.js'
 import { type Module } from './Module.js'
 
 export function renderRoot({ localData, render }: Module, template: string) {

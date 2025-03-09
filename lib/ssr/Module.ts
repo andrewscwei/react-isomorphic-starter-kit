@@ -1,5 +1,5 @@
-import { type Metadata } from '@lib/dom'
 import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+import { type Metadata } from '../dom/index.js'
 
 /**
  * Type defining the entry module for server-side rendering.
