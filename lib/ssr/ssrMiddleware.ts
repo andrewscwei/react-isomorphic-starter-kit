@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import { debug } from '../utils/debug.js'
 import { type Module } from './Module.js'
 import { renderRoot } from './renderRoot.js'
 import { serveRobots } from './serveRobots.js'
@@ -67,7 +66,7 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
       }
     }
     catch (err) {
-      debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+      console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
 
       if (err instanceof Error) {
         res.status(500).send(err.stack)

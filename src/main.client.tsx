@@ -5,7 +5,6 @@
 import { loadLazyComponents } from '@lib/dom/index.js'
 import { generateLocalizedRoutes } from '@lib/i18n/index.js'
 import { debug } from '@lib/utils/debug.js'
-import { rethrow } from '@lib/utils/rethrow.js'
 import { hydrateRoot } from 'react-dom/client'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
@@ -27,7 +26,9 @@ function work() {
 
 async function render() {
   const localizedRoutes = generateLocalizedRoutes(routes, i18n)
-  const container = window.document.getElementById('root') ?? rethrow('Invalid application root')
+  const container = window.document.getElementById('root')
+
+  if (!container) throw Error('Invalid application root')
 
   await loadLazyComponents(localizedRoutes, { basePath: BASE_PATH })
 

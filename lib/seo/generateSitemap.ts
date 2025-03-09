@@ -1,6 +1,5 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
-import { joinURL } from '../utils/joinURL.js'
 import { type SEOConfig } from './SEOConfig.js'
 import { type SitemapTags } from './SitemapTags.js'
 import { defineConfig } from './defineConfig.js'
@@ -47,7 +46,7 @@ export async function generateSitemap(routes: RouteObject[], {
         if (typeof t === 'string') {
           return {
             ...defaultTags,
-            loc: joinURL(baseURL, t),
+            loc: `${baseURL}/${t.replace(/^\/+/, '')}`,
           }
         }
         else {
@@ -55,7 +54,7 @@ export async function generateSitemap(routes: RouteObject[], {
 
           return {
             ...defaultTags,
-            loc: joinURL(baseURL, loc),
+            loc: `${baseURL}/${loc.replace(/^\/+/, '')}`,
             ...tags,
           }
         }

@@ -1,7 +1,6 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
 import { injectData } from '../dom/index.js'
-import { debug } from '../utils/debug.js'
 import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 
@@ -22,7 +21,7 @@ export function renderRoot({ localData, render }: Module, template: string, {
 
       const { pipe, abort } = await render(fetchRequest, metadata, {
         onError(err) {
-          debug(`Rendering ${req.originalUrl}...`, 'ERR', err)
+          console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
         },
         onShellError() {
           res.sendStatus(500)
@@ -50,8 +49,6 @@ export function renderRoot({ localData, render }: Module, template: string, {
       })
 
       transformStream.on('finish', () => {
-        debug(`Rendering ${req.originalUrl}...`, 'OK')
-
         res.end(streamEnd)
       })
 
