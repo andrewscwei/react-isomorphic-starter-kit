@@ -1,3 +1,23 @@
+# [21.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v20.0.0...v21.0.0) (2025-03-09)
+
+
+### Build System
+
+* Upgrade build pipeline ([74c75f9](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/74c75f938114700fca5a1d5771f477397d2e92fd))
+
+
+### Features
+
+* Improve data injection ([c7dd4e6](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/c7dd4e60cd81cf881be7b48177893fe81bdf9e47))
+* Optimize meta tag replacements ([1a04f28](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/1a04f286655729178bceb9739c67023f225598cd))
+* Optimize prerendering script ([12213d6](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/12213d6ed5a044570467011c4cf1045574838bea))
+* Remove templateReplacements ([c12b57b](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/c12b57ba0c13e7ce8fd00e65127dc2aadee8703c))
+
+
+### BREAKING CHANGES
+
+* Lib API changes
+
 # [20.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v19.0.0...v20.0.0) (2024-12-19)
 
 
