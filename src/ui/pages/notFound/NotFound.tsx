@@ -1,4 +1,4 @@
-import { useLocalizedString } from '@lib/i18n/index.js'
+import { useLocalizedString } from '@lib/i18n'
 import { Page } from '../../containers/Page.js'
 
 export function Component() {

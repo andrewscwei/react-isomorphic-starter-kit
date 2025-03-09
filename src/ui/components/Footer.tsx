@@ -1,4 +1,4 @@
-import { useChangeLocale, useLocalizedString } from '@lib/i18n/index.js'
+import { useChangeLocale, useLocalizedString } from '@lib/i18n'
 import { type HTMLAttributes } from 'react'
 import $$GitHubLogo from '../assets/images/github-logo.svg'
 

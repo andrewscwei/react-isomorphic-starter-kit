@@ -5,13 +5,13 @@
  * @file Generates a static site from the built server application.
  */
 
+import { ssrMiddleware } from '@lib/ssr'
 import express, { type Express } from 'express'
 import { XMLParser } from 'fast-xml-parser'
 import minimist from 'minimist'
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
 import path, { dirname, extname, join, resolve } from 'node:path'
 import request from 'supertest'
-import { ssrMiddleware } from '../../ssr/index.js'
 
 function getArgs() {
   const cwd = process.cwd()

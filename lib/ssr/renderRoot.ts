@@ -1,6 +1,6 @@
+import { injectData } from '@lib/dom'
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { injectData } from '../dom/index.js'
 import { createFetchRequest } from './createFetchRequest.js'
 import { type Module } from './Module.js'
 

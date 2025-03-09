@@ -3,6 +3,7 @@ import { type RouteObject } from 'react-router'
 import { type SEOConfig } from './SEOConfig.js'
 import { type SitemapTags } from './SitemapTags.js'
 import { defineConfig } from './defineConfig.js'
+import { joinURL } from './joinURL.js'
 
 type Options = {
   baseURL?: string
@@ -46,7 +47,7 @@ export async function generateSitemap(routes: RouteObject[], {
         if (typeof t === 'string') {
           return {
             ...defaultTags,
-            loc: `${baseURL}/${t.replace(/^\/+/, '')}`,
+            loc: joinURL(baseURL, t),
           }
         }
         else {
@@ -54,7 +55,7 @@ export async function generateSitemap(routes: RouteObject[], {
 
           return {
             ...defaultTags,
-            loc: `${baseURL}/${loc.replace(/^\/+/, '')}`,
+            loc: joinURL(baseURL, loc),
             ...tags,
           }
         }

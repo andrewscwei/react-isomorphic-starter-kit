@@ -1,5 +1,4 @@
 export * from './injectData.js'
-export * from './loadLazyComponents.js'
 export * from './Metadata.js'
 export * from './MetaProvider.js'
 export * from './updateElementAttributes.js'

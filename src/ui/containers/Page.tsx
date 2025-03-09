@@ -1,8 +1,7 @@
-import { useMeta, type Metadata } from '@lib/dom/index.js'
-import { useLocale, useLocalizedString } from '@lib/i18n/index.js'
+import { useMeta, type Metadata } from '@lib/dom'
+import { useLocale, useLocalizedString } from '@lib/i18n'
 import type { PropsWithChildren } from 'react'
 import { useLocation } from 'react-router'
-import { joinURL } from '../../../lib/utils/joinURL.js'
 import { BASE_URL } from '../../app.config.js'
 import { Footer } from '../components/Footer.js'
 
@@ -20,7 +19,7 @@ export function Page({
 
   useMeta({
     baseTitle: ltxt('window-title-home'),
-    canonicalURL: joinURL(BASE_URL, location.pathname),
+    canonicalURL: BASE_URL + location.pathname,
     description: ltxt('description'),
     locale,
     themeColor: '#15141a',

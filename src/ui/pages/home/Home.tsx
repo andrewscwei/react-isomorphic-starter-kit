@@ -1,4 +1,4 @@
-import { useLocalizedString } from '@lib/i18n/index.js'
+import { useLocalizedString } from '@lib/i18n'
 import { VERSION } from '../../../app.config.js'
 import { ReactLogo } from '../../components/ReactLogo.js'
 import { Page } from '../../containers/Page.js'

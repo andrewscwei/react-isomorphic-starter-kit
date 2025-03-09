@@ -2,7 +2,7 @@
  * @file I18n config.
  */
 
-import { defineConfig, type Locale } from '@lib/i18n/index.js'
+import { defineConfig, type Locale } from '@lib/i18n'
 import { DEFAULT_LOCALE } from './app.config.js'
 
 export const i18n = defineConfig({

@@ -1,4 +1,4 @@
-import { debug } from '@lib/utils/debug.js'
+import { debug } from '@lib/debug'
 
 self.addEventListener('message', event => {
   const message = event.data.message

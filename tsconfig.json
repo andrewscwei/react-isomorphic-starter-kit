@@ -13,9 +13,13 @@
     "noImplicitAny": true,
     "outDir": "build",
     "paths": {
-      "@lib/*": [
-        "./lib/*"
-      ]
+      "@lib/debug": ["./lib/debug/index"],
+      "@lib/dom": ["./lib/dom/index"],
+      "@lib/esr": ["./lib/esr/index"],
+      "@lib/i18n": ["./lib/i18n/index"],
+      "@lib/seo": ["./lib/seo/index"],
+      "@lib/ssg": ["./lib/ssg/index"],
+      "@lib/ssr": ["./lib/ssr/index"]
     },
     "skipLibCheck": true,
     "strict": true,
