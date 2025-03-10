@@ -1,17 +1,6 @@
 import { type SEOConfig } from './types/index.js'
-import { extractURLs } from './utils/index.js'
 
-type Params = {
-  /**
-   * @see {@link SEOConfig.robotsProvider}
-   */
-  robotsProvider?: SEOConfig['robotsProvider']
-
-  /**
-   * @see {@link SEOConfig.urlsProvider}
-   */
-  urlsProvider?: SEOConfig['urlsProvider']
-
+type Params = Partial<SEOConfig> & {
   /**
    * Filter for each URL.
    *
@@ -19,14 +8,18 @@ type Params = {
    *
    * @returns `true` to include the URL, `false` to exclude.
    */
-  urlFilter?: (url: string) => boolean
+  urlsFilter?: (url: string) => boolean
 }
 
-export function defineConfig({ robotsProvider, urlsProvider, urlFilter }: Params): SEOConfig {
-  const filter = urlFilter ?? (url => !url.endsWith('*'))
-
+export function defineConfig({
+  baseURL = '',
+  modifiedAt = new Date().toISOString(),
+  urlsFilter = url => !url.endsWith('*'),
+  urlsProvider,
+}: Params): SEOConfig {
   return {
-    robotsProvider: robotsProvider ?? (async () => 'User-agent: * Disallow:'),
-    urlsProvider: urlsProvider ?? (async routes => extractURLs(routes).filter(filter)),
+    baseURL: baseURL.replace(/\/+$/, ''),
+    modifiedAt,
+    urlsProvider: urlsProvider ?? (async routes => routes.filter(urlsFilter)),
   }
 }

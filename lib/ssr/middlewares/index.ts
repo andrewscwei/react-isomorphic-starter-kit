@@ -1,6 +1,5 @@
 export * from './devMiddleware.js'
 export * from './renderRoot.js'
-export * from './serveRobots.js'
 export * from './serveSitemap.js'
 export * from './serveStatic.js'
 export * from './ssrMiddleware.js'

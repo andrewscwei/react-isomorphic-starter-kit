@@ -1,13 +1,7 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
-import { defineConfig } from './defineConfig.js'
 import { type SEOConfig, type SitemapTags } from './types/index.js'
-import { joinURL } from './utils/index.js'
-
-type Options = {
-  baseURL?: string
-  modifiedAt?: string
-}
+import { extractRoutes, joinURL } from './utils/index.js'
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
@@ -18,12 +12,11 @@ type Options = {
  * @returns The plain text `sitemap.xml`.
  */
 export async function generateSitemap(routes: RouteObject[], {
+  baseURL,
+  modifiedAt,
   urlsProvider,
-}: SEOConfig = defineConfig({}), {
-  baseURL = '',
-  modifiedAt = new Date().toISOString(),
-}: Options = {}) {
-  const urls = await urlsProvider(routes)
+}: SEOConfig) {
+  const urls = await urlsProvider(extractRoutes(routes))
   const builder = new XMLBuilder({
     ignoreAttributes: false,
     format: true,

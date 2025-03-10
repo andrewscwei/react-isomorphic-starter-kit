@@ -5,7 +5,7 @@ export function renderRoot({ localData, render }: Module, template: string) {
   return async (req: Request, path: string) => {
     try {
       const metadata = {}
-      const stream = await render(req, metadata)
+      const stream = await render(req, metadata, {})
       const readableStream = new ReadableStream({
         start: async controller => {
           try {

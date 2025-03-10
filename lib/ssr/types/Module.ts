@@ -14,14 +14,7 @@ export type Module = {
   /**
    * Renders the view into a pipeable stream and returns it.
    */
-  render: (request: Request, metadata?: Record<string, any>, options?: RenderToPipeableStreamOptions) => Promise<PipeableStream>
-
-  /**
-   * Returns the content of the `robots.txt` file.
-   *
-   * @returns The content of the `robots.txt` file.
-   */
-  robots?: () => Promise<string>
+  render: (request: Request, metadata: Record<string, any>, options: RenderToPipeableStreamOptions) => Promise<PipeableStream>
 
   /**
    * Returns the content of the `sitemap.xml` file.

@@ -14,14 +14,7 @@ export type Module = {
   /**
    * Renders the view into a readable stream and returns it.
    */
-  render: (request: Request, metadata?: Record<string, any>, options?: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
-
-  /**
-   * Returns the content of the `robots.txt` file.
-   *
-   * @returns The content of the `robots.txt` file.
-   */
-  robots?: () => Promise<string>
+  render: (request: Request, metadata: Record<string, any>, options: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
 
   /**
    * Returns the content of the `sitemap.xml` file.

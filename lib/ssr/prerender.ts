@@ -105,19 +105,6 @@ async function generatePages(app: Express, { basePath, baseURL, outDir, localesD
   }
 }
 
-async function generateRobots(app: Express, { outDir }: Record<string, string>) {
-  try {
-    const { text: str } = await request(app).get('/robots.txt')
-    await writeFile(resolve(outDir, 'robots.txt'), str)
-
-    console.log('✓ Generating robots.txt...', 'OK')
-  }
-  catch (err) {
-    console.error('⚠︎ Generating robots.txt...', 'ERR', err)
-    throw err
-  }
-}
-
 async function generateSitemap(app: Express, { outDir }: Record<string, string>) {
   try {
     const { text: str } = await request(app).get('/sitemap.xml')
@@ -155,7 +142,6 @@ async function main() {
   const app = await createServer({ basePath, entryPath, templatePath })
 
   await generateSitemap(app, { outDir })
-  await generateRobots(app, { outDir })
   await generatePages(app, { basePath, baseURL, localesDir, outDir })
   await cleanup({ outDir })
 

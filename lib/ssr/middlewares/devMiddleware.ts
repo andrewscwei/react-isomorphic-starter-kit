@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
 import { type Module } from '../types/index.js'
 import { renderRoot } from './renderRoot.js'
-import { serveRobots } from './serveRobots.js'
 import { serveSitemap } from './serveSitemap.js'
 
 type Params = {
@@ -58,9 +57,6 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
       ])
 
       switch (req.url) {
-        case '/robots.txt':
-          serveRobots(module as Module)(req, res, next)
-          return
         case '/sitemap.xml':
           serveSitemap(module as Module)(req, res, next)
           return

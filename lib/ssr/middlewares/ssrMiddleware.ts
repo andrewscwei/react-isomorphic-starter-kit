@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
 import { type Module } from '../types/Module.js'
 import { renderRoot } from './renderRoot.js'
-import { serveRobots } from './serveRobots.js'
 import { serveSitemap } from './serveSitemap.js'
 import { serveStatic } from './serveStatic.js'
 
@@ -54,9 +53,6 @@ export function ssrMiddleware({ entryPath, templatePath }: Params, {
       ])
 
       switch (req.url) {
-        case '/robots.txt':
-          serveRobots(module as Module)(req, res, next)
-          return
         case '/sitemap.xml':
           serveSitemap(module as Module)(req, res, next)
           return
