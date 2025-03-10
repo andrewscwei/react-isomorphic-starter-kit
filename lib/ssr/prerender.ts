@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 /* eslint-disable no-console */
 
 /**
@@ -9,9 +9,9 @@ import express, { type Express } from 'express'
 import { XMLParser } from 'fast-xml-parser'
 import minimist from 'minimist'
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
-import path, { dirname, extname, join, resolve } from 'node:path'
+import { dirname, extname, join, resolve } from 'node:path'
 import request from 'supertest'
-import { ssrMiddleware } from '../../ssr/index.js'
+import { ssrMiddleware } from './middlewares/index.js'
 
 function getArgs() {
   const cwd = process.cwd()
@@ -24,10 +24,10 @@ function getArgs() {
     u: baseURL = process.env.BASE_URL ?? '',
   } = minimist(process.argv.slice(2))
 
-  const outDir = path.resolve(cwd, o)
-  const entryPath = path.resolve(cwd, entry)
-  const templatePath = path.resolve(cwd, template)
-  const localesDir = path.resolve(cwd, locales)
+  const outDir = resolve(cwd, o)
+  const entryPath = resolve(cwd, entry)
+  const templatePath = resolve(cwd, template)
+  const localesDir = resolve(cwd, locales)
 
   return {
     basePath,
@@ -39,7 +39,7 @@ function getArgs() {
   }
 }
 
-function createServer({ basePath, entryPath, templatePath }: Record<string, string>) {
+async function createServer({ basePath, entryPath, templatePath }: Record<string, string>) {
   const server = express()
 
   server.use(ssrMiddleware({
@@ -132,7 +132,7 @@ async function generateSitemap(app: Express, { outDir }: Record<string, string>)
 }
 
 async function cleanup({ outDir }: Record<string, string>) {
-  const files = await readdir(outDir, { recursive: true })
+  const files = await readdir(outDir, { recursive: false })
   const removeExtensions = ['.js', '.d.ts']
 
   Promise.all(files.map(async file => {
@@ -152,8 +152,7 @@ async function cleanup({ outDir }: Record<string, string>) {
 
 async function main() {
   const { basePath, baseURL, entryPath, localesDir, outDir, templatePath } = getArgs()
-
-  const app = createServer({ basePath, entryPath, templatePath })
+  const app = await createServer({ basePath, entryPath, templatePath })
 
   await generateSitemap(app, { outDir })
   await generateRobots(app, { outDir })

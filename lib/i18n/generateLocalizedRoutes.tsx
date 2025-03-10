@@ -1,10 +1,10 @@
 import { Outlet, type RouteObject } from 'react-router'
 import { I18nProvider } from './I18nProvider.js'
-import { createResolveLocaleOptions } from './helpers/index.js'
 import { type I18nConfig } from './types/index.js'
+import { createResolveLocaleOptions } from './utils/index.js'
 
 /**
- * Returns an array of {@link RouteObject} containg the localized version of
+ * Returns an array of {@link RouteObject} containing the localized version of
  * each {@link RouteObject} (specified by the `routes` argument). The locales to
  * generate are specified by `config`.
  *

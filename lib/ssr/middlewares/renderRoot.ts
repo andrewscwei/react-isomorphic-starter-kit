@@ -1,8 +1,7 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { injectData } from '../dom/index.js'
-import { createFetchRequest } from './createFetchRequest.js'
-import { type Module } from './Module.js'
+import { type Module } from '../types/index.js'
+import { createFetchRequest, injectData } from '../utils/index.js'
 
 type Options = {
   timeout?: number

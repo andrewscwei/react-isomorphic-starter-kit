@@ -1,5 +1,4 @@
 import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
-import { type Metadata } from '../dom/index.js'
 
 /**
  * Type defining the entry module for edge-side rendering.
@@ -15,7 +14,7 @@ export type Module = {
   /**
    * Renders the view into a readable stream and returns it.
    */
-  render: (request: Request, metadata?: Metadata, options?: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
+  render: (request: Request, metadata?: Record<string, any>, options?: RenderToReadableStreamOptions) => Promise<ReactDOMServerReadableStream>
 
   /**
    * Returns the content of the `robots.txt` file.

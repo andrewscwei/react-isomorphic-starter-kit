@@ -6,6 +6,14 @@
       "ES2020"
     ],
     "moduleResolution": "node",
+    "paths": {
+      "@lib/debug": ["../lib/debug/index"],
+      "@lib/dom": ["../lib/dom/index"],
+      "@lib/esr": ["../lib/esr/index"],
+      "@lib/i18n": ["../lib/i18n/index"],
+      "@lib/seo": ["../lib/seo/index"],
+      "@src/*": ["../src/*"]
+    },
     "types": [
       "@cloudflare/workers-types"
     ]

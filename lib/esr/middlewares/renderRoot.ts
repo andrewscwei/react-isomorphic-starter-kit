@@ -1,5 +1,5 @@
-import { injectData } from '../dom/index.js'
-import { type Module } from './Module.js'
+import { type Module } from '../types/index.js'
+import { injectData } from '../utils/index.js'
 
 export function renderRoot({ localData, render }: Module, template: string) {
   return async (req: Request, path: string) => {

@@ -1,4 +1,3 @@
-export * from './injectData.js'
 export * from './Metadata.js'
 export * from './MetaProvider.js'
 export * from './updateElementAttributes.js'

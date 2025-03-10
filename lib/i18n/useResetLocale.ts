@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { I18nContext } from './I18nProvider.js'
-import { createResolveLocaleOptions, getLocalizedURL } from './helpers/index.js'
+import { createResolveLocaleOptions, getLocalizedURL } from './utils/index.js'
 
 /**
  * Hook for retrieving the reset locale function.

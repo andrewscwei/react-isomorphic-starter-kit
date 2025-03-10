@@ -1,4 +1,4 @@
-import { useFavicon } from '@lib/dom'
+import { useFavicon } from '@lib/meta'
 import { StrictMode, type PropsWithChildren } from 'react'
 import { BASE_PATH } from '../app.config.js'
 import './styles/styles.css'

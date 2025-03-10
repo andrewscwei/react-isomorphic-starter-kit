@@ -2,9 +2,9 @@
  * @file Edge entry file.
  */
 
-import { MetaProvider } from '@lib/dom'
 import { type Module } from '@lib/esr'
 import { generateLocalizedRoutes } from '@lib/i18n'
+import { MetaProvider } from '@lib/meta'
 import { generateRobots, generateSitemap } from '@lib/seo'
 import { renderToReadableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router'

@@ -2,8 +2,8 @@
  * @file Server entry file.
  */
 
-import { MetaProvider } from '@lib/dom'
 import { generateLocalizedRoutes } from '@lib/i18n'
+import { MetaProvider } from '@lib/meta'
 import { generateRobots, generateSitemap } from '@lib/seo'
 import { type Module } from '@lib/ssr'
 import { renderToPipeableStream } from 'react-dom/server'

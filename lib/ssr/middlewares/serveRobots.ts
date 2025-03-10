@@ -1,5 +1,5 @@
 import { type RequestHandler } from 'express'
-import { type Module } from './Module.js'
+import { type Module } from '../types/index.js'
 
 /**
  * Request handler for serving `robots.txt`.
