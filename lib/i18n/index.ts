@@ -1,5 +1,5 @@
 export * from './defineConfig.js'
-export * from './generateLocalizedRoutes.js'
+export * from './defineRoutes.js'
 export * from './I18nProvider.js'
 export * from './loadTranslations.js'
 export * from './types/index.js'

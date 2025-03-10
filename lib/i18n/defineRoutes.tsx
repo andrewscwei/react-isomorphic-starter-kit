@@ -1,4 +1,5 @@
 import { Outlet, type RouteObject } from 'react-router'
+import { defineConfig } from './defineConfig.js'
 import { I18nProvider } from './I18nProvider.js'
 import { type I18nConfig } from './types/index.js'
 import { createResolveLocaleOptions } from './utils/index.js'
@@ -9,11 +10,13 @@ import { createResolveLocaleOptions } from './utils/index.js'
  * generate are specified by `config`.
  *
  * @param routes An array of {@link RouteObject} to localize.
- * @param config See {@link I18nConfig}.
+ * @param configOrDescriptor {@link I18nConfig} or the descriptor to define it.
  *
  * @returns The localized array of {@link RouteObject}.
  */
-export function generateLocalizedRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
+export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConfig | Parameters<typeof defineConfig>[0]): RouteObject[] {
+  const config = !('sources' in configOrDescriptor) ? configOrDescriptor as I18nConfig : defineConfig(configOrDescriptor)
+
   const Container = () => (
     <I18nProvider {...config}>
       <Outlet/>

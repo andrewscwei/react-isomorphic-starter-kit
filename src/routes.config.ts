@@ -2,10 +2,11 @@
  * @file Routes config.
  */
 
-import { type RouteObject } from 'react-router'
+import { defineRoutes } from '@lib/i18n'
+import { DEFAULT_LOCALE } from './app.config.js'
 import { ErrorBoundary } from './ui/pages/ErrorBoundary.js'
 
-export const routes: RouteObject[] = [{
+export const routes = defineRoutes([{
   ErrorBoundary,
   children: [{
     path: '/',
@@ -15,4 +16,8 @@ export const routes: RouteObject[] = [{
     path: '*',
     lazy: () => import('./ui/pages/notFound/NotFound.js'),
   }],
-}]
+}], {
+  defaultLocale: DEFAULT_LOCALE,
+  localeChangeStrategy: 'path',
+  sources: import.meta.glob('./locales/**/*.json', { eager: true }),
+})

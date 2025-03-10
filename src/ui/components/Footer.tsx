@@ -1,4 +1,4 @@
-import { useLocalizedString } from '@lib/i18n'
+import { useChangeLocale, useLocalizedString } from '@lib/i18n'
 import { type HTMLAttributes } from 'react'
 import $$GitHubLogo from '../assets/images/github-logo.svg'
 
@@ -6,6 +6,7 @@ type Props = HTMLAttributes<HTMLElement>
 
 export function Footer({ ...props }: Readonly<Props>) {
   const ltxt = useLocalizedString()
+  const changeLocale = useChangeLocale()
 
   return (
     <footer {...props}>
@@ -13,27 +14,27 @@ export function Footer({ ...props }: Readonly<Props>) {
         <a
           aria-label='GitHub'
           className='icon'
-          href='https://github.com/andrewscwei/react-isomorphic-starter-kit'
+          href='https://github.com/andrewscwei/react-static-starter-kit'
         >
           <img alt='GitHub' src={$$GitHubLogo}/>
         </a>
       </nav>
-      <a
+      <button
         aria-label={ltxt('en')}
         className='icon'
-        href='/'
         style={{ background: 'var(--color-dark-grey)' }}
+        onClick={() => changeLocale('en')}
       >
         {ltxt('en')}
-      </a>
-      <a
+      </button>
+      <button
         aria-label={ltxt('ja')}
         className='icon'
-        href='/ja'
         style={{ background: 'var(--color-dark-grey)', marginLeft: '1rem' }}
+        onClick={() => changeLocale('ja')}
       >
         {ltxt('ja')}
-      </a>
+      </button>
     </footer>
   )
 }

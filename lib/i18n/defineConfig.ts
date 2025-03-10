@@ -5,7 +5,7 @@ type Params = {
   /**
    * @see {@link I18nConfig.defaultLocale}
    */
-  defaultLocale?: Locale
+  defaultLocale?: string
 
   /**
    * @see {@link I18nConfig.localeChangeStrategy}
@@ -26,7 +26,7 @@ export function defineConfig({
   const translations = loadTranslations(sources)
 
   return {
-    defaultLocale,
+    defaultLocale: defaultLocale as Locale,
     localeChangeStrategy,
     translations: Object.keys(translations).length > 0 ? translations : { [defaultLocale]: {} },
   }
