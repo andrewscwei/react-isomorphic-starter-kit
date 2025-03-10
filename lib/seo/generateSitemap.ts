@@ -1,9 +1,8 @@
 import { XMLBuilder } from 'fast-xml-parser'
 import { type RouteObject } from 'react-router'
-import { type SEOConfig } from './SEOConfig.js'
-import { type SitemapTags } from './SitemapTags.js'
 import { defineConfig } from './defineConfig.js'
-import { joinURL } from './joinURL.js'
+import { type SEOConfig, type SitemapTags } from './types/index.js'
+import { joinURL } from './utils/index.js'
 
 type Options = {
   baseURL?: string

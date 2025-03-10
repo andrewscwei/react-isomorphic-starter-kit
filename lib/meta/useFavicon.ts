@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { updateElementAttributes } from './updateElementAttributes.js'
-import { useDOMEffect } from './useDOMEffect.js'
+import { useDOMEffect } from './hooks/index.js'
+import { updateElementAttributes } from './utils/index.js'
 
 type Params = {
   /**

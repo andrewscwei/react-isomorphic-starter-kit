@@ -1,5 +1,5 @@
-import { extractURLs } from './extractURLs.js'
-import { type SEOConfig } from './SEOConfig.js'
+import { type SEOConfig } from './types/index.js'
+import { extractURLs } from './utils/index.js'
 
 type Params = {
   /**

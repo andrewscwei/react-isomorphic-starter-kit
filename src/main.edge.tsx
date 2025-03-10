@@ -23,6 +23,8 @@ export const sitemap: Module['sitemap'] = () => generateSitemap(localizedRoutes,
   modifiedAt: BUILD_TIME,
 })
 
+export const localData: Module['localData'] = async req => ({})
+
 export const render: Module['render'] = async (req, metadata, options = {}) => {
   const handler = createStaticHandler(localizedRoutes, { basename: BASE_PATH })
   const context = await handler.query(req)

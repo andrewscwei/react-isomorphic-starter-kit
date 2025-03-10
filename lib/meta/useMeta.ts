@@ -1,11 +1,8 @@
 import { useContext, type DependencyList } from 'react'
-import { type Metadata } from './Metadata.js'
+import { useAppleMeta, useDOMEffect, useOpenGraphMeta, useTwitterMeta } from './hooks/index.js'
 import { MetaContext } from './MetaProvider.js'
-import { updateElementAttributes } from './updateElementAttributes.js'
-import { useAppleMeta } from './useAppleMeta.js'
-import { useDOMEffect } from './useDOMEffect.js'
-import { useOpenGraphMeta } from './useOpenGraphMeta.js'
-import { useTwitterMeta } from './useTwitterMeta.js'
+import { type Metadata } from './types/index.js'
+import { updateElementAttributes } from './utils/index.js'
 
 type Options = {
   auto?: boolean

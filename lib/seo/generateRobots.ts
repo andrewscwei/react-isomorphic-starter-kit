@@ -1,6 +1,5 @@
 import { type RouteObject } from 'react-router'
-import { type SEOConfig } from './SEOConfig.js'
-import { defineConfig } from './defineConfig.js'
+import { type SEOConfig } from './types/index.js'
 
 /**
  * Generates plain text `robots.txt` from the provided configuration.
@@ -12,6 +11,6 @@ import { defineConfig } from './defineConfig.js'
  */
 export async function generateRobots(routes: RouteObject[], {
   robotsProvider,
-}: SEOConfig = defineConfig({})) {
+}: SEOConfig) {
   return robotsProvider(routes)
 }

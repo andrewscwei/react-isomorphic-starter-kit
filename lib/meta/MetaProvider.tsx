@@ -1,5 +1,5 @@
 import { createContext, type PropsWithChildren } from 'react'
-import { type Metadata } from './Metadata.js'
+import { type Metadata } from './types/index.js'
 
 type MetaProviderProps = PropsWithChildren<MetaContextValue>
 
