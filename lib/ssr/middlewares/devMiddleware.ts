@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import type { LocalDataProvider, RenderFunction, SitemapProvider } from '../types/index.js'
+import type { LocalDataProvider, RenderFunction, SitemapOptions } from '../types/index.js'
 import { renderRoot } from './renderRoot.js'
 import { serveSitemap } from './serveSitemap.js'
 
@@ -59,7 +59,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
       switch (req.url) {
         case '/sitemap.xml':
           return serveSitemap({
-            sitemap: sitemap as SitemapProvider,
+            sitemap: sitemap as SitemapOptions,
           })(req, res, next)
         default: {
           return renderRoot({

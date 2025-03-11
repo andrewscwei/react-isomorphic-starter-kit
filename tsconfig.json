@@ -17,7 +17,6 @@
       "@lib/esr": ["./lib/esr/index"],
       "@lib/i18n": ["./lib/i18n/index"],
       "@lib/meta": ["./lib/meta/index"],
-      "@lib/sitemap": ["./lib/sitemap/index"],
       "@lib/ssr": ["./lib/ssr/index"]
     },
     "skipLibCheck": true,

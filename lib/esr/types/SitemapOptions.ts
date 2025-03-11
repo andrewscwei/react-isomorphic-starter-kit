@@ -1,3 +1,4 @@
+import { type RouteObject } from 'react-router'
 import { type SitemapTags } from './SitemapTags.js'
 
 export type SitemapOptions = {
@@ -5,6 +6,11 @@ export type SitemapOptions = {
    * Hostname of the sitemap, i.e. `https://example.com`.
    */
   hostname: string
+
+  /**
+   * Routes to generate the sitemap from.
+   */
+  routes: RouteObject[]
 
   /**
    * Date when the sitemap was last modified.

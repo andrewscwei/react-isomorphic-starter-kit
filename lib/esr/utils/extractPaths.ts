@@ -1,5 +1,5 @@
 import { type RouteObject } from 'react-router'
-import { joinPath } from './joinPath.js'
+import { joinPaths } from './joinPaths.js'
 
 /**
  * Extracts paths from a list of `{@link RouteObject}s.
@@ -10,7 +10,7 @@ import { joinPath } from './joinPath.js'
  */
 export function extractPaths(routes: RouteObject[] = [], parentPath = ''): string[] {
   return routes.flatMap(({ children = [], path = '' }) => {
-    const currPath = joinPath(parentPath, path)
+    const currPath = joinPaths(parentPath, path)
 
     return [
       ...path ? [currPath] : [],

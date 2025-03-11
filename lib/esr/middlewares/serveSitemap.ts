@@ -1,15 +1,16 @@
-import type { SitemapProvider } from '../types/index.js'
+import { type SitemapOptions } from '../types/index.js'
+import { generateSitemap } from '../utils/index.js'
 
 type Params = {
-  sitemap?: SitemapProvider
+  sitemap?: SitemapOptions
 }
 
-export function serveSitemap({ sitemap }: Params) {
+export function serveSitemap({ sitemap: options }: Params) {
   return async (req: Request) => {
-    if (sitemap) {
-      const payload = await sitemap(req)
+    if (options) {
+      const sitemap = await generateSitemap(options)
 
-      return new Response(payload, {
+      return new Response(sitemap, {
         headers: { 'Content-Type': 'application/xml' },
       })
     }

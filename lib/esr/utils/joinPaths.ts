@@ -5,7 +5,7 @@
  *
  * @returns The path.
  */
-export function joinPath(...args: string[]): string {
+export function joinPaths(...args: string[]): string {
   return args
     .join('/')
     .replace(/\/+/g, '/')

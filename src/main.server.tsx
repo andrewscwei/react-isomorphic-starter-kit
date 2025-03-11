@@ -3,18 +3,18 @@
  */
 
 import { MetaProvider } from '@lib/meta'
-import { generateSitemap } from '@lib/sitemap'
-import { type RenderFunction, type SitemapProvider } from '@lib/ssr'
+import { type RenderFunction, type SitemapOptions } from '@lib/ssr'
 import { renderToPipeableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router'
 import { BASE_PATH, BASE_URL, BUILD_TIME } from './app.config.js'
 import { routes } from './routes.config.js'
 import { App } from './ui/App.js'
 
-export const sitemap: SitemapProvider = async req => generateSitemap(routes, {
+export const sitemap: SitemapOptions = {
+  routes,
   hostname: BASE_URL,
   updatedAt: BUILD_TIME,
-})
+}
 
 export const render: RenderFunction = async (req, metadata, options) => {
   const handler = createStaticHandler(routes, { basename: BASE_PATH })

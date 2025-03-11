@@ -1,7 +1,7 @@
 import { XMLBuilder } from 'fast-xml-parser'
-import type { RouteObject } from 'react-router'
-import { type SitemapOptions, type SitemapTags } from './types/index.js'
-import { extractPaths, joinPath } from './utils/index.js'
+import { type SitemapOptions, type SitemapTags } from '../types/index.js'
+import { extractPaths } from './extractPaths.js'
+import { joinPaths } from './joinPaths.js'
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
@@ -11,9 +11,10 @@ import { extractPaths, joinPath } from './utils/index.js'
  *
  * @returns The plain text `sitemap.xml`.
  */
-export async function generateSitemap(routes: RouteObject[], {
-  hostname = '',
-  updatedAt = new Date().toISOString(),
+export async function generateSitemap({
+  hostname,
+  routes,
+  updatedAt,
   filter = t => !t.endsWith('*'),
   transform = async t => t,
 }: SitemapOptions) {
@@ -44,7 +45,7 @@ export async function generateSitemap(routes: RouteObject[], {
         if (typeof t === 'string') {
           return {
             ...defaultTags,
-            loc: joinPath(baseURL, t),
+            loc: joinPaths(baseURL, t),
           }
         }
         else {
@@ -52,7 +53,7 @@ export async function generateSitemap(routes: RouteObject[], {
 
           return {
             ...defaultTags,
-            loc: joinPath(baseURL, loc),
+            loc: joinPaths(baseURL, loc),
             ...tags,
           }
         }

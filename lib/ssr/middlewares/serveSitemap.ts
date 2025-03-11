@@ -1,9 +1,9 @@
 import { type RequestHandler } from 'express'
-import type { SitemapProvider } from '../types/index.js'
-import { createFetchRequest } from '../utils/index.js'
+import type { SitemapOptions } from '../types/index.js'
+import { generateSitemap } from '../utils/index.js'
 
 type Params = {
-  sitemap?: SitemapProvider
+  sitemap?: SitemapOptions
 }
 
 /**
@@ -13,14 +13,13 @@ type Params = {
  *
  * @returns The request handler.
  */
-export function serveSitemap({ sitemap }: Params): RequestHandler {
+export function serveSitemap({ sitemap: options }: Params): RequestHandler {
   return async (req, res) => {
-    if (sitemap) {
-      const fetchRequest = createFetchRequest(req)
-      const payload = await sitemap(fetchRequest)
+    if (options) {
+      const sitemap = await generateSitemap(options)
 
       res.setHeader('content-type', 'application/xml')
-      res.send(payload)
+      res.send(sitemap)
     }
     else {
       res.sendStatus(404)
