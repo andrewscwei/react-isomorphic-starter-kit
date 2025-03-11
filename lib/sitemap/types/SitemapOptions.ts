@@ -12,20 +12,20 @@ export type SitemapOptions = {
   updatedAt: string
 
   /**
-   * Route to filter out when generating the sitemap.
+   * Path to filter out when generating the sitemap.
    *
-   * @param route Route iteratee.
+   * @param path Path iteratee.
    *
-   * @returns `true` to include the route, `false` to exclude.
+   * @returns `true` to include the path, `false` to exclude.
    */
-  filter?: (route: string) => boolean
+  filter?: (path: string) => boolean
 
   /**
-   * Transforms routes (path patterns) to URLs or sitemap tags.
+   * Transforms paths to URLs or sitemap tags.
    *
-   * @param routes Routes.
+   * @param paths Paths.
    *
    * @returns Array of URLs or tags for generating the sitemap.
    */
-  transform?: (routes: string[]) => Promise<(string | SitemapTags)[]>
+  transform?: (paths: string[]) => Promise<(string | SitemapTags)[]>
 }

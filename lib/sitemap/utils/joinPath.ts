@@ -1,11 +1,11 @@
 /**
- * Joins a series of strings into a qualified URL.
+ * Joins a series of strings into a qualified path.
  *
  * @param args Series of strings to join.
  *
- * @returns The URL.
+ * @returns The path.
  */
-export function joinURL(...args: string[]): string {
+export function joinPath(...args: string[]): string {
   return args
     .join('/')
     .replace(/\/+/g, '/')

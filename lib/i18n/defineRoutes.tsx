@@ -25,7 +25,7 @@ export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConf
 
   return [{
     Component: Container,
-    children: routes.map(t => localizeRoute(t, config)).flat(),
+    children: routes.flatMap(t => localizeRoute(t, config)),
   }]
 }
 
@@ -36,7 +36,12 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   if (path !== undefined) {
     switch (resolveStrategy) {
       case 'path': {
-        const localizedRoutes = supportedLocales?.filter(l => l !== defaultLocale).map(l => ({ ...route, path: `/${l}${path.startsWith('/') ? path : `/${path}`}` }))
+        const localizedRoutes = supportedLocales
+          .filter(l => l !== defaultLocale)
+          .map(l => ({
+            ...route,
+            path: `/${l}/${path.replace(/^\/+/, '')}`.replace(/\/+$/, ''),
+          }))
 
         return [
           route,
@@ -54,7 +59,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   else if (children !== undefined) {
     return [{
       ...route,
-      children: children.map(t => localizeRoute(t, config)).flat(),
+      children: children.flatMap(t => localizeRoute(t, config)),
     }]
   }
   else {

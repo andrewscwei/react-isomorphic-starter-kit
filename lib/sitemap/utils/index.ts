@@ -1,2 +1,2 @@
-export * from './extractRoutes.js'
-export * from './joinURL.js'
+export * from './extractPaths.js'
+export * from './joinPath.js'
