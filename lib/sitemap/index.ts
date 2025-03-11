@@ -1,5 +1,3 @@
-export * from './defineConfig.js'
 export * from './generateSitemap.js'
-export * from './loadLazyComponents.js'
 export * from './types/index.js'
 export * from './utils/index.js'

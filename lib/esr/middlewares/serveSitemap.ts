@@ -1,9 +1,15 @@
-import type { Module } from '../types/index.js'
+import type { SitemapProvider } from '../types/index.js'
 
-export function serveSitemap({ sitemap }: Module) {
+type Params = {
+  sitemap?: SitemapProvider
+}
+
+export function serveSitemap({ sitemap }: Params) {
   return async (req: Request) => {
     if (sitemap) {
-      return new Response(await sitemap(), {
+      const payload = await sitemap(req)
+
+      return new Response(payload, {
         headers: { 'Content-Type': 'application/xml' },
       })
     }

@@ -1,26 +1,31 @@
 import { XMLBuilder } from 'fast-xml-parser'
-import { type RouteObject } from 'react-router'
-import { type SEOConfig, type SitemapTags } from './types/index.js'
+import type { RouteObject } from 'react-router'
+import { type SitemapOptions, type SitemapTags } from './types/index.js'
 import { extractRoutes, joinURL } from './utils/index.js'
 
 /**
  * Generates plain text `sitemap.xml` from the provided params.
  *
- * @param routes Array of {@link RouteObject} to generate the sitemap from.
- * @param config Configuration for SEO (see {@link SEOConfig}).
+ * @param routes Routes to generate the sitemap from.
+ * @param options See {@link SitemapOptions}).
  *
  * @returns The plain text `sitemap.xml`.
  */
 export async function generateSitemap(routes: RouteObject[], {
-  baseURL,
-  modifiedAt,
-  urlsProvider,
-}: SEOConfig) {
-  const urls = await urlsProvider(extractRoutes(routes))
+  hostname = '',
+  updatedAt = new Date().toISOString(),
+  filter = t => !t.endsWith('*'),
+  transform = async t => t,
+}: SitemapOptions) {
+  const baseURL = hostname.replace(/\/+$/, '')
+  const filteredRoutes = extractRoutes(routes).filter(filter)
+  const urls = await transform(filteredRoutes)
+
   const builder = new XMLBuilder({
     ignoreAttributes: false,
     format: true,
   })
+
   const xml = builder.build({
     urlset: {
       '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
@@ -31,7 +36,7 @@ export async function generateSitemap(routes: RouteObject[], {
       '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
       'url': urls.map(t => {
         const defaultTags: Partial<SitemapTags> = {
-          lastmod: modifiedAt,
+          lastmod: updatedAt,
           changefreq: 'daily',
           priority: '0.7',
         }

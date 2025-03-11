@@ -3,14 +3,28 @@
  */
 
 import { debug } from '@lib/debug'
-import { loadLazyComponents } from '@lib/seo'
 import { hydrateRoot } from 'react-dom/client'
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, matchRoutes } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
 import { BASE_PATH } from './app.config.js'
 import { routes } from './routes.config.js'
 import { App } from './ui/App.js'
 import WebWorker from './workers/web.js?worker'
+
+async function loadLazyComponents() {
+  const matches = matchRoutes(routes, window.location, BASE_PATH)?.filter(t => t.route.lazy)
+
+  if (!matches || matches.length === 0) return
+
+  await Promise.all(matches.map(async t => {
+    const routeModule = await t.route.lazy?.()
+
+    Object.assign(t.route, {
+      ...routeModule,
+      lazy: undefined,
+    })
+  }))
+}
 
 function work() {
   const worker = new WebWorker()
@@ -27,7 +41,7 @@ async function render() {
 
   if (!container) throw Error('Invalid application root')
 
-  await loadLazyComponents(routes, { basePath: BASE_PATH })
+  await loadLazyComponents()
 
   hydrateRoot(
     container, (

@@ -1,8 +1,13 @@
-import { type Module } from '../types/index.js'
+import type { LocalDataProvider, RenderFunction } from '../types/index.js'
 import { injectData } from '../utils/index.js'
 
-export function renderRoot({ localData, render }: Module, template: string) {
-  return async (req: Request, path: string) => {
+type Params = {
+  localData?: LocalDataProvider
+  render: RenderFunction
+}
+
+export function renderRoot({ localData, render }: Params, template: string) {
+  return async (req: Request) => {
     try {
       const metadata = {}
       const stream = await render(req, metadata, {})

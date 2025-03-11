@@ -9,17 +9,24 @@ import express, { type Express } from 'express'
 import { XMLParser } from 'fast-xml-parser'
 import minimist from 'minimist'
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
-import { dirname, extname, join, resolve } from 'node:path'
+import { dirname, extname, join, relative, resolve } from 'node:path'
 import request from 'supertest'
 import { ssrMiddleware } from './middlewares/index.js'
 
+const resetColor = '\x1b[0m'
+const greyColor = '\x1b[90m'
+const redColor = '\x1b[31m'
+const greenColor = '\x1b[32m'
+const cyanColor = '\x1b[36m'
+const cwd = process.cwd()
+
 function getArgs() {
-  const cwd = process.cwd()
   const {
     e: entry,
     l: locales,
     o = 'build/',
     p: basePath = process.env.BASE_PATH ?? '/',
+    r,
     t: template,
     u: baseURL = process.env.BASE_URL ?? '',
   } = minimist(process.argv.slice(2))
@@ -28,8 +35,10 @@ function getArgs() {
   const entryPath = resolve(cwd, entry)
   const templatePath = resolve(cwd, template)
   const localesDir = resolve(cwd, locales)
+  const additionalRoutes = typeof r === 'string' ? r.split(',').map(t => t.trim()).filter(t => t) : []
 
   return {
+    additionalRoutes,
     basePath,
     baseURL,
     entryPath,
@@ -61,88 +70,106 @@ async function getLocales(localesDir: string) {
   return locales
 }
 
-async function generatePages(app: Express, { basePath, baseURL, outDir, localesDir }: Record<string, string>) {
-  const parser = new XMLParser()
-  const sitemapFile = await readFile(resolve(outDir, 'sitemap.xml'), 'utf-8')
-  const sitemap = parser.parse(sitemapFile)
-  const locales = await getLocales(localesDir)
-  const pageURLs: string[] = [].concat(sitemap.urlset.url).map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map(t => t?.startsWith('/') ? t : `/${t}`)
-  const notFoundURLs = pageURLs.map(url => new RegExp(`^/(${locales.join('|')})?/?$`).test(url) ? join(url, '404') : undefined).filter(t => t !== undefined)
-  const agent = request(app)
-  const writables: Record<string, string> = {}
+async function generateSitemap(app: Express, { outDir = '' } = {}) {
+  const route = '/sitemap.xml'
 
-  for (const url of pageURLs) {
-    try {
-      const { text: html } = await agent.get(join(basePath, url))
-      const file = join(outDir, url, ...extname(url) ? [] : ['index.html'])
-      writables[file] = html
-
-      console.log(`✓ Generating ${url}...`, 'OK', file)
-    }
-    catch (err) {
-      console.error(`⚠︎ Generating ${url}...`, 'ERR', err)
-      throw err
-    }
-  }
-
-  for (const url of notFoundURLs) {
-    try {
-      const { text: html } = await agent.get(join(basePath, url))
-      const file = join(outDir, `${url}.html`)
-      writables[file] = html
-
-      console.log(`✓ Generating ${url}...`, 'OK', file)
-    }
-    catch (err) {
-      console.error(`⚠︎ Generating ${url}...`, 'ERR', err)
-      throw err
-    }
-  }
-
-  for (const [file, html] of Object.entries(writables)) {
-    await mkdir(dirname(file), { recursive: true })
-    await writeFile(file, html)
-  }
-}
-
-async function generateSitemap(app: Express, { outDir }: Record<string, string>) {
   try {
-    const { text: str } = await request(app).get('/sitemap.xml')
-    await writeFile(resolve(outDir, 'sitemap.xml'), str)
+    const { text: str } = await request(app).get(route)
+    const outFile = resolve(outDir, 'sitemap.xml')
+    await writeFile(outFile, str)
 
-    console.log('✓ Generating sitemap.xml...', 'OK')
+    console.log(`${greenColor}✓${resetColor} ${cyanColor}${route}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
   }
   catch (err) {
-    console.error('⚠︎ Generating sitemap.xml...', 'ERR', err)
+    console.error(`${redColor}⚠︎${resetColor} ${route}`)
+    console.error(err)
     throw err
   }
 }
 
-async function cleanup({ outDir }: Record<string, string>) {
-  const files = await readdir(outDir, { recursive: false })
-  const removeExtensions = ['.js', '.d.ts']
+async function generatePages(app: Express, { additionalRoutes = [] as string[], basePath = '', baseURL = '', outDir = '', localesDir = '' } = {}) {
+  const parser = new XMLParser()
+  const sitemapFile = await readFile(resolve(outDir, 'sitemap.xml'), 'utf-8')
+  const sitemap = parser.parse(sitemapFile)
+  const locales = await getLocales(localesDir)
+  const sitemapURLs = [].concat(sitemap.urlset.url).map((t: Record<string, string | undefined>) => t.loc?.replace(new RegExp(`^${baseURL}`), '')).map(t => t?.startsWith('/') ? t : `/${t}`)
+  const localeRootURLs = sitemapURLs.map(url => new RegExp(`^/(${locales.join('|')})?/?$`).test(url) ? url : undefined).filter(t => t !== undefined)
+  const additionalURLs = localeRootURLs.flatMap(url => additionalRoutes.map(route => join(url, route)))
+  const notFoundURLs = localeRootURLs.map(url => join(url, '404'))
+  const pageURLs = Array.from(new Set([...sitemapURLs, ...additionalURLs]))
+  const agent = request(app)
+  const outFiles: Record<string, string> = {}
 
-  Promise.all(files.map(async file => {
-    if (!removeExtensions.find(t => extname(file) === t)) return
+  const maxCharacters = [...pageURLs, ...notFoundURLs].reduce((max, url) => Math.max(max, url.length), 0)
 
-    const filePath = resolve(outDir, file)
-
+  await Promise.all(pageURLs.map(async url => {
     try {
-      await unlink(filePath)
-      console.log(`✓ Cleaning up file ${filePath}...`, 'OK')
+      const { text: html } = await agent.get(join(basePath, url))
+      const outFile = join(outDir, url, ...extname(url) ? [] : ['index.html'])
+      outFiles[outFile] = html
+
+      console.log(`${greenColor}✓${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
     }
     catch (err) {
-      console.error(`⚠︎ Error deleting file ${filePath}: ${err}`)
+      console.error(`${redColor}⚠︎${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', err)
+      throw err
+    }
+  }))
+
+  await Promise.all(notFoundURLs.map(async url => {
+    try {
+      const { text: html } = await agent.get(join(basePath, url))
+      const outFile = join(outDir, `${url}.html`)
+      outFiles[outFile] = html
+
+      console.log(`${greenColor}✓${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
+    }
+    catch (err) {
+      console.error(`${redColor}⚠︎${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`)
+      console.error(err)
+
+      throw err
+    }
+  }))
+
+  await Promise.all(Object.entries(outFiles).map(async ([file, html]) => {
+    await mkdir(dirname(file), { recursive: true })
+    await writeFile(file, html)
+  }))
+}
+
+async function cleanup({ outDir = '' } = {}) {
+  const files = await readdir(outDir, { recursive: false })
+  const removeExtensions = ['.js', '.d.ts']
+  const filtered = files.filter(file => removeExtensions.find(ext => extname(file) === ext))
+
+  if (filtered.length === 0) return
+
+  await Promise.all(filtered.map(async file => {
+    const removeFile = resolve(outDir, file)
+
+    try {
+      await unlink(removeFile)
+      console.log(`${greenColor}✓${resetColor} Removed ${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, removeFile)}${resetColor}`)
+    }
+    catch (err) {
+      console.error(`${redColor}⚠︎${resetColor} Error removing ${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, removeFile)}${resetColor}`)
+      console.error(err)
     }
   }))
 }
 
 async function main() {
-  const { basePath, baseURL, entryPath, localesDir, outDir, templatePath } = getArgs()
+  const { additionalRoutes, basePath, baseURL, entryPath, localesDir, outDir, templatePath } = getArgs()
   const app = await createServer({ basePath, entryPath, templatePath })
 
+  console.log('\nGenerating sitemap...')
   await generateSitemap(app, { outDir })
-  await generatePages(app, { basePath, baseURL, localesDir, outDir })
+
+  console.log('\nPrerendering routes...')
+  await generatePages(app, { additionalRoutes, basePath, baseURL, localesDir, outDir })
+
+  console.log('\nCleaning up files...')
   await cleanup({ outDir })
 
   process.exit(0)

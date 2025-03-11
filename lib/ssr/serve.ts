@@ -2,8 +2,8 @@
 
 import express, { type ErrorRequestHandler } from 'express'
 import minimist from 'minimist'
+import os from 'node:os'
 import { resolve } from 'node:path'
-import { getIP } from './utils/index.js'
 
 const PORT = process.env.PORT ?? '8080'
 const DEV = process.env.NODE_ENV === 'development'
@@ -27,6 +27,22 @@ function getArgs() {
     staticPath,
     templatePath,
   }
+}
+
+function getIP() {
+  const interfaces = os.networkInterfaces()
+
+  for (const iface of Object.values(interfaces)) {
+    if (!iface) continue
+
+    for (const config of iface) {
+      if (config.family === 'IPv4' && !config.internal) {
+        return config.address
+      }
+    }
+  }
+
+  return '127.0.0.1'
 }
 
 async function createServer({ basePath, entryPath, staticPath, templatePath }: Record<string, string>) {

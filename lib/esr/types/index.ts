@@ -1,1 +1,3 @@
-export * from './Module.js'
+export * from './LocalDataProvider.js'
+export * from './RenderFunction.js'
+export * from './SitemapProvider.js'

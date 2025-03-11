@@ -1,13 +1,18 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { type Module } from '../types/index.js'
+import type { LocalDataProvider, RenderFunction } from '../types/index.js'
 import { createFetchRequest, injectData } from '../utils/index.js'
+
+type Params = {
+  localData?: LocalDataProvider
+  render: RenderFunction
+}
 
 type Options = {
   timeout?: number
 }
 
-export function renderRoot({ localData, render }: Module, template: string, {
+export function renderRoot({ localData, render }: Params, template: string, {
   timeout = 10_000,
 }: Options = {}): RequestHandler {
   return async (req, res, next) => {
