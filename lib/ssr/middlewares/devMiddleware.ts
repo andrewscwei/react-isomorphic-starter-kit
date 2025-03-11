@@ -46,15 +46,16 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   const router = Router()
   router.use(vite.middlewares)
 
+  const { localData, middlewares = [], render, sitemap } = await vite.ssrLoadModule(entryPath)
+
+  for (const middleware of middlewares) {
+    router.use(...[].concat(middleware))
+  }
+
   router.use(async (req, res, next) => {
     try {
-      const [template, { localData, render, sitemap }] = await Promise.all([
-        vite.transformIndexHtml(
-          req.originalUrl.replace(basePath, ''),
-          await readFile(templatePath, 'utf-8'),
-        ),
-        vite.ssrLoadModule(entryPath),
-      ])
+      const template = await readFile(templatePath, 'utf-8')
+      const html = await vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), template)
 
       switch (req.url) {
         case '/sitemap.xml':
@@ -65,7 +66,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
           return renderRoot({
             localData: localData as LocalDataProvider,
             render: render as RenderFunction,
-          }, template)(req, res, next)
+          }, html)(req, res, next)
         }
       }
     }

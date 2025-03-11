@@ -51,7 +51,7 @@ function getArgs() {
 async function createServer({ basePath, entryPath, templatePath }: Record<string, string>) {
   const server = express()
 
-  server.use(ssrMiddleware({
+  server.use(await ssrMiddleware({
     entryPath,
     templatePath,
   }, {

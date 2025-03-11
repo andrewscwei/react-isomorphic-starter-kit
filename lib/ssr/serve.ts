@@ -59,12 +59,9 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: R
     }))
   }
   else {
-    const { default: compression } = await import('compression')
     const { ssrMiddleware } = await import('./middlewares/index.js')
 
-    server.use(compression())
-
-    server.use(ssrMiddleware({
+    server.use(await ssrMiddleware({
       entryPath,
       templatePath,
     }, {

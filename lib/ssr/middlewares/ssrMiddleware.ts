@@ -38,20 +38,24 @@ type Options = {
  *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
-export function ssrMiddleware({ entryPath, templatePath }: Params, {
+export async function ssrMiddleware({ entryPath, templatePath }: Params, {
   basePath,
   staticPath,
 }: Options = {}) {
   const router = Router()
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
 
+  const [template, { localData, middlewares = [], sitemap, render }] = await Promise.all([
+    readFile(templatePath, 'utf-8'),
+    import(entryPath),
+  ])
+
+  for (const middleware of middlewares) {
+    router.use(...[].concat(middleware))
+  }
+
   router.use(async (req, res, next) => {
     try {
-      const [template, { localData, sitemap, render }] = await Promise.all([
-        readFile(templatePath, 'utf-8'),
-        import(entryPath),
-      ])
-
       switch (req.url) {
         case '/sitemap.xml':
           return serveSitemap({

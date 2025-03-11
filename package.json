@@ -12,7 +12,7 @@
     "clean": "rimraf build",
     "dev": "npm run dev:${RUNTIME:-server}",
     "dev:static": "npm run dev:server",
-    "dev:server": "NODE_ENV=development tsx watch -r dotenv/config lib/ssr/serve -e src/main.server.tsx -t src/index.html",
+    "dev:server": "NODE_ENV=development tsx watch --include src/main.server.tsx -r dotenv/config lib/ssr/serve -e src/main.server.tsx -t src/index.html",
     "dev:edge": "npm run clean && concurrently -k -n client,edge -c gray,cyan \"NODE_ENV=development concurrently -k -p none \\\"vite build -w\\\" \\\"vite build -w --ssr main.edge.tsx\\\"\" \"wait-on -t 30s build/main.edge.js build/index.html && wrangler pages dev --live-reload --compatibility-date=2024-06-22 --port=${PORT:-8080} build\"",
     "prebuild:static": "npm run clean && npm run lint",
     "prebuild:server": "npm run clean && npm run lint",
@@ -42,7 +42,6 @@
     "@semantic-release/git": "^10.0.1",
     "@stylistic/eslint-plugin": "^4.2.0",
     "@testing-library/react": "^16.2.0",
-    "@types/compression": "^1.7.5",
     "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
     "@types/express-serve-static-core": "^5.0.6",
@@ -74,7 +73,6 @@
     "wrangler": "^3.114.1"
   },
   "dependencies": {
-    "compression": "^1.8.0",
     "debug": "^4.4.0",
     "express": "~4.21.2",
     "fast-xml-parser": "^5.0.8",
