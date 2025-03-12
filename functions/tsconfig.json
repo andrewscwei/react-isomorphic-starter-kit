@@ -7,13 +7,8 @@
     ],
     "moduleResolution": "node",
     "paths": {
-      "@lib/debug": ["../lib/debug/index"],
-      "@lib/dom": ["../lib/dom/index"],
       "@lib/esr": ["../lib/esr/index"],
-      "@lib/i18n": ["../lib/i18n/index"],
-      "@lib/sitemap": ["../lib/sitemap/index"],
-      "@build/*": ["../build/*"],
-      "@src/*": ["../src/*"]
+      "@build/*": ["../build/*"]
     },
     "types": [
       "@cloudflare/workers-types"

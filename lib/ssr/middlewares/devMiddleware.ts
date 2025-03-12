@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import type { LocalDataProvider, RenderFunction, SitemapOptions } from '../types/index.js'
 import { renderRoot } from './renderRoot.js'
 import { serveSitemap } from './serveSitemap.js'
 
@@ -46,7 +45,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   const router = Router()
   router.use(vite.middlewares)
 
-  const { localData, middlewares = [], render, sitemap } = await vite.ssrLoadModule(entryPath)
+  const { middlewares = [], ...module } = await vite.ssrLoadModule(entryPath)
 
   for (const middleware of middlewares) {
     router.use(...[].concat(middleware))
@@ -59,14 +58,9 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
 
       switch (req.url) {
         case '/sitemap.xml':
-          return serveSitemap({
-            sitemap: sitemap as SitemapOptions,
-          })(req, res, next)
+          return serveSitemap(module)(req, res, next)
         default: {
-          return renderRoot({
-            localData: localData as LocalDataProvider,
-            render: render as RenderFunction,
-          }, html)(req, res, next)
+          return renderRoot(module as any, html)(req, res, next)
         }
       }
     }

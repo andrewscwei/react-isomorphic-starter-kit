@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import type { LocalDataProvider, RenderFunction, SitemapOptions } from '../types/index.js'
 import { renderRoot } from './renderRoot.js'
 import { serveSitemap } from './serveSitemap.js'
 import { serveStatic } from './serveStatic.js'
@@ -45,7 +44,7 @@ export async function ssrMiddleware({ entryPath, templatePath }: Params, {
   const router = Router()
   if (staticPath) router.use(serveStatic(staticPath, { basePath }))
 
-  const [template, { localData, middlewares = [], sitemap, render }] = await Promise.all([
+  const [template, { middlewares = [], ...module }] = await Promise.all([
     readFile(templatePath, 'utf-8'),
     import(entryPath),
   ])
@@ -58,14 +57,9 @@ export async function ssrMiddleware({ entryPath, templatePath }: Params, {
     try {
       switch (req.url) {
         case '/sitemap.xml':
-          return serveSitemap({
-            sitemap: sitemap as SitemapOptions,
-          })(req, res, next)
+          return serveSitemap(module)(req, res, next)
         default: {
-          return renderRoot({
-            localData: localData as LocalDataProvider,
-            render: render as RenderFunction,
-          }, template)(req, res, next)
+          return renderRoot(module, template)(req, res, next)
         }
       }
     }
