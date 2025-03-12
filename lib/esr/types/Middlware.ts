@@ -1,4 +1,6 @@
+import type { RequestHandler } from './RequestHandler.js'
+
 export type Middleware = {
   path: string
-  handler: (request: Request) => Promise<Response>
+  handler: RequestHandler
 }

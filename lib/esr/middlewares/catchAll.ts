@@ -12,13 +12,13 @@ type Params = {
   template: string
 }
 
-export function catchAll({ module: { middlewares = [], ...module }, template }: Params) {
-  return (request: Request) => {
+export function catchAll({ module: { middlewares = [], ...module }, template }: Params): Middleware['handler'] {
+  return ({ request, env }) => {
     const path = new URL(request.url).pathname
     const middleware = middlewares.find(t => t.path === path)
 
     if (middleware) {
-      return middleware.handler(request)
+      return middleware.handler({ request, env })
     }
     else {
       switch (path) {
