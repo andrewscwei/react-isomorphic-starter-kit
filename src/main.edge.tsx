@@ -2,7 +2,7 @@
  * @file Edge entry file.
  */
 
-import { type Middleware, type RenderFunction, type SitemapOptions } from '@lib/esr'
+import { type RenderFunction, type SitemapOptions } from '@lib/esr'
 import { MetaProvider } from '@lib/meta'
 import { renderToReadableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router'
@@ -15,11 +15,6 @@ export const sitemap: SitemapOptions = {
   hostname: BASE_URL,
   updatedAt: BUILD_TIME,
 }
-
-export const middlewares: Middleware[] = [{
-  path: '/foo',
-  handler: async () => new Response('FOO'),
-}]
 
 export const render: RenderFunction = async (req, metadata, options) => {
   const handler = createStaticHandler(routes, { basename: BASE_PATH })
