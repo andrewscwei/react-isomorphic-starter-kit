@@ -1,7 +1,9 @@
+ARG NODE_VERSION=23.0.0
+
 ################################################################################
 # Development build
 ################################################################################
-FROM node:23.0.0 AS dev
+FROM node:${NODE_VERSION} AS dev
 
 ARG BASE_PATH
 ARG BASE_URL
@@ -34,7 +36,7 @@ RUN npm prune --production
 ################################################################################
 # Release build
 ################################################################################
-FROM node:23.0.0-alpine AS release
+FROM node:${NODE_VERSION}-alpine AS release
 
 ENV NODE_ENV=production
 
