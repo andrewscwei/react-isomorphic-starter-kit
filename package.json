@@ -44,7 +44,6 @@
     "@testing-library/react": "^16.2.0",
     "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
-    "@types/express-serve-static-core": "^5.0.6",
     "@types/html-minifier-terser": "^7.0.2",
     "@types/minimist": "^1.2.5",
     "@types/node": "^22.13.10",

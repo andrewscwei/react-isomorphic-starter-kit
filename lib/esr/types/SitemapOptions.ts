@@ -1,5 +1,5 @@
-import { type RouteObject } from 'react-router'
-import { type SitemapTags } from './SitemapTags.js'
+import type { Route } from './Route.js'
+import type { SitemapTags } from './SitemapTags.js'
 
 export type SitemapOptions = {
   /**
@@ -10,7 +10,7 @@ export type SitemapOptions = {
   /**
    * Routes to generate the sitemap from.
    */
-  routes: RouteObject[]
+  routes: Route[]
 
   /**
    * Date when the sitemap was last modified.

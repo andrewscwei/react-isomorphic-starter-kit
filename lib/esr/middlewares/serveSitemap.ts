@@ -1,4 +1,4 @@
-import { type SitemapOptions } from '../types/index.js'
+import type { SitemapOptions } from '../types/index.js'
 import { generateSitemap } from '../utils/index.js'
 
 type Params = {

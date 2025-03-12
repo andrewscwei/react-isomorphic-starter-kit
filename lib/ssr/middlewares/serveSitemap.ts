@@ -1,4 +1,4 @@
-import { type RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 import type { SitemapOptions } from '../types/index.js'
 import { generateSitemap } from '../utils/index.js'
 

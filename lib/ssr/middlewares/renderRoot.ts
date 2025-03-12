@@ -1,4 +1,4 @@
-import { type RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 import { Transform } from 'node:stream'
 import type { LocalDataProvider, RenderFunction } from '../types/index.js'
 import { createFetchRequest, injectData } from '../utils/index.js'

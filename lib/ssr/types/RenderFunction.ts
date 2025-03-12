@@ -1,4 +1,4 @@
-import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+import type { PipeableStream, RenderToPipeableStreamOptions } from 'react-dom/server'
 
 /**
  * Function for rendering the view into a pipeable stream.

@@ -1,4 +1,4 @@
-import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
+import type { ReactDOMServerReadableStream, RenderToReadableStreamOptions } from 'react-dom/server'
 
 /**
  * Function for rendering the view into a readable stream.

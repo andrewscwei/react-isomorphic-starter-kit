@@ -1,5 +1,6 @@
 export * from './LocalDataProvider.js'
 export * from './Middleware.js'
 export * from './RenderFunction.js'
+export * from './Route.js'
 export * from './SitemapOptions.js'
 export * from './SitemapTags.js'

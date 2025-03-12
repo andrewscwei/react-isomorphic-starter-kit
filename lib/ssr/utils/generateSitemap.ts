@@ -1,5 +1,5 @@
 import { XMLBuilder } from 'fast-xml-parser'
-import { type SitemapOptions, type SitemapTags } from '../types/index.js'
+import type { SitemapOptions, SitemapTags } from '../types/index.js'
 import { extractPaths } from './extractPaths.js'
 import { joinPaths } from './joinPaths.js'
 

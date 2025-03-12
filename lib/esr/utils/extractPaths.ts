@@ -1,4 +1,4 @@
-import { type RouteObject } from 'react-router'
+import type { Route } from '../types/index.js'
 import { joinPaths } from './joinPaths.js'
 
 /**
@@ -8,7 +8,7 @@ import { joinPaths } from './joinPaths.js'
  *
  * @returns Extracted paths.
  */
-export function extractPaths(routes: RouteObject[] = [], parentPath = ''): string[] {
+export function extractPaths(routes: Route[] = [], parentPath = ''): string[] {
   return routes.flatMap(({ children = [], path = '' }) => {
     const currPath = joinPaths(parentPath, path)
 
