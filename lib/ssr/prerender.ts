@@ -5,12 +5,12 @@
  * @file Generates a static site from the built server application.
  */
 
-import express, { type Express } from 'express'
+import express from 'express'
 import { XMLParser } from 'fast-xml-parser'
 import minimist from 'minimist'
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
+import http from 'node:http'
 import { dirname, extname, join, relative, resolve } from 'node:path'
-import request from 'supertest'
 import { ssrMiddleware } from './middlewares/index.js'
 
 const resetColor = '\x1b[0m'
@@ -48,17 +48,17 @@ function getArgs() {
   }
 }
 
-async function createServer({ basePath, entryPath, templatePath }: Record<string, string>) {
-  const server = express()
+async function createApp({ basePath, entryPath, templatePath }: Record<string, string>) {
+  const app = express()
 
-  server.use(await ssrMiddleware({
+  app.use(await ssrMiddleware({
     entryPath,
     templatePath,
   }, {
     basePath,
   }))
 
-  return server
+  return app
 }
 
 async function getLocales(localesDir: string) {
@@ -70,24 +70,58 @@ async function getLocales(localesDir: string) {
   return locales
 }
 
-async function generateSitemap(app: Express, { outDir = '' } = {}) {
+async function request(server: http.Server, path: string): Promise<string> {
+  const info = server.address()
+  let address: string
+  let port: number
+
+  if (typeof info === 'string') {
+    address = info
+  }
+  else if (info) {
+    address = info.address
+    port = info.port
+  }
+  else {
+    throw Error('Server address is not available')
+  }
+
+  return new Promise((_resolve, reject) => {
+    const req = http.request({
+      hostname: address,
+      path,
+      port,
+      method: 'GET',
+    }, res => {
+      let data = ''
+      res.on('data', chunk => (data += chunk))
+      res.on('end', () => _resolve(data))
+    })
+
+    req.on('error', reject)
+    req.end()
+  })
+}
+
+async function generateSitemap(server: http.Server, { outDir = '' } = {}) {
   const route = '/sitemap.xml'
 
   try {
-    const { text: str } = await request(app).get(route)
+    const res = await request(server, route)
     const outFile = resolve(outDir, 'sitemap.xml')
-    await writeFile(outFile, str)
+    await writeFile(outFile, res)
 
     console.log(`${greenColor}✓${resetColor} ${cyanColor}${route}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
   }
   catch (err) {
     console.error(`${redColor}⚠︎${resetColor} ${route}`)
     console.error(err)
+
     throw err
   }
 }
 
-async function generatePages(app: Express, { additionalRoutes = [] as string[], basePath = '', baseURL = '', outDir = '', localesDir = '' } = {}) {
+async function generatePages(server: http.Server, { additionalRoutes = [] as string[], basePath = '', baseURL = '', outDir = '', localesDir = '' } = {}) {
   const parser = new XMLParser()
   const sitemapFile = await readFile(resolve(outDir, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
@@ -97,35 +131,36 @@ async function generatePages(app: Express, { additionalRoutes = [] as string[], 
   const additionalURLs = localeRootURLs.flatMap(url => additionalRoutes.map(route => join(url, route)))
   const notFoundURLs = localeRootURLs.map(url => join(url, '404'))
   const pageURLs = Array.from(new Set([...sitemapURLs, ...additionalURLs]))
-  const agent = request(app)
   const outFiles: Record<string, string> = {}
 
   const maxCharacters = [...pageURLs, ...notFoundURLs].reduce((max, url) => Math.max(max, url.length), 0)
 
   await Promise.all(pageURLs.map(async url => {
     try {
-      const { text: html } = await agent.get(join(basePath, url))
+      const res = await request(server, join(basePath, url))
       const outFile = join(outDir, url, ...extname(url) ? [] : ['index.html'])
-      outFiles[outFile] = html
+      outFiles[outFile] = res
 
       console.log(`${greenColor}✓${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
     }
     catch (err) {
-      console.error(`${redColor}⚠︎${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', err)
+      console.error(`${redColor}⚠︎${resetColor} ${redColor}${url.padEnd(maxCharacters)}${resetColor}`)
+      console.error(err)
+
       throw err
     }
   }))
 
   await Promise.all(notFoundURLs.map(async url => {
     try {
-      const { text: html } = await agent.get(join(basePath, url))
+      const res = await request(server, join(basePath, url))
       const outFile = join(outDir, `${url}.html`)
-      outFiles[outFile] = html
+      outFiles[outFile] = res
 
       console.log(`${greenColor}✓${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`, '→', `${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, outFile)}${resetColor}`)
     }
     catch (err) {
-      console.error(`${redColor}⚠︎${resetColor} ${cyanColor}${url.padEnd(maxCharacters)}${resetColor}`)
+      console.error(`${redColor}⚠︎${resetColor} ${redColor}${url.padEnd(maxCharacters)}${resetColor}`)
       console.error(err)
 
       throw err
@@ -150,7 +185,7 @@ async function cleanup({ outDir = '' } = {}) {
 
     try {
       await unlink(removeFile)
-      console.log(`${greenColor}✓${resetColor} Removed ${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, removeFile)}${resetColor}`)
+      console.log(`${greenColor}✕${resetColor} removed ${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, removeFile)}${resetColor}`)
     }
     catch (err) {
       console.error(`${redColor}⚠︎${resetColor} Error removing ${greyColor}${relative(cwd, outDir)}${resetColor}${greenColor}${relative(outDir, removeFile)}${resetColor}`)
@@ -161,17 +196,26 @@ async function cleanup({ outDir = '' } = {}) {
 
 async function main() {
   const { additionalRoutes, basePath, baseURL, entryPath, localesDir, outDir, templatePath } = getArgs()
-  const app = await createServer({ basePath, entryPath, templatePath })
+  const startTime = performance.now()
+  const app = await createApp({ basePath, entryPath, templatePath })
+  const server = app.listen()
 
-  console.log('\nGenerating sitemap...')
-  await generateSitemap(app, { outDir })
+  console.log(`${greenColor}\nPrerendering for production...${resetColor}`)
 
-  console.log('\nPrerendering routes...')
-  await generatePages(app, { additionalRoutes, basePath, baseURL, localesDir, outDir })
+  console.log('generating sitemap...')
+  await generateSitemap(server, { outDir })
 
-  console.log('\nCleaning up files...')
+  console.log('rendering routes...')
+  await generatePages(server, { additionalRoutes, basePath, baseURL, localesDir, outDir })
+
+  console.log('cleaning files...')
   await cleanup({ outDir })
 
+  const endTime = performance.now()
+  console.log(`${greenColor}✓ prerendered in ${(endTime - startTime).toFixed(0)}ms ${resetColor}`)
+
+  // Faster way to terminate the process instead of waiting for the server to
+  // close
   process.exit(0)
 }
 
