@@ -8,10 +8,10 @@ type Props = PropsWithChildren
 export function App({ children }: Readonly<Props>) {
   useFavicon({
     icon: {
-      darkImage: `${BASE_PATH}/favicon-dark.svg`,
+      darkImage: `${BASE_PATH.replace(/\/+$/, '')}/favicon-dark.svg`,
     },
     alternateIcon: {
-      darkImage: `${BASE_PATH}/favicon-dark.png`,
+      darkImage: `${BASE_PATH.replace(/\/+$/, '')}/favicon-dark.png`,
     },
   })
 

@@ -43,6 +43,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         output: {
           chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
         },
+        treeshake: 'smallest',
       },
     },
     ssr: {

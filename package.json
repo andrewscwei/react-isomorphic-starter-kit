@@ -35,7 +35,7 @@
     "lint:fix": "eslint --fix && stylelint src/**/*.css --fix"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250311.0",
+    "@cloudflare/workers-types": "^4.20250313.0",
     "@eslint/js": "^9.22.0",
     "@playwright/test": "^1.51.0",
     "@semantic-release/changelog": "^6.0.3",
@@ -64,15 +64,15 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1",
-    "vite": "^6.2.1",
+    "vite": "^6.2.2",
     "vitest": "^3.0.8",
     "wait-on": "^8.0.3",
-    "wrangler": "^3.114.1"
+    "wrangler": "^4.0.0"
   },
   "dependencies": {
     "debug": "^4.4.0",
     "express": "~4.21.2",
-    "fast-xml-parser": "^5.0.8",
+    "fast-xml-parser": "^5.0.9",
     "minimist": "^1.2.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
