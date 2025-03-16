@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import react from '@vitejs/plugin-react'
 import { minify } from 'html-minifier-terser'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
@@ -5,7 +7,7 @@ import { extname, resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import packageInfo from './package.json'
 
-const defineArgs = (env: Record<string, string>) => ({
+const defineArgs = (env: ReturnType<typeof loadEnv>) => ({
   BASE_PATH: env.BASE_PATH ?? '/',
   BASE_URL: (env.BASE_URL ?? '').replace(/\/+$/, ''),
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
@@ -16,14 +18,16 @@ const defineArgs = (env: Record<string, string>) => ({
 })
 
 export default defineConfig(({ mode, isSsrBuild }) => {
-  const isDev = mode === 'development'
-  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const env = loadEnv(mode, process.cwd(), '')
   const args = defineArgs(env)
+  const isDev = mode === 'development'
+  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const rootDir = resolve(__dirname, 'src')
   const outDir = resolve(__dirname, 'build')
   const publicDir = resolve(__dirname, 'static')
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
+
+  printArgs(args)
 
   return {
     root: rootDir,
@@ -31,18 +35,10 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     envDir: __dirname,
     publicDir: isSsrBuild ? false : publicDir,
     build: {
-      cssCodeSplit: false,
-      cssMinify: skipOptimizations ? false : 'esbuild',
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
       outDir,
-      reportCompressedSize: true,
-      sourcemap: isDev ? 'inline' : isEdge,
-      target: 'esnext',
       rollupOptions: {
-        output: {
-          chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
-        },
         treeshake: 'smallest',
       },
     },
@@ -65,7 +61,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       },
     },
     server: {
-      host: 'localhost',
+      host: '0.0.0.0',
       port: Number(env.PORT ?? 8080),
     },
     test: {
@@ -83,6 +79,17 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
   }
 })
+
+function printArgs(args: ReturnType<typeof defineArgs>) {
+  const resetColor = '\x1b[0m'
+  const magentaColor = '\x1b[35m'
+  const greenColor = '\x1b[32m'
+
+  console.log(`${greenColor}Build args:${resetColor}`)
+  Object.entries(args).forEach(([key, value]) => {
+    console.log(`${magentaColor}${key}${resetColor}: ${JSON.stringify(value)}`)
+  })
+}
 
 function htmlMinifier({ outDir, skipOptimizations }): Plugin {
   return {

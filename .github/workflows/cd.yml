@@ -9,17 +9,26 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime:
+          - server
+          - static
+          - edge
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
-        id: build
         uses: andrewscwei/actions/node-build@v2
+        env:
+          BUILD_NUMBER: ${{ github.sha }}
         with:
           prebuild-command: npm run unit
-          build-command: npm run build:static
+          build-command: npm run build:${{ matrix.runtime }}
+          artifact-path: build/
+          artifact-name: ${{ matrix.runtime }}
       - name: Test
-        run: npx playwright install --with-deps && npm run test:static
+        run: npx playwright install --with-deps && npm run test:${{ matrix.runtime }}
   deploy:
     name: Deploy
     needs: [build]
@@ -51,7 +60,7 @@ jobs:
           BUILD_NUMBER: ${{ github.sha }}
         with:
           branch-name: gh-pages
-          deploy-path: build
+          deploy-path: build/${{ github.event.repository.name }}
           predeploy-command: npm run build:static
   notify:
     name: Notify
