@@ -2,13 +2,13 @@
 
 import react from '@vitejs/plugin-react'
 import { minify } from 'html-minifier-terser'
-import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { extname, resolve } from 'node:path'
+import { readdir, readFile, rename, writeFile } from 'node:fs/promises'
+import { extname, join, resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import packageInfo from './package.json'
 
 const defineArgs = (env: ReturnType<typeof loadEnv>) => ({
-  BASE_PATH: env.BASE_PATH ?? '/',
+  BASE_PATH: join('/', (env.BASE_PATH ?? '/').replace(/\/+$/, '')),
   BASE_URL: (env.BASE_URL ?? '').replace(/\/+$/, ''),
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
@@ -21,7 +21,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const args = defineArgs(env)
   const isDev = mode === 'development'
-  const isEdge = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
+  const isEdgeBuild = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const rootDir = resolve(__dirname, 'src')
   const outDir = resolve(__dirname, 'build')
   const publicDir = resolve(__dirname, 'static')
@@ -37,13 +37,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     build: {
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
-      outDir,
+      outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
       rollupOptions: {
         treeshake: 'smallest',
       },
     },
     ssr: {
-      target: isEdge ? 'webworker' : 'node',
+      target: isEdgeBuild ? 'webworker' : 'node',
     },
     define: {
       ...Object.entries(args).reduce((acc, [key, value]) => ({
@@ -53,7 +53,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     plugins: [
       react(),
-      htmlMinifier({ outDir, skipOptimizations }),
+      terser({ isEnabled: !skipOptimizations, outDir }),
+      hoist(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: isSsrBuild, outDir }),
     ],
     resolve: {
       alias: {
@@ -81,31 +82,22 @@ export default defineConfig(({ mode, isSsrBuild }) => {
 })
 
 function printArgs(args: ReturnType<typeof defineArgs>) {
-  const resetColor = '\x1b[0m'
-  const magentaColor = '\x1b[35m'
-  const greenColor = '\x1b[32m'
+  const green = (text: string) => `\x1b[32m${text}\x1b[0m`
+  const magenta = (text: string) => `\x1b[35m${text}\x1b[0m`
 
-  console.log(`${greenColor}Build args:${resetColor}`)
+  console.log(green('Build args:'))
   Object.entries(args).forEach(([key, value]) => {
-    console.log(`${magentaColor}${key}${resetColor}: ${JSON.stringify(value)}`)
+    console.log(`${magenta(key)}: ${JSON.stringify(value)}`)
   })
 }
 
-function htmlMinifier({ outDir, skipOptimizations }): Plugin {
+function terser({ isEnabled, outDir }): Plugin {
   return {
-    name: 'html-minifier',
-    closeBundle: async () => {
-      if (skipOptimizations === true) return
+    name: 'terser',
+    writeBundle: async () => {
+      if (!isEnabled) return
 
-      let files: string[]
-
-      try {
-        files = await readdir(outDir, { recursive: true })
-      }
-      catch {
-        console.warn('Minifying HTML...', 'SKIP', `No directory found at '${outDir}'`)
-        return
-      }
+      const files = await readdir(outDir, { recursive: true })
 
       await Promise.all(files.map(async file => {
         if (extname(file) !== '.html') return
@@ -122,6 +114,30 @@ function htmlMinifier({ outDir, skipOptimizations }): Plugin {
 
         await writeFile(filePath, output, 'utf8')
       }))
+    },
+  }
+}
+
+function hoist(files: string[], { basePath, isEnabled, outDir }): Plugin {
+  return {
+    name: 'hoist',
+    closeBundle: async () => {
+      if (!isEnabled) return
+
+      const targetDir = join(outDir, basePath)
+
+      if (targetDir === outDir) return
+
+      try {
+        await Promise.all(files.map(async file => {
+          await rename(join(targetDir, file), join(outDir, file))
+        }))
+      }
+      catch (err) {
+        console.warn('Flattening SSR files...', 'SKIP', err)
+
+        return
+      }
     },
   }
 }

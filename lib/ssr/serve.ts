@@ -3,27 +3,40 @@
 import express, { type ErrorRequestHandler } from 'express'
 import minimist from 'minimist'
 import os from 'node:os'
-import { resolve } from 'node:path'
+import { join } from 'node:path'
 
-const PORT = process.env.PORT ?? '8080'
 const DEV = process.env.NODE_ENV === 'development'
 
 function getArgs() {
   const cwd = process.cwd()
   const {
-    e: entry,
-    p: basePath = process.env.BASE_PATH ?? '/',
-    s: s = 'static',
-    t: template,
-  } = minimist(process.argv.slice(2))
+    base = process.env.BASE_PATH ?? '/',
+    entry = 'main.server.js',
+    port = '8080',
+    root = './build',
+    static: _static,
+    template = 'index.html',
+  } = minimist(process.argv.slice(2), {
+    alias: {
+      base: ['b'],
+      entry: ['e'],
+      port: ['p'],
+      root: ['r'],
+      static: ['s'],
+      template: ['t'],
+    },
+  })
 
-  const entryPath = resolve(cwd, entry)
-  const staticPath = resolve(cwd, s)
-  const templatePath = resolve(cwd, template)
+  const basePath = join('/', base.replace(/\/+$/, ''))
+  const rootDir = join(cwd, root)
+  const entryPath = join(rootDir, entry)
+  const staticPath = _static ? join(cwd, _static) : undefined
+  const templatePath = join(rootDir, template)
 
   return {
     basePath,
     entryPath,
+    port,
     staticPath,
     templatePath,
   }
@@ -45,7 +58,7 @@ function getIP() {
   return '127.0.0.1'
 }
 
-async function createServer({ basePath, entryPath, staticPath, templatePath }: Record<string, string>) {
+async function createServer({ basePath, entryPath, staticPath, templatePath }: { basePath: string; entryPath: string; staticPath?: string; templatePath: string }) {
   const server = express()
 
   if (DEV) {
@@ -70,7 +83,7 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: R
     }))
   }
 
-  server.use(((err, req, res) => {
+  server.use(((err, req, res, next) => {
     res.status(err.status || 500).send(err)
   }) as ErrorRequestHandler)
 
@@ -78,19 +91,19 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: R
 }
 
 async function main() {
-  const { basePath, entryPath, staticPath, templatePath } = getArgs()
+  const { basePath, entryPath, port, staticPath, templatePath } = getArgs()
   const app = await createServer({ basePath, entryPath, staticPath, templatePath })
 
-  app.listen(PORT)
+  app.listen(port)
     .on('error', (error: NodeJS.ErrnoException) => {
       if (error.syscall !== 'listen') throw error
 
       switch (error.code) {
         case 'EACCES':
-          console.error(`Port ${PORT} requires elevated privileges`)
+          console.error(`Port ${port} requires elevated privileges`)
           process.exit(1)
         case 'EADDRINUSE':
-          console.error(`Port ${PORT} is already in use`)
+          console.error(`Port ${port} is already in use`)
           process.exit(1)
         default:
           throw error
@@ -98,7 +111,7 @@ async function main() {
     })
     .on('listening', () => {
       // eslint-disable-next-line no-console
-      console.log('⛅️ Starting app...', 'OK', `${getIP()}:${PORT}`)
+      console.log('⛅️ Starting app...', 'OK', `${getIP()}:${port}`)
     })
 }
 

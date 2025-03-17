@@ -56,7 +56,7 @@ jobs:
         uses: andrewscwei/actions/gh-pages-deploy@v2
         env:
           BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-          BASE_PATH: /${{ github.event.repository.name }}/
+          BASE_PATH: ${{ github.event.repository.name }}
           BUILD_NUMBER: ${{ github.sha }}
         with:
           branch-name: gh-pages

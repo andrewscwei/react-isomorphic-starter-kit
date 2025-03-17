@@ -54,7 +54,7 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   router.use(async (req, res, next) => {
     try {
       const template = await readFile(templatePath, 'utf-8')
-      const html = await vite.transformIndexHtml(req.originalUrl.replace(basePath, ''), template)
+      const html = await vite.transformIndexHtml(req.url, template)
 
       switch (req.url) {
         case '/sitemap.xml':
