@@ -54,7 +54,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       react(),
       terser({ isEnabled: !skipOptimizations, outDir }),
-      hoist(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: isSsrBuild, outDir }),
+      hoist(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
     ],
     resolve: {
       alias: {
@@ -91,7 +91,7 @@ function printArgs(args: ReturnType<typeof defineArgs>) {
   })
 }
 
-function terser({ isEnabled, outDir }): Plugin {
+function terser({ isEnabled, outDir }: { isEnabled: boolean; outDir: string }): Plugin {
   return {
     name: 'terser',
     writeBundle: async () => {
@@ -118,7 +118,7 @@ function terser({ isEnabled, outDir }): Plugin {
   }
 }
 
-function hoist(files: string[], { basePath, isEnabled, outDir }): Plugin {
+function hoist(files: string[], { basePath, isEnabled, outDir }: { basePath: string; isEnabled: boolean; outDir: string }): Plugin {
   return {
     name: 'hoist',
     closeBundle: async () => {

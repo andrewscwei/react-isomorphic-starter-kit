@@ -1,32 +1,3 @@
-# [22.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.1.0...v22.0.0) (2025-03-17)
-
-
-### Bug Fixes
-
-* Fix demo ([2e1e102](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/2e1e10252ef1f47f7509443d2c6d7fb91d9cf331))
-* Fix favicons ([17edc7c](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/17edc7c397abea37c49cef1dc73f110943b3e44c))
-* Remove temporary code ([353b0e4](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/353b0e40097f93f85742e5b02a4fdff9232287e3))
-
-
-### Features
-
-* Add sitemap feature to ESR and SSR ([055e9b6](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/055e9b6ad31761b32d8a28aeae9e6511f1821ab9))
-* Add support for middleware in SSR ([93efec3](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/93efec39c8653a42853b0668f0493215ebe50bc4))
-* Create catchAll middleware for ESR ([fbedcde](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/fbedcde4e01b6c3be99a2ac786f93034703e3256))
-* Improve catchAll middleware ([c9e64c5](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/c9e64c56666dfdd5a231f8aabbd9e6aafb1401d7))
-* Improve handling of base paths ([dafa51c](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/dafa51c1041fb2e2b71eeeec34bfefd021803e5b))
-* Optimize lib ([9040ddb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/9040ddb27564e7294e7cc885f6105630920ed087))
-* Remove react-router dependency from SSR and ESR libs ([92d5faf](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/92d5faf15311e446812e75ea30ec1b67198ebd99))
-* Remove serving robots.txt ([f14802c](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/f14802c5b0149b9331dfe3c57dd7bf20cf653c80))
-* Remove supertest dependency for prerendering ([6b76518](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/6b765186609f041107dc72a3a4770d4e9c689588))
-
-
-### BREAKING CHANGES
-
-* robots.txt is no longer served
-* Renamed lib/utils to lib/debug
-* Removed joinURL
-
 # [21.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.0.0...v21.1.0) (2025-03-09)
 
 
