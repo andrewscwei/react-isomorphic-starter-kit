@@ -205,7 +205,7 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
   }))
 }
 
-async function cleanup({ outDir }: { outDir: string }) {
+async function cleanUp({ outDir }: { outDir: string }) {
   const files = await readdir(outDir, { recursive: false })
   const exts = ['.js', '.d.ts']
   const removing = files.filter(file => exts.find(ext => extname(file) === ext))
@@ -242,7 +242,7 @@ async function main() {
   await generatePages(server, { basePath, baseURL, localesDir, outDir, requiredRoutes })
 
   console.log('cleaning files...')
-  await cleanup({ outDir })
+  await cleanUp({ outDir })
 
   const endTime = performance.now()
   console.log(green(`✓ prerendered in ${(endTime - startTime).toFixed(0)}ms`))
