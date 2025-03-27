@@ -14,7 +14,7 @@ export function loadTranslations(sources: Record<string, any>): Translations {
     if (!Object.prototype.hasOwnProperty.call(sources, key)) continue
 
     const phrases = sources[key].default
-    const parts = key.replace('./locales', '').split('/').filter(Boolean)
+    const parts = key.replace(/.*\/locales/i, '').split('/').filter(Boolean)
 
     let t: any = translations
 
