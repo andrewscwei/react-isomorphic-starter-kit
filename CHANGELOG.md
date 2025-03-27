@@ -1,3 +1,10 @@
+# [22.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v22.0.0...v22.1.0) (2025-03-27)
+
+
+### Features
+
+* Improve parsing of locales folder ([d08d247](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/d08d2477c36776b0ac21e36e5cd50f33f0cfbd81))
+
 # [22.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v21.1.0...v22.0.0) (2025-03-17)
 
 
