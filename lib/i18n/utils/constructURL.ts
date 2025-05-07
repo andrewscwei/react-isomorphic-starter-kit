@@ -1,4 +1,4 @@
-import { type URLParts } from '../types/index.js'
+import { type URLParts } from '../types/URLParts.js'
 
 /**
  * Constructs a URL from {@link URLParts}.

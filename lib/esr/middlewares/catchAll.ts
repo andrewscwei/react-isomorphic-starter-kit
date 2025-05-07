@@ -1,5 +1,8 @@
-import type { LocalDataProvider, Middleware, RenderFunction, SitemapOptions } from '../types/index.js'
-import { joinPaths } from '../utils/index.js'
+import type { LocalDataProvider } from '../types/LocalDataProvider.js'
+import type { Middleware } from '../types/Middleware.js'
+import type { RenderFunction } from '../types/RenderFunction.js'
+import type { SitemapOptions } from '../types/SitemapOptions.js'
+import { joinPaths } from '../utils/joinPaths.js'
 import { renderRoot } from './renderRoot.js'
 import { serveSitemap } from './serveSitemap.js'
 

@@ -12,7 +12,7 @@ import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
 import http from 'node:http'
 import { dirname, extname, join, relative, resolve } from 'node:path'
 import { build } from 'vite'
-import { ssrMiddleware } from './middlewares/index.js'
+import { ssrMiddleware } from './middlewares/ssrMiddleware.js'
 
 const cwd = process.cwd()
 

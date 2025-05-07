@@ -1,6 +1,6 @@
 import { type DependencyList } from 'react'
-import { type Metadata } from '../types/index.js'
-import { updateElementAttributes } from '../utils/index.js'
+import type { Metadata } from '../types/Metadata.js'
+import { updateElementAttributes } from '../utils/updateElementAttributes.js'
 import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['openGraph']

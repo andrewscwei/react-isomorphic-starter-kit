@@ -1,5 +1,6 @@
-import type { LocalDataProvider, RenderFunction } from '../types/index.js'
-import { injectData } from '../utils/index.js'
+import type { LocalDataProvider } from '../types/LocalDataProvider.js'
+import type { RenderFunction } from '../types/RenderFunction.js'
+import { injectData } from '../utils/injectData.js'
 
 type Params = {
   localData?: LocalDataProvider

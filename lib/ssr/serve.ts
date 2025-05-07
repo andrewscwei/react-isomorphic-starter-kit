@@ -62,7 +62,7 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: {
   const server = express()
 
   if (DEV) {
-    const { devMiddleware } = await import('./middlewares/index.js')
+    const { devMiddleware } = await import('./middlewares/devMiddleware.js')
 
     server.use(await devMiddleware({
       entryPath,
@@ -72,7 +72,7 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: {
     }))
   }
   else {
-    const { ssrMiddleware } = await import('./middlewares/index.js')
+    const { ssrMiddleware } = await import('./middlewares/ssrMiddleware.js')
 
     server.use(await ssrMiddleware({
       entryPath,

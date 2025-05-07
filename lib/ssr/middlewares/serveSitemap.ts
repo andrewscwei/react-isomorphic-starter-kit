@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
-import type { SitemapOptions } from '../types/index.js'
-import { generateSitemap } from '../utils/index.js'
+import type { SitemapOptions } from '../types/SitemapOptions.js'
+import { generateSitemap } from '../utils/generateSitemap.js'
 
 type Params = {
   sitemap?: SitemapOptions

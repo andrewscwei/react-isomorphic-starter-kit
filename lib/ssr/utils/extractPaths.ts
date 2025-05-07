@@ -1,4 +1,4 @@
-import type { Route } from '../types/index.js'
+import type { Route } from '../types/Route.js'
 import { joinPaths } from './joinPaths.js'
 
 /**

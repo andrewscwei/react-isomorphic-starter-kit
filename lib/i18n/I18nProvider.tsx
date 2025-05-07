@@ -1,7 +1,13 @@
 import { createContext, useReducer, type Dispatch, type PropsWithChildren, type Reducer } from 'react'
 import { useLocation } from 'react-router'
-import { type GetLocalizedPath, type GetLocalizedString, type I18nConfig, type Locale } from './types/index.js'
-import { createGetLocalizedPath, createGetLocalizedString, createResolveLocaleOptions, resolveLocaleFromURL } from './utils/index.js'
+import type { GetLocalizedPath } from './types/GetLocalizedPath.js'
+import type { GetLocalizedString } from './types/GetLocalizedString.js'
+import type { I18nConfig } from './types/I18nConfig.js'
+import type { Locale } from './types/Locale.js'
+import { createGetLocalizedPath } from './utils/createGetLocalizedPath.js'
+import { createGetLocalizedString } from './utils/createGetLocalizedString.js'
+import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
+import { resolveLocaleFromURL } from './utils/resolveLocaleFromURL.js'
 
 type I18nState = I18nConfig & {
   getLocalizedPath: GetLocalizedPath
