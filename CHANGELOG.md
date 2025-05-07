@@ -1,3 +1,15 @@
+# [23.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v22.1.0...v23.0.0) (2025-05-07)
+
+
+### Build System
+
+* Remove barrel exports from lib ([807d00a](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/807d00a2f97ac49b0448d67cc91e54a65ec33c1c))
+
+
+### BREAKING CHANGES
+
+* Removed barrel exports from lib
+
 # [22.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v22.0.0...v22.1.0) (2025-03-27)
 
 
