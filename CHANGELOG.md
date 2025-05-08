@@ -1,3 +1,10 @@
+## [23.0.1](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.0...v23.0.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* Only show display names of I18nProvder and MetaProvider in development ([0778160](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/07781601dee2ae46378681b17a20b8e95b0c5501))
+
 # [23.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v22.1.0...v23.0.0) (2025-05-07)
 
 
