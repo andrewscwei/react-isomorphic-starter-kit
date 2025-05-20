@@ -1,3 +1,11 @@
+## [23.0.2](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.1...v23.0.2) (2025-05-20)
+
+
+### Bug Fixes
+
+* Fix type errors ([0110ee4](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/0110ee4600f9ee1ff531f81e2d13be9c655163fb))
+* Replace section with div ([491ef6b](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/491ef6b4ec83c698ea303d60ed8a784693a7c299))
+
 ## [23.0.1](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.0...v23.0.1) (2025-05-08)
 
 
