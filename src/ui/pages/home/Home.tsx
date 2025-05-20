@@ -11,11 +11,11 @@ export function Component() {
       <main>
         <div className='content'>
           <ReactLogo/>
-          <section>
+          <div>
             <h1>{ltxt('hello')}</h1>
             <code style={{ marginBottom: '1rem' }}>{VERSION}</code>
             <span>{ltxt('description')}</span>
-          </section>
+          </div>
         </div>
       </main>
     </Page>

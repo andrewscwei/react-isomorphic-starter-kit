@@ -194,7 +194,7 @@ nav {
     flex-flow: column nowrap;
     max-width: 37rem;
 
-    > section {
+    > div {
       align-items: center;
       text-align: center;
     }
