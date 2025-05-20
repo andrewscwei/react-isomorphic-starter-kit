@@ -16,10 +16,12 @@ async function loadLazyComponents() {
 
   if (!matches || matches.length === 0) return
 
-  await Promise.all(matches.map(async t => {
-    const routeModule = await t.route.lazy?.()
+  await Promise.all(matches.map(async ({ route }) => {
+    if (typeof route.lazy !== 'function') return
 
-    Object.assign(t.route, {
+    const routeModule = await route.lazy?.()
+
+    Object.assign(route, {
       ...routeModule,
       lazy: undefined,
     })
