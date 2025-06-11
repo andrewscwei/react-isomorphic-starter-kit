@@ -1,3 +1,15 @@
+# [23.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.2...v23.1.0) (2025-06-11)
+
+
+### Bug Fixes
+
+* Fix boilerplate styles ([194c8e9](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/194c8e948ce11dc91ca7c16180888e3aa10ecd61))
+
+
+### Features
+
+* Move `assets` directory to `src` ([ebafed5](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/ebafed552800fbd19d0c993ac2295f9dd7bb8a4f))
+
 ## [23.0.2](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.1...v23.0.2) (2025-05-20)
 
 
