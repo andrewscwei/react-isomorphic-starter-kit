@@ -1,5 +1,5 @@
 import { type HTMLAttributes } from 'react'
-import $$ReactLogo from '../assets/svgs/react-logo.svg?raw'
+import $$ReactLogo from '../../assets/svgs/react-logo.svg?raw'
 
 type Props = HTMLAttributes<HTMLElement>
 

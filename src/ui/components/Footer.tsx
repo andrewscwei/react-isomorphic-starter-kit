@@ -1,6 +1,6 @@
 import { useChangeLocale, useLocalizedString } from '@lib/i18n'
 import { type HTMLAttributes } from 'react'
-import $$GitHubLogo from '../assets/images/github-logo.svg'
+import $$GitHubLogo from '../../assets/images/github-logo.svg'
 
 type Props = HTMLAttributes<HTMLElement>
 
