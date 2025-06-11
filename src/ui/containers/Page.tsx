@@ -1,6 +1,6 @@
 import { useLocale, useLocalizedString } from '@lib/i18n'
 import { useMeta, type Metadata } from '@lib/meta'
-import type { PropsWithChildren } from 'react'
+import { type PropsWithChildren } from 'react'
 import { useLocation } from 'react-router'
 import { BASE_URL } from '../../app.config.js'
 import { Footer } from '../components/Footer.js'

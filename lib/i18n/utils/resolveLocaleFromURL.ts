@@ -1,5 +1,5 @@
-import type { Locale } from '../types/Locale.js'
-import type { ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
+import { type Locale } from '../types/Locale.js'
+import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
 import { parseURL } from './parseURL.js'
 
 type Result = {

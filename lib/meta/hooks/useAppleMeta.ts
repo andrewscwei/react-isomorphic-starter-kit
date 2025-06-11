@@ -1,5 +1,5 @@
 import { type DependencyList } from 'react'
-import type { Metadata } from '../types/Metadata.js'
+import { type Metadata } from '../types/Metadata.js'
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
 import { useDOMEffect } from './useDOMEffect.js'
 

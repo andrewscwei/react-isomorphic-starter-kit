@@ -1,6 +1,6 @@
-import type { GetLocalizedPath } from '../types/GetLocalizedPath.js'
-import type { I18nConfig } from '../types/I18nConfig.js'
-import type { Locale } from '../types/Locale.js'
+import { type GetLocalizedPath } from '../types/GetLocalizedPath.js'
+import { type I18nConfig } from '../types/I18nConfig.js'
+import { type Locale } from '../types/Locale.js'
 import { createResolveLocaleOptions } from './createResolveLocaleOptions.js'
 import { getLocalizedURL } from './getLocalizedURL.js'
 

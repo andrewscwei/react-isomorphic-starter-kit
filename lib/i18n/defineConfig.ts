@@ -1,6 +1,6 @@
 import { loadTranslations } from './loadTranslations.js'
-import type { I18nConfig } from './types/I18nConfig.js'
-import type { Locale } from './types/Locale.js'
+import { type I18nConfig } from './types/I18nConfig.js'
+import { type Locale } from './types/Locale.js'
 
 type Params = {
   /**

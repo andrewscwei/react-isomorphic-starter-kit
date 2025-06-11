@@ -4,7 +4,7 @@ import { useDOMEffect } from './hooks/useDOMEffect.js'
 import { useOpenGraphMeta } from './hooks/useOpenGraphMeta.js'
 import { useTwitterMeta } from './hooks/useTwitterMeta.js'
 import { MetaContext } from './MetaProvider.js'
-import type { Metadata } from './types/Metadata.js'
+import { type Metadata } from './types/Metadata.js'
 import { updateElementAttributes } from './utils/updateElementAttributes.js'
 
 type Options = {

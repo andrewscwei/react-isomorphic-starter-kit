@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js'
-import type { GetLocalizedString } from '../types/GetLocalizedString.js'
-import type { I18nConfig } from '../types/I18nConfig.js'
-import type { Locale } from '../types/Locale.js'
+import { type GetLocalizedString } from '../types/GetLocalizedString.js'
+import { type I18nConfig } from '../types/I18nConfig.js'
+import { type Locale } from '../types/Locale.js'
 
 /**
  * Creates a function for getting the localized string for a key path in the

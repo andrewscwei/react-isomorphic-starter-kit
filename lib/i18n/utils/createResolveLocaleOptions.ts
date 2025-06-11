@@ -1,6 +1,6 @@
-import type { I18nConfig } from '../types/I18nConfig.js'
-import type { Locale } from '../types/Locale.js'
-import type { ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
+import { type I18nConfig } from '../types/I18nConfig.js'
+import { type Locale } from '../types/Locale.js'
+import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
 
 /**
  * Creates {@link ResolveLocaleOptions} from {@link I18nConfig}.

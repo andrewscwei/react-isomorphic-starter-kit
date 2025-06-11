@@ -1,4 +1,4 @@
-import type { RequestHandler } from './RequestHandler.js'
+import { type RequestHandler } from './RequestHandler.js'
 
 export type Middleware = {
   path: string

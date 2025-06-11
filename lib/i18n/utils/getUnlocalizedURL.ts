@@ -1,4 +1,4 @@
-import type { ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
+import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
 import { constructURL } from './constructURL.js'
 import { parseURL } from './parseURL.js'
 import { resolveLocaleFromURL } from './resolveLocaleFromURL.js'

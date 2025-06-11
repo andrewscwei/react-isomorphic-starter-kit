@@ -1,4 +1,4 @@
-import type { Translations } from './types/Translations.js'
+import { type Translations } from './types/Translations.js'
 
 /**
  * Loads translations from a directory via Webpack `RequireContext`.

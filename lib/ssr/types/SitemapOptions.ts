@@ -1,5 +1,5 @@
-import type { Route } from './Route.js'
-import type { SitemapTags } from './SitemapTags.js'
+import { type Route } from './Route.js'
+import { type SitemapTags } from './SitemapTags.js'
 
 export type SitemapOptions = {
   /**

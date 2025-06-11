@@ -1,7 +1,7 @@
-import type { RequestHandler } from 'express'
+import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import type { LocalDataProvider } from '../types/LocalDataProvider.js'
-import type { RenderFunction } from '../types/RenderFunction.js'
+import { type LocalDataProvider } from '../types/LocalDataProvider.js'
+import { type RenderFunction } from '../types/RenderFunction.js'
 import { createFetchRequest } from '../utils/createFetchRequest.js'
 import { injectData } from '../utils/injectData.js'
 
