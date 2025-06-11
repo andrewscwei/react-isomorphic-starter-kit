@@ -65,8 +65,10 @@ main {
   flex-flow: column nowrap;
   height: 100%;
   justify-content: center;
+  left: 0;
   padding: 0 5%;
   position: absolute;
+  top: 0;
   width: 100%;
 }
 
@@ -108,6 +110,7 @@ a, button {
 }
 
 code {
+  display: block;
   font-family: var(--font-mono);
   font-size: 1.6rem;
   font-weight: 400;
@@ -136,6 +139,7 @@ section {
 footer {
   bottom: 0;
   box-sizing: border-box;
+  color: #fff;
   display: flex;
   left: 0;
   padding: 2.4rem;
