@@ -5,9 +5,9 @@ repos:
     rev: v4.0.1
     hooks:
       - id: trailing-whitespace
-        files: \.(js|cjs|mjs|jsx|ts|cts|mts|tsx)$
+        exclude: \.(svg)$
       - id: end-of-file-fixer
-        files: \.(js|cjs|mjs|jsx|ts|cts|mts|tsx)$
+        exclude: \.(svg)$
       - id: check-added-large-files
   - repo: local
     hooks:
