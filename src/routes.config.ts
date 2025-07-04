@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * @file Routes config.
  */
@@ -8,6 +9,7 @@ import { ErrorBoundary } from './ui/pages/ErrorBoundary.js'
 
 export const routes = defineRoutes([{
   ErrorBoundary,
+  HydrateFallback: () => null,
   children: [{
     path: '/',
     index: true,
