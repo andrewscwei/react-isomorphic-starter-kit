@@ -1,3 +1,10 @@
+## [23.2.1](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.2.0...v23.2.1) (2025-07-04)
+
+
+### Bug Fixes
+
+* Resolve `HydrateFallback` warning ([3918dbb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/3918dbb7209da9f7573058dd830b1169a1271a7d))
+
 # [23.2.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.1.0...v23.2.0) (2025-07-04)
 
 
