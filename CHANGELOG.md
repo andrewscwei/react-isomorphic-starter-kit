@@ -1,3 +1,10 @@
+# [23.2.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.1.0...v23.2.0) (2025-07-04)
+
+
+### Features
+
+* Handle `dev` flag when injecting HTML data ([bdbb5ae](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/bdbb5aeceeb805f468f6ee67ad9dce59586a4f82))
+
 # [23.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.0.2...v23.1.0) (2025-06-11)
 
 
