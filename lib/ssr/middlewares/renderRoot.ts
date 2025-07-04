@@ -3,7 +3,7 @@ import { Transform } from 'node:stream'
 import { type LocalDataProvider } from '../types/LocalDataProvider.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { createFetchRequest } from '../utils/createFetchRequest.js'
-import { injectData } from '../utils/injectData.js'
+import { injectHTMLData } from '../utils/injectHTMLData.js'
 
 type Params = {
   localData?: LocalDataProvider
@@ -33,8 +33,9 @@ export function renderRoot({ localData, render }: Params, template: string, {
           res.sendStatus(500)
         },
         onShellReady() {
-          const html = injectData(template, {
+          const html = injectHTMLData(template, {
             ...metadata,
+            dev: process.env.NODE_ENV === 'development',
             localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
           })
           const [htmlStart, htmlEnd] = html.split(/<!--\s*root\s*-->/)

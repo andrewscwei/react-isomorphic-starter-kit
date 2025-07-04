@@ -18,6 +18,6 @@ export function MetaProvider({ children, metadata }: MetaProviderProps) {
 
 export const MetaContext = createContext<MetaContextValue | undefined>(undefined)
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   MetaContext.displayName = 'MetaContext'
 }

@@ -125,6 +125,6 @@ const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
 
 export const I18nContext = createContext<I18nContextValue | undefined>(undefined)
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   I18nContext.displayName = 'I18nContext'
 }

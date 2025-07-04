@@ -1,4 +1,6 @@
-export function injectData(template: string, data: Record<string, any>): string {
+import { type HTMLData } from '../types/HTMLData.js'
+
+export function injectHTMLData(template: string, data: HTMLData): string {
   let output = template
 
   Object.entries(data).forEach(([key, value]) => {
