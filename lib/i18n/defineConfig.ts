@@ -14,9 +14,9 @@ type Params = {
   localeChangeStrategy?: 'action' | 'path' | 'query'
 
   /**
-   * Dictionary of locale file sources.
+   * Dictionaries of locale file sources.
    */
-  sources: Record<string, any>
+  sources: Record<string, any>[]
 }
 
 export function defineConfig({

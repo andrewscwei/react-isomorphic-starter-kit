@@ -21,5 +21,7 @@ export const routes = defineRoutes([{
 }], {
   defaultLocale: DEFAULT_LOCALE,
   localeChangeStrategy: 'path',
-  sources: import.meta.glob('./locales/**/*.json', { eager: true }),
+  sources: [
+    import.meta.glob('./locales/**/*.json', { eager: true }),
+  ],
 })
