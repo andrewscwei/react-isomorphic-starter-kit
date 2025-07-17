@@ -1,3 +1,10 @@
+# [23.3.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.2.1...v23.3.0) (2025-07-17)
+
+
+### Features
+
+* Support multiple locale directories ([dd740f0](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/dd740f03ff8fdaad799aaef2a0b19df5abea54e5))
+
 ## [23.2.1](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.2.0...v23.2.1) (2025-07-04)
 
 
