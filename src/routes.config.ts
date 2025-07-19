@@ -13,10 +13,10 @@ export const routes = defineRoutes([{
   children: [{
     path: '/',
     index: true,
-    lazy: () => import('./ui/pages/_Home/Home.js'),
+    lazy: () => import('./ui/pages/Home/Home.js'),
   }, {
     path: '*',
-    lazy: () => import('./ui/pages/_NotFound/NotFound.js'),
+    lazy: () => import('./ui/pages/NotFound/NotFound.js'),
   }],
 }], {
   defaultLocale: DEFAULT_LOCALE,
