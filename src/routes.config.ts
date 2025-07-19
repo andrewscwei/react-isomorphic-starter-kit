@@ -5,7 +5,7 @@
 
 import { defineRoutes } from '@lib/i18n'
 import { DEFAULT_LOCALE } from './app.config.js'
-import { ErrorBoundary } from './ui/pages/ErrorBoundary.js'
+import { ErrorBoundary } from './ui/ErrorBoundary.js'
 
 export const routes = defineRoutes([{
   ErrorBoundary,

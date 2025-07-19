@@ -42,14 +42,11 @@ function deepMerge(target: Record<string, any>, ...sources: Record<string, any>[
   for (const key of Object.keys(source)) {
     const value = source[key]
 
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      !Array.isArray(value)
-    ) {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       if (!result[key] || typeof result[key] !== 'object') {
         result[key] = {}
       }
+
       deepMerge(result[key], value)
     }
     else {

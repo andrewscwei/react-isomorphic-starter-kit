@@ -1,7 +1,7 @@
 import { useFavicon } from '@lib/meta'
 import { StrictMode, type PropsWithChildren } from 'react'
-import { BASE_PATH } from '../app.config.js'
-import './styles/styles.css'
+import { BASE_PATH } from './app.config.js'
+import './styles/theme.css'
 
 type Props = PropsWithChildren
 
