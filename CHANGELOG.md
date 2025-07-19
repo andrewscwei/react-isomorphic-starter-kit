@@ -1,3 +1,18 @@
+# [24.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.3.0...v24.0.0) (2025-07-19)
+
+
+### Features
+
+* Rename page folders (1/2) ([a03c097](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/a03c097ffc992eeec4eaf10b502ef8688f2e7a1e))
+* Rename page folders (2/2) ([1c4325e](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/1c4325ea06752d3266668b6e068f51f9ed55de8f))
+* Rename page folders (2/2) ([a8d0868](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/a8d0868724107a43353d5d09682ccef9e7d357bb))
+* Update folder structure ([4169d59](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/4169d59a51ab2520f2714bd72991a6c860efbe84))
+
+
+### BREAKING CHANGES
+
+* Updated folder structure
+
 # [23.3.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.2.1...v23.3.0) (2025-07-17)
 
 
