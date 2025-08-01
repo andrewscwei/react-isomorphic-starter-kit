@@ -7,7 +7,7 @@
     <meta name="theme-color" content="<!-- themeColor -->" />
 
     <!-- if noIndex -->
-    <meta name="robots" content="noindex, nofollow" />
+      <meta name="robots" content="noindex, nofollow" />
     <!-- endif noIndex -->
 
     <title><!-- title --></title>
@@ -18,31 +18,43 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
 
     <!-- if !noIndex -->
-    <link rel="canonical" href="<!-- canonicalURL -->" />
+      <link rel="canonical" href="<!-- canonicalURL -->" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="<!-- apple.title || baseTitle -->" />
-    <link rel="apple-touch-icon" type="image/png" href="/app-icon-180.png" sizes="180x180" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content="<!-- apple.title || baseTitle -->" />
+      <link rel="apple-touch-icon" type="image/png" href="/app-icon-180.png" sizes="180x180" />
 
-    <!-- if apple.itunesApp -->
-    <meta name="apple-itunes-app" content="<!-- apple.itunesApp -->">
-    <!-- endif apple.itunesApp -->
+      <!-- if apple.itunesApp -->
+        <meta name="apple-itunes-app" content="<!-- apple.itunesApp -->">
+      <!-- endif apple.itunesApp -->
 
-    <meta property="og:site_name" content="<!-- baseTitle -->" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="<!-- title -->" />
-    <meta property="og:description" content="<!-- description -->" />
-    <meta property="og:url" content="<!-- canonicalURL -->" />
-    <meta property="og:image" content="%BASE_URL%/og-image.png" />
-    <meta property="og:image:alt" content="<!-- description -->" />
+      <meta property="og:site_name" content="<!-- openGraph.siteName || baseTitle -->" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="<!-- openGraph.title || title -->" />
+      <meta property="og:description" content="<!-- openGraph.description || description -->" />
+      <meta property="og:url" content="<!-- openGraph.url || canonicalURL -->" />
+      <meta property="og:image:alt" content="<!-- openGraph.description || description -->" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="<!-- title -->" />
-    <meta name="twitter:description" content="<!-- description -->" />
-    <meta name="twitter:image" content="%BASE_URL%/twitter-card.png" />
+      <!-- if openGraph.image -->
+        <meta property="og:image" content="<!-- openGraph.image -->" />
+      <!-- endif openGraph.image -->
+      <!-- if !openGraph.image -->
+        <meta property="og:image" content="%BASE_URL%/og-image.png" />
+      <!-- endif !openGraph.image -->
 
-    <link rel="manifest" href="/manifest.json" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="<!-- twitter.title || title -->" />
+      <meta name="twitter:description" content="<!-- twitter.description || description -->" />
+
+      <!-- if twitter.image -->
+        <meta name="twitter:image" content="<!-- twitter.image -->" />
+      <!-- endif twitter.image -->
+      <!-- if !twitter.image -->
+        <meta name="twitter:image" content="%BASE_URL%/twitter-card.png" />
+      <!-- endif !twitter.image -->
+
+      <link rel="manifest" href="/manifest.json" />
     <!-- endif !noIndex -->
   </head>
   <body>
