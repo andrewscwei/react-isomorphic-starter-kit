@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import { renderRoot } from './renderRoot.js'
-import { serveSitemap } from './serveSitemap.js'
+import { renderMiddleware } from './renderMiddleware.js'
+import { sitemapMiddleware } from './sitemapMiddleware.js'
 
 type Params = {
   /**
@@ -58,9 +58,9 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
 
       switch (req.url) {
         case '/sitemap.xml':
-          return serveSitemap(module)(req, res, next)
+          return sitemapMiddleware(module)(req, res, next)
         default: {
-          return renderRoot(module as any, html)(req, res, next)
+          return renderMiddleware(module as any, html)(req, res, next)
         }
       }
     }

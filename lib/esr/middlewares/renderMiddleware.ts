@@ -1,13 +1,29 @@
 import { type LocalDataProvider } from '../types/LocalDataProvider.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
-import { injectHTMLData } from '../utils/injectHTMLData.js'
+import { renderTemplate } from '../utils/renderTemplate.js'
 
 type Params = {
+  /**
+   * Function to provide bootstrapped local data for the request. This value is
+   * JSON stringified and injected into the HTML as a script tag.
+   */
   localData?: LocalDataProvider
+
+  /**
+   * Function to render the HTML for the request.
+   */
   render: RenderFunction
 }
 
-export function renderRoot({ localData, render }: Params, template: string) {
+/**
+ * Middleware for rendering HTML.
+ *
+ * @param params See {@link Params}.
+ * @param template The HTML template to render.
+ *
+ * @returns The middleware.
+ */
+export function renderMiddleware({ localData, render }: Params, template: string) {
   return async (req: Request) => {
     try {
       const metadata = {}
@@ -24,8 +40,8 @@ export function renderRoot({ localData, render }: Params, template: string) {
             }
 
             const chunks = template.split(/<!--\s*root\s*-->/is)
-            const htmlStart = injectHTMLData(chunks[0], htmlData)
-            const htmlEnd = injectHTMLData(chunks[1], htmlData)
+            const htmlStart = renderTemplate(chunks[0], htmlData)
+            const htmlEnd = renderTemplate(chunks[1], htmlData)
             controller.enqueue(new TextEncoder().encode(htmlStart))
 
             const reader = stream.getReader()

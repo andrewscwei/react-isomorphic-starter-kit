@@ -3,18 +3,39 @@ import { Transform } from 'node:stream'
 import { type LocalDataProvider } from '../types/LocalDataProvider.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { createFetchRequest } from '../utils/createFetchRequest.js'
-import { injectHTMLData } from '../utils/injectHTMLData.js'
+import { renderTemplate } from '../utils/renderTemplate.js'
 
 type Params = {
+  /**
+   * Function to provide bootstrapped local data for the request. This value is
+   * JSON stringified and injected into the HTML as a script tag.
+   */
   localData?: LocalDataProvider
+
+  /**
+   * Function to render the HTML for the request.
+   */
   render: RenderFunction
 }
 
 type Options = {
+  /**
+   * Timeout for the rendering process in milliseconds. Defaults to 10,000 ms
+   * (10 seconds).
+   */
   timeout?: number
 }
 
-export function renderRoot({ localData, render }: Params, template: string, {
+/**
+ * Middleware for rendering HTML.
+ *
+ * @param params See {@link Params}.
+ * @param template The HTML template to render.
+ * @param options See {@link Options}.
+ *
+ * @returns The middleware.
+ */
+export function renderMiddleware({ localData, render }: Params, template: string, {
   timeout = 10_000,
 }: Options = {}): RequestHandler {
   return async (req, res, next) => {
@@ -40,8 +61,8 @@ export function renderRoot({ localData, render }: Params, template: string, {
           }
 
           const chunks = template.split(/<!--\s*root\s*-->/is)
-          const htmlStart = injectHTMLData(chunks[0], htmlData)
-          const htmlEnd = injectHTMLData(chunks[1], htmlData)
+          const htmlStart = renderTemplate(chunks[0], htmlData)
+          const htmlEnd = renderTemplate(chunks[1], htmlData)
 
           streamEnd = htmlEnd
 

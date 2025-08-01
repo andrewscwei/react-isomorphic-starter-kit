@@ -3,8 +3,8 @@ import { type Middleware } from '../types/Middleware.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { type SitemapOptions } from '../types/SitemapOptions.js'
 import { joinPaths } from '../utils/joinPaths.js'
-import { renderRoot } from './renderRoot.js'
-import { serveSitemap } from './serveSitemap.js'
+import { renderMiddleware } from './renderMiddleware.js'
+import { sitemapMiddleware } from './sitemapMiddleware.js'
 
 type Params = {
   module: {
@@ -16,7 +16,7 @@ type Params = {
   template: string
 }
 
-export function catchAll({ module: { middlewares = [], ...module }, template }: Params): Middleware['handler'] {
+export function catchAllMiddleware({ module: { middlewares = [], ...module }, template }: Params): Middleware['handler'] {
   return ({ request, env }) => {
     const { BASE_PATH = '/' } = env
     const path = new URL(request.url).pathname
@@ -28,9 +28,9 @@ export function catchAll({ module: { middlewares = [], ...module }, template }: 
     else {
       switch (path) {
         case joinPaths('/', BASE_PATH, 'sitemap.xml'):
-          return serveSitemap(module)(request)
+          return sitemapMiddleware(module)(request)
         default:
-          return renderRoot(module, template)(request)
+          return renderMiddleware(module, template)(request)
       }
     }
   }

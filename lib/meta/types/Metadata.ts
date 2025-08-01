@@ -49,6 +49,7 @@ export type Metadata = {
   apple?: {
     statusBarStyle?: 'default' | 'black' | 'black-translucent'
     title?: string
+    itunesApp?: string
   }
 
   /**

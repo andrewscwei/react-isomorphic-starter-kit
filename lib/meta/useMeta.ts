@@ -11,23 +11,6 @@ type Options = {
   auto?: boolean
 }
 
-function assign<T extends Record<string, any>>(target: T, assignee: T) {
-  for (const key in assignee) {
-    if (Object.prototype.hasOwnProperty.call(assignee, key) === false) continue
-
-    const assignedValue = assignee[key]
-
-    if (assignedValue === undefined || assignedValue === null) continue
-
-    if (typeof assignedValue === 'object') {
-      assign(target[key], assignedValue)
-    }
-    else {
-      target[key] = assignedValue
-    }
-  }
-}
-
 /**
  * Hook for modifying head meta tags.
  *
@@ -116,4 +99,25 @@ export function useMeta(metadata: Metadata, {
     { auto, isEnabled: !noIndex },
     [...deps],
   )
+}
+
+function assign<T extends Record<string, any>>(target: T, assignee: T) {
+  for (const key in assignee) {
+    if (Object.prototype.hasOwnProperty.call(assignee, key) === false) continue
+
+    const assignedValue = assignee[key]
+
+    if (assignedValue === undefined || assignedValue === null) continue
+
+    if (typeof assignedValue === 'object') {
+      if (target[key] === undefined) {
+        Object.assign(target, { [key]: {} })
+      }
+
+      assign(target[key], assignedValue)
+    }
+    else {
+      target[key] = assignedValue
+    }
+  }
 }

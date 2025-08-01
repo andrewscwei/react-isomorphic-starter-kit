@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
-import { renderRoot } from './renderRoot.js'
-import { serveSitemap } from './serveSitemap.js'
-import { serveStatic } from './serveStatic.js'
+import { renderMiddleware } from './renderMiddleware.js'
+import { sitemapMiddleware } from './sitemapMiddleware.js'
+import { staticMiddleware } from './staticMiddleware.js'
 
 type Params = {
   /**
@@ -35,6 +35,8 @@ type Options = {
  * @param templatePath Path to the HTML template.
  * @param options See {@link Options}.
  *
+ * @returns The middleware.
+ *
  * @see {@link https://reactjs.org/docs/react-dom-server.html}
  */
 export async function ssrMiddleware({ entryPath, templatePath }: Params, {
@@ -44,7 +46,7 @@ export async function ssrMiddleware({ entryPath, templatePath }: Params, {
   const router = Router()
 
   if (staticPath) {
-    router.use(serveStatic(staticPath))
+    router.use(staticMiddleware(staticPath))
   }
 
   const [template, { middlewares = [], ...module }] = await Promise.all([
@@ -60,9 +62,9 @@ export async function ssrMiddleware({ entryPath, templatePath }: Params, {
     try {
       switch (req.url) {
         case '/sitemap.xml':
-          return serveSitemap(module)(req, res, next)
+          return sitemapMiddleware(module)(req, res, next)
         default: {
-          return renderRoot(module, template)(req, res, next)
+          return renderMiddleware(module, template)(req, res, next)
         }
       }
     }

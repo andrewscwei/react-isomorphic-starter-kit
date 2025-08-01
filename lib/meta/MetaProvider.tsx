@@ -12,7 +12,6 @@ export function MetaProvider({ children, metadata }: MetaProviderProps) {
     <MetaContext.Provider value={{ metadata }}>
       {children}
     </MetaContext.Provider>
-
   )
 }
 

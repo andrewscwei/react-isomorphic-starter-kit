@@ -18,6 +18,7 @@ export function useAppleMeta(
   const title = isEnabled ? params.title : undefined
   const statusBarStyle = isEnabled ? params.statusBarStyle ?? (auto ? 'default' : undefined) : undefined
   const webAppCapable = isEnabled ? 'yes' : undefined
+  const itunesApp = isEnabled ? params.itunesApp : undefined
   const icon = isEnabled ? '/app-icon-180.png' : undefined
 
   useDOMEffect(() => updateElementAttributes('meta', [
@@ -43,6 +44,14 @@ export function useAppleMeta(
     autoCreate: auto,
     autoDestroy: auto,
   }), [title, ...deps])
+
+  useDOMEffect(() => updateElementAttributes('meta', [
+    { key: true, name: 'name', value: 'apple-itunes-app' },
+    { name: 'content', value: itunesApp },
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [itunesApp, ...deps])
 
   useDOMEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'apple-touch-icon' },

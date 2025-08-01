@@ -2,13 +2,15 @@ import express, { Router } from 'express'
 import { existsSync } from 'node:fs'
 
 /**
- * Creates a router for serving local static files and adding expire headers.
+ * Middleware for serving local static files and adding expire headers.
  *
  * @param path Path to the static files.
  *
+ * @returns The middleware.
+ *
  * @see {@link https://expressjs.com/en/starter/static-files.html}
  */
-export function serveStatic(path: string) {
+export function staticMiddleware(path: string) {
   const router = Router()
 
   if (existsSync(path)) {

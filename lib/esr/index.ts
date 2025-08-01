@@ -1,6 +1,6 @@
-export * from './middlewares/catchAll.js'
-export * from './middlewares/renderRoot.js'
-export * from './middlewares/serveSitemap.js'
+export * from './middlewares/catchAllMiddleware.js'
+export * from './middlewares/renderMiddleware.js'
+export * from './middlewares/sitemapMiddleware.js'
 
 export * from './types/HTMLData.js'
 export * from './types/LocalDataProvider.js'
@@ -13,5 +13,5 @@ export * from './types/SitemapTags.js'
 
 export * from './utils/extractPaths.js'
 export * from './utils/generateSitemap.js'
-export * from './utils/injectHTMLData.js'
 export * from './utils/joinPaths.js'
+export * from './utils/renderTemplate.js'

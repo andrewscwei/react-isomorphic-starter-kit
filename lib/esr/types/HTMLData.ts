@@ -2,9 +2,6 @@
  * Type definition for data injected into HTML during server-side rendering.
  */
 export type HTMLData = {
-  /**
-   * Any additional metadata.
-   */
   [key: string]: any
 
   /**
