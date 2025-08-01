@@ -1,17 +1,11 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
-import { type LocalDataProvider } from '../types/LocalDataProvider.js'
+import { RenderContext } from '../types/RenderContext.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { createFetchRequest } from '../utils/createFetchRequest.js'
 import { renderTemplate } from '../utils/renderTemplate.js'
 
 type Params = {
-  /**
-   * Function to provide bootstrapped local data for the request. This value is
-   * JSON stringified and injected into the HTML as a script tag.
-   */
-  localData?: LocalDataProvider
-
   /**
    * Function to render the HTML for the request.
    */
@@ -35,18 +29,17 @@ type Options = {
  *
  * @returns The middleware.
  */
-export function renderMiddleware({ localData, render }: Params, template: string, {
+export function renderMiddleware({ render }: Params, template: string, {
   timeout = 10_000,
 }: Options = {}): RequestHandler {
   return async (req, res, next) => {
     try {
-      const metadata = {}
+      const context = RenderContext.factory()
       const fetchRequest = createFetchRequest(req)
-      const locals = localData ? await localData(fetchRequest) : {}
 
       let streamEnd = ''
 
-      const { pipe, abort } = await render(fetchRequest, metadata, {
+      const { pipe, abort } = await render(fetchRequest, context, {
         onError(err) {
           console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
         },
@@ -55,9 +48,9 @@ export function renderMiddleware({ localData, render }: Params, template: string
         },
         onShellReady() {
           const htmlData = {
-            ...metadata,
+            ...context.metadata,
             dev: process.env.NODE_ENV === 'development',
-            localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
+            localData: `<script>window.__localData=${JSON.stringify(context.localData)}</script>`,
           }
 
           const chunks = template.split(/<!--\s*root\s*-->/is)

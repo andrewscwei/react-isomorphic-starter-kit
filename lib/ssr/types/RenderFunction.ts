@@ -1,12 +1,13 @@
 import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+import { type RenderContext } from './RenderContext.js'
 
 /**
  * Function for rendering the view into a pipeable stream.
  *
  * @param request The request.
- * @param metadata Metadata to inject into the rendered view.
+ * @param context See {@link RenderContext}.
  * @param options See {@link RenderToPipeableStreamOptions}.
  *
  * @returns The pipeable stream.
  */
-export type RenderFunction = (request: Request, metadata: Record<string, any>, options: RenderToPipeableStreamOptions) => Promise<PipeableStream>
+export type RenderFunction = (request: Request, context: RenderContext, options: RenderToPipeableStreamOptions) => Promise<PipeableStream>

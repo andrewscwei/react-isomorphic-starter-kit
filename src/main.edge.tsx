@@ -16,17 +16,17 @@ export const sitemap: SitemapOptions = {
   updatedAt: BUILD_TIME,
 }
 
-export const render: RenderFunction = async (req, metadata, options) => {
+export const render: RenderFunction = async (req, context, options) => {
   const handler = createStaticHandler(routes, { basename: BASE_PATH })
-  const context = await handler.query(req)
+  const handlerContext = await handler.query(req)
 
-  if (context instanceof Response) throw context
+  if (handlerContext instanceof Response) throw handlerContext
 
   return renderToReadableStream(
     (
       <App>
-        <MetaProvider metadata={metadata}>
-          <StaticRouterProvider context={context} router={createStaticRouter(handler.dataRoutes, context)}/>
+        <MetaProvider metadata={context.metadata}>
+          <StaticRouterProvider context={handlerContext} router={createStaticRouter(handler.dataRoutes, handlerContext)}/>
         </MetaProvider>
       </App>
     ), options,

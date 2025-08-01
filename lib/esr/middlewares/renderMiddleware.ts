@@ -1,14 +1,8 @@
-import { type LocalDataProvider } from '../types/LocalDataProvider.js'
+import { RenderContext } from '../types/RenderContext.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { renderTemplate } from '../utils/renderTemplate.js'
 
 type Params = {
-  /**
-   * Function to provide bootstrapped local data for the request. This value is
-   * JSON stringified and injected into the HTML as a script tag.
-   */
-  localData?: LocalDataProvider
-
   /**
    * Function to render the HTML for the request.
    */
@@ -23,20 +17,18 @@ type Params = {
  *
  * @returns The middleware.
  */
-export function renderMiddleware({ localData, render }: Params, template: string) {
+export function renderMiddleware({ render }: Params, template: string) {
   return async (req: Request) => {
     try {
-      const metadata = {}
-      const stream = await render(req, metadata, {})
+      const context = RenderContext.factory()
+      const stream = await render(req, context, {})
       const readableStream = new ReadableStream({
         start: async controller => {
           try {
-            const locals = localData ? await localData(req) : {}
-
             const htmlData = {
-              ...metadata,
+              ...context.metadata,
               dev: process.env.NODE_ENV === 'development',
-              localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
+              localData: `<script>window.__localData=${JSON.stringify(context.localData)}</script>`,
             }
 
             const chunks = template.split(/<!--\s*root\s*-->/is)

@@ -1,4 +1,3 @@
-import { type LocalDataProvider } from '../types/LocalDataProvider.js'
 import { type Middleware } from '../types/Middleware.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { type SitemapOptions } from '../types/SitemapOptions.js'
@@ -10,7 +9,6 @@ type Params = {
   module: {
     middlewares?: Middleware[]
     sitemap?: SitemapOptions
-    localData?: LocalDataProvider
     render: RenderFunction
   }
   template: string
