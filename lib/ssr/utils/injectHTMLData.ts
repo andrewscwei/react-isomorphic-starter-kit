@@ -1,42 +1,70 @@
+import get from 'get-value'
 import { type HTMLData } from '../types/HTMLData.js'
 
 export function injectHTMLData(template: string, data: HTMLData): string {
   let output = template
 
-  Object.entries(data).forEach(([key, value]) => {
-    output = injectString(output, key, value)
-    output = injectConditional(output, key, value)
+  output = replaceConditionals(output, data)
+  output = replaceVariables(output, data)
+
+  return output
+}
+
+function replaceVariables(input: string, data: HTMLData) {
+  let output = input
+
+  const re = /<!--\s*([a-z0-9_.!]+)\s*-->/gis
+  const matches = Array.from(output.matchAll(re))
+
+  let offset = 0
+
+  matches.forEach(match => {
+    const matched = match[0]
+    const key = match[1]
+    const value = get(data, key) ?? ''
+    const length = matched.length
+    output = output.substring(0, match.index + offset) + value + output.substring(match.index + length + offset)
+    offset += value.length - length
   })
 
-  output = dejectExtraneousConditionals(output)
-
   return output
 }
 
-function injectString(input: string, key: string, value: any) {
-  if (typeof value !== 'string') return input
-
-  return input.replace(RegExp(`<!--\\s*(${key})\\s*-->`, 'gi'), value)
-}
-
-function injectConditional(input: string, key: string, value: any) {
-  if (!value) return input
-
+function replaceConditionals(input: string, data: HTMLData) {
   let output = input
 
-  output = output.replace(RegExp(`<!--\\s*IF !${key}\\s*-->(.*?)<!--\\s*ENDIF !${key}\\s*-->`, 'gis'), '')
-  output = output.replace(RegExp(`<!--\\s*IF ${key}\\s*-->`, 'gis'), '')
-  output = output.replace(RegExp(`<!--\\s*ENDIF ${key}\\s*-->`, 'gis'), '')
+  const re = /(<!--\s*IF ([a-z0-9_.!]+)\s*-->).*?(<!--\s*ENDIF \2\s*-->)/gis
+  const matches = Array.from(output.matchAll(re))
 
-  return output
-}
+  let offset = 0
 
-function dejectExtraneousConditionals(input: string) {
-  let output = input
+  matches.forEach(match => {
+    const matched = match[0]
+    const openTag = match[1]
+    const key = match[2]
+    const closeTag = match[3]
+    const isNegative = key.startsWith('!')
+    const value = get(data, isNegative ? key.substring(1) : key) ?? ''
+    const condition = isNegative ? !value : !!value
+    const breakpoints = [
+      match.index,
+      match.index + openTag.length,
+      match.index + matched.length - closeTag.length,
+      match.index + matched.length,
+    ].map(i => i + offset)
 
-  output = output.replace(/<!--\s*IF ([0-9a-z_-]+)\s*-->(.*?)<!--\s*ENDIF \1\s*-->/gis, '')
-  output = output.replace(/<!--\s*IF !([0-9a-z_-]+)\s*-->/gis, '')
-  output = output.replace(/<!--\s*ENDIF !([0-9a-z_-]+)\s*-->/gis, '')
+    let newOutput: string
+
+    if (condition) {
+      newOutput = output.substring(0, breakpoints[0]) + output.substring(breakpoints[1], breakpoints[2]) + output.substring(breakpoints[3])
+    }
+    else {
+      newOutput = output.substring(0, breakpoints[0]) + output.substring(breakpoints[3])
+    }
+
+    offset += newOutput.length - output.length
+    output = newOutput
+  })
 
   return output
 }

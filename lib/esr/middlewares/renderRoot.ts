@@ -16,12 +16,16 @@ export function renderRoot({ localData, render }: Params, template: string) {
         start: async controller => {
           try {
             const locals = localData ? await localData(req) : {}
-            const html = injectHTMLData(template, {
+
+            const htmlData = {
               ...metadata,
               dev: process.env.NODE_ENV === 'development',
               localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
-            })
-            const [htmlStart, htmlEnd] = html.split(/<!--\s*root\s*-->/)
+            }
+
+            const chunks = template.split(/<!--\s*root\s*-->/is)
+            const htmlStart = injectHTMLData(chunks[0], htmlData)
+            const htmlEnd = injectHTMLData(chunks[1], htmlData)
             controller.enqueue(new TextEncoder().encode(htmlStart))
 
             const reader = stream.getReader()

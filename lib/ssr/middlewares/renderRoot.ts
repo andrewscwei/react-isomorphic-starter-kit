@@ -33,12 +33,15 @@ export function renderRoot({ localData, render }: Params, template: string, {
           res.sendStatus(500)
         },
         onShellReady() {
-          const html = injectHTMLData(template, {
+          const htmlData = {
             ...metadata,
             dev: process.env.NODE_ENV === 'development',
             localData: `<script>window.__localData=${JSON.stringify(locals)}</script>`,
-          })
-          const [htmlStart, htmlEnd] = html.split(/<!--\s*root\s*-->/)
+          }
+
+          const chunks = template.split(/<!--\s*root\s*-->/is)
+          const htmlStart = injectHTMLData(chunks[0], htmlData)
+          const htmlEnd = injectHTMLData(chunks[1], htmlData)
 
           streamEnd = htmlEnd
 
