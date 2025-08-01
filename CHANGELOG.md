@@ -1,3 +1,23 @@
+# [25.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v24.0.0...v25.0.0) (2025-08-01)
+
+
+### Bug Fixes
+
+* Fix React logo ([ba25840](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/ba2584096fac2d0d5147b4c68e04fd544512010a))
+
+
+### Features
+
+* Improve HTML data injection ([ae456e9](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/ae456e92b6247fab1377e06353e036abdcc4ee75))
+* Improve support for value and condition processing when rendering templates ([690f4f7](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/690f4f7aff90842003b57ad47ae15034e826351e))
+* Support customizable variables in index.html ([65a7937](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/65a7937daf1512fc649095167b5f3c21e0f066fd))
+* Use RenderContext to persist metadata and local data ([3730491](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/3730491821dd6f4cb61314629ca2bda1e36043af))
+
+
+### BREAKING CHANGES
+
+* Render function uses RenderContext instead of separate metadata/local data objects
+
 # [24.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v23.3.0...v24.0.0) (2025-07-19)
 
 
