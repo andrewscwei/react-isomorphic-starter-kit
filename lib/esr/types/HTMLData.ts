@@ -10,11 +10,10 @@ export type HTMLData = {
   /**
    * Indicates if the application is in development mode.
    */
-  dev?: boolean
+  dev: boolean
 
   /**
-   * Local JSON-stringified data to be injected into the HTML, typically as a
-   * script tag.
+   * Local data to be injected into the HTML, typically as a script tag.
    */
-  localData?: string
+  localData: string
 }

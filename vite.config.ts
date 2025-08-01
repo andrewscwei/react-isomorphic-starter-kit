@@ -7,25 +7,25 @@ import { extname, join, resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import packageInfo from './package.json'
 
-const defineArgs = (env: ReturnType<typeof loadEnv>) => ({
+const loadArgs = (env: Record<string, string>) => ({
   BASE_PATH: join('/', (env.BASE_PATH ?? '/').replace(/\/+$/, '')),
   BASE_URL: (env.BASE_URL ?? '').replace(/\/+$/, ''),
   BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
-  DEBUG: env.DEBUG ?? '',
+  DEBUG: env.DEBUG === 'true',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   VERSION: packageInfo.version,
 })
 
 export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const args = defineArgs(env)
+  const args = loadArgs(env)
   const isDev = mode === 'development'
   const isEdgeBuild = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
+  const skipOptimizations = isDev || env.npm_config_raw === 'true'
   const rootDir = resolve(__dirname, 'src')
   const outDir = resolve(__dirname, 'build')
   const publicDir = resolve(__dirname, 'static')
-  const skipOptimizations = isDev || env.npm_config_raw === 'true'
 
   printArgs(args)
 
@@ -35,8 +35,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     envDir: __dirname,
     publicDir: isSsrBuild ? false : publicDir,
     build: {
-      // Prevent FOUC in SSR builds.
-      cssCodeSplit: false,
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
       outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
@@ -59,8 +57,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     plugins: [
       react(),
-      terser({ isEnabled: !skipOptimizations, outDir }),
-      hoist(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
+      htmlMinifier({ isEnabled: !skipOptimizations, outDir }),
+      fileFlattener(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
     ],
     resolve: {
       alias: {
@@ -87,19 +85,20 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   }
 })
 
-function printArgs(args: ReturnType<typeof defineArgs>) {
+function printArgs(args: ReturnType<typeof loadArgs>) {
   const green = (text: string) => `\x1b[32m${text}\x1b[0m`
   const magenta = (text: string) => `\x1b[35m${text}\x1b[0m`
 
   console.log(green('Build args:'))
+
   Object.entries(args).forEach(([key, value]) => {
     console.log(`${magenta(key)}: ${JSON.stringify(value)}`)
   })
 }
 
-function terser({ isEnabled, outDir }: { isEnabled: boolean; outDir: string }): Plugin {
+function htmlMinifier({ isEnabled, outDir }: { isEnabled: boolean; outDir: string }): Plugin {
   return {
-    name: 'terser',
+    name: 'Custom plugin for minifying HTML files after bundle generation',
     writeBundle: async () => {
       if (!isEnabled) return
 
@@ -124,14 +123,13 @@ function terser({ isEnabled, outDir }: { isEnabled: boolean; outDir: string }): 
   }
 }
 
-function hoist(files: string[], { basePath, isEnabled, outDir }: { basePath: string; isEnabled: boolean; outDir: string }): Plugin {
+function fileFlattener(files: string[], { basePath, isEnabled, outDir }: { basePath: string; isEnabled: boolean; outDir: string }): Plugin {
   return {
-    name: 'hoist',
+    name: 'Custom plugin for flattening files from the base path to the output root at the end of the build',
     closeBundle: async () => {
       if (!isEnabled) return
 
       const targetDir = join(outDir, basePath)
-
       if (targetDir === outDir) return
 
       try {
@@ -140,9 +138,7 @@ function hoist(files: string[], { basePath, isEnabled, outDir }: { basePath: str
         }))
       }
       catch (err) {
-        console.warn('Flattening SSR files...', 'SKIP', err)
-
-        return
+        console.warn('Flattening files...', 'SKIP', err)
       }
     },
   }
