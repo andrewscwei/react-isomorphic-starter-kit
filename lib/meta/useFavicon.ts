@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useDOMEffect } from './hooks/useDOMEffect.js'
+import { useEffect, useState } from 'react'
 import { updateElementAttributes } from './utils/updateElementAttributes.js'
 
 type Params = {
@@ -41,7 +40,7 @@ export function useFavicon({
 
   const colorSchemeChangeHandler = (event: MediaQueryListEvent) => setIsDarkMode(event.matches)
 
-  useDOMEffect(() => {
+  useEffect(() => {
     matchMedia?.addEventListener('change', colorSchemeChangeHandler)
 
     return () => {
@@ -49,7 +48,7 @@ export function useFavicon({
     }
   }, [])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'mask-icon' },
     { key: true, name: 'type', value: 'image/svg+xml' },
     ...maskIcon?.image ? [
@@ -59,7 +58,7 @@ export function useFavicon({
     autoCreate: !!maskIcon?.image,
   }), [maskIcon])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'icon' },
     { key: true, name: 'type', value: 'image/x-icon' },
     ...!isDarkMode && icon?.defaultImage ? [
@@ -72,7 +71,7 @@ export function useFavicon({
     autoCreate: !!icon?.defaultImage,
   }), [isDarkMode, icon])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'alternate icon' },
     { key: true, name: 'type', value: 'image/png' },
     ...!isDarkMode && alternateIcon?.defaultImage ? [

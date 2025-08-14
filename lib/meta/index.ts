@@ -1,5 +1,4 @@
 export * from './hooks/useAppleMeta.js'
-export * from './hooks/useDOMEffect.js'
 export * from './hooks/useOpenGraphMeta.js'
 export * from './hooks/useTwitterMeta.js'
 

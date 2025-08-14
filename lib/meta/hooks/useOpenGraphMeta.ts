@@ -1,7 +1,6 @@
-import { type DependencyList } from 'react'
+import { useEffect, type DependencyList } from 'react'
 import { type Metadata } from '../types/Metadata.js'
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
-import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['openGraph']
 
@@ -23,7 +22,7 @@ export function useOpenGraphMeta(
   const type = isEnabled ? params.type ?? (auto ? 'website' : undefined) : undefined
   const url = isEnabled ? params.url : undefined
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:description' },
     { name: 'content', value: description },
   ], {
@@ -31,7 +30,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [description, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:image' },
     { name: 'content', value: image },
   ], {
@@ -39,7 +38,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [image, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:image:alt' },
     { name: 'content', value: imageAlt },
   ], {
@@ -47,7 +46,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [imageAlt, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:site_name' },
     { name: 'content', value: siteName },
   ], {
@@ -55,7 +54,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [siteName, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:title' },
     { name: 'content', value: title },
   ], {
@@ -63,7 +62,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [title, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:type' },
     { name: 'content', value: type },
   ], {
@@ -71,7 +70,7 @@ export function useOpenGraphMeta(
     autoDestroy: auto,
   }), [type, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'property', value: 'og:url' },
     { name: 'content', value: url },
   ], {

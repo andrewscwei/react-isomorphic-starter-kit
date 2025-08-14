@@ -1,7 +1,6 @@
-import { type DependencyList } from 'react'
+import { useEffect, type DependencyList } from 'react'
 import { type Metadata } from '../types/Metadata.js'
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
-import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['apple']
 
@@ -21,7 +20,7 @@ export function useAppleMeta(
   const itunesApp = isEnabled ? params.itunesApp : undefined
   const icon = isEnabled ? '/app-icon-180.png' : undefined
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-capable' },
     { name: 'content', value: webAppCapable },
   ], {
@@ -29,7 +28,7 @@ export function useAppleMeta(
     autoDestroy: auto,
   }), [webAppCapable, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-status-bar-style' },
     { name: 'content', value: statusBarStyle },
   ], {
@@ -37,7 +36,7 @@ export function useAppleMeta(
     autoDestroy: auto,
   }), [statusBarStyle, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-title' },
     { name: 'content', value: title },
   ], {
@@ -45,7 +44,7 @@ export function useAppleMeta(
     autoDestroy: auto,
   }), [title, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-itunes-app' },
     { name: 'content', value: itunesApp },
   ], {
@@ -53,7 +52,7 @@ export function useAppleMeta(
     autoDestroy: auto,
   }), [itunesApp, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'apple-touch-icon' },
     { name: 'type', value: 'image/png' },
     { name: 'href', value: icon },

@@ -1,6 +1,5 @@
-import { useContext, type DependencyList } from 'react'
+import { useContext, useEffect, type DependencyList } from 'react'
 import { useAppleMeta } from './hooks/useAppleMeta.js'
-import { useDOMEffect } from './hooks/useDOMEffect.js'
 import { useOpenGraphMeta } from './hooks/useOpenGraphMeta.js'
 import { useTwitterMeta } from './hooks/useTwitterMeta.js'
 import { MetaContext } from './MetaProvider.js'
@@ -27,7 +26,7 @@ export function useMeta(metadata: Metadata, {
     assign(context.metadata, { ...metadata })
   }
 
-  useDOMEffect(() => {
+  useEffect(() => {
     const prevVal = window.document.documentElement.getAttribute('lang')
 
     if (locale) {
@@ -47,7 +46,7 @@ export function useMeta(metadata: Metadata, {
     }
   }, [locale, ...deps])
 
-  useDOMEffect(() => {
+  useEffect(() => {
     const prevTitle = window.document.title
 
     if (title !== undefined) window.document.title = title ?? ''
@@ -57,27 +56,27 @@ export function useMeta(metadata: Metadata, {
     }
   }, [title, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'description' },
     { name: 'content', value: description ?? '' },
   ]), [description, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'robots' },
     { name: 'content', value: noIndex ? 'noindex, nofollow' : undefined },
   ]), [noIndex, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'manifest' },
     { name: 'href', value: noIndex ? undefined : '/manifest.json' },
   ]), [noIndex, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('link', [
+  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'canonical' },
     { name: 'href', value: noIndex ? undefined : canonicalURL },
   ]), [canonicalURL, noIndex, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'theme-color' },
     { name: 'content', value: noIndex ? undefined : themeColor },
   ]), [themeColor, noIndex, ...deps])

@@ -153,6 +153,7 @@ export default tseslint.config(
       '@stylistic/one-var-declaration-per-line': ['error', 'initializations'],
       '@stylistic/operator-linebreak': ['error', 'after', {
         overrides: {
+          '|': 'before',
           '?': 'before',
           ':': 'before',
         },

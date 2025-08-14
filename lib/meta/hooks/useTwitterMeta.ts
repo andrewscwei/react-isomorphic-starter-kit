@@ -1,7 +1,6 @@
-import { type DependencyList } from 'react'
+import { useEffect, type DependencyList } from 'react'
 import { type Metadata } from '../types/Metadata.js'
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
-import { useDOMEffect } from './useDOMEffect.js'
 
 type Params = Metadata['twitter']
 
@@ -20,7 +19,7 @@ export function useTwitterMeta(
   const image = isEnabled ? params.image : undefined
   const title = isEnabled ? params.title : undefined
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'twitter:description' },
     { name: 'content', value: description },
   ], {
@@ -28,7 +27,7 @@ export function useTwitterMeta(
     autoDestroy: auto,
   }), [description, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'twitter:image' },
     { name: 'content', value: image },
   ], {
@@ -36,7 +35,7 @@ export function useTwitterMeta(
     autoDestroy: auto,
   }), [image, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'twitter:title' },
     { name: 'content', value: title },
   ], {
@@ -44,7 +43,7 @@ export function useTwitterMeta(
     autoDestroy: auto,
   }), [title, ...deps])
 
-  useDOMEffect(() => updateElementAttributes('meta', [
+  useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'twitter:card' },
     { name: 'content', value: card },
   ], {
