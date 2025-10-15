@@ -73,7 +73,6 @@ export default tseslint.config(
         allowAllCaps: true,
         allowLeadingUnderscore: true,
       }],
-      '@stylistic/jsx-props-no-multi-spaces': 'error',
       '@stylistic/jsx-quotes': ['error', 'prefer-single'],
       '@stylistic/jsx-self-closing-comp': 'error',
       '@stylistic/jsx-sort-props': ['error', {
