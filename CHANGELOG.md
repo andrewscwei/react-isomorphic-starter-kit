@@ -1,3 +1,10 @@
+# [25.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v25.0.0...v25.1.0) (2025-10-15)
+
+
+### Features
+
+* Encode replaced strings when rendering template using SSR or ESR ([b801bd6](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/b801bd6415fa67563893b0e695df8d222986de4d))
+
 # [25.0.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v24.0.0...v25.0.0) (2025-08-01)
 
 
