@@ -70,6 +70,7 @@ export default tseslint.config(
         allow: 'single-child',
       }],
       '@stylistic/jsx-pascal-case': ['error', {
+        allowAllCaps: true,
         allowLeadingUnderscore: true,
       }],
       '@stylistic/jsx-props-no-multi-spaces': 'error',

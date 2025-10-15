@@ -1,4 +1,5 @@
 import get from 'get-value'
+import he from 'he'
 import { type HTMLData } from '../types/HTMLData.js'
 
 export function renderTemplate(template: string, data: HTMLData): string {
@@ -28,6 +29,7 @@ function replaceVariables(input: string, data: HTMLData) {
     const expression = match[1]
     const value = evaluateExpression(expression, data, false) ?? ''
     const length = matched.length
+
     output = output.substring(0, match.index + offset) + value + output.substring(match.index + length + offset)
     offset += value.length - length
   })
@@ -80,7 +82,9 @@ function getValue(key: string, data: HTMLData, asCondition: boolean) {
     return isNot ? !value : !!value
   }
   else {
-    return isNot ? !value : value
+    const out = isNot ? !value : value
+
+    return key === 'localData' ? out : he.encode(out)
   }
 }
 
