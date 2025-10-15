@@ -1,0 +1,1 @@
+import{j as t}from"./index-DEq3NFGc.js";import{u as e,P as o}from"./HlxLiDYh.js";function s(){const n=e();return t.jsx(o,{metadata:{noIndex:!0,title:n("not-found-title")},children:t.jsx("main",{children:t.jsx("h1",{children:n("not-found-title")})})})}export{s as Component};

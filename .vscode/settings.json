@@ -1,8 +1,0 @@
-{
-  "typescript.preferences.importModuleSpecifier": "shortest",
-  "files.exclude": {
-    ".wrangler/": true,
-    "coverage/": true,
-    "test-results/": true
-  }
-}
