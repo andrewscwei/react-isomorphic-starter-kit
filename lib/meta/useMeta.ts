@@ -7,6 +7,10 @@ import { type Metadata } from './types/Metadata.js'
 import { updateElementAttributes } from './utils/updateElementAttributes.js'
 
 type Options = {
+  /**
+   * Specifies whether meta tags should be automatically managed. Defaults to
+   * `true`.
+   */
   auto?: boolean
 }
 

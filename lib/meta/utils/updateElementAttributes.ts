@@ -1,6 +1,18 @@
 type Attribute = {
+  /**
+   * The name of the attribute.
+   */
   name: string
+
+  /**
+   * The value of the attribute.
+   */
   value?: string
+
+  /**
+   * Specifies whether this attribute is a key attribute for identifying the
+   * element.
+   */
   key?: boolean
 }
 
