@@ -22,6 +22,21 @@ export type Metadata = {
   description?: string
 
   /**
+   * The favicon asset URLs.
+   */
+  favicon?: {
+    /**
+     * The URL of the favicon to use in light mode.
+     */
+    light?: string
+
+    /**
+     * The URL of the favicon to use in dark mode.
+     */
+    dark?: string
+  }
+
+  /**
    * The locale of the current page of the application.
    */
   locale?: string

@@ -1,5 +1,6 @@
 import { useContext, useEffect, type DependencyList } from 'react'
 import { useAppleMeta } from './hooks/useAppleMeta.js'
+import { useFavicon } from './hooks/useFavicon.js'
 import { useOpenGraphMeta } from './hooks/useOpenGraphMeta.js'
 import { useTwitterMeta } from './hooks/useTwitterMeta.js'
 import { MetaContext } from './MetaProvider.js'
@@ -24,7 +25,7 @@ export function useMeta(metadata: Metadata, {
   auto = true,
 }: Options = {}, deps: DependencyList = []) {
   const context = useContext(MetaContext)
-  const { baseTitle, canonicalURL, description, locale, noIndex, title, themeColor, apple, openGraph, twitter } = metadata
+  const { baseTitle, canonicalURL, description, favicon, locale, noIndex, title, themeColor, apple, openGraph, twitter } = metadata
 
   if (context?.metadata) {
     assign(context.metadata, { ...metadata })
@@ -84,6 +85,11 @@ export function useMeta(metadata: Metadata, {
     { key: true, name: 'name', value: 'theme-color' },
     { name: 'content', value: noIndex ? undefined : themeColor },
   ]), [themeColor, noIndex, ...deps])
+
+  useFavicon({
+    light: favicon?.light,
+    dark: favicon?.dark,
+  })
 
   useAppleMeta(
     { title, ...apple },

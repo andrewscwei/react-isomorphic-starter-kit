@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { updateElementAttributes } from './utils/updateElementAttributes.js'
+import { updateElementAttributes } from '../utils/updateElementAttributes.js'
 
 type Params = {
   /**

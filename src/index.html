@@ -12,8 +12,19 @@
 
     <title><!-- title --></title>
 
-    <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: light)" href="/favicon.ico" />
-    <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: dark)" href="/favicon-dark.ico" />
+    <!-- if favicon.light -->
+      <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: light)" href="<!-- favicon.light -->>" />
+    <!-- endif favicon.light -->
+    <!-- if !favicon.light -->
+      <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: light)" href="/favicon.ico" />
+    <!-- endif !favicon.light -->
+
+    <!-- if favicon.dark -->
+      <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: dark)" href="<!-- favicon.dark -->" />
+    <!-- endif favicon.dark -->
+    <!-- if !favicon.dark -->
+      <link rel="icon" type="image/x-icon" media="(prefers-color-scheme: dark)" href="/favicon-dark.ico" />
+    <!-- endif !favicon.dark -->
 
     <!-- if !noIndex -->
       <link rel="canonical" href="<!-- canonicalURL -->" />
