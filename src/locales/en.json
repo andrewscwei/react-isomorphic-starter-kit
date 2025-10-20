@@ -1,10 +1,12 @@
 {
-  "window-title-home": "React Isomorphic Starter Kit",
-  "window-title-not-found": "404",
-  "nav-title-home": "Home",
-  "hello": "Hello, world!",
+  "client-error-title": "An error occurred",
   "description": "This is an experimental React isomorphic app starter kit.",
-  "not-found-title": "This page does not exist",
   "en": "EN",
-  "ja": "日"
+  "hello": "Hello, world!",
+  "ja": "日",
+  "nav-title-home": "Home",
+  "not-found-title": "This page does not exist",
+  "window-title-client-error": "Error",
+  "window-title-home": "React Isomorphic Starter Kit",
+  "window-title-not-found": "404"
 }

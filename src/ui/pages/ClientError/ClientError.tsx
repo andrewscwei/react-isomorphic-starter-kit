@@ -8,11 +8,11 @@ export function Component() {
     <Page
       metadata={{
         noIndex: true,
-        title: ltxt('window-title-not-found'),
+        title: ltxt('window-title-client-error'),
       }}
     >
       <main>
-        <h1>{ltxt('not-found-title')}</h1>
+        <h1>{ltxt('client-error-title')}</h1>
       </main>
     </Page>
   )
