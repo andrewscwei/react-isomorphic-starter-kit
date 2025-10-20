@@ -1,3 +1,19 @@
+# [25.2.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v25.1.0...v25.2.0) (2025-10-20)
+
+
+### Bug Fixes
+
+* Fix favicons ([5629a50](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/5629a50beaba45e19aa2640eb993061763458f54))
+* Remove mask-icon.svg ([6141bfb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/6141bfb38bd76aa267a4c99cd4efd70b9fa7c0a8))
+
+
+### Features
+
+* Add ClientError page ([b9e014a](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/b9e014aa039621b8c141612a590c72557bac4331))
+* Handle favicons in useMeta ([0467c52](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/0467c5229e0b6783c5280df01b3d857c07dae4d2))
+* Make light scheme favicon default ([22087fb](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/22087fb6bca9aaccec1cad971e8b8f891d28179a))
+* Optimize favicons ([93bb1f2](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/93bb1f2af67272fc5702691688735d369658428e))
+
 # [25.1.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v25.0.0...v25.1.0) (2025-10-15)
 
 
