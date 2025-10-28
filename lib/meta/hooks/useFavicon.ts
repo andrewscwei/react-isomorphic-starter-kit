@@ -29,7 +29,8 @@ export function useFavicon({
     { name: 'type', value: 'image/x-icon' },
     { name: 'href', value: light },
   ], {
-    autoCreate: !!light,
+    autoCreate: true,
+    autoDestroy: false,
   }), [light])
 
   useEffect(() => updateElementAttributes('link', [
@@ -38,6 +39,7 @@ export function useFavicon({
     { name: 'type', value: 'image/x-icon' },
     { name: 'href', value: dark },
   ], {
-    autoCreate: !!dark,
+    autoCreate: true,
+    autoDestroy: false,
   }), [dark])
 }
