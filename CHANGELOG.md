@@ -1,3 +1,10 @@
+## [25.2.1](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v25.2.0...v25.2.1) (2025-10-28)
+
+
+### Bug Fixes
+
+* Fix favicon updates ([585d097](https://github.com/andrewscwei/react-isomorphic-starter-kit/commit/585d0976bb4a7f4e8f9d15e2a717b6769f642de7))
+
 # [25.2.0](https://github.com/andrewscwei/react-isomorphic-starter-kit/compare/v25.1.0...v25.2.0) (2025-10-20)
 
 
