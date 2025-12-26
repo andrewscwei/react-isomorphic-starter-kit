@@ -5,7 +5,6 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
     [
       "@semantic-release/npm",
       {
@@ -17,8 +16,7 @@
       {
         "assets": [
           "package.json",
-          "package-lock.json",
-          "CHANGELOG.md"
+          "package-lock.json"
         ],
         "message": "chore: Release `v${nextRelease.version}` [skip ci]"
       }
