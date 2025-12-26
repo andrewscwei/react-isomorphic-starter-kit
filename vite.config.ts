@@ -25,7 +25,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
   const rootDir = resolve(__dirname, 'src')
   const outDir = resolve(__dirname, 'build')
-  const publicDir = resolve(__dirname, 'static')
+  const publicDir = resolve(__dirname, 'public')
 
   printArgs(args)
 
