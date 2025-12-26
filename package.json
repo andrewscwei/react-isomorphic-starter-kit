@@ -36,7 +36,7 @@
     "lint:fix": "eslint --fix && stylelint src/**/*.css --fix"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251219.0",
+    "@cloudflare/workers-types": "^4.20251225.0",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.57.0",
     "@semantic-release/changelog": "^6.0.3",
@@ -65,7 +65,7 @@
     "stylelint": "^16.26.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.0",
+    "typescript-eslint": "^8.50.1",
     "vite": "^7.3.0",
     "vitest": "^4.0.16",
     "wait-on": "^9.0.3",
