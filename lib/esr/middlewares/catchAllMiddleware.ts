@@ -3,7 +3,6 @@ import { type RenderFunction } from '../types/RenderFunction.js'
 import { type SitemapOptions } from '../types/SitemapOptions.js'
 import { joinPaths } from '../utils/joinPaths.js'
 import { renderMiddleware } from './renderMiddleware.js'
-import { sitemapMiddleware } from './sitemapMiddleware.js'
 
 type Params = {
   module: {
@@ -14,6 +13,16 @@ type Params = {
   template: string
 }
 
+const EXCLUDES = [
+  { contains: '/assets/' },
+  { endsWith: '.css' },
+  { endsWith: '.js' },
+  { endsWith: '.json' },
+  { endsWith: '.png' },
+  { endsWith: '.svg' },
+  { endsWith: '.txt' },
+]
+
 export function catchAllMiddleware({ module: { middlewares = [], ...module }, template }: Params): Middleware['handler'] {
   return ({ request, env }) => {
     const { BASE_PATH = '/' } = env
@@ -23,13 +32,19 @@ export function catchAllMiddleware({ module: { middlewares = [], ...module }, te
     if (middleware) {
       return middleware.handler({ request, env })
     }
+    else if (isExcluded(path)) {
+      return env.ASSETS.fetch(request)
+    }
     else {
-      switch (path) {
-        case joinPaths('/', BASE_PATH, 'sitemap.xml'):
-          return sitemapMiddleware(module)(request)
-        default:
-          return renderMiddleware(module, template)(request)
-      }
+      return renderMiddleware(module, template)(request)
     }
   }
+}
+
+function isExcluded(path: string) {
+  return EXCLUDES.some(rule => {
+    if (rule.contains && path.includes(rule.contains)) return true
+    if (rule.endsWith && path.endsWith(rule.endsWith)) return true
+    return false
+  })
 }

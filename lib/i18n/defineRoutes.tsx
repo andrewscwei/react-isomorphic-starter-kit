@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { Outlet, type RouteObject } from 'react-router'
 import { defineConfig } from './defineConfig.js'
 import { I18nProvider } from './I18nProvider.js'
@@ -25,6 +27,7 @@ export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConf
 
   return [{
     Component: Container,
+    HydrateFallback: () => undefined,
     children: routes.flatMap(t => localizeRoute(t, config)),
   }]
 }
