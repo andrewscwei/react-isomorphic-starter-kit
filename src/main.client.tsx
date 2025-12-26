@@ -2,14 +2,14 @@
  * @file Client entry file.
  */
 
+import { BASE_PATH } from '@/app.config.js'
+import { App } from '@/App.js'
+import { routes } from '@/routes.config.js'
+import WebWorker from '@/workers/web.js?worker'
 import { debug } from '@lib/debug'
 import { hydrateRoot } from 'react-dom/client'
 import { createBrowserRouter, matchRoutes } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
-import { BASE_PATH } from './app.config.js'
-import { App } from './App.js'
-import { routes } from './routes.config.js'
-import WebWorker from './workers/web.js?worker'
 
 async function loadLazyComponents() {
   const matches = matchRoutes(routes, window.location, BASE_PATH)?.filter(t => t.route.lazy)

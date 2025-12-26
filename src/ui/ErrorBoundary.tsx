@@ -1,8 +1,8 @@
+import { DEBUG } from '@/app.config.js'
+import { Component as ClientError } from '@/ui/pages/ClientError/ClientError.js'
+import { Component as NotFound } from '@/ui/pages/NotFound/NotFound.js'
 import { useMeta } from '@lib/meta'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
-import { DEBUG } from '../app.config.js'
-import { Component as ClientError } from './pages/ClientError/ClientError.js'
-import { Component as NotFound } from './pages/NotFound/NotFound.js'
 
 type ErrorInfo = {
   status: number

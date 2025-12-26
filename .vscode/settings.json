@@ -1,5 +1,5 @@
 {
-  "typescript.preferences.importModuleSpecifier": "shortest",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "files.exclude": {
     ".wrangler/": true,
     "coverage/": true,

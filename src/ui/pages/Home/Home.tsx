@@ -1,7 +1,7 @@
+import { VERSION } from '@/app.config.js'
+import { ReactLogo } from '@/ui/components/ReactLogo.js'
+import { Page } from '@/ui/containers/Page.js'
 import { useLocalizedString } from '@lib/i18n'
-import { VERSION } from '../../../app.config.js'
-import { ReactLogo } from '../../components/ReactLogo.js'
-import { Page } from '../../containers/Page.js'
 
 export function Component() {
   const ltxt = useLocalizedString()

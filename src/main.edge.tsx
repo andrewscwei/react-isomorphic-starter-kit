@@ -2,13 +2,13 @@
  * @file Edge entry file.
  */
 
+import { BASE_PATH, BASE_URL, BUILD_TIME } from '@/app.config.js'
+import { App } from '@/App.js'
+import { routes } from '@/routes.config.js'
 import { type RenderFunction, type SitemapOptions } from '@lib/esr'
 import { MetaProvider } from '@lib/meta'
 import { renderToReadableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router'
-import { BASE_PATH, BASE_URL, BUILD_TIME } from './app.config.js'
-import { App } from './App.js'
-import { routes } from './routes.config.js'
 
 export const sitemap: SitemapOptions = {
   routes,

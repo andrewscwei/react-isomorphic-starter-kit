@@ -1,5 +1,5 @@
+import { Page } from '@/ui/containers/Page.js'
 import { useLocalizedString } from '@lib/i18n'
-import { Page } from '../../containers/Page.js'
 
 export function Component() {
   const ltxt = useLocalizedString()

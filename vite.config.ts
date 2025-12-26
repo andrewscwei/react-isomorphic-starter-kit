@@ -24,6 +24,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   const isEdgeBuild = process.argv.indexOf('--ssr') !== -1 ? process.argv[process.argv.indexOf('--ssr') + 1]?.includes('edge') === true : false
   const skipOptimizations = isDev || env.npm_config_raw === 'true'
   const rootDir = resolve(__dirname, 'src')
+  const libDir = resolve(__dirname, 'lib')
   const outDir = resolve(__dirname, 'build')
   const publicDir = resolve(__dirname, 'public')
 
@@ -58,11 +59,12 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       react(),
       htmlMinifier({ isEnabled: !skipOptimizations, outDir }),
-      fileFlattener(['index.html', '_routes.json'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
+      fileFlattener(['index.html'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
     ],
     resolve: {
       alias: {
-        '@lib': resolve(__dirname, 'lib'),
+        '@': rootDir,
+        '@lib': libDir,
       },
     },
     server: {
