@@ -22,6 +22,16 @@ type Options = {
   basePath?: string
 }
 
+const EXCLUDES = [
+  { contains: '/assets/' },
+  { endsWith: '.css' },
+  { endsWith: '.js' },
+  { endsWith: '.json' },
+  { endsWith: '.png' },
+  { endsWith: '.svg' },
+  { endsWith: '.txt' },
+]
+
 /**
  * Middleware for server-side rendering of React views during development.
  *
@@ -60,7 +70,12 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
         case '/sitemap.xml':
           return sitemapMiddleware(module)(req, res, next)
         default: {
-          return renderMiddleware(module as any, html)(req, res, next)
+          if (isExcluded(req.url)) {
+            res.sendStatus(202)
+          }
+          else {
+            return renderMiddleware(module as any, html)(req, res, next)
+          }
         }
       }
     }
@@ -78,4 +93,12 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   })
 
   return router
+}
+
+function isExcluded(path: string) {
+  return EXCLUDES.some(rule => {
+    if (rule.contains && path.includes(rule.contains)) return true
+    if (rule.endsWith && path.endsWith(rule.endsWith)) return true
+    return false
+  })
 }
