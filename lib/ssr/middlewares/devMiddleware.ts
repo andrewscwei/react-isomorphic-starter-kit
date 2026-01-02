@@ -55,14 +55,14 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
   const router = Router()
   router.use(vite.middlewares)
 
-  const { middlewares = [], ...module } = await vite.ssrLoadModule(entryPath)
-
-  for (const middleware of middlewares) {
-    router.use(...[].concat(middleware))
-  }
-
   router.use(async (req, res, next) => {
     try {
+      const { middlewares = [], ...module } = await vite.ssrLoadModule(entryPath)
+
+      for (const middleware of middlewares) {
+        router.use(...[].concat(middleware))
+      }
+
       const template = await readFile(templatePath, 'utf-8')
       const html = await vite.transformIndexHtml(req.url, template)
 
