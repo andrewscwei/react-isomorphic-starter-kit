@@ -1,11 +1,11 @@
 import $$GitHubLogo from '@/assets/images/github-logo.svg'
-import { useChangeLocale, useLocalizedString } from '@lib/i18n'
+import { useChangeLocale, useI18n } from '@lib/i18n'
 import { type HTMLAttributes } from 'react'
 
 type Props = HTMLAttributes<HTMLElement>
 
 export function Footer({ ...props }: Readonly<Props>) {
-  const ltxt = useLocalizedString()
+  const { t } = useI18n()
   const changeLocale = useChangeLocale()
 
   return (
@@ -20,20 +20,20 @@ export function Footer({ ...props }: Readonly<Props>) {
         </a>
       </nav>
       <button
-        aria-label={ltxt('en')}
+        aria-label={t('en')}
         className='icon'
         style={{ background: 'var(--color-dark-grey)' }}
         onClick={() => changeLocale('en')}
       >
-        {ltxt('en')}
+        {t('en')}
       </button>
       <button
-        aria-label={ltxt('ja')}
+        aria-label={t('ja')}
         className='icon'
         style={{ background: 'var(--color-dark-grey)', marginLeft: '1rem' }}
         onClick={() => changeLocale('ja')}
       >
-        {ltxt('ja')}
+        {t('ja')}
       </button>
     </footer>
   )
