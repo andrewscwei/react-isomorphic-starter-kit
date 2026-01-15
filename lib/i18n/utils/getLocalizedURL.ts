@@ -39,7 +39,7 @@ export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, re
     case 'path':
     case 'auto':
     default: {
-      const pathParts = parts.path?.split('/').filter(t => t)
+      const pathParts = parts.path?.split('/').filter(v => v)
       if (pathParts && supportedLocales.includes(pathParts[0] as Locale)) pathParts.shift()
 
       return constructURL({

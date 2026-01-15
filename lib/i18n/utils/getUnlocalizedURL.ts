@@ -19,7 +19,7 @@ export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocal
 
   switch (currLocaleInfo.resolveStrategy) {
     case 'domain':
-      return constructURL({ ...parts, host: parts.host ? parts.host.split('.').filter(t => t).slice(1).join('.') || '/' : undefined })
+      return constructURL({ ...parts, host: parts.host ? parts.host.split('.').filter(v => v).slice(1).join('.') || '/' : undefined })
     case 'query': {
       if (!parts.query) return url
 
@@ -31,6 +31,6 @@ export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocal
     case 'path':
     case 'auto':
     default:
-      return constructURL({ ...parts, path: parts.path ? [...parts.path.split('/').filter(t => t).slice(1)].join('/') : undefined })
+      return constructURL({ ...parts, path: parts.path ? [...parts.path.split('/').filter(v => v).slice(1)].join('/') : undefined })
   }
 }

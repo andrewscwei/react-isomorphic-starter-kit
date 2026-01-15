@@ -12,7 +12,7 @@ import { createBrowserRouter, matchRoutes } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
 
 async function loadLazyComponents() {
-  const matches = matchRoutes(routes, window.location, BASE_PATH)?.filter(t => t.route.lazy)
+  const matches = matchRoutes(routes, window.location, BASE_PATH)?.filter(v => v.route.lazy)
 
   if (!matches || matches.length === 0) return
 

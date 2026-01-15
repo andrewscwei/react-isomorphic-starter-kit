@@ -28,7 +28,7 @@ export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConf
   return [{
     Component: Container,
     HydrateFallback: () => undefined,
-    children: routes.flatMap(t => localizeRoute(t, config)),
+    children: routes.flatMap(v => localizeRoute(v, config)),
   }]
 }
 
@@ -62,7 +62,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   else if (children !== undefined) {
     return [{
       ...route,
-      children: children.flatMap(t => localizeRoute(t, config)),
+      children: children.flatMap(v => localizeRoute(v, config)),
     }]
   }
   else {

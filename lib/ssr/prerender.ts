@@ -50,7 +50,7 @@ function getArgs() {
   const entryPath = resolve(cwd, entry)
   const templatePath = template ? resolve(cwd, template) : resolve(outDir, 'index.html')
   const localesDir = resolve(cwd, locales)
-  const requiredRoutes = typeof routes === 'string' ? routes.split(',').map(t => t.trim()).filter(t => t) : []
+  const requiredRoutes = typeof routes === 'string' ? routes.split(',').map(v => v.trim()).filter(v => v) : []
 
   return {
     basePath,
@@ -153,12 +153,12 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
   const sitemapFile = await readFile(join(outDir, basePath, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
   const locales = await getLocales(localesDir)
-  const urls: string[] = [].concat(sitemap.urlset.url).map((t: any) => t.loc).filter(t => t)
-  const paths = urls.map(t => t.replace(new RegExp(`^${baseURL}`), '')).map(t => `/${t.replace(/^\/+|\/+$/, '')}`)
-  const indexPaths = paths.map(t => new RegExp(`^/(${locales.join('|')})?/?$`).test(t) ? t : undefined).filter(t => t !== undefined)
-  const requiredPaths = indexPaths.flatMap(t => requiredRoutes.map(r => join(t, r)))
+  const urls: string[] = [].concat(sitemap.urlset.url).map((v: any) => v.loc).filter(v => v)
+  const paths = urls.map(v => v.replace(new RegExp(`^${baseURL}`), '')).map(v => `/${v.replace(/^\/+|\/+$/, '')}`)
+  const indexPaths = paths.map(v => new RegExp(`^/(${locales.join('|')})?/?$`).test(v) ? v : undefined).filter(v => v !== undefined)
+  const requiredPaths = indexPaths.flatMap(v => requiredRoutes.map(r => join(v, r)))
   const pagePaths = Array.from(new Set([...paths, ...requiredPaths]))
-  const notFoundPaths = indexPaths.map(t => join(t, '404'))
+  const notFoundPaths = indexPaths.map(v => join(v, '404'))
   const outFiles: Record<string, string> = {}
 
   const maxChars = [...pagePaths, ...notFoundPaths].reduce((max, url) => Math.max(max, url.length), 0)

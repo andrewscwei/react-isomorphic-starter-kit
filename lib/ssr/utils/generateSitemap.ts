@@ -16,8 +16,8 @@ export async function generateSitemap({
   hostname,
   routes,
   updatedAt,
-  filter = t => !t.endsWith('*'),
-  transform = async t => t,
+  filter = v => !v.endsWith('*'),
+  transform = async v => v,
 }: SitemapOptions) {
   const baseURL = hostname.replace(/\/+$/, '')
   const paths = extractPaths(routes).filter(filter)
@@ -36,21 +36,21 @@ export async function generateSitemap({
       '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
       '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
       '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
-      'url': urls.map(t => {
+      'url': urls.map(v => {
         const defaultTags: Partial<SitemapTags> = {
           lastmod: updatedAt,
           changefreq: 'daily',
           priority: '0.7',
         }
 
-        if (typeof t === 'string') {
+        if (typeof v === 'string') {
           return {
             ...defaultTags,
-            loc: joinPaths(baseURL, t),
+            loc: joinPaths(baseURL, v),
           }
         }
         else {
-          const { loc, ...tags } = t
+          const { loc, ...tags } = v
 
           return {
             ...defaultTags,

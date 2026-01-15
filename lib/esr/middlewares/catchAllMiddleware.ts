@@ -27,7 +27,7 @@ export function catchAllMiddleware({ module: { middlewares = [], ...module }, te
   return ({ request, env }) => {
     const { BASE_PATH = '/' } = env
     const path = new URL(request.url).pathname
-    const middleware = middlewares.find(t => joinPaths('/', BASE_PATH, t.path) === path)
+    const middleware = middlewares.find(v => joinPaths('/', BASE_PATH, v.path) === path)
 
     if (middleware) {
       return middleware.handler({ request, env })

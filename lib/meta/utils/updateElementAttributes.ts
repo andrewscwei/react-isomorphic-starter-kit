@@ -56,7 +56,7 @@ export function updateElementAttributes(
   if (typeof window === 'undefined') return () => {}
 
   const noop = () => {}
-  const keyAttributes = attributes.filter(t => t.key === true)
+  const keyAttributes = attributes.filter(v => v.key === true)
 
   if (keyAttributes.length === 0) throw Error('Need at least one key attribute')
 

@@ -59,8 +59,8 @@ function autoResolveLocaleFromURL(url: string, {
   supportedLocales,
 }: Omit<ResolveLocaleOptions, 'defaultLocale' | 'resolver'>): Result | undefined {
   const parts = parseURL(url)
-  const matchedLocaleFromHost = parts.host?.split('.').filter(t => t)[0] as Locale
-  const matchedLocaleFromPath = parts.path?.split('/').filter(t => t)[0] as Locale
+  const matchedLocaleFromHost = parts.host?.split('.').filter(v => v)[0] as Locale
+  const matchedLocaleFromPath = parts.path?.split('/').filter(v => v)[0] as Locale
   const matchedLocaleFromQuery = new URLSearchParams(parts.query).get('locale') as Locale
 
   if (matchedLocaleFromHost && (resolveStrategy === 'auto' || resolveStrategy === 'domain') && (supportedLocales.indexOf(matchedLocaleFromHost) >= 0)) {
