@@ -18,7 +18,8 @@ export function useAppleMeta(
   const statusBarStyle = isEnabled ? params.statusBarStyle ?? (auto ? 'default' : undefined) : undefined
   const webAppCapable = isEnabled ? 'yes' : undefined
   const itunesApp = isEnabled ? params.itunesApp : undefined
-  const icon = isEnabled ? '/app-icon-180.png' : undefined
+  const icon180 = isEnabled ? '/apple-touch-icon-180.png' : undefined
+  const icon = isEnabled ? '/apple-touch-icon.png' : undefined
 
   useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-capable' },
@@ -55,8 +56,17 @@ export function useAppleMeta(
   useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'apple-touch-icon' },
     { name: 'type', value: 'image/png' },
-    { name: 'href', value: icon },
+    { name: 'href', value: icon180 },
     { name: 'sizes', value: '180x180' },
+  ], {
+    autoCreate: auto,
+    autoDestroy: auto,
+  }), [icon180, ...deps])
+
+  useEffect(() => updateElementAttributes('link', [
+    { key: true, name: 'rel', value: 'apple-touch-icon' },
+    { name: 'type', value: 'image/png' },
+    { name: 'href', value: icon },
   ], {
     autoCreate: auto,
     autoDestroy: auto,

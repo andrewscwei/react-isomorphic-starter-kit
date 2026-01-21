@@ -18,6 +18,7 @@ Thumbs.db
 .tmp/
 .data/
 .cache/
+*.*~lock~
 
 # Compiled sources
 build/
