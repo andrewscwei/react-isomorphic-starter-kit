@@ -50,7 +50,7 @@ function getArgs() {
   const entryPath = resolve(cwd, entry)
   const templatePath = template ? resolve(cwd, template) : resolve(outDir, 'index.html')
   const localesDir = resolve(cwd, locales)
-  const requiredRoutes = typeof routes === 'string' ? routes.split(',').map(v => v.trim()).filter(v => v) : []
+  const requiredRoutes = typeof routes === 'string' ? routes.split(',').map(r => r.trim()).filter(r => r) : []
 
   return {
     basePath,
@@ -79,13 +79,23 @@ async function createApp(entryPath: string, templatePath: string, { basePath }: 
 
 async function createSSRModule(entryPath: string, { configPath }: { configPath: string }) {
   const result: Record<string, any> = await build({ configFile: configPath, build: { ssr: entryPath } })
-  const entryFile = result.output?.find((t: any) => t.isEntry === true)?.fileName
+  const outputFiles = result.output as any[] || []
 
-  if (!entryFile) {
-    throw Error(`Failed to build SSR module with entry '${entryPath}'`)
+  const out = outputFiles.reduce((acc, file) => {
+    if (file.isEntry === true) {
+      acc.entryFile = file.fileName
+    }
+    else {
+      acc.chunkFiles.push(file.fileName)
+    }
+    return acc
+  }, { chunkFiles: [] as string[], entryFile: undefined })
+
+  if (!out.entryFile) {
+    throw new Error(`Failed to build SSR module with entry '${entryPath}'`)
   }
 
-  return entryFile
+  return out
 }
 
 async function getLocales(localesDir: string) {
@@ -153,12 +163,12 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
   const sitemapFile = await readFile(join(outDir, basePath, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
   const locales = await getLocales(localesDir)
-  const urls: string[] = [].concat(sitemap.urlset.url).map((v: any) => v.loc).filter(v => v)
-  const paths = urls.map(v => v.replace(new RegExp(`^${baseURL}`), '')).map(v => `/${v.replace(/^\/+|\/+$/, '')}`)
-  const indexPaths = paths.map(v => new RegExp(`^/(${locales.join('|')})?/?$`).test(v) ? v : undefined).filter(v => v !== undefined)
-  const requiredPaths = indexPaths.flatMap(v => requiredRoutes.map(r => join(v, r)))
+  const urls: string[] = [].concat(sitemap.urlset.url).map((u: any) => u.loc).filter(u => u)
+  const paths = urls.map(u => u.replace(new RegExp(`^${baseURL}`), '')).map(u => `/${u.replace(/^\/+|\/+$/, '')}`)
+  const indexPaths = paths.map(p => new RegExp(`^/(${locales.join('|')})?/?$`).test(p) ? p : undefined).filter(p => p !== undefined)
+  const requiredPaths = indexPaths.flatMap(p => requiredRoutes.map(r => join(p, r)))
   const pagePaths = Array.from(new Set([...paths, ...requiredPaths]))
-  const notFoundPaths = indexPaths.map(v => join(v, '404'))
+  const notFoundPaths = indexPaths.map(p => join(p, '404'))
   const outFiles: Record<string, string> = {}
 
   const maxChars = [...pagePaths, ...notFoundPaths].reduce((max, url) => Math.max(max, url.length), 0)
@@ -205,10 +215,9 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
   }))
 }
 
-async function cleanUp({ outDir }: { outDir: string }) {
-  const files = await readdir(outDir, { recursive: false })
-  const exts = ['.js', '.d.ts']
-  const removing = files.filter(file => exts.find(ext => extname(file) === ext))
+async function cleanUp(files: string[], { exts, outDir }: { exts: string[]; outDir: string }) {
+  const res = await readdir(outDir, { recursive: false })
+  const removing = [...res.filter(f => exts.find(ext => extname(f) === ext)), ...files]
 
   if (removing.length === 0) return
 
@@ -231,8 +240,8 @@ async function main() {
 
   const startTime = performance.now()
   const { basePath, baseURL, configPath, entryPath, localesDir, outDir, requiredRoutes, templatePath } = getArgs()
-  const module = await createSSRModule(entryPath, { configPath })
-  const app = await createApp(resolve(outDir, module), templatePath, { basePath })
+  const { entryFile, chunkFiles } = await createSSRModule(entryPath, { configPath })
+  const app = await createApp(resolve(outDir, entryFile), templatePath, { basePath })
   const server = app.listen()
 
   console.log('generating sitemap...')
@@ -242,7 +251,7 @@ async function main() {
   await generatePages(server, { basePath, baseURL, localesDir, outDir, requiredRoutes })
 
   console.log('cleaning files...')
-  await cleanUp({ outDir })
+  await cleanUp([entryFile, ...chunkFiles], { exts: [], outDir })
 
   const endTime = performance.now()
   console.log(green(`✓ prerendered in ${(endTime - startTime).toFixed(0)}ms`))
