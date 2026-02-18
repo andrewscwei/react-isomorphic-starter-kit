@@ -46,8 +46,7 @@ export function renderMiddleware({ render }: Params, template: string) {
 
             controller.enqueue(new TextEncoder().encode(htmlEnd))
             controller.close()
-          }
-          catch (err) {
+          } catch (err) {
             controller.error(err)
           }
         },
@@ -57,12 +56,10 @@ export function renderMiddleware({ render }: Params, template: string) {
         headers: { 'content-type': 'text/html' },
         status: 200,
       })
-    }
-    catch (err) {
+    } catch (err) {
       if (err instanceof Response) {
         return err
-      }
-      else {
+      } else {
         return new Response(JSON.stringify({ error: err }), {
           headers: { 'content-type': 'application/json' },
           status: 500,

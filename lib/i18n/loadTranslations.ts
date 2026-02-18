@@ -48,8 +48,7 @@ function deepMerge(target: Record<string, any>, ...sources: Record<string, any>[
       }
 
       deepMerge(result[key], value)
-    }
-    else {
+    } else {
       result[key] = value
     }
   }

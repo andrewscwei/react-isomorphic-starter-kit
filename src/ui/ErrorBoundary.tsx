@@ -1,26 +1,25 @@
-import { DEBUG } from '@/app.config.js'
-import { Component as ClientError } from '@/ui/pages/ClientError/ClientError.js'
-import { Component as NotFound } from '@/ui/pages/NotFound/NotFound.js'
 import { useMeta } from '@lib/meta'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
+import { DEBUG } from '@/app.config.js'
+import { Component as ClientError } from '@/ui/pages/ClientError/ClientError.js'
+import { Component as NotFound } from '@/ui/pages/NotFound/NotFound.js'
+
 type ErrorInfo = {
-  status: number
-  message?: string
   body?: string
+  message?: string
+  status: number
 }
 
 export function ErrorBoundary() {
   const error = useRouteError()
-  const { status, message = 'Unknown Error', body = 'No content' } = parseError(error)
+  const { body = 'No content', message = 'Unknown Error', status } = parseError(error)
 
   if (status === 404) {
     return <NotFound/>
-  }
-  else if (!DEBUG) {
+  } else if (!DEBUG) {
     return <ClientError/>
-  }
-  else {
+  } else {
     useMeta({
       noIndex: true,
     })
@@ -38,21 +37,21 @@ function parseError(error: unknown): ErrorInfo {
   switch (true) {
     case isRouteErrorResponse(error):
       return {
-        status: error.status,
-        message: `${error.status} ${error.statusText}`,
         body: error.data || undefined,
+        message: `${error.status} ${error.statusText}`,
+        status: error.status,
       }
     case error instanceof Error:
       return {
-        status: -1,
-        message: error.message || undefined,
         body: error.stack || undefined,
+        message: error.message || undefined,
+        status: -1,
       }
     default:
       return {
-        status: -1,
-        message: undefined,
         body: undefined,
+        message: undefined,
+        status: -1,
       }
   }
 }

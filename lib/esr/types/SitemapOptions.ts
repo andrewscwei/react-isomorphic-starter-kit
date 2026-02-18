@@ -33,5 +33,5 @@ export type SitemapOptions = {
    *
    * @returns Array of URLs or tags for generating the sitemap.
    */
-  transform?: (paths: string[]) => Promise<(string | SitemapTags)[]>
+  transform?: (paths: string[]) => Promise<(SitemapTags | string)[]>
 }

@@ -1,6 +1,7 @@
-import $$GitHubLogo from '@/assets/images/github-logo.svg'
 import { useChangeLocale, useI18n } from '@lib/i18n'
 import { type HTMLAttributes } from 'react'
+
+import $$GitHubLogo from '@/assets/images/github-logo.svg'
 
 type Props = HTMLAttributes<HTMLElement>
 
@@ -12,25 +13,25 @@ export function Footer({ ...props }: Readonly<Props>) {
     <footer {...props}>
       <nav>
         <a
-          aria-label='GitHub'
           className='icon'
+          aria-label='GitHub'
           href='https://github.com/andrewscwei/react-static-starter-kit'
         >
           <img alt='GitHub' src={$$GitHubLogo}/>
         </a>
       </nav>
       <button
-        aria-label={t('en')}
         className='icon'
         style={{ background: 'var(--color-dark-grey)' }}
+        aria-label={t('en')}
         onClick={() => changeLocale('en')}
       >
         {t('en')}
       </button>
       <button
-        aria-label={t('ja')}
         className='icon'
         style={{ background: 'var(--color-dark-grey)', marginLeft: '1rem' }}
+        aria-label={t('ja')}
         onClick={() => changeLocale('ja')}
       >
         {t('ja')}

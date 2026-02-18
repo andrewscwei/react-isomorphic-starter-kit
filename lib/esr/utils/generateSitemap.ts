@@ -1,4 +1,5 @@
 import { XMLBuilder } from 'fast-xml-parser'
+
 import { type SitemapOptions } from '../types/SitemapOptions.js'
 import { type SitemapTags } from '../types/SitemapTags.js'
 import { extractPaths } from './extractPaths.js'
@@ -13,33 +14,33 @@ import { joinPaths } from './joinPaths.js'
  * @returns The plain text `sitemap.xml`.
  */
 export async function generateSitemap({
+  filter = v => !v.endsWith('*'),
   hostname,
   routes,
-  updatedAt,
-  filter = v => !v.endsWith('*'),
   transform = async v => v,
+  updatedAt,
 }: SitemapOptions) {
   const baseURL = hostname.replace(/\/+$/, '')
   const paths = extractPaths(routes).filter(filter)
   const urls = await transform(paths)
 
   const builder = new XMLBuilder({
-    ignoreAttributes: false,
     format: true,
+    ignoreAttributes: false,
   })
 
   const xml = builder.build({
     urlset: {
       '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
-      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
-      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
-      '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
       '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
+      '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
+      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
       '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
+      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
       'url': urls.map(v => {
         const defaultTags: Partial<SitemapTags> = {
-          lastmod: updatedAt,
           changefreq: 'daily',
+          lastmod: updatedAt,
           priority: '0.7',
         }
 
@@ -48,8 +49,7 @@ export async function generateSitemap({
             ...defaultTags,
             loc: joinPaths(baseURL, v),
           }
-        }
-        else {
+        } else {
           const { loc, ...tags } = v
 
           return {

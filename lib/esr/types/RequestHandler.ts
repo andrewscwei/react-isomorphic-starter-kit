@@ -1,1 +1,1 @@
-export type RequestHandler = (params: { request: Request; env: Record<string, any> }) => Promise<Response>
+export type RequestHandler = (params: { env: Record<string, any>; request: Request }) => Promise<Response>

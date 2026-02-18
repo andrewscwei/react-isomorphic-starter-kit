@@ -3,7 +3,7 @@ import { type Locale } from './Locale.js'
 /**
  * A unit translation.
  */
-export type Translation = { [key: string]: Translation | string }
+export type Translation = { [key: string]: string | Translation }
 
 /**
  * Dictionary of translations.

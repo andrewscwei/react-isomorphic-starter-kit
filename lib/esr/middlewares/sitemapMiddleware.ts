@@ -23,8 +23,7 @@ export function sitemapMiddleware({ sitemap: options }: Params) {
       return new Response(sitemap, {
         headers: { 'Content-Type': 'application/xml' },
       })
-    }
-    else {
+    } else {
       return new Response(undefined, {
         status: 404,
       })

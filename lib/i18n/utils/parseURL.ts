@@ -15,11 +15,11 @@ export function parseURL(url: string): URLParts {
 
   return {
     base: parts[1],
-    protocol: parts[2],
-    host: parts[3],
-    port: parts[4],
-    path: parts[5],
-    query: parts[6],
     hash: parts[7],
+    host: parts[3],
+    path: parts[5],
+    port: parts[4],
+    protocol: parts[2],
+    query: parts[6],
   }
 }

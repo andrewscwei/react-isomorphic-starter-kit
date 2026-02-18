@@ -1,7 +1,8 @@
+import { useI18n } from '@lib/i18n'
+
 import { VERSION } from '@/app.config.js'
 import { ReactLogo } from '@/ui/components/ReactLogo.js'
 import { Page } from '@/ui/containers/Page.js'
-import { useI18n } from '@lib/i18n'
 
 export function Component() {
   const { t } = useI18n()

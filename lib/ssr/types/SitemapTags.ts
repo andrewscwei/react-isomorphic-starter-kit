@@ -1,6 +1,6 @@
 export type SitemapTags = {
-  loc: string
-  lastmod?: string
   changefreq?: string
+  lastmod?: string
+  loc: string
   priority?: string
 }

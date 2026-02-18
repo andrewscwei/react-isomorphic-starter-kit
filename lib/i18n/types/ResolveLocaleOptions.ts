@@ -27,7 +27,7 @@ export type ResolveLocaleOptions = {
    *             `example.com/?lang=en`/
    * 5. `custom`: The locale is inferred using a custom function.
    */
-  resolveStrategy: 'auto' | 'domain' | 'path' | 'query' | 'custom'
+  resolveStrategy: 'auto' | 'custom' | 'domain' | 'path' | 'query'
 
   /**
    * Custom resolver function.

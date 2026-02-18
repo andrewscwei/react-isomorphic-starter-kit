@@ -34,11 +34,9 @@ export function resolveLocaleFromURL(url: string, {
 
   if (result) {
     return result
-  }
-  else if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) {
+  } else if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) {
     return { locale: defaultLocale, resolveStrategy: 'auto' }
-  }
-  else {
+  } else {
     return undefined
   }
 }

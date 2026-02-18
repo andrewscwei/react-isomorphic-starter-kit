@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+
 import { I18nContext } from './I18nProvider.js'
 
 /**
@@ -13,8 +14,8 @@ export function useI18n() {
   if (!context) throw new Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
   return {
+    l: context.state.getLocalizedPath,
     locale: context.state.locale,
     t: context.state.getLocalizedString,
-    l: context.state.getLocalizedPath,
   }
 }

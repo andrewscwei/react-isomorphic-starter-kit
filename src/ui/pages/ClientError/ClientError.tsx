@@ -1,5 +1,6 @@
-import { Page } from '@/ui/containers/Page.js'
 import { useI18n } from '@lib/i18n'
+
+import { Page } from '@/ui/containers/Page.js'
 
 export function Component() {
   const { t } = useI18n()

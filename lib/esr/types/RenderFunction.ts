@@ -1,4 +1,5 @@
 import { type ReactDOMServerReadableStream, type RenderToReadableStreamOptions } from 'react-dom/server'
+
 import { type RenderContext } from './RenderContext.js'
 
 /**

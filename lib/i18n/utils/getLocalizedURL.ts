@@ -29,15 +29,14 @@ export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, re
 
       if (targetLocale === defaultLocale) {
         searchParams.delete('locale')
-      }
-      else {
+      } else {
         searchParams.set('locale', targetLocale)
       }
 
       return constructURL({ ...parts, query: searchParams.toString() })
     }
-    case 'path':
     case 'auto':
+    case 'path':
     default: {
       const pathParts = parts.path?.split('/').filter(v => v)
       if (pathParts && supportedLocales.includes(pathParts[0] as Locale)) pathParts.shift()

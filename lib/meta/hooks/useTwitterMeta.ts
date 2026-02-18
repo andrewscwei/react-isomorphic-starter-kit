@@ -1,4 +1,5 @@
-import { useEffect, type DependencyList } from 'react'
+import { type DependencyList, useEffect } from 'react'
+
 import { type Metadata } from '../types/Metadata.js'
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
 

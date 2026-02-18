@@ -70,8 +70,7 @@ async function createServer({ basePath, entryPath, staticPath, templatePath }: {
     }, {
       basePath,
     }))
-  }
-  else {
+  } else {
     const { ssrMiddleware } = await import('./middlewares/ssrMiddleware.js')
 
     server.use(await ssrMiddleware({

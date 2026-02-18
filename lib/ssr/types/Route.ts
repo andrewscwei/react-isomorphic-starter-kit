@@ -1,4 +1,4 @@
 export type Route = {
-  path?: string
   children?: Route[]
+  path?: string
 }

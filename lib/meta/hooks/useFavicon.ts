@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+
 import { updateElementAttributes } from '../utils/updateElementAttributes.js'
 
 type Params = {
@@ -20,8 +21,8 @@ type Params = {
  * @param params See {@link Params}.
  */
 export function useFavicon({
-  light,
   dark,
+  light,
 }: Params) {
   useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'icon' },

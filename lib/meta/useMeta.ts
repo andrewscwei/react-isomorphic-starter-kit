@@ -1,4 +1,5 @@
-import { useContext, useEffect, type DependencyList } from 'react'
+import { type DependencyList, useContext, useEffect } from 'react'
+
 import { useAppleMeta } from './hooks/useAppleMeta.js'
 import { useFavicon } from './hooks/useFavicon.js'
 import { useOpenGraphMeta } from './hooks/useOpenGraphMeta.js'
@@ -25,7 +26,7 @@ export function useMeta(metadata: Metadata, {
   auto = true,
 }: Options = {}, deps: DependencyList = []) {
   const context = useContext(MetaContext)
-  const { baseTitle, canonicalURL, description, favicon, locale, noIndex, title, themeColor, apple, openGraph, twitter } = metadata
+  const { apple, baseTitle, canonicalURL, description, favicon, locale, noIndex, openGraph, themeColor, title, twitter } = metadata
 
   if (context?.metadata) {
     assign(context.metadata, { ...metadata })
@@ -36,16 +37,14 @@ export function useMeta(metadata: Metadata, {
 
     if (locale) {
       window.document.documentElement.setAttribute('lang', locale)
-    }
-    else {
+    } else {
       window.document.documentElement.removeAttribute('lang')
     }
 
     return () => {
       if (prevVal) {
         window.document.documentElement.setAttribute('lang', prevVal)
-      }
-      else {
+      } else {
         window.document.documentElement.removeAttribute('lang')
       }
     }
@@ -87,8 +86,8 @@ export function useMeta(metadata: Metadata, {
   ]), [themeColor, noIndex, ...deps])
 
   useFavicon({
-    light: favicon?.light,
     dark: favicon?.dark,
+    light: favicon?.light,
   })
 
   useAppleMeta(
@@ -124,8 +123,7 @@ function assign<T extends Record<string, any>>(target: T, assignee: T) {
       }
 
       assign(target[key], assignedValue)
-    }
-    else {
+    } else {
       target[key] = assignedValue
     }
   }

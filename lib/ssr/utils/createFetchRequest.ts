@@ -25,15 +25,14 @@ export function createFetchRequest(req: ExpressRequest) {
       for (const value of values) {
         headers.append(key, value)
       }
-    }
-    else {
+    } else {
       headers.set(key, values)
     }
   }
 
   const init: Record<string, any> = {
-    method: req.method,
     headers,
+    method: req.method,
     signal: controller.signal,
   }
 

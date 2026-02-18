@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
+
 import { renderMiddleware } from './renderMiddleware.js'
 import { sitemapMiddleware } from './sitemapMiddleware.js'
 import { staticMiddleware } from './staticMiddleware.js'
@@ -67,14 +68,12 @@ export async function ssrMiddleware({ entryPath, templatePath }: Params, {
           return renderMiddleware(module, template)(req, res, next)
         }
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
 
       if (err instanceof Error) {
         res.status(500).send(err.stack)
-      }
-      else {
+      } else {
         res.status(500).send(err)
       }
     }

@@ -1,4 +1,5 @@
-import { StrictMode, type PropsWithChildren } from 'react'
+import { type PropsWithChildren, StrictMode } from 'react'
+
 import './styles/theme.css'
 
 type Props = PropsWithChildren

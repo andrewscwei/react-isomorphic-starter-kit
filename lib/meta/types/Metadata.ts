@@ -62,9 +62,9 @@ export type Metadata = {
    * The Apple meta tags.
    */
   apple?: {
-    statusBarStyle?: 'default' | 'black' | 'black-translucent'
-    title?: string
     itunesApp?: string
+    statusBarStyle?: 'black-translucent' | 'black' | 'default'
+    title?: string
   }
 
   /**
@@ -84,7 +84,7 @@ export type Metadata = {
    * The Twitter meta tags.
    */
   twitter?: {
-    card?: 'summary_large_image' | 'summary' | 'app' | 'player'
+    card?: 'app' | 'player' | 'summary_large_image' | 'summary'
     description?: string
     image?: string
     title?: string

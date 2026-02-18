@@ -28,8 +28,8 @@ export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocal
 
       return constructURL({ ...parts, query: searchParams.toString() })
     }
-    case 'path':
     case 'auto':
+    case 'path':
     default:
       return constructURL({ ...parts, path: parts.path ? [...parts.path.split('/').filter(v => v).slice(1)].join('/') : undefined })
   }

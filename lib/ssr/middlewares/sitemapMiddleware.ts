@@ -1,4 +1,5 @@
 import { type RequestHandler } from 'express'
+
 import { type SitemapOptions } from '../types/SitemapOptions.js'
 import { generateSitemap } from '../utils/generateSitemap.js'
 
@@ -23,8 +24,7 @@ export function sitemapMiddleware({ sitemap: options }: Params): RequestHandler 
 
       res.setHeader('content-type', 'application/xml')
       res.send(sitemap)
-    }
-    else {
+    } else {
       res.sendStatus(404)
     }
   }

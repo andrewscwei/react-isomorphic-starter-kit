@@ -7,8 +7,8 @@ import { renderMiddleware } from './renderMiddleware.js'
 type Params = {
   module: {
     middlewares?: Middleware[]
-    sitemap?: SitemapOptions
     render: RenderFunction
+    sitemap?: SitemapOptions
   }
   template: string
 }
@@ -24,18 +24,16 @@ const EXCLUDES = [
 ]
 
 export function catchAllMiddleware({ module: { middlewares = [], ...module }, template }: Params): Middleware['handler'] {
-  return ({ request, env }) => {
+  return ({ env, request }) => {
     const { BASE_PATH = '/' } = env
     const path = new URL(request.url).pathname
     const middleware = middlewares.find(v => joinPaths('/', BASE_PATH, v.path) === path)
 
     if (middleware) {
-      return middleware.handler({ request, env })
-    }
-    else if (isExcluded(path)) {
+      return middleware.handler({ env, request })
+    } else if (isExcluded(path)) {
       return env.ASSETS.fetch(request)
-    }
-    else {
+    } else {
       return renderMiddleware(module, template)(request)
     }
   }

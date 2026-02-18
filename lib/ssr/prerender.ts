@@ -12,6 +12,7 @@ import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises'
 import http from 'node:http'
 import { dirname, extname, join, relative, resolve } from 'node:path'
 import { build } from 'vite'
+
 import { ssrMiddleware } from './middlewares/ssrMiddleware.js'
 
 const cwd = process.cwd()
@@ -78,14 +79,13 @@ async function createApp(entryPath: string, templatePath: string, { basePath }: 
 }
 
 async function createSSRModule(entryPath: string, { configPath }: { configPath: string }) {
-  const result: Record<string, any> = await build({ configFile: configPath, build: { ssr: entryPath } })
+  const result: Record<string, any> = await build({ build: { ssr: entryPath }, configFile: configPath })
   const outputFiles = result.output as any[] || []
 
   const out = outputFiles.reduce((acc, file) => {
     if (file.isEntry === true) {
       acc.entryFile = file.fileName
-    }
-    else {
+    } else {
       acc.chunkFiles.push(file.fileName)
     }
     return acc
@@ -114,21 +114,19 @@ async function request(server: http.Server, path: string): Promise<string> {
 
   if (typeof info === 'string') {
     address = info
-  }
-  else if (info) {
+  } else if (info) {
     address = info.address
     port = info.port
-  }
-  else {
+  } else {
     throw Error('Server address is not available')
   }
 
   return new Promise((_resolve, reject) => {
     const req = http.request({
       hostname: address,
+      method: 'GET',
       path,
       port,
-      method: 'GET',
     }, res => {
       let data = ''
       res.on('data', chunk => (data += chunk))
@@ -149,8 +147,7 @@ async function generateSitemap(server: http.Server, { basePath, outDir }: { base
     await writeFile(outFile, res)
 
     console.log(`${green('✓')} ${cyan(route)}`, '→', `${grey(relative(cwd, outDir))}${green(relative(outDir, outFile))}`)
-  }
-  catch (err) {
+  } catch (err) {
     console.error(`${red('⚠︎')} ${route}`)
     console.error(err)
 
@@ -182,8 +179,7 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
       outFiles[outFile] = res
 
       console.log(`${green('✓')} ${cyan(route.padEnd(maxChars))}`, '→', `${grey(relative(cwd, outDir))}${green(relative(outDir, outFile))}`)
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`${red('⚠︎')} ${red(route.padEnd(maxChars))}`)
       console.error(err)
 
@@ -200,8 +196,7 @@ async function generatePages(server: http.Server, { basePath, baseURL, localesDi
       outFiles[outFile] = res
 
       console.log(`${green('✓')} ${cyan(route.padEnd(maxChars))}`, '→', `${grey(relative(cwd, outDir))}${green(relative(outDir, outFile))}`)
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`${red('⚠︎')} ${red(route.padEnd(maxChars))}`)
       console.error(err)
 
@@ -227,8 +222,7 @@ async function cleanUp(files: string[], { exts, outDir }: { exts: string[]; outD
     try {
       await unlink(removeFile)
       console.log(`${green('✕')} removed ${grey(relative(cwd, outDir))}${green(relative(outDir, removeFile))}`)
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`${red('⚠︎')} Error removing ${grey(relative(cwd, outDir))}${green(relative(outDir, removeFile))}`)
       console.error(err)
     }
@@ -240,7 +234,7 @@ async function main() {
 
   const startTime = performance.now()
   const { basePath, baseURL, configPath, entryPath, localesDir, outDir, requiredRoutes, templatePath } = getArgs()
-  const { entryFile, chunkFiles } = await createSSRModule(entryPath, { configPath })
+  const { chunkFiles, entryFile } = await createSSRModule(entryPath, { configPath })
   const app = await createApp(resolve(outDir, entryFile), templatePath, { basePath })
   const server = app.listen()
 

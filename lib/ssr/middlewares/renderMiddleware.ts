@@ -1,5 +1,6 @@
 import { type RequestHandler } from 'express'
 import { Transform } from 'node:stream'
+
 import { RenderContext } from '../types/RenderContext.js'
 import { type RenderFunction } from '../types/RenderFunction.js'
 import { createFetchRequest } from '../utils/createFetchRequest.js'
@@ -39,7 +40,7 @@ export function renderMiddleware({ render }: Params, template: string, {
 
       let streamEnd = ''
 
-      const { pipe, abort } = await render(fetchRequest, context, {
+      const { abort, pipe } = await render(fetchRequest, context, {
         onError(err) {
           console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
         },
@@ -79,12 +80,10 @@ export function renderMiddleware({ render }: Params, template: string, {
       pipe(transformStream)
 
       setTimeout(() => abort(), timeout)
-    }
-    catch (err) {
+    } catch (err) {
       if (err instanceof Response) {
         res.redirect(err.status, err.headers.get('Location') ?? '')
-      }
-      else {
+      } else {
         next(err)
       }
     }

@@ -1,4 +1,5 @@
 import { sprintf } from 'sprintf-js'
+
 import { type GetLocalizedString } from '../types/GetLocalizedString.js'
 import { type I18nConfig } from '../types/I18nConfig.js'
 import { type Locale } from '../types/Locale.js'
@@ -33,8 +34,7 @@ export function createGetLocalizedString(locale: Locale | undefined, { defaultLo
         if (!key || typeof key !== 'string') throw Error(`Invalid key "${key}"`)
         str = str[key]
       }
-    }
-    catch {
+    } catch {
       return keyPath
     }
 

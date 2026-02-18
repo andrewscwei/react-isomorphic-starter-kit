@@ -12,21 +12,18 @@ export const debug = (() => {
       createDebug.enable(`${SERVER_SYMBOL}*`)
 
       return createDebug(SERVER_SYMBOL)
-    }
-    else {
+    } else {
       createDebug.enable(`${WORKER_SYMBOL}*`)
 
       return createDebug(WORKER_SYMBOL)
     }
-  }
-  else if (import.meta.env.TEST) {
+  } else if (import.meta.env.TEST) {
     if (import.meta.env.DEBUG) {
       createDebug.enable(`${TEST_SYMBOL}*`)
     }
 
     return createDebug(TEST_SYMBOL)
-  }
-  else {
+  } else {
     createDebug.disable()
 
     if (import.meta.env.DEV || import.meta.env.DEBUG || import.meta.env.MODE === 'development') {

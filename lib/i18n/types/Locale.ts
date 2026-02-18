@@ -94,9 +94,9 @@ export type Locale =
   | 'pa' // Punjabi
   | 'pl' // Polish
   | 'ps' // Pashto
-  | 'pt' // Portuguese
   | 'pt_br' // Portuguese (Brazil)
   | 'pt_pt' // Portuguese (Portugal)
+  | 'pt' // Portuguese
   | 'qu' // Quechua
   | 'rm' // Romansh
   | 'rn' // Rundi
@@ -135,7 +135,7 @@ export type Locale =
   | 'xh' // Xhosa
   | 'yi' // Yiddish
   | 'yo' // Yoruba
-  | 'zh' // Chinese
   | 'zh_cn' // Chinese (Simplified)
   | 'zh_tw' // Chinese (Traditional)
+  | 'zh' // Chinese
   | 'zu' // Zulu

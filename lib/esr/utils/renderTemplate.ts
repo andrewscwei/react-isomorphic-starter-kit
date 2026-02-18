@@ -1,5 +1,6 @@
 import get from 'get-value'
 import he from 'he'
+
 import { type HTMLData } from '../types/HTMLData.js'
 
 export function renderTemplate(template: string, data: HTMLData): string {
@@ -62,8 +63,7 @@ function replaceConditionals(input: string, data: HTMLData) {
 
     if (condition) {
       newOutput = output.substring(0, breakpoints[0]) + output.substring(breakpoints[1], breakpoints[2]) + output.substring(breakpoints[3])
-    }
-    else {
+    } else {
       newOutput = output.substring(0, breakpoints[0]) + output.substring(breakpoints[3])
     }
 
@@ -80,8 +80,7 @@ function getValue(key: string, data: HTMLData, asCondition: boolean) {
 
   if (asCondition) {
     return isNot ? !value : !!value
-  }
-  else {
+  } else {
     const out = isNot ? !value : value
 
     return key === 'localData' ? out : he.encode(out)

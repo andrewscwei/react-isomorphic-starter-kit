@@ -73,8 +73,7 @@ export function updateElementAttributes(
     return () => {
       parentElement.appendChild(existingElement)
     }
-  }
-  else {
+  } else {
     if (!existingElement && autoCreate !== true) return noop
 
     const newElement = existingElement ?? window.document.createElement(tagName)
@@ -91,8 +90,7 @@ export function updateElementAttributes(
       return () => {
         diffs.forEach(({ name, value = '' }) => existingElement.setAttribute(name, value))
       }
-    }
-    else {
+    } else {
       parentElement.appendChild(newElement)
 
       return () => {

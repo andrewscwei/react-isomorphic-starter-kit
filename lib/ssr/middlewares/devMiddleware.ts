@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { readFile } from 'node:fs/promises'
+
 import { renderMiddleware } from './renderMiddleware.js'
 import { sitemapMiddleware } from './sitemapMiddleware.js'
 
@@ -47,9 +48,9 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
 }: Options = {}) {
   const { createServer } = await import('vite')
   const vite = await createServer({
-    server: { middlewareMode: true },
     appType: 'custom',
     base: basePath,
+    server: { middlewareMode: true },
   })
 
   const router = Router()
@@ -72,21 +73,18 @@ export async function devMiddleware({ entryPath, templatePath }: Params, {
         default: {
           if (isExcluded(req.url)) {
             res.sendStatus(202)
-          }
-          else {
+          } else {
             return renderMiddleware(module as any, html)(req, res, next)
           }
         }
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`Rendering ${req.originalUrl}...`, 'ERR', err)
 
       if (err instanceof Error) {
         vite.ssrFixStacktrace(err)
         res.status(500).send(err.stack)
-      }
-      else {
+      } else {
         res.status(500).send(err)
       }
     }

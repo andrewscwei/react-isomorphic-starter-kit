@@ -2,17 +2,18 @@
  * @file Server entry file.
  */
 
-import { BASE_PATH, BASE_URL, BUILD_TIME } from '@/app.config.js'
-import { App } from '@/App.js'
-import { routes } from '@/routes.config.js'
 import { MetaProvider } from '@lib/meta'
 import { type RenderFunction, type SitemapOptions } from '@lib/ssr'
 import { renderToPipeableStream } from 'react-dom/server'
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router'
 
+import { BASE_PATH, BASE_URL, BUILD_TIME } from '@/app.config.js'
+import { App } from '@/App.js'
+import { routes } from '@/routes.config.js'
+
 export const sitemap: SitemapOptions = {
-  routes,
   hostname: BASE_URL,
+  routes,
   updatedAt: BUILD_TIME,
 }
 

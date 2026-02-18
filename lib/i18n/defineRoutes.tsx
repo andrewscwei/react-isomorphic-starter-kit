@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { Outlet, type RouteObject } from 'react-router'
+
 import { defineConfig } from './defineConfig.js'
 import { I18nProvider } from './I18nProvider.js'
 import { type I18nConfig } from './types/I18nConfig.js'
@@ -26,15 +27,15 @@ export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConf
   )
 
   return [{
+    children: routes.flatMap(v => localizeRoute(v, config)),
     Component: Container,
     HydrateFallback: () => undefined,
-    children: routes.flatMap(v => localizeRoute(v, config)),
   }]
 }
 
 function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
-  const { path, children } = route
+  const { children, path } = route
 
   if (path !== undefined) {
     switch (resolveStrategy) {
@@ -51,21 +52,19 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
           ...localizedRoutes ?? [],
         ]
       }
-      case 'query':
       case 'auto':
-      case 'domain':
       case 'custom':
+      case 'domain':
+      case 'query':
       default:
         return [route]
     }
-  }
-  else if (children !== undefined) {
+  } else if (children !== undefined) {
     return [{
       ...route,
       children: children.flatMap(v => localizeRoute(v, config)),
     }]
-  }
-  else {
+  } else {
     return [route]
   }
 }

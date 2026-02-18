@@ -5,13 +5,14 @@ import { minify } from 'html-minifier-terser'
 import { readdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { extname, join, resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
+
 import packageInfo from './package.json'
 
 const loadArgs = (env: Record<string, string>) => ({
   BASE_PATH: join('/', (env.BASE_PATH ?? '/').replace(/\/+$/, '')),
   BASE_URL: (env.BASE_URL ?? '').replace(/\/+$/, ''),
-  BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   BUILD_NUMBER: env.BUILD_NUMBER ?? 'local',
+  BUILD_TIME: env.BUILD_TIME ?? new Date().toISOString(),
   DEBUG: env.DEBUG === 'true',
   DEFAULT_LOCALE: env.DEFAULT_LOCALE ?? 'en',
   VERSION: packageInfo.version,
@@ -31,10 +32,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   printArgs(args)
 
   return {
-    root: rootDir,
     base: args.BASE_PATH,
-    envDir: __dirname,
-    publicDir: isSsrBuild ? false : publicDir,
     build: {
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
@@ -47,34 +45,37 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         treeshake: 'smallest',
       },
     },
-    ssr: {
-      target: isEdgeBuild ? 'webworker' : 'node',
-    },
     define: {
       ...Object.entries(args).reduce((acc, [key, value]) => ({
         ...acc,
         [`import.meta.env.${key}`]: JSON.stringify(value),
       }), {}),
     },
+    envDir: __dirname,
     plugins: [
       react(),
-      htmlMinifier({ isEnabled: !skipOptimizations, outDir }),
-      fileFlattener(['index.html'], { basePath: args.BASE_PATH, isEnabled: !!isSsrBuild, outDir }),
+      htmlMinifier({ outDir, isEnabled: !skipOptimizations }),
+      fileFlattener(['index.html'], { basePath: args.BASE_PATH, outDir, isEnabled: !!isSsrBuild }),
     ],
+    publicDir: isSsrBuild ? false : publicDir,
     resolve: {
       alias: {
         '@': rootDir,
         '@lib': libDir,
       },
     },
+    root: rootDir,
     server: {
       host: '0.0.0.0',
       port: Number(env.PORT ?? 8080),
     },
+    ssr: {
+      target: isEdgeBuild ? 'webworker' : 'node',
+    },
     test: {
       coverage: {
-        reporter: ['text-summary'],
         provider: 'v8',
+        reporter: ['text-summary'],
       },
       environment: 'happy-dom',
       globals: true,
@@ -98,7 +99,7 @@ function printArgs(args: ReturnType<typeof loadArgs>) {
   })
 }
 
-function htmlMinifier({ isEnabled, outDir }: { isEnabled: boolean; outDir: string }): Plugin {
+function htmlMinifier({ outDir, isEnabled }: { outDir: string; isEnabled: boolean }): Plugin {
   return {
     name: 'Custom plugin for minifying HTML files after bundle generation',
     writeBundle: async () => {
@@ -125,9 +126,8 @@ function htmlMinifier({ isEnabled, outDir }: { isEnabled: boolean; outDir: strin
   }
 }
 
-function fileFlattener(files: string[], { basePath, isEnabled, outDir }: { basePath: string; isEnabled: boolean; outDir: string }): Plugin {
+function fileFlattener(files: string[], { basePath, outDir, isEnabled }: { basePath: string; outDir: string; isEnabled: boolean }): Plugin {
   return {
-    name: 'Custom plugin for flattening files from the base path to the output root at the end of the build',
     closeBundle: async () => {
       if (!isEnabled) return
 
@@ -138,10 +138,10 @@ function fileFlattener(files: string[], { basePath, isEnabled, outDir }: { baseP
         await Promise.all(files.map(async file => {
           await rename(join(targetDir, file), join(outDir, file))
         }))
-      }
-      catch (err) {
+      } catch (err) {
         console.warn('Flattening files...', 'SKIP', err)
       }
     },
+    name: 'Custom plugin for flattening files from the base path to the output root at the end of the build',
   }
 }

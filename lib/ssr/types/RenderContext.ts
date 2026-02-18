@@ -22,8 +22,8 @@ export namespace RenderContext {
    */
   export function factory(): RenderContext {
     return {
-      metadata: {},
       localData: {},
+      metadata: {},
     }
   }
 }

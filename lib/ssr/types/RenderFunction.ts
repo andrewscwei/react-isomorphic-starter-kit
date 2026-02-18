@@ -1,4 +1,5 @@
 import { type PipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server'
+
 import { type RenderContext } from './RenderContext.js'
 
 /**
