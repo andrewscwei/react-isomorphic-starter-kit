@@ -51,7 +51,7 @@ export function renderMiddleware({ render }: Params, template: string, {
           const htmlData = {
             ...context.metadata,
             dev: process.env.NODE_ENV === 'development',
-            localData: `<script>window.__localData=${JSON.stringify(context.localData)}</script>`,
+            localData: `<script>window.__localData=${JSON.stringify(context.localData).replace(/</g, '\\u003c')}</script>`,
           }
 
           const chunks = template.split(/<!--\s*root\s*-->/is)
