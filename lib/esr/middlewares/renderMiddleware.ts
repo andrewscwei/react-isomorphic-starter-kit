@@ -9,26 +9,41 @@ type Params = {
   render: RenderFunction
 }
 
+type Options = {
+  /**
+   * Timeout for the rendering process in milliseconds. Defaults to 10,000 ms
+   * (10 seconds).
+   */
+  timeout?: number
+}
+
 /**
  * Middleware for rendering HTML.
  *
  * @param params See {@link Params}.
  * @param template The HTML template to render.
+ * @param options See {@link Options}.
  *
  * @returns The middleware.
  */
-export function renderMiddleware({ render }: Params, template: string) {
+export function renderMiddleware({ render }: Params, template: string, {
+  timeout = 10_000,
+}: Options = {}) {
   return async (req: Request) => {
     try {
       const context = RenderContext.factory()
-      const stream = await render(req, context, {})
+      const abortController = new AbortController()
+      const stream = await render(req, context, { signal: abortController.signal })
+
+      setTimeout(() => abortController.abort(), timeout)
+
       const readableStream = new ReadableStream({
         start: async controller => {
           try {
             const htmlData = {
               ...context.metadata,
               dev: process.env.NODE_ENV === 'development',
-              localData: `<script>window.__localData=${JSON.stringify(context.localData)}</script>`,
+              localData: `<script>window.__localData=${JSON.stringify(context.localData).replace(/</g, '\\u003c')}</script>`,
             }
 
             const chunks = template.split(/<!--\s*root\s*-->/is)
