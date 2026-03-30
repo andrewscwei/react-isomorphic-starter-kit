@@ -37,6 +37,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       emptyOutDir: false,
       minify: !skipOptimizations,
       outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
+      rollupOptions: {
+        output: {
+          assetFileNames: isSsrBuild ? '[hash][extname]' : 'assets/[hash][extname]',
+          chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
+          entryFileNames: isSsrBuild ? undefined : 'assets/[hash].js',
+        },
+      },
     },
     define: {
       ...Object.entries(args).reduce((acc, [key, value]) => ({
@@ -77,6 +84,14 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         '**/*.spec.tsx',
       ],
       setupFiles: 'dotenv/config',
+    },
+    worker: {
+      format: 'es',
+      rollupOptions: {
+        output: {
+          entryFileNames: 'workers/[hash].js',
+        },
+      },
     },
   }
 })
