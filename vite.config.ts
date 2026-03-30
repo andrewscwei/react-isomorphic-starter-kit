@@ -35,7 +35,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     base: args.BASE_PATH,
     build: {
       emptyOutDir: false,
-      minify: skipOptimizations ? false : 'esbuild',
+      minify: !skipOptimizations,
       outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
     },
     define: {
