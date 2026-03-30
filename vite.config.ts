@@ -37,13 +37,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       emptyOutDir: false,
       minify: skipOptimizations ? false : 'esbuild',
       outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
-      rollupOptions: {
-        output: {
-          // Enable clean up of SSR chunk files from prerendering.
-          chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
-        },
-        treeshake: 'smallest',
-      },
     },
     define: {
       ...Object.entries(args).reduce((acc, [key, value]) => ({
