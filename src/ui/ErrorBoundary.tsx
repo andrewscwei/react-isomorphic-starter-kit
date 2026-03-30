@@ -1,9 +1,9 @@
 import { useMeta } from '@lib/meta'
+import { lazy, Suspense } from 'react'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
 import { DEBUG } from '@/app.config.js'
 import { Component as ClientError } from '@/ui/pages/ClientError/ClientError.js'
-import { Component as NotFound } from '@/ui/pages/NotFound/NotFound.js'
 
 type ErrorInfo = {
   body?: string
@@ -11,12 +11,14 @@ type ErrorInfo = {
   status: number
 }
 
+const NotFound = lazy(() => import('@/ui/pages/NotFound/NotFound.js').then(m => ({ default: m.Component })))
+
 export function ErrorBoundary() {
   const error = useRouteError()
   const { body = 'No content', message = 'Unknown Error', status } = parseError(error)
 
   if (status === 404) {
-    return <NotFound/>
+    return <Suspense><NotFound/></Suspense>
   } else if (!DEBUG) {
     return <ClientError/>
   } else {
