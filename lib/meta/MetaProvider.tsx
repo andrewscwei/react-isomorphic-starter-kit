@@ -1,4 +1,4 @@
-import { createContext, type PropsWithChildren } from 'react'
+import { createContext, type PropsWithChildren, useMemo } from 'react'
 
 import { type Metadata } from './types/Metadata.js'
 
@@ -17,8 +17,10 @@ type MetaContextValue = {
  * @returns The context provider.
  */
 export function MetaProvider({ children, metadata }: MetaProviderProps) {
+  const value = useMemo(() => ({ metadata }), [metadata])
+
   return (
-    <MetaContext.Provider value={{ metadata }}>
+    <MetaContext.Provider value={value}>
       {children}
     </MetaContext.Provider>
   )
