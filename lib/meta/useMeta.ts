@@ -71,11 +71,6 @@ export function useMeta(metadata: Metadata, {
   ]), [noIndex, ...deps])
 
   useEffect(() => updateElementAttributes('link', [
-    { key: true, name: 'rel', value: 'manifest' },
-    { name: 'href', value: noIndex ? undefined : '/manifest.json' },
-  ]), [noIndex, ...deps])
-
-  useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'canonical' },
     { name: 'href', value: noIndex ? undefined : canonicalURL },
   ]), [canonicalURL, noIndex, ...deps])
