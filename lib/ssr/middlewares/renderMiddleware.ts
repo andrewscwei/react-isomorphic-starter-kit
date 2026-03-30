@@ -66,6 +66,8 @@ export function renderMiddleware({ render }: Params, template: string, {
         },
       })
 
+      const timeoutId = setTimeout(() => abort(), timeout)
+
       const transformStream = new Transform({
         transform: (chunk, encoding, callback) => {
           res.write(chunk, encoding)
@@ -74,12 +76,11 @@ export function renderMiddleware({ render }: Params, template: string, {
       })
 
       transformStream.on('finish', () => {
+        clearTimeout(timeoutId)
         res.end(streamEnd)
       })
 
       pipe(transformStream)
-
-      setTimeout(() => abort(), timeout)
     } catch (err) {
       if (err instanceof Response) {
         res.redirect(err.status, err.headers.get('Location') ?? '')

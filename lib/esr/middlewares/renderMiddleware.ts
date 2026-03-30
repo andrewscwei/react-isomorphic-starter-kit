@@ -34,6 +34,7 @@ export function renderMiddleware({ render }: Params, template: string, {
       const context = RenderContext.factory()
       const abortController = new AbortController()
       const stream = await render(req, context, { signal: abortController.signal })
+      const timeoutId = setTimeout(() => abortController.abort(), timeout)
 
       setTimeout(() => abortController.abort(), timeout)
 
@@ -60,8 +61,10 @@ export function renderMiddleware({ render }: Params, template: string, {
             }
 
             controller.enqueue(new TextEncoder().encode(htmlEnd))
+            clearTimeout(timeoutId)
             controller.close()
           } catch (err) {
+            clearTimeout(timeoutId)
             controller.error(err)
           }
         },
