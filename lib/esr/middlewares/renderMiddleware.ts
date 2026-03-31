@@ -76,7 +76,7 @@ export function renderMiddleware({ render }: Params, template: string, {
       if (err instanceof Response) {
         return err
       } else {
-        return new Response(JSON.stringify({ error: err }), {
+        return new Response(JSON.stringify({ error: err instanceof Error ? err.message : err }), {
           headers: { 'content-type': 'application/json' },
           status: 500,
         })
