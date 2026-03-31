@@ -9,11 +9,12 @@ import { type URLParts } from '../types/URLParts.js'
  */
 export function constructURL(urlParts: URLParts): string {
   const protocol = urlParts.protocol?.concat('://') ?? ''
-  const host = urlParts.host?.concat('/') ?? ''
+  const host = urlParts.host ?? ''
   const port = urlParts.port !== undefined ? `:${urlParts.port}` : ''
+  const hostAndPort = host ? `${host}${port}/` : ''
   const path = urlParts.path !== undefined ? `/${urlParts.path.split('/').filter(v => v).join('/')}` : ''
   const query = urlParts.query !== undefined ? `?${urlParts.query}` : ''
   const hash = urlParts.hash !== undefined ? `#${urlParts.hash}` : ''
 
-  return `${protocol}${host}${port}${path}${query}${hash}`
+  return `${protocol}${hostAndPort}${path}${query}${hash}`
 }
