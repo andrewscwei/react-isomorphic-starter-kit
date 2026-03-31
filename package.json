@@ -19,7 +19,7 @@
     "prebuild:edge": "npm run clean && npm run lint && npm run typecheck",
     "build": "npm run build:${RUNTIME:-server}",
     "build:static": "vite build && tsx -r dotenv/config lib/ssr/prerender -e src/main.server.tsx -l src/locales",
-    "build:server": "vite build && vite build --ssr main.server.tsx && tsc lib/ssr/serve.ts --outDir build/server -m NodeNext --ignoreConfig",
+    "build:server": "vite build && vite build --ssr main.server.tsx && tsc lib/ssr/serve.ts --outDir build/server -m nodenext --ignoreConfig",
     "build:edge": "vite build && vite build --ssr main.edge.tsx",
     "test": "vitest run --coverage",
     "test:e2e": "npm run test:${RUNTIME:-server}",
