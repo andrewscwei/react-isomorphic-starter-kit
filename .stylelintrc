@@ -2,14 +2,6 @@
   "rules": {
     "annotation-no-unknown": true,
     "at-rule-empty-line-before": null,
-    "at-rule-no-unknown": [
-      true,
-      {
-        "ignoreAtRules": [
-          "value"
-        ]
-      }
-    ],
     "alpha-value-notation": "number",
     "color-function-notation": "legacy",
     "color-hex-alpha": "never",
@@ -74,15 +66,7 @@
         ]
       }
     ],
-    "rule-empty-line-before": [
-      "always-multi-line",
-      {
-        "except": [
-          "after-single-line-comment",
-          "first-nested"
-        ]
-      }
-    ],
+    "rule-empty-line-before": null,
     "selector-attribute-quotes": "always",
     "selector-class-pattern": "[a-z-0-9]+",
     "selector-id-pattern": "[a-z-0-9]+",

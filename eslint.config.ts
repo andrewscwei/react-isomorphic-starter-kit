@@ -8,7 +8,7 @@ export default defineConfig(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ['**/build/**', '**/.wrangler/**'],
+    ignores: ['**/build/**', '**/public/**', '**/.wrangler/**'],
   },
   {
     plugins: {
@@ -219,6 +219,7 @@ export default defineConfig(
       }],
       'perfectionist/sort-enums': ['error', {
         ignoreCase: false,
+        partitionByNewLine: true,
       }],
       'perfectionist/sort-export-attributes': ['error', {
         ignoreCase: false,
@@ -370,7 +371,6 @@ export default defineConfig(
         default: 'array',
       }],
       '@typescript-eslint/class-literal-property-style': ['error', 'getters'],
-      '@typescript-eslint/consistent-generic-constructors': 'error',
       '@typescript-eslint/consistent-indexed-object-style': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', {

@@ -36,7 +36,7 @@ $ npm install
 $ npm run dev:static
 
 # Run unit tests
-$ npm run unit
+$ npm test
 ```
 
 In any of the `build` or `build:*` scripts, you can add the following arguments for additional diagnosis details of the build process:
@@ -97,13 +97,13 @@ $ npm run start:static
 Unit tests reside in `/src` and can be ran via:
 
 ```sh
-$ npm run unit
+$ npm test
 ```
 
 End-to-end tests are executed directly from the `tests/` directory in TypeScript and requires the app to have already been built (i.e. `build/` directory is not empty):
 
 ```sh
-$ npm test
+$ npm run test:e2e
 ```
 
 ## Docker
