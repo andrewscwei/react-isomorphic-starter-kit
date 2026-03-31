@@ -5,7 +5,6 @@
     "lib": [
       "ES2020"
     ],
-    "moduleResolution": "node",
     "paths": {
       "@lib/esr": ["../lib/esr/index"],
       "@build/*": ["../build/*"]
