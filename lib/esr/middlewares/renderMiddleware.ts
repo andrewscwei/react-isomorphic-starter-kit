@@ -36,8 +36,6 @@ export function renderMiddleware({ render }: Params, template: string, {
       const stream = await render(req, context, { signal: abortController.signal })
       const timeoutId = setTimeout(() => abortController.abort(), timeout)
 
-      setTimeout(() => abortController.abort(), timeout)
-
       const readableStream = new ReadableStream({
         start: async controller => {
           try {
