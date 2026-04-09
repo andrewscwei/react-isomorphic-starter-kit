@@ -37,7 +37,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       outDir: isSsrBuild ? outDir : join(outDir, args.BASE_PATH),
       rollupOptions: {
         output: {
-          assetFileNames: isSsrBuild ? '[hash][extname]' : 'assets/[hash][extname]',
+          assetFileNames: 'assets/[hash][extname]',
           chunkFileNames: isSsrBuild ? '[hash].js' : 'assets/[hash].js',
           entryFileNames: isSsrBuild ? undefined : 'assets/[hash].js',
         },
