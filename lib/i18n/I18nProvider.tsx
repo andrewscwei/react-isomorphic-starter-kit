@@ -1,10 +1,10 @@
 import { createContext, type Dispatch, type PropsWithChildren, type Reducer, useReducer } from 'react'
-import { useLocation } from 'react-router'
 
 import { type GetLocalizedPath } from './types/GetLocalizedPath.js'
 import { type GetLocalizedString } from './types/GetLocalizedString.js'
 import { type I18nConfig } from './types/I18nConfig.js'
 import { type Locale } from './types/Locale.js'
+import { type RouterAdapter } from './types/RouterAdapter.js'
 import { createGetLocalizedPath } from './utils/createGetLocalizedPath.js'
 import { createGetLocalizedString } from './utils/createGetLocalizedString.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
@@ -18,6 +18,7 @@ type I18nState = {
 
 type I18nContextValue = {
   dispatch?: Dispatch<I18nAction>
+  router: RouterAdapter
   state: I18nState
 }
 
@@ -32,6 +33,10 @@ type I18nChangeLocaleAction = {
   type: '@i18n/CHANGE_LOCALE'
 }
 
+type I18nProviderProps = {
+  router: RouterAdapter
+} & Partial<I18nConfig>
+
 /**
  * Context provider whose value consists of the current i18n state. The method
  * of modifying the locale is specified by `localeChangeStrategy`, as follows:
@@ -40,7 +45,7 @@ type I18nChangeLocaleAction = {
  *   - If set to `query`, the locale is inferred from the search parameter
  *     `locale` in the current path
  *
- * @param props See {@link I18nConfig}.
+ * @param props See {@link I18nConfig} and {@link RouterAdapter}.
  *
  * @returns The context provider.
  */
@@ -48,19 +53,20 @@ export function I18nProvider({
   children,
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
+  router,
   translations = {},
-}: PropsWithChildren<Partial<I18nConfig>>) {
+}: PropsWithChildren<I18nProviderProps>) {
   switch (localeChangeStrategy) {
     case 'action':
-      return I18nActionProvider({ children, defaultLocale, localeChangeStrategy, translations })
+      return I18nActionProvider({ children, defaultLocale, localeChangeStrategy, router, translations })
     case 'path':
     case 'query':
     default:
-      return I18nPathProvider({ children, defaultLocale, localeChangeStrategy, translations })
+      return I18nPathProvider({ children, defaultLocale, localeChangeStrategy, router, translations })
   }
 }
 
-const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, translations }: PropsWithChildren<I18nConfig>) => {
+const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, router, translations }: PropsWithChildren<{ router: RouterAdapter } & I18nConfig>) => {
   const config = { defaultLocale, localeChangeStrategy, translations }
 
   const [state, dispatch] = useReducer(reducer, {
@@ -73,16 +79,16 @@ const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, tra
   })
 
   return (
-    <I18nContext.Provider value={{ dispatch, state }}>
+    <I18nContext.Provider value={{ dispatch, router, state }}>
       {children}
     </I18nContext.Provider>
   )
 }
 
-const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, translations }: PropsWithChildren<I18nConfig>) => {
+const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, router, translations }: PropsWithChildren<{ router: RouterAdapter } & I18nConfig>) => {
   const config = { defaultLocale, localeChangeStrategy, translations }
 
-  const { hash, pathname, search } = useLocation()
+  const { hash, pathname, search } = router.useLocation()
   const url = `${pathname}${search}${hash}`
   const res = resolveLocaleFromURL(url, createResolveLocaleOptions(config))
   if (!res) console.warn(`Unable to infer locale from path <${url}>`)
@@ -99,7 +105,7 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, trans
   }
 
   return (
-    <I18nContext.Provider value={{ state }}>
+    <I18nContext.Provider value={{ router, state }}>
       {children}
     </I18nContext.Provider>
   )

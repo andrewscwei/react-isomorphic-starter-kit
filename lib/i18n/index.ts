@@ -3,6 +3,7 @@ export * from './types/GetLocalizedString.js'
 export * from './types/I18nConfig.js'
 export * from './types/Locale.js'
 export * from './types/ResolveLocaleOptions.js'
+export * from './types/RouterAdapter.js'
 export * from './types/Translations.js'
 export * from './types/URLParts.js'
 

@@ -1,5 +1,4 @@
 import { useContext } from 'react'
-import { useLocation, useNavigate } from 'react-router'
 
 import { I18nContext } from './I18nProvider.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
@@ -14,8 +13,8 @@ export function useResetLocale() {
   const context = useContext(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
-  const navigate = useNavigate()
-  const { hash, pathname, search } = useLocation()
+  const navigate = context.router.useNavigate()
+  const { hash, pathname, search } = context.router.useLocation()
   const { localeChangeStrategy } = context.state
 
   switch (localeChangeStrategy) {

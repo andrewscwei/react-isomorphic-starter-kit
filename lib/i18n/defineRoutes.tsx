@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Outlet, type RouteObject } from 'react-router'
+import { Outlet, type RouteObject, useLocation, useNavigate } from 'react-router'
 
 import { defineConfig } from './defineConfig.js'
 import { I18nProvider } from './I18nProvider.js'
 import { type I18nConfig } from './types/I18nConfig.js'
+import { type RouterAdapter } from './types/RouterAdapter.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
+
+const reactRouterAdapter: RouterAdapter = {
+  useLocation,
+  useNavigate,
+}
 
 /**
  * Returns an array of {@link RouteObject} containing the localized version of
@@ -21,7 +27,7 @@ export function defineRoutes(routes: RouteObject[], configOrDescriptor: I18nConf
   const config = !('sources' in configOrDescriptor) ? configOrDescriptor as I18nConfig : defineConfig(configOrDescriptor)
 
   const Container = () => (
-    <I18nProvider {...config}>
+    <I18nProvider {...config} router={reactRouterAdapter}>
       <Outlet/>
     </I18nProvider>
   )
