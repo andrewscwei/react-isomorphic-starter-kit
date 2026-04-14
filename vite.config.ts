@@ -74,13 +74,17 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     test: {
       coverage: {
         provider: 'v8',
-        reporter: ['text-summary'],
+        reportsDirectory: resolve(__dirname, 'coverage'),
       },
       environment: 'happy-dom',
       globals: true,
       include: [
-        '**/*.spec.ts',
-        '**/*.spec.tsx',
+        '**/*.spec.(ts|tsx)',
+        '**/*.test.(ts|tsx)',
+      ],
+      reporters: [
+        'tree',
+        ...process.env.GITHUB_ACTIONS === 'true' ? ['github-actions'] : [],
       ],
       setupFiles: 'dotenv/config',
     },
