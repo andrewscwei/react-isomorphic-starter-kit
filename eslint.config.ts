@@ -301,11 +301,21 @@ export default defineConfig(
             groupName: 'data',
           },
           {
-            elementNamePattern: '^(is|has|should|can)[A-Z].+',
+            elementNamePattern: '^(is|has|should|can|will)[A-Z].+$',
+            elementValuePattern: 'boolean',
             groupName: 'flag',
           },
           {
-            elementNamePattern: '^on.+',
+            elementNamePattern: '^((get|set|parse|format|render|dispatch)[A-Z].+)|(render)$',
+            groupName: 'function',
+          },
+          {
+            elementNamePattern: '^([A-Z][A-Za-z0-9]*)$',
+            elementValuePattern: '^([A-Z][A-Za-z0-9]*|<.*>)$',
+            groupName: 'component',
+          },
+          {
+            elementNamePattern: '^on.+$',
             groupName: 'callback',
           },
         ],
@@ -315,6 +325,8 @@ export default defineConfig(
           'data',
           'unknown',
           'flag',
+          'component',
+          ['function', 'method'],
           'callback',
         ],
         ignoreCase: false,
@@ -335,11 +347,24 @@ export default defineConfig(
             groupName: 'data',
           },
           {
-            elementNamePattern: '^(is|has|should|can)[A-Z].+',
+            elementNamePattern: '^(is|has|should|can|will)[A-Z].+$',
             groupName: 'flag',
           },
           {
-            elementNamePattern: '^on.+',
+            elementNamePattern: '^([A-Z][A-Za-z0-9]*)$',
+            elementValuePattern: '^([A-Z][A-Za-z0-9]*|<.*>)$',
+            groupName: 'component',
+          },
+          {
+            elementNamePattern: '^((get|set|parse|format|render|dispatch)[A-Z].+)|(render)$',
+            groupName: 'function',
+          },
+          {
+            elementValuePattern: '^(\\(.*\\)\\s*=>|function\\b|async\\s)',
+            groupName: 'function',
+          },
+          {
+            elementNamePattern: '^on.+$',
             groupName: 'callback',
           },
         ],
@@ -349,6 +374,8 @@ export default defineConfig(
           'data',
           'unknown',
           'flag',
+          'component',
+          ['method', 'function'],
           'callback',
         ],
         ignoreCase: false,

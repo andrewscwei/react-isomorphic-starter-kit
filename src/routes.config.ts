@@ -10,11 +10,11 @@ import { ErrorBoundary } from '@/ui/ErrorBoundary.js'
 export const routes = defineRoutes([{
   children: [{
     index: true,
-    lazy: () => import('@/ui/pages/Home/Home.js'),
     path: '/',
+    lazy: () => import('@/ui/pages/Home/Home.js'),
   }, {
-    lazy: () => import('@/ui/pages/NotFound/NotFound.js'),
     path: '*',
+    lazy: () => import('@/ui/pages/NotFound/NotFound.js'),
   }],
   ErrorBoundary,
 }], {

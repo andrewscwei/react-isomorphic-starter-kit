@@ -7,8 +7,8 @@ import { renderMiddleware } from './renderMiddleware.js'
 type Params = {
   module: {
     middlewares?: Middleware[]
-    render: RenderFunction
     sitemap?: SitemapOptions
+    render: RenderFunction
   }
   template: string
 }

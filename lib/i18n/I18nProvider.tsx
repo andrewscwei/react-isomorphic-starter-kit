@@ -11,9 +11,9 @@ import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.j
 import { resolveLocaleFromURL } from './utils/resolveLocaleFromURL.js'
 
 type I18nState = {
+  locale: Locale
   getLocalizedPath: GetLocalizedPath
   getLocalizedString: GetLocalizedString
-  locale: Locale
 } & I18nConfig
 
 type I18nContextValue = {
@@ -71,11 +71,11 @@ const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, rou
 
   const [state, dispatch] = useReducer(reducer, {
     defaultLocale,
-    getLocalizedPath: createGetLocalizedPath(defaultLocale, config),
-    getLocalizedString: createGetLocalizedString(defaultLocale, config),
     locale: defaultLocale,
     localeChangeStrategy,
     translations,
+    getLocalizedPath: createGetLocalizedPath(defaultLocale, config),
+    getLocalizedString: createGetLocalizedString(defaultLocale, config),
   })
 
   return (
@@ -97,11 +97,11 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, route
 
   const state: I18nState = {
     defaultLocale,
-    getLocalizedPath: createGetLocalizedPath(locale, config),
-    getLocalizedString: createGetLocalizedString(locale, config),
     locale,
     localeChangeStrategy,
     translations,
+    getLocalizedPath: createGetLocalizedPath(locale, config),
+    getLocalizedString: createGetLocalizedString(locale, config),
   }
 
   return (
@@ -116,14 +116,14 @@ const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
     case '@i18n/CHANGE_LOCALE':
       return {
         ...state,
-        getLocalizedString: createGetLocalizedString(action.locale, state),
         locale: action.locale,
+        getLocalizedString: createGetLocalizedString(action.locale, state),
       }
     case '@i18n/RESET_LOCALE':
       return {
         ...state,
-        getLocalizedString: createGetLocalizedString(state.defaultLocale, state),
         locale: state.defaultLocale,
+        getLocalizedString: createGetLocalizedString(state.defaultLocale, state),
       }
     default:
       return state

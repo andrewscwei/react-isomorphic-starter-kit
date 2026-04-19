@@ -101,6 +101,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
 
 function logger({ buildArgs }: { buildArgs: ReturnType<typeof loadArgs> }): Plugin {
   return {
+    name: 'Custom plugin for logging build arguments and environment variables',
     buildStart: async () => {
       const green = (text: string) => `\x1b[32m${text}\x1b[0m`
       const magenta = (text: string) => `\x1b[35m${text}\x1b[0m`
@@ -117,7 +118,6 @@ function logger({ buildArgs }: { buildArgs: ReturnType<typeof loadArgs> }): Plug
       console.log(gray('------------------------------------------------------------------------------'))
       console.log()
     },
-    name: 'Custom plugin for logging build arguments and environment variables',
   }
 }
 
@@ -150,6 +150,7 @@ function htmlMinifier({ outDir, isEnabled }: { outDir: string; isEnabled: boolea
 
 function fileFlattener(files: string[], { basePath, outDir, isEnabled }: { basePath: string; outDir: string; isEnabled: boolean }): Plugin {
   return {
+    name: 'Custom plugin for flattening files from the base path to the output root at the end of the build',
     closeBundle: async () => {
       if (!isEnabled) return
 
@@ -164,6 +165,5 @@ function fileFlattener(files: string[], { basePath, outDir, isEnabled }: { baseP
         console.warn('Flattening files...', 'SKIP', err)
       }
     },
-    name: 'Custom plugin for flattening files from the base path to the output root at the end of the build',
   }
 }
