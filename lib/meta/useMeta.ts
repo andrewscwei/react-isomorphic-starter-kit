@@ -22,21 +22,19 @@ type Options = {
  * @param params See {@link Params}.
  * @param deps Additional dependencies.
  */
-export function useMeta(metadata: Metadata, {
-  auto = true,
-}: Options = {}, deps: DependencyList = []) {
+export function useMeta(metadata: Metadata, { auto = true }: Options = {}, deps: DependencyList = []) {
   const context = useContext(MetaContext)
-  const { apple, baseTitle, canonicalURL, description, favicon, locale, noIndex, openGraph, themeColor, title, twitter } = metadata
+  const resolved = resolve(metadata)
 
   if (context?.metadata) {
-    assign(context.metadata, { ...metadata })
+    assign(context.metadata, { ...resolved })
   }
 
   useEffect(() => {
     const prevVal = window.document.documentElement.getAttribute('lang')
 
-    if (locale) {
-      window.document.documentElement.setAttribute('lang', locale)
+    if (resolved.locale) {
+      window.document.documentElement.setAttribute('lang', resolved.locale)
     } else {
       window.document.documentElement.removeAttribute('lang')
     }
@@ -48,58 +46,58 @@ export function useMeta(metadata: Metadata, {
         window.document.documentElement.removeAttribute('lang')
       }
     }
-  }, [locale, ...deps])
+  }, [resolved.locale, ...deps])
 
   useEffect(() => {
     const prevTitle = window.document.title
 
-    if (title !== undefined) window.document.title = title ?? ''
+    if (resolved.title !== undefined) window.document.title = resolved.title ?? ''
 
     return () => {
       window.document.title = prevTitle
     }
-  }, [title, ...deps])
+  }, [resolved.title, ...deps])
 
   useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'description' },
-    { name: 'content', value: description ?? '' },
-  ]), [description, ...deps])
+    { name: 'content', value: resolved.description ?? '' },
+  ]), [resolved.description, ...deps])
 
   useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'robots' },
-    { name: 'content', value: noIndex ? 'noindex, nofollow' : undefined },
-  ]), [noIndex, ...deps])
+    { name: 'content', value: resolved.noIndex ? 'noindex, nofollow' : undefined },
+  ]), [resolved.noIndex, ...deps])
 
   useEffect(() => updateElementAttributes('link', [
     { key: true, name: 'rel', value: 'canonical' },
-    { name: 'href', value: noIndex ? undefined : canonicalURL },
-  ]), [canonicalURL, noIndex, ...deps])
+    { name: 'href', value: resolved.canonicalURL },
+  ]), [resolved.canonicalURL, ...deps])
 
   useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'theme-color' },
-    { name: 'content', value: noIndex ? undefined : themeColor },
-  ]), [themeColor, noIndex, ...deps])
+    { name: 'content', value: resolved.themeColor },
+  ]), [resolved.themeColor, ...deps])
 
   useFavicon({
-    dark: favicon?.dark,
-    light: favicon?.light,
+    dark: resolved.favicon?.dark,
+    light: resolved.favicon?.light,
   })
 
   useAppleMeta(
-    { title, ...apple },
-    { auto, isEnabled: !noIndex },
+    { ...resolved.apple },
+    { auto },
     [...deps],
   )
 
   useOpenGraphMeta(
-    { description, siteName: baseTitle, title, url: canonicalURL, ...openGraph },
-    { auto, isEnabled: !noIndex },
+    { ...resolved.openGraph },
+    { auto },
     [...deps],
   )
 
   useTwitterMeta(
-    { description, title, ...twitter },
-    { auto, isEnabled: !noIndex },
+    { ...resolved.twitter },
+    { auto },
     [...deps],
   )
 }
@@ -122,4 +120,29 @@ function assign<T extends Record<string, any>>(target: T, assignee: T) {
       target[key] = assignedValue
     }
   }
+}
+
+function resolve(metadata: Metadata): Metadata {
+  const out = { ...metadata }
+
+  out.apple = {
+    title: out.title,
+    ...out.apple,
+  }
+
+  out.openGraph = {
+    description: out.description,
+    siteName: out.baseTitle,
+    title: out.title,
+    url: out.canonicalURL,
+    ...out.openGraph,
+  }
+
+  out.twitter = {
+    description: out.description,
+    title: out.title,
+    ...out.twitter,
+  }
+
+  return out
 }

@@ -19,8 +19,8 @@ export function useAppleMeta(
   const statusBarStyle = isEnabled ? params.statusBarStyle ?? (auto ? 'default' : undefined) : undefined
   const webAppCapable = isEnabled ? 'yes' : undefined
   const itunesApp = isEnabled ? params.itunesApp : undefined
-  const icon180 = isEnabled ? '/apple-touch-icon-180.png' : undefined
-  const icon = isEnabled ? '/apple-touch-icon.png' : undefined
+  const icon180 = isEnabled ? (params.icon180 || '/apple-touch-icon-180.png') : undefined
+  const icon = isEnabled ? (params.icon || '/apple-touch-icon.png') : undefined
 
   useEffect(() => updateElementAttributes('meta', [
     { key: true, name: 'name', value: 'apple-mobile-web-app-capable' },

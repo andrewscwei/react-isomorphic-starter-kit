@@ -62,6 +62,8 @@ export type Metadata = {
    * The Apple meta tags.
    */
   apple?: {
+    icon?: string
+    icon180?: string
     itunesApp?: string
     statusBarStyle?: 'black-translucent' | 'black' | 'default'
     title?: string
