@@ -1,5 +1,4 @@
 {
-  "js/ts.preferences.importModuleSpecifier": "non-relative",
   "files.exclude": {
     ".wrangler/": true,
     "coverage/": true,

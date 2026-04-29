@@ -4,23 +4,23 @@
 
 import { defineRoutes } from '@lib/i18n'
 
-import { DEFAULT_LOCALE } from '@/app.config.js'
-import { ErrorBoundary } from '@/ui/ErrorBoundary.js'
+import { DEFAULT_LOCALE } from './app.config.js'
+import { ErrorBoundary } from './ui/ErrorBoundary.js'
 
 export const routes = defineRoutes([{
   children: [{
     index: true,
     path: '/',
-    lazy: () => import('@/ui/pages/Home/Home.js'),
+    lazy: () => import('./ui/pages/Home/Home.js'),
   }, {
     path: '*',
-    lazy: () => import('@/ui/pages/NotFound/NotFound.js'),
+    lazy: () => import('./ui/pages/NotFound/NotFound.js'),
   }],
   ErrorBoundary,
 }], {
   defaultLocale: DEFAULT_LOCALE,
   localeChangeStrategy: 'path',
   sources: [
-    import.meta.glob('@/locales/**/*.json', { eager: true }),
+    import.meta.glob('./locales/**/*.json', { eager: true }),
   ],
 })

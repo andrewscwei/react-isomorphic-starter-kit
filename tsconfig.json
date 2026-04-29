@@ -11,7 +11,6 @@
     "noImplicitAny": true,
     "outDir": "build",
     "paths": {
-      "@/*": ["./src/*"],
       "@lib/debug": ["./lib/debug/index"],
       "@lib/esr": ["./lib/esr/index"],
       "@lib/i18n": ["./lib/i18n/index"],

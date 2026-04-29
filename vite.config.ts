@@ -59,7 +59,6 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     publicDir: isSsrBuild ? false : publicDir,
     resolve: {
       alias: {
-        '@': rootDir,
         '@lib': libDir,
       },
     },

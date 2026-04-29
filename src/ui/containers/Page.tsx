@@ -3,8 +3,8 @@ import { type Metadata, useMeta } from '@lib/meta'
 import { type PropsWithChildren } from 'react'
 import { useLocation } from 'react-router'
 
-import { BASE_URL } from '@/app.config.js'
-import { Footer } from '@/ui/components/Footer.js'
+import { BASE_URL } from '../../app.config.js'
+import { Footer } from '../components/Footer.js'
 
 type Props = PropsWithChildren<{
   metadata?: Metadata
