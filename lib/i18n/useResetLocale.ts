@@ -1,6 +1,6 @@
-import { useContext } from 'react'
+import { use } from 'react'
 
-import { I18nContext } from './I18nProvider.js'
+import { I18nContext } from './I18nContext.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
 import { getLocalizedURL } from './utils/getLocalizedURL.js'
 
@@ -10,7 +10,7 @@ import { getLocalizedURL } from './utils/getLocalizedURL.js'
  * @returns The reset locale function.
  */
 export function useResetLocale() {
-  const context = useContext(I18nContext)
+  const context = use(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
   const navigate = context.router.useNavigate()

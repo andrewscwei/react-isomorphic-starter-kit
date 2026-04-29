@@ -1,12 +1,11 @@
-import { createContext, type PropsWithChildren, useMemo } from 'react'
+import { type PropsWithChildren, useMemo } from 'react'
 
+import { MetaContext } from './MetaContext.js'
 import { type Metadata } from './types/Metadata.js'
 
-type MetaProviderProps = PropsWithChildren<MetaContextValue>
-
-type MetaContextValue = {
+type MetaProviderProps = PropsWithChildren<{
   metadata?: Metadata
-}
+}>
 
 /**
  * Context provider that holds a reference to the data for meta tags during
@@ -24,10 +23,4 @@ export function MetaProvider({ children, metadata }: MetaProviderProps) {
       {children}
     </MetaContext.Provider>
   )
-}
-
-export const MetaContext = createContext<MetaContextValue | undefined>(undefined)
-
-if (process.env.NODE_ENV === 'development') {
-  MetaContext.displayName = 'MetaContext'
 }

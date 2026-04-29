@@ -1,10 +1,10 @@
-import { type DependencyList, useContext, useEffect } from 'react'
+import { type DependencyList, use, useEffect } from 'react'
 
 import { useAppleMeta } from './hooks/useAppleMeta.js'
 import { useFavicon } from './hooks/useFavicon.js'
 import { useOpenGraphMeta } from './hooks/useOpenGraphMeta.js'
 import { useTwitterMeta } from './hooks/useTwitterMeta.js'
-import { MetaContext } from './MetaProvider.js'
+import { MetaContext } from './MetaContext.js'
 import { type Metadata } from './types/Metadata.js'
 import { updateElementAttributes } from './utils/updateElementAttributes.js'
 
@@ -23,7 +23,7 @@ type Options = {
  * @param deps Additional dependencies.
  */
 export function useMeta(metadata: Metadata, { auto = true }: Options = {}, deps: DependencyList = []) {
-  const context = useContext(MetaContext)
+  const context = use(MetaContext)
   const resolved = resolve(metadata)
 
   if (context?.metadata) {

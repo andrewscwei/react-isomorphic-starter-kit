@@ -7,5 +7,6 @@ export * from './types/Metadata.js'
 
 export * from './utils/updateElementAttributes.js'
 
+export * from './MetaContext.js'
 export * from './MetaProvider.js'
 export * from './useMeta.js'

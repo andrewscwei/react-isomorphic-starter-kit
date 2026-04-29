@@ -1,6 +1,6 @@
-import { useContext } from 'react'
+import { use } from 'react'
 
-import { I18nContext } from './I18nProvider.js'
+import { I18nContext } from './I18nContext.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
 
 /**
@@ -9,7 +9,7 @@ import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.j
  * @returns All supported locales.
  */
 export function useSupportedLocales() {
-  const context = useContext(I18nContext)
+  const context = use(I18nContext)
   if (!context) throw Error('Cannot fetch the current i18n context, is the corresponding provider instated?')
 
   const { supportedLocales } = createResolveLocaleOptions(context.state)

@@ -1,39 +1,14 @@
-import { createContext, type Dispatch, type PropsWithChildren, type Reducer, useReducer } from 'react'
+import { type PropsWithChildren, type Reducer, useMemo, useReducer } from 'react'
 
-import { type GetLocalizedPath } from './types/GetLocalizedPath.js'
-import { type GetLocalizedString } from './types/GetLocalizedString.js'
+import { type I18nAction, I18nContext, type I18nState } from './I18nContext.js'
 import { type I18nConfig } from './types/I18nConfig.js'
-import { type Locale } from './types/Locale.js'
 import { type RouterAdapter } from './types/RouterAdapter.js'
 import { createGetLocalizedPath } from './utils/createGetLocalizedPath.js'
 import { createGetLocalizedString } from './utils/createGetLocalizedString.js'
 import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
 import { resolveLocaleFromURL } from './utils/resolveLocaleFromURL.js'
 
-type I18nState = {
-  locale: Locale
-  getLocalizedPath: GetLocalizedPath
-  getLocalizedString: GetLocalizedString
-} & I18nConfig
-
-type I18nContextValue = {
-  dispatch?: Dispatch<I18nAction>
-  router: RouterAdapter
-  state: I18nState
-}
-
-type I18nAction = I18nChangeLocaleAction | I18nResetLocaleAction
-
-type I18nResetLocaleAction = {
-  type: '@i18n/RESET_LOCALE'
-}
-
-type I18nChangeLocaleAction = {
-  locale: Locale
-  type: '@i18n/CHANGE_LOCALE'
-}
-
-type I18nProviderProps = {
+type Props = {
   router: RouterAdapter
 } & Partial<I18nConfig>
 
@@ -55,19 +30,41 @@ export function I18nProvider({
   localeChangeStrategy = 'path',
   router,
   translations = {},
-}: PropsWithChildren<I18nProviderProps>) {
+}: PropsWithChildren<Props>) {
   switch (localeChangeStrategy) {
     case 'action':
-      return I18nActionProvider({ children, defaultLocale, localeChangeStrategy, router, translations })
+      return (
+        <I18nActionProvider
+          defaultLocale={defaultLocale}
+          localeChangeStrategy={localeChangeStrategy}
+          router={router}
+          translations={translations}
+        >
+          {children}
+        </I18nActionProvider>
+      )
     case 'path':
     case 'query':
     default:
-      return I18nPathProvider({ children, defaultLocale, localeChangeStrategy, router, translations })
+      return (
+        <I18nPathProvider
+          defaultLocale={defaultLocale}
+          localeChangeStrategy={localeChangeStrategy}
+          router={router}
+          translations={translations}
+        >
+          {children}
+        </I18nPathProvider>
+      )
   }
 }
 
 const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, router, translations }: PropsWithChildren<{ router: RouterAdapter } & I18nConfig>) => {
-  const config = { defaultLocale, localeChangeStrategy, translations }
+  const config = useMemo(() => ({
+    defaultLocale,
+    localeChangeStrategy,
+    translations,
+  }), [defaultLocale, localeChangeStrategy, translations])
 
   const [state, dispatch] = useReducer(reducer, {
     defaultLocale,
@@ -78,15 +75,25 @@ const I18nActionProvider = ({ children, defaultLocale, localeChangeStrategy, rou
     getLocalizedString: createGetLocalizedString(defaultLocale, config),
   })
 
+  const value = useMemo(() => ({
+    dispatch,
+    router,
+    state,
+  }), [router, state])
+
   return (
-    <I18nContext.Provider value={{ dispatch, router, state }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   )
 }
 
 const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, router, translations }: PropsWithChildren<{ router: RouterAdapter } & I18nConfig>) => {
-  const config = { defaultLocale, localeChangeStrategy, translations }
+  const config = useMemo(() => ({
+    defaultLocale,
+    localeChangeStrategy,
+    translations,
+  }), [defaultLocale, localeChangeStrategy, translations])
 
   const { hash, pathname, search } = router.useLocation()
   const url = `${pathname}${search}${hash}`
@@ -95,23 +102,26 @@ const I18nPathProvider = ({ children, defaultLocale, localeChangeStrategy, route
 
   const locale = res?.locale ?? defaultLocale
 
-  const state: I18nState = {
-    defaultLocale,
-    locale,
-    localeChangeStrategy,
-    translations,
-    getLocalizedPath: createGetLocalizedPath(locale, config),
-    getLocalizedString: createGetLocalizedString(locale, config),
-  }
+  const value = useMemo(() => ({
+    router,
+    state: {
+      defaultLocale,
+      locale,
+      localeChangeStrategy,
+      translations,
+      getLocalizedPath: createGetLocalizedPath(locale, config),
+      getLocalizedString: createGetLocalizedString(locale, config),
+    },
+  }), [router, defaultLocale, locale, localeChangeStrategy, translations])
 
   return (
-    <I18nContext.Provider value={{ router, state }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   )
 }
 
-const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
+export const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
   switch (action.type) {
     case '@i18n/CHANGE_LOCALE':
       return {
@@ -128,10 +138,4 @@ const reducer: Reducer<I18nState, I18nAction> = (state, action) => {
     default:
       return state
   }
-}
-
-export const I18nContext = createContext<I18nContextValue | undefined>(undefined)
-
-if (process.env.NODE_ENV === 'development') {
-  I18nContext.displayName = 'I18nContext'
 }

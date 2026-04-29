@@ -55,7 +55,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
 
         return [
           route,
-          ...localizedRoutes ?? [],
+          ...localizedRoutes,
         ]
       }
       case 'auto':
