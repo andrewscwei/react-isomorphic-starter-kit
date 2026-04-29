@@ -4,7 +4,7 @@ import { MetaContext } from './MetaContext.js'
 import { type Metadata } from './types/Metadata.js'
 
 type Props = PropsWithChildren<{
-  metadata?: Metadata
+  metadata: Metadata
 }>
 
 /**
