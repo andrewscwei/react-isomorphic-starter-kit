@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./BxUomvIN.js";var r=t();function i(){let{t}=e();return(0,r.jsx)(n,{metadata:{noIndex:!0,title:t(`window-title-not-found`)},children:(0,r.jsx)(`main`,{children:(0,r.jsx)(`h1`,{children:t(`not-found-title`)})})})}export{i as Component};
