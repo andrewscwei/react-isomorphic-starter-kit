@@ -259,11 +259,24 @@ export default defineConfig(
             groupName: 'data',
           },
           {
-            elementNamePattern: '^(is|has|should|can)[A-Z].+',
+            elementNamePattern: '^(is|has|should|can|will)[A-Z].+$',
             groupName: 'flag',
           },
           {
-            elementNamePattern: '^on.+',
+            elementNamePattern: '^([A-Z][A-Za-z0-9]*)$',
+            elementValuePattern: '^([A-Z][A-Za-z0-9]*|<.*>)$',
+            groupName: 'component',
+          },
+          {
+            elementNamePattern: '^((get|set|parse|format|dispatch)[A-Z].+)|(render)$',
+            groupName: 'function',
+          },
+          {
+            elementValuePattern: '^(\\(.*\\)\\s*=>|function\\b|async\\s)',
+            groupName: 'function',
+          },
+          {
+            elementNamePattern: '^on.+$',
             groupName: 'callback',
           },
         ],
@@ -273,6 +286,7 @@ export default defineConfig(
           'data',
           'unknown',
           'flag',
+          'function',
           'callback',
         ],
         ignoreCase: false,
