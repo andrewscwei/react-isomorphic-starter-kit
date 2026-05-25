@@ -12,6 +12,8 @@ import { resolveLocaleFromURL } from './resolveLocaleFromURL.js'
  * @returns The unlocalized URL.
  */
 export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
+  if (resolveStrategy === 'none') return url
+
   const currLocaleInfo = resolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
   const parts = parseURL(url)
 

@@ -18,7 +18,6 @@ export * from './utils/parseURL.js'
 export * from './utils/resolveLocaleFromURL.js'
 
 export * from './defineConfig.js'
-export * from './defineRoutes.js'
 export * from './I18nContext.js'
 export * from './I18nProvider.js'
 export * from './loadTranslations.js'

@@ -2,25 +2,23 @@
  * @file Routes config.
  */
 
-import { defineRoutes } from '@lib/i18n'
+import { localizeReactRouterRoutes } from '@lib/i18n/adapters/react-router'
 
-import { DEFAULT_LOCALE } from './app.config.js'
+import i18nConfig from './i18n.config.js'
 import { ErrorBoundary } from './ui/ErrorBoundary.js'
 
-export const routes = defineRoutes([{
+export const routes = localizeReactRouterRoutes([{
+  path: '/',
+  ErrorBoundary,
+  lazy: async () => ({
+    ...await import('./ui/Root.js'),
+  }),
+
   children: [{
     index: true,
-    path: '/',
     lazy: () => import('./ui/pages/Home/Home.js'),
   }, {
     path: '*',
     lazy: () => import('./ui/pages/NotFound/NotFound.js'),
   }],
-  ErrorBoundary,
-}], {
-  defaultLocale: DEFAULT_LOCALE,
-  localeChangeStrategy: 'path',
-  sources: [
-    import.meta.glob('./locales/**/*.json', { eager: true }),
-  ],
-})
+}], i18nConfig)

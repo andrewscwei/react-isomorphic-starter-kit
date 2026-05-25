@@ -25,11 +25,11 @@ export const render: RenderFunction = async (req, context, options) => {
 
   return renderToPipeableStream(
     (
-      <App>
-        <MetaProvider metadata={context.metadata}>
+      <MetaProvider metadata={context.metadata}>
+        <App>
           <StaticRouterProvider context={handlerContext} router={createStaticRouter(handler.dataRoutes, handlerContext)}/>
-        </MetaProvider>
-      </App>
+        </App>
+      </MetaProvider>
     ), options,
   )
 }

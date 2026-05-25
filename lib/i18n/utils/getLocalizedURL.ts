@@ -14,6 +14,8 @@ import { parseURL } from './parseURL.js'
  * @returns The localized URL.
  */
 export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
+  if (resolveStrategy === 'none') return url
+
   const parts = parseURL(url)
   const targetLocale = sanitizeLocale(locale, { defaultLocale, resolveStrategy, supportedLocales })
 

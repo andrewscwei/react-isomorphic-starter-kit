@@ -26,8 +26,10 @@ export type ResolveLocaleOptions = {
    * 4. `query`: The locale is specified in the query parameters, i.e.
    *             `example.com/?lang=en`/
    * 5. `custom`: The locale is inferred using a custom function.
+   * 6. `none`: The locale is not represented in the URL (e.g. it is tracked in
+   *            application state). URL and route helpers treat it as a no-op.
    */
-  resolveStrategy: 'auto' | 'custom' | 'domain' | 'path' | 'query'
+  resolveStrategy: 'auto' | 'custom' | 'domain' | 'none' | 'path' | 'query'
 
   /**
    * Custom resolver function.
