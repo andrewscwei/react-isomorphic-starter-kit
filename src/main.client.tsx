@@ -14,7 +14,6 @@ import WebWorker from './workers/web.js?worker'
 
 async function loadLazyComponents() {
   const matches = matchRoutes(routes, window.location, BASE_PATH)?.filter(v => v.route.lazy)
-
   if (!matches || matches.length === 0) return
 
   await Promise.all(matches.map(async ({ route }) => {
@@ -41,7 +40,6 @@ function work() {
 
 async function render() {
   const container = window.document.getElementById('root')
-
   if (!container) throw Error('Invalid application root')
 
   await loadLazyComponents()

@@ -20,7 +20,6 @@ export const sitemap: SitemapOptions = {
 export const render: RenderFunction = async (req, context, options) => {
   const handler = createStaticHandler(routes, { basename: BASE_PATH })
   const handlerContext = await handler.query(req)
-
   if (handlerContext instanceof Response) throw handlerContext
 
   return renderToReadableStream(
