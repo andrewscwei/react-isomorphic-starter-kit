@@ -1,7 +1,5 @@
 import { type GetLocalizedPath } from '../types/GetLocalizedPath.js'
-import { type I18nConfig } from '../types/I18nConfig.js'
-import { type Locale } from '../types/Locale.js'
-import { createResolveLocaleOptions } from './createResolveLocaleOptions.js'
+import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
 import { getLocalizedURL } from './getLocalizedURL.js'
 
 /**
@@ -9,11 +7,11 @@ import { getLocalizedURL } from './getLocalizedURL.js'
  * locale.
  *
  * @param locale The target locale.
- * @param config See {@link I18nConfig}.
+ * @param options See {@link ResolveLocaleOptions}.
  *
  * @returns A function for getting the localized URL of any URL in the target
  *          locale.
  */
-export function createGetLocalizedPath(locale: Locale, config: I18nConfig): GetLocalizedPath {
-  return (path: string) => getLocalizedURL(path, locale, createResolveLocaleOptions(config))
+export function createGetLocalizedPath(locale: string, options: ResolveLocaleOptions): GetLocalizedPath {
+  return (path: string) => getLocalizedURL(path, locale, options)
 }

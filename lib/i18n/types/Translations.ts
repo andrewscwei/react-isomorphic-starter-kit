@@ -1,11 +1,9 @@
-import { type Locale } from './Locale.js'
+/**
+ * The translations of one locale, as nested keys with string values.
+ */
+export type TranslationDict = { [key: string]: string | TranslationDict }
 
 /**
- * A unit translation.
+ * The translations of all locales, keyed by locale.
  */
-export type Translation = { [key: string]: string | Translation }
-
-/**
- * Dictionary of translations.
- */
-export type Translations = Partial<Record<Locale, Translation>>
+export type TranslationsByLocale = Partial<Record<string, TranslationDict>>

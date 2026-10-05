@@ -1,6 +1,8 @@
 import { loadTranslations } from './loadTranslations.js'
 import { type I18nConfig } from './types/I18nConfig.js'
-import { type Locale } from './types/Locale.js'
+import { type LocaleChangeStrategy } from './types/LocaleChangeStrategy.js'
+import { type TranslationsByLocale } from './types/Translations.js'
+import { isLocale } from './utils/isLocale.js'
 
 type Params = {
   /**
@@ -11,24 +13,47 @@ type Params = {
   /**
    * @see {@link I18nConfig.localeChangeStrategy}
    */
-  localeChangeStrategy?: 'action' | 'path' | 'query'
+  localeChangeStrategy?: LocaleChangeStrategy
 
   /**
-   * Dictionaries of locale file sources.
+   * Imported translation files to load translations from when translations are
+   * not provided, see {@link loadTranslations}.
    */
-  sources: Record<string, any>[]
+  sources?: Record<string, any>[]
+
+  /**
+   * @see {@link I18nConfig.supportedLocales}
+   */
+  supportedLocales?: string[]
+
+  /**
+   * @see {@link I18nConfig.translations}
+   */
+  translations?: TranslationsByLocale
 }
 
 export function defineConfig({
   defaultLocale = 'en',
   localeChangeStrategy = 'path',
-  sources,
+  sources = [],
+  supportedLocales = [defaultLocale],
+  translations: providedTranslations,
 }: Params): I18nConfig {
-  const translations = loadTranslations(sources)
+  const translations = providedTranslations ?? loadTranslations(sources)
+
+  const invalid = [defaultLocale, ...supportedLocales, ...Object.keys(translations)].find(l => !isLocale(l))
+  if (invalid !== undefined) {
+    throw Error(`Invalid locale "${invalid}"`)
+  }
+
+  if (!supportedLocales.includes(defaultLocale)) {
+    throw Error(`Supported locales do not contain the default locale "${defaultLocale}"`)
+  }
 
   return {
-    defaultLocale: defaultLocale as Locale,
+    defaultLocale,
     localeChangeStrategy,
-    translations: Object.keys(translations).length > 0 ? translations : { [defaultLocale]: {} },
+    supportedLocales,
+    translations,
   }
 }

@@ -9,7 +9,10 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'r
 
 import { BASE_PATH, BASE_URL, BUILD_TIME } from './app.config.js'
 import { App } from './App.js'
+import i18nConfig from './i18n.config.js'
 import { routes } from './routes.config.js'
+
+export const locales = i18nConfig.supportedLocales
 
 export const sitemap: SitemapOptions = {
   hostname: BASE_URL,

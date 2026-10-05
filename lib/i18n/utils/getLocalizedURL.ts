@@ -1,11 +1,12 @@
-import { type Locale } from '../types/Locale.js'
 import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
-import { constructURL } from './constructURL.js'
 import { getUnlocalizedURL } from './getUnlocalizedURL.js'
-import { parseURL } from './parseURL.js'
+import { negotiateLocale } from './negotiateLocale.js'
+import { splitURL } from './splitURL.js'
 
 /**
- * Returns the localized version of a URL.
+ * Returns the localized version of a URL. Under the `path` strategy, relative
+ * URLs, e.g. `scan`, `?tab=1` or `#top`, are returned unchanged since their
+ * path cannot be localized.
  *
  * @param url The URL.
  * @param locale The target locale.
@@ -13,51 +14,40 @@ import { parseURL } from './parseURL.js'
  *
  * @returns The localized URL.
  */
-export function getLocalizedURL(url: string, locale: Locale, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
-  if (resolveStrategy === 'none') return url
+export function getLocalizedURL(url: string, locale: string, options: ResolveLocaleOptions): string {
+  const { defaultLocale, localeChangeStrategy } = options
+  if (localeChangeStrategy === 'action') return url
 
-  const parts = parseURL(url)
-  const targetLocale = sanitizeLocale(locale, { defaultLocale, resolveStrategy, supportedLocales })
-
+  const targetLocale = sanitizeLocale(locale, options)
   if (!targetLocale) return url
 
-  if (targetLocale === defaultLocale) return getUnlocalizedURL(url, { defaultLocale, resolveStrategy, supportedLocales })
+  const unlocalizedURL = getUnlocalizedURL(url, options)
+  if (targetLocale === defaultLocale) return unlocalizedURL
 
-  switch (resolveStrategy) {
-    case 'domain':
-      return constructURL({ ...parts, host: parts.host ? `${targetLocale}.${parts.host}` : undefined })
+  const { hash, origin, path, search } = splitURL(unlocalizedURL)
+
+  switch (localeChangeStrategy) {
     case 'query': {
-      const searchParams = new URLSearchParams(parts.query)
+      const searchParams = new URLSearchParams(search)
+      searchParams.set('locale', targetLocale)
 
-      if (targetLocale === defaultLocale) {
-        searchParams.delete('locale')
-      } else {
-        searchParams.set('locale', targetLocale)
-      }
-
-      return constructURL({ ...parts, query: searchParams.toString() })
+      return `${origin}${path}?${searchParams.toString()}${hash}`
     }
-    case 'auto':
     case 'path':
     default: {
-      const pathParts = parts.path?.split('/').filter(v => v)
-      if (pathParts && supportedLocales.includes(pathParts[0] as Locale)) pathParts.shift()
+      if (!origin && !path.startsWith('/')) return url
 
-      return constructURL({
-        ...parts,
-        path: pathParts ? [targetLocale, ...pathParts].join('/') : undefined,
-      })
+      const localizedPath = path === '' || path === '/' ? `/${targetLocale}` : `/${targetLocale}${path}`
+
+      return `${origin}${localizedPath}${search}${hash}`
     }
   }
 }
 
-function sanitizeLocale(locale: Locale, { defaultLocale, supportedLocales }: ResolveLocaleOptions): Locale | undefined {
-  if (supportedLocales) {
-    if (locale && supportedLocales.indexOf(locale) >= 0) return locale
-    if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) return defaultLocale
+function sanitizeLocale(locale: string, { defaultLocale, supportedLocales }: ResolveLocaleOptions): string | undefined {
+  const match = negotiateLocale(locale, supportedLocales)
+  if (match !== undefined) return match
+  if (supportedLocales.includes(defaultLocale)) return defaultLocale
 
-    return undefined
-  }
-
-  return locale ?? defaultLocale
+  return undefined
 }

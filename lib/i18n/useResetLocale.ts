@@ -1,7 +1,6 @@
-import { use } from 'react'
+import { use, useCallback } from 'react'
 
 import { I18nContext } from './I18nContext.js'
-import { createResolveLocaleOptions } from './utils/createResolveLocaleOptions.js'
 import { getLocalizedURL } from './utils/getLocalizedURL.js'
 
 /**
@@ -15,24 +14,17 @@ export function useResetLocale() {
 
   const navigate = context.router.useNavigate()
   const { hash, pathname, search } = context.router.useLocation()
-  const { localeChangeStrategy } = context.state
+  const { dispatch, state } = context
 
-  switch (localeChangeStrategy) {
-    case 'action': {
-      return () => context.dispatch?.({
-        type: '@i18n/RESET_LOCALE',
-      })
+  return useCallback(() => {
+    switch (state.localeChangeStrategy) {
+      case 'action':
+        dispatch?.({ type: '@i18n/RESET_LOCALE' })
+        break
+      case 'path':
+      case 'query':
+      default:
+        navigate(getLocalizedURL(`${pathname}${search}${hash}`, state.defaultLocale, state))
     }
-    case 'path':
-    case 'query':
-    default: {
-      const path = `${pathname}${search}${hash}`
-
-      return () => {
-        const newPath = getLocalizedURL(path, context.state.defaultLocale, createResolveLocaleOptions(context.state))
-
-        navigate(newPath)
-      }
-    }
-  }
+  }, [hash, pathname, search, state, dispatch, navigate])
 }

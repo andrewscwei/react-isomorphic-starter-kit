@@ -1,2 +1,2 @@
+export * from './createReactRouterAdapter.js'
 export * from './localizeReactRouterRoutes.js'
-export * from './reactRouterAdapter.js'

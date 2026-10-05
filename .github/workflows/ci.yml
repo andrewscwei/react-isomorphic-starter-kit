@@ -15,7 +15,7 @@ jobs:
           - edge
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Build
         uses: andrewscwei/actions/node-build@v2
         env:

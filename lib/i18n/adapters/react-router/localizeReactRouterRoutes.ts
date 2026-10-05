@@ -1,28 +1,29 @@
 import { type RouteObject } from 'react-router'
 
-import { type I18nConfig } from '../../types/I18nConfig.js'
-import { createResolveLocaleOptions } from '../../utils/createResolveLocaleOptions.js'
+import { type ResolveLocaleOptions } from '../../types/ResolveLocaleOptions.js'
 
 /**
  * Returns the provided routes with a locale-prefixed variant generated for each
- * supported locale. Only the `path` resolve strategy produces variants; every
- * other strategy returns the routes unchanged.
+ * URL locale.
+ *
+ * Only the `path` locale change strategy produces variants; every other
+ * strategy returns the routes unchanged.
  *
  * @param routes The routes to localize.
- * @param config See {@link I18nConfig}.
+ * @param options See {@link ResolveLocaleOptions}.
  *
  * @returns The localized routes.
  */
-export function localizeReactRouterRoutes(routes: RouteObject[], config: I18nConfig): RouteObject[] {
-  return routes.flatMap(r => localizeRoute(r, config))
+export function localizeReactRouterRoutes(routes: RouteObject[], options: ResolveLocaleOptions): RouteObject[] {
+  return routes.flatMap(r => localizeRoute(r, options))
 }
 
-function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
-  const { defaultLocale, resolveStrategy, supportedLocales } = createResolveLocaleOptions(config)
+function localizeRoute(route: RouteObject, options: ResolveLocaleOptions): RouteObject[] {
+  const { defaultLocale, localeChangeStrategy, supportedLocales } = options
   const { children, path } = route
 
   if (path !== undefined) {
-    switch (resolveStrategy) {
+    switch (localeChangeStrategy) {
       case 'path': {
         const localizedRoutes = supportedLocales
           .filter(l => l !== defaultLocale)
@@ -36,10 +37,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
           ...localizedRoutes,
         ]
       }
-      case 'auto':
-      case 'custom':
-      case 'domain':
-      case 'none':
+      case 'action':
       case 'query':
       default:
         return [route]
@@ -47,7 +45,7 @@ function localizeRoute(route: RouteObject, config: I18nConfig): RouteObject[] {
   } else if (children !== undefined) {
     return [{
       ...route,
-      children: children.flatMap(v => localizeRoute(v, config)),
+      children: children.flatMap(v => localizeRoute(v, options)),
     }]
   } else {
     return [route]

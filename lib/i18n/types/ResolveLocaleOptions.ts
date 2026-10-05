@@ -1,42 +1,27 @@
-import { type Locale } from './Locale.js'
+import { type LocaleChangeStrategy } from './LocaleChangeStrategy.js'
 
 /**
  * Options that determine how locales are resolved from a URL.
  */
 export type ResolveLocaleOptions = {
   /**
-   * The locale to fallback to if one cannot be inferred from the provided URL.
+   * The locale to fallback to when one cannot be inferred. It must be one of
+   * `supportedLocales`.
    */
-  defaultLocale: Locale
+  defaultLocale: string
 
   /**
-   * An array of supported locales to validate the inferred locale against. If
-   * it doesn't exist in the list of supported locales, the default locale (if
-   * specified) or `undefined` will be returned.
+   * @see {@link LocaleChangeStrategy}
    */
-  supportedLocales: Locale[]
+  localeChangeStrategy: LocaleChangeStrategy
 
   /**
-   * Specifies where in the URL the locale should be matched:
+   * The locales the application supports, as broad or as specific as needed,
+   * e.g. `['en', 'ja', 'zh-Hant']`.
    *
-   * 1. `auto`: The locale is automatically inferred.
-   * 2. `domain`: The locale is specified in the domain name, i.e.
-   *              `en.example.com`.
-   * 3. `path`: The locale is specified in the path, i.e. `example.com/en/`/
-   * 4. `query`: The locale is specified in the query parameters, i.e.
-   *             `example.com/?lang=en`/
-   * 5. `custom`: The locale is inferred using a custom function.
-   * 6. `none`: The locale is not represented in the URL (e.g. it is tracked in
-   *            application state). URL and route helpers treat it as a no-op.
+   * Under the `path` and `query` change strategies, these are also the locales
+   * that may appear in URLs, the default locale being represented by an
+   * unlocalized URL.
    */
-  resolveStrategy: 'auto' | 'custom' | 'domain' | 'none' | 'path' | 'query'
-
-  /**
-   * Custom resolver function.
-   *
-   * @param url The URL to resolve.
-   *
-   * @returns The resolved locale.
-   */
-  resolver?: (url: string) => Locale | undefined
+  supportedLocales: string[]
 }

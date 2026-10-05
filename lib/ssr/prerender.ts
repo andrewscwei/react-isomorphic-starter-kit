@@ -28,7 +28,6 @@ function getArgs() {
     baseURL = process.env.BASE_URL ?? '',
     config = './vite.config.ts',
     entry,
-    locales,
     out = './build/',
     routes,
     template,
@@ -38,7 +37,6 @@ function getArgs() {
       baseURL: ['u'],
       config: ['c'],
       entry: ['e'],
-      locales: ['l'],
       out: ['o'],
       routes: ['r'],
       template: ['t'],
@@ -50,7 +48,6 @@ function getArgs() {
   const configPath = resolve(cwd, config)
   const entryPath = resolve(cwd, entry)
   const templatePath = template ? resolve(cwd, template) : resolve(outDir, 'index.html')
-  const localesDir = resolve(cwd, locales)
   const requiredRoutes = typeof routes === 'string' ? routes.split(',').map(r => r.trim()).filter(r => r) : []
 
   return {
@@ -58,7 +55,6 @@ function getArgs() {
     baseURL,
     configPath,
     entryPath,
-    localesDir,
     outDir,
     requiredRoutes,
     templatePath,
@@ -98,13 +94,10 @@ async function createSSRModule(entryPath: string, { configPath }: { configPath: 
   return out
 }
 
-async function getLocales(localesDir: string) {
-  const files = await readdir(localesDir, { recursive: true, withFileTypes: true })
-  const locales = files
-    .filter(f => !f.isFile() || extname(f.name) === '.json')
-    .map(f => f.name.replace('.json', ''))
+async function getLocales(entryPath: string): Promise<string[]> {
+  const module = await import(entryPath)
 
-  return locales
+  return module.locales ?? []
 }
 
 async function request(server: http.Server, path: string): Promise<string> {
@@ -155,11 +148,11 @@ async function generateSitemap(server: http.Server, { basePath, outDir }: { base
   }
 }
 
-async function generatePages(server: http.Server, { basePath, baseURL, localesDir, outDir, requiredRoutes }: { basePath: string; baseURL: string; localesDir: string; outDir: string; requiredRoutes: string[] }) {
+async function generatePages(server: http.Server, { basePath, baseURL, entryPath, outDir, requiredRoutes }: { basePath: string; baseURL: string; entryPath: string; outDir: string; requiredRoutes: string[] }) {
   const parser = new XMLParser()
   const sitemapFile = await readFile(join(outDir, basePath, 'sitemap.xml'), 'utf-8')
   const sitemap = parser.parse(sitemapFile)
-  const locales = await getLocales(localesDir)
+  const locales = await getLocales(entryPath)
   const urls: string[] = [].concat(sitemap.urlset.url).map((u: any) => u.loc).filter(u => u)
   const escapedBaseURL = baseURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const escapedLocales = locales.map(l => l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
@@ -235,16 +228,17 @@ async function main() {
   console.log(green('Prerendering for production...'))
 
   const startTime = performance.now()
-  const { basePath, baseURL, configPath, entryPath, localesDir, outDir, requiredRoutes, templatePath } = getArgs()
+  const { basePath, baseURL, configPath, entryPath, outDir, requiredRoutes, templatePath } = getArgs()
   const { chunkFiles, entryFile } = await createSSRModule(entryPath, { configPath })
-  const app = await createApp(resolve(outDir, entryFile), templatePath, { basePath })
+  const builtEntryPath = resolve(outDir, entryFile)
+  const app = await createApp(builtEntryPath, templatePath, { basePath })
   const server = app.listen()
 
   console.log('generating sitemap...')
   await generateSitemap(server, { basePath, outDir })
 
   console.log('rendering routes...')
-  await generatePages(server, { basePath, baseURL, localesDir, outDir, requiredRoutes })
+  await generatePages(server, { basePath, baseURL, entryPath: builtEntryPath, outDir, requiredRoutes })
 
   console.log('cleaning files...')
   await cleanUp([entryFile, ...chunkFiles], { exts: [], outDir })

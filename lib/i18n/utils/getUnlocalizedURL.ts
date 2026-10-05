@@ -1,7 +1,6 @@
 import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
-import { constructURL } from './constructURL.js'
-import { parseURL } from './parseURL.js'
 import { resolveLocaleFromURL } from './resolveLocaleFromURL.js'
+import { splitURL } from './splitURL.js'
 
 /**
  * Returns the unlocalized version of a URL.
@@ -11,28 +10,26 @@ import { resolveLocaleFromURL } from './resolveLocaleFromURL.js'
  *
  * @returns The unlocalized URL.
  */
-export function getUnlocalizedURL(url: string, { resolveStrategy, supportedLocales }: ResolveLocaleOptions): string {
-  if (resolveStrategy === 'none') return url
+export function getUnlocalizedURL(url: string, options: ResolveLocaleOptions): string {
+  if (resolveLocaleFromURL(url, options) === undefined) return url
 
-  const currLocaleInfo = resolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
-  const parts = parseURL(url)
+  const { hash, origin, path, search } = splitURL(url)
 
-  if (!currLocaleInfo) return url
-
-  switch (currLocaleInfo.resolveStrategy) {
-    case 'domain':
-      return constructURL({ ...parts, host: parts.host ? parts.host.split('.').filter(v => v).slice(1).join('.') || '/' : undefined })
+  switch (options.localeChangeStrategy) {
     case 'query': {
-      if (!parts.query) return url
-
-      const searchParams = new URLSearchParams(parts.query)
+      const searchParams = new URLSearchParams(search)
       searchParams.delete('locale')
 
-      return constructURL({ ...parts, query: searchParams.toString() })
+      const query = searchParams.toString()
+
+      return `${origin}${path}${query ? `?${query}` : ''}${hash}`
     }
-    case 'auto':
     case 'path':
-    default:
-      return constructURL({ ...parts, path: parts.path ? [...parts.path.split('/').filter(v => v).slice(1)].join('/') : undefined })
+    default: {
+      const segments = path.split('/')
+      segments.splice(1, 1)
+
+      return `${origin}${segments.join('/') || '/'}${search}${hash}`
+    }
   }
 }

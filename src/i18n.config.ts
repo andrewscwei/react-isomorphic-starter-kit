@@ -6,6 +6,10 @@ export default defineConfig({
   defaultLocale: DEFAULT_LOCALE,
   localeChangeStrategy: 'path',
   sources: [
-    import.meta.glob('./locales/**/*.json', { eager: true }),
+    import.meta.glob('./**/*.json', { base: './locales', eager: true }),
+  ],
+  supportedLocales: [
+    'en',
+    'ja',
   ],
 })

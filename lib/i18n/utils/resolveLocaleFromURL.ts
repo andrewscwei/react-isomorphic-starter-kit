@@ -1,86 +1,34 @@
-import { type Locale } from '../types/Locale.js'
 import { type ResolveLocaleOptions } from '../types/ResolveLocaleOptions.js'
-import { parseURL } from './parseURL.js'
-
-type Result = {
-  /**
-   * The matched locale.
-   */
-  locale: Locale
-
-  /**
-   * Specifies where in the URL the locale was matched.
-   */
-  resolveStrategy: ResolveLocaleOptions['resolveStrategy']
-}
+import { splitURL } from './splitURL.js'
 
 /**
- * Retrieves the locale identifier from a URL. The default behavior of this
- * function is to look for the locale identifier in the domain first, followed
- * by the first directory of the path. You can also provide a custom resolver.
+ * Retrieves the locale from a URL based on the specified locale change
+ * strategy, matching the supported locales case-insensitively.
  *
  * @param url The URL, can be a full URL or a valid path.
  * @param options See {@link ResolveLocaleOptions}.
  *
- * @returns The result of the resolution if successful, `undefined` otherwise.
+ * @returns The supported locale in the URL as it appears in
+ *          `supportedLocales`, or `undefined` if there is none.
  */
-export function resolveLocaleFromURL(url: string, {
-  defaultLocale,
-  resolver, resolveStrategy = 'auto', supportedLocales = [],
-}: Partial<ResolveLocaleOptions> = {}): Result | undefined {
-  const result = resolver
-    ? manualResolveLocaleFromURL(url, { resolver, supportedLocales })
-    : autoResolveLocaleFromURL(url, { resolveStrategy, supportedLocales })
+export function resolveLocaleFromURL(url: string, { localeChangeStrategy, supportedLocales }: ResolveLocaleOptions): string | undefined {
+  const { path, search } = splitURL(url)
 
-  if (result) {
-    return result
-  } else if (defaultLocale && supportedLocales.indexOf(defaultLocale) >= 0) {
-    return { locale: defaultLocale, resolveStrategy: 'auto' }
-  } else {
-    return undefined
-  }
-}
+  let locale: null | string | undefined
 
-function manualResolveLocaleFromURL(url: string, {
-  resolver,
-  supportedLocales = [],
-}: Omit<Required<ResolveLocaleOptions>, 'defaultLocale' | 'resolveStrategy'>): Result | undefined {
-  const matchedLocale = resolver?.(url)
-
-  if (matchedLocale && supportedLocales.indexOf(matchedLocale) >= 0) return { locale: matchedLocale, resolveStrategy: 'custom' }
-
-  return undefined
-}
-
-function autoResolveLocaleFromURL(url: string, {
-  resolveStrategy,
-  supportedLocales,
-}: Omit<ResolveLocaleOptions, 'defaultLocale' | 'resolver'>): Result | undefined {
-  const parts = parseURL(url)
-  const matchedLocaleFromHost = parts.host?.split('.').filter(v => v)[0] as Locale
-  const matchedLocaleFromPath = parts.path?.split('/').filter(v => v)[0] as Locale
-  const matchedLocaleFromQuery = new URLSearchParams(parts.query).get('locale') as Locale
-
-  if (matchedLocaleFromHost && (resolveStrategy === 'auto' || resolveStrategy === 'domain') && (supportedLocales.indexOf(matchedLocaleFromHost) >= 0)) {
-    return {
-      locale: matchedLocaleFromHost,
-      resolveStrategy: 'domain',
-    }
+  switch (localeChangeStrategy) {
+    case 'path':
+      locale = path.startsWith('/') ? path.split('/')[1] : undefined
+      break
+    case 'query':
+      locale = new URLSearchParams(search).get('locale')
+      break
+    case 'action':
+    default:
+      return undefined
   }
 
-  if (matchedLocaleFromPath && (resolveStrategy === 'auto' || resolveStrategy === 'path') && (supportedLocales.indexOf(matchedLocaleFromPath) >= 0)) {
-    return {
-      locale: matchedLocaleFromPath,
-      resolveStrategy: 'path',
-    }
-  }
+  if (!locale) return undefined
 
-  if (matchedLocaleFromQuery && (resolveStrategy === 'auto' || resolveStrategy === 'query') && (supportedLocales.indexOf(matchedLocaleFromQuery) >= 0)) {
-    return {
-      locale: matchedLocaleFromQuery,
-      resolveStrategy: 'query',
-    }
-  }
-
-  return undefined
+  return supportedLocales.find(l => l.toLowerCase() === locale.toLowerCase())
 }

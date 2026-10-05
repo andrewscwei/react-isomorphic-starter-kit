@@ -10,8 +10,6 @@ import { getLocalizedURL } from './getLocalizedURL.js'
  *
  * @returns The localized URLs.
  */
-export function getLocalizedURLs(url: string, { defaultLocale, resolveStrategy, supportedLocales }: ResolveLocaleOptions): string[] {
-  if (!supportedLocales) return []
-
-  return supportedLocales.map(locale => getLocalizedURL(url, locale, { defaultLocale, resolveStrategy, supportedLocales }))
+export function getLocalizedURLs(url: string, options: ResolveLocaleOptions): string[] {
+  return options.supportedLocales.map(locale => getLocalizedURL(url, locale, options))
 }

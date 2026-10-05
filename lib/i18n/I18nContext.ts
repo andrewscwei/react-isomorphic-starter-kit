@@ -3,11 +3,11 @@ import { createContext, type Dispatch } from 'react'
 import { type GetLocalizedPath } from './types/GetLocalizedPath.js'
 import { type GetLocalizedString } from './types/GetLocalizedString.js'
 import { type I18nConfig } from './types/I18nConfig.js'
-import { type Locale } from './types/Locale.js'
 import { type RouterAdapter } from './types/RouterAdapter.js'
 
 export type I18nState = {
-  locale: Locale
+  direction: 'ltr' | 'rtl'
+  locale: string
   getLocalizedPath: GetLocalizedPath
   getLocalizedString: GetLocalizedString
 } & I18nConfig
@@ -19,7 +19,7 @@ type ResetLocaleAction = {
 }
 
 type ChangeLocaleAction = {
-  locale: Locale
+  locale: string
   type: '@i18n/CHANGE_LOCALE'
 }
 
@@ -31,6 +31,6 @@ type ContextValue = {
 
 export const I18nContext = createContext<ContextValue | undefined>(undefined)
 
-if (process.env.NODE_ENV === 'development') {
+if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
   I18nContext.displayName = 'I18nContext'
 }

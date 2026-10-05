@@ -1,5 +1,5 @@
 import get from 'get-value'
-import he from 'he'
+import * as he from 'he'
 
 import { type HTMLData } from '../types/HTMLData.js'
 

@@ -13,5 +13,7 @@ export * from './types/SitemapTags.js'
 
 export * from './utils/extractPaths.js'
 export * from './utils/generateSitemap.js'
+export * from './utils/getLocalData.js'
 export * from './utils/joinPaths.js'
 export * from './utils/renderTemplate.js'
+export * from './utils/setLocalData.js'

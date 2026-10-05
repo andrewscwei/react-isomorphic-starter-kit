@@ -1,3 +1,5 @@
+/// <reference path="../local-data.d.ts" />
+
 /**
  * Type definition of a mutable object whose content is populated at render
  * time.
@@ -11,7 +13,7 @@ export type RenderContext = {
   /**
    * Data to bootstrap into rendered HTML as `window.__localData`.
    */
-  localData: Record<string, any>
+  localData: Partial<LocalData>
 }
 
 export namespace RenderContext {
