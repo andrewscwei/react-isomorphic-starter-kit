@@ -28,7 +28,12 @@ jobs:
           artifact-path: build/
           artifact-name: ${{ matrix.runtime }}
       - name: Test
-        run: npx playwright install --with-deps && npm run test:e2e:${{ matrix.runtime }}
+        run: |
+          npx playwright install --with-deps --only-shell chromium
+          npm run start:${{ matrix.runtime }} &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          npm run test:e2e
   deploy:
     name: Deploy
     needs: [build]
